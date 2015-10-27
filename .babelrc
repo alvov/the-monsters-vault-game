@@ -1,0 +1,5 @@
+{
+  "loose": true,
+  "nonStandard": true,
+  "optional": ["es7.comprehensions"]
+}

@@ -1,0 +1,68 @@
+.obj {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    -webkit-transform-style: preserve-3d;
+            transform-style: preserve-3d;
+}
+.field {
+    width: 5000px;
+    height: 5000px;
+    margin: -2500px 0 0 -2500px;
+    background: #cfa;
+    -webkit-transform: translate3d(0, 351px, 0) rotateX(90deg);
+            transform: translate3d(0, 351px, 0) rotateX(90deg);
+}
+.wall {
+    width: 700px;
+    height: 700px;
+    margin: -350px 0 0 -350px;
+    box-shadow: inset 0 0 30px 3px;
+    background-size: 350px 350px;
+}
+.wall[data-id="0"] {
+    background: firebrick;
+    -webkit-transform: translate3d(0, 0, -350px);
+            transform: translate3d(0, 0, -350px);
+}
+.wall[data-id="1"] {
+    background: firebrick;
+    -webkit-transform: translate3d(-350px, 0, 0) rotateY(90deg);
+            transform: translate3d(-350px, 0, 0) rotateY(90deg);
+}
+.wall[data-id="2"] {
+    background: firebrick;
+    -webkit-transform: translate3d(350px, 0, 0) rotateY(-90deg);
+            transform: translate3d(350px, 0, 0) rotateY(-90deg);
+}
+.wall[data-id="3"] {
+    background: dimgrey;
+    -webkit-transform: translate3d(0, 350px, 0) rotateX(90deg);
+            transform: translate3d(0, 350px, 0) rotateX(90deg);
+}
+.scene {
+    -webkit-transform: translate3d(0px, 0px, 0px);
+            transform: translate3d(0px, 0px, 0px);
+}
+.camera {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    -webkit-transform: translate3d(0px, 0px, 600px) rotateX(0deg) rotateY(0deg) rotateZ(0deg);
+            transform: translate3d(0px, 0px, 600px) rotateX(0deg) rotateY(0deg) rotateZ(0deg);
+    -webkit-transform-style: preserve-3d;
+            transform-style: preserve-3d;
+}
+.viewport {
+    -webkit-perspective: 600px;
+            perspective: 600px;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    background: #def;
+}
+html, body {
+    height: 100%;
+    margin: 0;
+}
+

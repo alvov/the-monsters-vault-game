@@ -1,4 +1,6 @@
+require('./styles.css');
+
 import ReactDOM from 'react-dom';
-import Viewport from 'scripts/components/Viewport';
+import Viewport from 'components/viewport/Viewport';
 
 ReactDOM.render(<Viewport/>, document.body);

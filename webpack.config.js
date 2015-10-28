@@ -1,21 +1,37 @@
+var ExtractTextPlugin = require("extract-text-webpack-plugin");
+
 module.exports = {
-    entry: './src/scripts/script.js',
+    entry: {
+        bundle: './src/script'
+    },
     output: {
         path: __dirname + '/dist',
-        filename: 'bundle.js'
+        filename: '[name].js'
     },
     resolve: {
         root: __dirname + '/src',
-        extensions: ['', '.js', '.jsx']
+        extensions: ['', '.js', '.css']
     },
     module: {
-        loaders: [{
-            test: /\.jsx?$/,
-            loader: 'babel-loader'
-        }]
+        loaders: [
+            {
+                test: /\.jsx?$/,
+                loader: 'babel-loader'
+            },
+            {
+                test: /\.css$/,
+                loader: ExtractTextPlugin.extract('style-loader', 'css-loader!cssnext-loader')
+            }
+        ]
+    },
+    cssnext: {
+        browsers: 'last 2 versions'
     },
     externals: {
         react: 'React',
         'react-dom': 'ReactDOM'
-    }
+    },
+    plugins: [
+        new ExtractTextPlugin('[name].css')
+    ]
 };

@@ -1,0 +1,23 @@
+.wall {
+    width: 700px;
+    height: 700px;
+    margin: -350px 0 0 -350px;
+    box-shadow: inset 0 0 30px 3px;
+    background-size: 350px 350px;
+}
+.wall[data-id="0"] {
+    background: firebrick;
+    transform: translate3d(0, 0, -350px);
+}
+.wall[data-id="1"] {
+    background: firebrick;
+    transform: translate3d(-350px, 0, 0) rotateY(90deg);
+}
+.wall[data-id="2"] {
+    background: firebrick;
+    transform: translate3d(350px, 0, 0) rotateY(-90deg);
+}
+.wall[data-id="3"] {
+    background: dimgrey;
+    transform: translate3d(0, 350px, 0) rotateX(90deg);
+}

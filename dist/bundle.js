@@ -52,11 +52,13 @@
 
 	var _reactDom2 = _interopRequireDefault(_reactDom);
 
-	var _scriptsComponentsViewport = __webpack_require__(2);
+	var _componentsViewportViewport = __webpack_require__(2);
 
-	var _scriptsComponentsViewport2 = _interopRequireDefault(_scriptsComponentsViewport);
+	var _componentsViewportViewport2 = _interopRequireDefault(_componentsViewportViewport);
 
-	_reactDom2['default'].render(React.createElement(_scriptsComponentsViewport2['default'], null), document.body);
+	__webpack_require__(21);
+
+	_reactDom2['default'].render(React.createElement(_componentsViewportViewport2['default'], null), document.body);
 
 /***/ },
 /* 1 */
@@ -68,49 +70,53 @@
 /* 2 */
 /***/ function(module, exports, __webpack_require__) {
 
-	"use strict";
+	'use strict';
 
 	exports.__esModule = true;
 
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-	var _scriptsComponentsCameraJs = __webpack_require__(3);
+	var _componentsCameraCamera = __webpack_require__(3);
 
-	var _scriptsComponentsCameraJs2 = _interopRequireDefault(_scriptsComponentsCameraJs);
+	var _componentsCameraCamera2 = _interopRequireDefault(_componentsCameraCamera);
 
-	exports["default"] = function () {
+	__webpack_require__(19);
+
+	exports['default'] = function () {
 	    return React.createElement(
-	        "div",
-	        { className: "viewport" },
-	        React.createElement(_scriptsComponentsCameraJs2["default"], null)
+	        'div',
+	        { className: 'viewport' },
+	        React.createElement(_componentsCameraCamera2['default'], null)
 	    );
 	};
 
-	module.exports = exports["default"];
+	module.exports = exports['default'];
 
 /***/ },
 /* 3 */
 /***/ function(module, exports, __webpack_require__) {
 
-	"use strict";
+	'use strict';
 
 	exports.__esModule = true;
 
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-	var _scriptsComponentsScene = __webpack_require__(4);
+	var _componentsSceneScene = __webpack_require__(4);
 
-	var _scriptsComponentsScene2 = _interopRequireDefault(_scriptsComponentsScene);
+	var _componentsSceneScene2 = _interopRequireDefault(_componentsSceneScene);
 
-	exports["default"] = function () {
+	__webpack_require__(17);
+
+	exports['default'] = function () {
 	    return React.createElement(
-	        "div",
-	        { className: "camera" },
-	        React.createElement(_scriptsComponentsScene2["default"], null)
+	        'div',
+	        { className: 'camera' },
+	        React.createElement(_componentsSceneScene2['default'], null)
 	    );
 	};
 
-	module.exports = exports["default"];
+	module.exports = exports['default'];
 
 /***/ },
 /* 4 */
@@ -122,23 +128,26 @@
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-	var _scriptsComponentsFieldField = __webpack_require__(5);
+	var _componentsFieldField = __webpack_require__(5);
 
-	var _scriptsComponentsFieldField2 = _interopRequireDefault(_scriptsComponentsFieldField);
+	var _componentsFieldField2 = _interopRequireDefault(_componentsFieldField);
 
-	var _scriptsComponentsWallWall = __webpack_require__(6);
+	var _componentsWallWall = __webpack_require__(12);
 
-	var _scriptsComponentsWallWall2 = _interopRequireDefault(_scriptsComponentsWallWall);
+	var _componentsWallWall2 = _interopRequireDefault(_componentsWallWall);
+
+	__webpack_require__(6);
+	__webpack_require__(15);
 
 	exports['default'] = function () {
 	    return React.createElement(
 	        'div',
 	        { className: 'scene obj' },
-	        React.createElement(_scriptsComponentsFieldField2['default'], null),
-	        React.createElement(_scriptsComponentsWallWall2['default'], { wallId: 0 }),
-	        React.createElement(_scriptsComponentsWallWall2['default'], { wallId: 1 }),
-	        React.createElement(_scriptsComponentsWallWall2['default'], { wallId: 2 }),
-	        React.createElement(_scriptsComponentsWallWall2['default'], { wallId: 3 })
+	        React.createElement(_componentsFieldField2['default'], null),
+	        React.createElement(_componentsWallWall2['default'], { wallId: 0 }),
+	        React.createElement(_componentsWallWall2['default'], { wallId: 1 }),
+	        React.createElement(_componentsWallWall2['default'], { wallId: 2 }),
+	        React.createElement(_componentsWallWall2['default'], { wallId: 3 })
 	    );
 	};
 
@@ -146,32 +155,86 @@
 
 /***/ },
 /* 5 */
-/***/ function(module, exports) {
+/***/ function(module, exports, __webpack_require__) {
 
-	"use strict";
+	'use strict';
 
 	exports.__esModule = true;
+	__webpack_require__(6);
+	__webpack_require__(10);
 
-	exports["default"] = function () {
-	    return React.createElement("div", { className: "field obj" });
+	exports['default'] = function () {
+	    return React.createElement('div', { className: 'field obj' });
 	};
 
-	module.exports = exports["default"];
+	module.exports = exports['default'];
 
 /***/ },
 /* 6 */
 /***/ function(module, exports) {
 
-	"use strict";
+	// removed by extract-text-webpack-plugin
+
+/***/ },
+/* 7 */,
+/* 8 */,
+/* 9 */,
+/* 10 */
+/***/ function(module, exports) {
+
+	// removed by extract-text-webpack-plugin
+
+/***/ },
+/* 11 */,
+/* 12 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
 
 	exports.__esModule = true;
+	__webpack_require__(6);
+	__webpack_require__(13);
 
-	exports["default"] = function (_ref) {
+	exports['default'] = function (_ref) {
 	    var wallId = _ref.wallId;
-	    return React.createElement("div", { className: "wall obj", "data-id": wallId });
+	    return React.createElement('div', { className: 'wall obj', 'data-id': wallId });
 	};
 
-	module.exports = exports["default"];
+	module.exports = exports['default'];
+
+/***/ },
+/* 13 */
+/***/ function(module, exports) {
+
+	// removed by extract-text-webpack-plugin
+
+/***/ },
+/* 14 */,
+/* 15 */
+/***/ function(module, exports) {
+
+	// removed by extract-text-webpack-plugin
+
+/***/ },
+/* 16 */,
+/* 17 */
+/***/ function(module, exports) {
+
+	// removed by extract-text-webpack-plugin
+
+/***/ },
+/* 18 */,
+/* 19 */
+/***/ function(module, exports) {
+
+	// removed by extract-text-webpack-plugin
+
+/***/ },
+/* 20 */,
+/* 21 */
+/***/ function(module, exports) {
+
+	// removed by extract-text-webpack-plugin
 
 /***/ }
 /******/ ]);

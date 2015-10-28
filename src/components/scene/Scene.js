@@ -1,5 +1,8 @@
-import Field from 'scripts/components/Field/Field';
-import Wall from 'scripts/components/Wall/Wall';
+require('components/obj/obj.css');
+require('./scene.css');
+
+import Field from 'components/field/Field';
+import Wall from 'components/wall/Wall';
 
 export default () => (
     <div className="scene obj">

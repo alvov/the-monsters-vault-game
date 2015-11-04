@@ -1,7 +1,9 @@
-var ExtractTextPlugin = require("extract-text-webpack-plugin");
+var webpack = require('webpack');
+var ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 module.exports = {
     entry: {
+        vendor: ['react', 'react-dom'],
         bundle: './src/script'
     },
     output: {
@@ -10,7 +12,12 @@ module.exports = {
     },
     resolve: {
         root: __dirname + '/src',
+        modulesDirectories: ['node_modules'],
         extensions: ['', '.js', '.css']
+    },
+    resolveLoader: {
+        modulesDirectories: ['node_modules'],
+        extensions: ['', '.js']
     },
     module: {
         loaders: [
@@ -25,13 +32,13 @@ module.exports = {
         ]
     },
     cssnext: {
-        browsers: 'last 2 versions'
-    },
-    externals: {
-        react: 'React',
-        'react-dom': 'ReactDOM'
+        browsers: 'last 1 version'
     },
     plugins: [
+        new webpack.optimize.CommonsChunkPlugin({
+            name: 'vendor',
+            minChunks: Infinity
+        }),
         new ExtractTextPlugin('[name].css')
     ]
 };

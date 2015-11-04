@@ -1,7 +1,0 @@
-.camera {
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    transform: translate3d(0px, 0px, 600px) rotateX(0deg) rotateY(0deg) rotateZ(0deg);
-    transform-style: preserve-3d;
-}

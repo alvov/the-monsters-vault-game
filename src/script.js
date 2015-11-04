@@ -1,6 +1,15 @@
 require('./styles.css');
 
+import React from 'react';
 import ReactDOM from 'react-dom';
-import Viewport from 'components/viewport/Viewport';
+import Scene from 'components/scene/Scene';
+
+var Camera = () => (
+    <div className="camera"><Scene/></div>
+);
+
+var Viewport = () => (
+    <div className="viewport"><Camera/></div>
+);
 
 ReactDOM.render(<Viewport/>, document.body);

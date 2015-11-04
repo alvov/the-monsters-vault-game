@@ -1,5 +1,3 @@
 {
-  "loose": true,
-  "nonStandard": true,
-  "optional": ["es7.comprehensions"]
+  "presets": ["es2015", "react"]
 }

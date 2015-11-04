@@ -1,240 +1,150 @@
-/******/ (function(modules) { // webpackBootstrap
-/******/ 	// The module cache
-/******/ 	var installedModules = {};
+webpackJsonp([0],{
 
-/******/ 	// The require function
-/******/ 	function __webpack_require__(moduleId) {
-
-/******/ 		// Check if module is in cache
-/******/ 		if(installedModules[moduleId])
-/******/ 			return installedModules[moduleId].exports;
-
-/******/ 		// Create a new module (and put it into the cache)
-/******/ 		var module = installedModules[moduleId] = {
-/******/ 			exports: {},
-/******/ 			id: moduleId,
-/******/ 			loaded: false
-/******/ 		};
-
-/******/ 		// Execute the module function
-/******/ 		modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
-
-/******/ 		// Flag the module as loaded
-/******/ 		module.loaded = true;
-
-/******/ 		// Return the exports of the module
-/******/ 		return module.exports;
-/******/ 	}
-
-
-/******/ 	// expose the modules object (__webpack_modules__)
-/******/ 	__webpack_require__.m = modules;
-
-/******/ 	// expose the module cache
-/******/ 	__webpack_require__.c = installedModules;
-
-/******/ 	// __webpack_public_path__
-/******/ 	__webpack_require__.p = "";
-
-/******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(0);
-/******/ })
-/************************************************************************/
-/******/ ([
-/* 0 */
+/***/ 0:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+	var _react = __webpack_require__(1);
 
-	var _reactDom = __webpack_require__(1);
+	var _react2 = _interopRequireDefault(_react);
+
+	var _reactDom = __webpack_require__(158);
 
 	var _reactDom2 = _interopRequireDefault(_reactDom);
 
-	var _componentsViewportViewport = __webpack_require__(2);
+	var _Scene = __webpack_require__(159);
 
-	var _componentsViewportViewport2 = _interopRequireDefault(_componentsViewportViewport);
+	var _Scene2 = _interopRequireDefault(_Scene);
 
-	__webpack_require__(21);
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	_reactDom2['default'].render(React.createElement(_componentsViewportViewport2['default'], null), document.body);
+	__webpack_require__(172);
 
-/***/ },
-/* 1 */
-/***/ function(module, exports) {
-
-	module.exports = ReactDOM;
-
-/***/ },
-/* 2 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	exports.__esModule = true;
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
-	var _componentsCameraCamera = __webpack_require__(3);
-
-	var _componentsCameraCamera2 = _interopRequireDefault(_componentsCameraCamera);
-
-	__webpack_require__(19);
-
-	exports['default'] = function () {
-	    return React.createElement(
-	        'div',
-	        { className: 'viewport' },
-	        React.createElement(_componentsCameraCamera2['default'], null)
-	    );
-	};
-
-	module.exports = exports['default'];
-
-/***/ },
-/* 3 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	exports.__esModule = true;
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
-	var _componentsSceneScene = __webpack_require__(4);
-
-	var _componentsSceneScene2 = _interopRequireDefault(_componentsSceneScene);
-
-	__webpack_require__(17);
-
-	exports['default'] = function () {
-	    return React.createElement(
+	var Camera = function Camera() {
+	    return _react2.default.createElement(
 	        'div',
 	        { className: 'camera' },
-	        React.createElement(_componentsSceneScene2['default'], null)
+	        _react2.default.createElement(_Scene2.default, null)
 	    );
 	};
 
-	module.exports = exports['default'];
+	var Viewport = function Viewport() {
+	    return _react2.default.createElement(
+	        'div',
+	        { className: 'viewport' },
+	        _react2.default.createElement(Camera, null)
+	    );
+	};
+
+	_reactDom2.default.render(_react2.default.createElement(Viewport, null), document.body);
 
 /***/ },
-/* 4 */
+
+/***/ 159:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	exports.__esModule = true;
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
 
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+	var _Field = __webpack_require__(160);
 
-	var _componentsFieldField = __webpack_require__(5);
+	var _Field2 = _interopRequireDefault(_Field);
 
-	var _componentsFieldField2 = _interopRequireDefault(_componentsFieldField);
+	var _Wall = __webpack_require__(167);
 
-	var _componentsWallWall = __webpack_require__(12);
+	var _Wall2 = _interopRequireDefault(_Wall);
 
-	var _componentsWallWall2 = _interopRequireDefault(_componentsWallWall);
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	__webpack_require__(6);
-	__webpack_require__(15);
+	__webpack_require__(161);
+	__webpack_require__(170);
 
-	exports['default'] = function () {
+	exports.default = function () {
 	    return React.createElement(
 	        'div',
 	        { className: 'scene obj' },
-	        React.createElement(_componentsFieldField2['default'], null),
-	        React.createElement(_componentsWallWall2['default'], { wallId: 0 }),
-	        React.createElement(_componentsWallWall2['default'], { wallId: 1 }),
-	        React.createElement(_componentsWallWall2['default'], { wallId: 2 }),
-	        React.createElement(_componentsWallWall2['default'], { wallId: 3 })
+	        React.createElement(_Field2.default, null),
+	        React.createElement(_Wall2.default, { wallId: 0 }),
+	        React.createElement(_Wall2.default, { wallId: 1 }),
+	        React.createElement(_Wall2.default, { wallId: 2 }),
+	        React.createElement(_Wall2.default, { wallId: 3 })
 	    );
 	};
 
-	module.exports = exports['default'];
-
 /***/ },
-/* 5 */
+
+/***/ 160:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	exports.__esModule = true;
-	__webpack_require__(6);
-	__webpack_require__(10);
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	__webpack_require__(161);
+	__webpack_require__(165);
 
-	exports['default'] = function () {
+	exports.default = function () {
 	    return React.createElement('div', { className: 'field obj' });
 	};
 
-	module.exports = exports['default'];
-
 /***/ },
-/* 6 */
+
+/***/ 161:
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin
 
 /***/ },
-/* 7 */,
-/* 8 */,
-/* 9 */,
-/* 10 */
+
+/***/ 165:
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin
 
 /***/ },
-/* 11 */,
-/* 12 */
+
+/***/ 167:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	exports.__esModule = true;
-	__webpack_require__(6);
-	__webpack_require__(13);
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	__webpack_require__(161);
+	__webpack_require__(168);
 
-	exports['default'] = function (_ref) {
+	exports.default = function (_ref) {
 	    var wallId = _ref.wallId;
 	    return React.createElement('div', { className: 'wall obj', 'data-id': wallId });
 	};
 
-	module.exports = exports['default'];
-
 /***/ },
-/* 13 */
+
+/***/ 168:
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin
 
 /***/ },
-/* 14 */,
-/* 15 */
+
+/***/ 170:
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin
 
 /***/ },
-/* 16 */,
-/* 17 */
-/***/ function(module, exports) {
 
-	// removed by extract-text-webpack-plugin
-
-/***/ },
-/* 18 */,
-/* 19 */
-/***/ function(module, exports) {
-
-	// removed by extract-text-webpack-plugin
-
-/***/ },
-/* 20 */,
-/* 21 */
+/***/ 172:
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin
 
 /***/ }
-/******/ ]);
+
+});

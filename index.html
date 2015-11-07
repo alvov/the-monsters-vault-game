@@ -2,123 +2,124 @@
 <html lang="en-US">
 <head>
     <meta charset="UTF-8">
-    <title>Game 3d</title>
+    <title>3d</title>
     <link rel="stylesheet" href="dist/bundle.css"/>
 </head>
 <body>
+    <div class="viewport"></div>
     <script type="text/javascript" src="dist/vendor.js"></script>
     <script type="text/javascript" src="dist/bundle.js"></script>
     <script type="text/javascript">
-        (function() {
-            var cameraNode = document.querySelector('.camera');
-            var sceneNode = document.querySelector('.scene');
-            var STEP = 10;
-            var G = -1.9;
-            var keyPressed = {};
-            var jump = false;
-            var speedY = 0;
-            document.addEventListener('keydown', function(e) {
-                if (e.keyCode === 32 && !jump) {
-                    jump = true;
-                    speedY = 30;
-                }
-                if (!jump) {
-                    keyPressed[e.keyCode] = true;
-                }
-            });
-            document.addEventListener('keyup', function(e) {
-                if (!jump) {
-                    delete keyPressed[e.keyCode];
-                }
-            });
-            var lastCursorPos = null;
-            var cursorDelta = null;
-            var angle = [0, 0];
-            var pos = [0, 0, 0];
-            document.addEventListener('mousemove', function(e) {
-                if (lastCursorPos) {
-                    cursorDelta = {
-                        x: lastCursorPos.x - e.clientX,
-                        y: lastCursorPos.y - e.clientY
-                    };
-                }
-                lastCursorPos = {
-                    x: e.clientX,
-                    y: e.clientY
-                };
-            });
-            loop();
-
-            function loop() {
-                if (cursorDelta) {
-                    angle = [
-                        angle[0] - cursorDelta.x, Math.min(Math.max(angle[1] + cursorDelta.y, -90), 90)
-                    ];
-                    angle[0] = angle[0] % 360;
-                    cameraNode.style.transform = 'translate3d(0px, 0px, 600px) rotateX(' + angle[1] + 'deg) rotateY(' + angle[0] + 'deg) rotateZ(0deg)';
-                    cursorDelta = null;
-                }
-                var angleShift = [];
-                var shift;
-                var shiftY = 0;
-                var step = STEP;
-                // c (crouch)
-                if (keyPressed[67]) {
-                    shiftY = -150;
-                // shift
-                } else if (keyPressed[16]) {
-                    step *= 2;
-                }
-                // forward
-                if (keyPressed[87]) {
-                    angleShift.push(0);
-                }
-                // backward
-                if (keyPressed[83]) {
-                    if (keyPressed[65]) {
-                        angleShift.push(-Math.PI);
-                    } else {
-                        angleShift.push(Math.PI);
-                    }
-                }
-                // left
-                if (keyPressed[65]) {
-                    angleShift.push(-Math.PI / 2);
-                }
-                // right
-                if (keyPressed[68]) {
-                    angleShift.push(Math.PI / 2);
-                }
-                if (jump) {
-                    pos[2] += speedY;
-                    speedY += G;
-                    if (pos[2] <= 0) {
-                        jump = false;
-                        pos[2] = 0;
-                        speedY = 0;
-                        keyPressed = {};
-                    }
-                }
-                if (angleShift.length) {
-                    angleShift = angleShift.reduce(function(prev, cur) {
-                        return prev + cur;
-                    }) / angleShift.length;
-
-                    angleShift += toRad(angle[0]);
-                    shift = [step * Math.sin(angleShift), step * Math.cos(angleShift)];
-
-                    pos[0] += shift[0];
-                    pos[1] += shift[1];
-                }
-                sceneNode.style.transform = 'translate3d(' + -pos[0] + 'px, ' + (pos[2] + shiftY) + 'px, ' + pos[1] + 'px)';
-
-                requestAnimationFrame(loop);
-            }
-
-            function toRad(deg) {
-                return deg * Math.PI / 180;
-            }
-        })();
+//        (function() {
+//            var cameraNode = document.querySelector('.camera');
+//            var sceneNode = document.querySelector('.scene');
+//            var STEP = 10;
+//            var G = -1.9;
+//            var keyPressed = {};
+//            var jump = false;
+//            var speedY = 0;
+//            document.addEventListener('keydown', function(e) {
+//                if (e.keyCode === 32 && !jump) {
+//                    jump = true;
+//                    speedY = 30;
+//                }
+//                if (!jump) {
+//                    keyPressed[e.keyCode] = true;
+//                }
+//            });
+//            document.addEventListener('keyup', function(e) {
+//                if (!jump) {
+//                    delete keyPressed[e.keyCode];
+//                }
+//            });
+//            var lastCursorPos = null;
+//            var cursorDelta = null;
+//            var angle = [0, 0];
+//            var pos = [0, 0, 0];
+//            document.addEventListener('mousemove', function(e) {
+//                if (lastCursorPos) {
+//                    cursorDelta = {
+//                        x: lastCursorPos.x - e.clientX,
+//                        y: lastCursorPos.y - e.clientY
+//                    };
+//                }
+//                lastCursorPos = {
+//                    x: e.clientX,
+//                    y: e.clientY
+//                };
+//            });
+//            loop();
+//
+//            function loop() {
+//                if (cursorDelta) {
+//                    angle = [
+//                        angle[0] - cursorDelta.x, Math.min(Math.max(angle[1] + cursorDelta.y, -90), 90)
+//                    ];
+//                    angle[0] = angle[0] % 360;
+//                    cameraNode.style.transform = 'translate3d(0px, 0px, 600px) rotateX(' + angle[1] + 'deg) rotateY(' + angle[0] + 'deg) rotateZ(0deg)';
+//                    cursorDelta = null;
+//                }
+//                var angleShift = [];
+//                var shift;
+//                var shiftY = 0;
+//                var step = STEP;
+//                // c (crouch)
+//                if (keyPressed[67]) {
+//                    shiftY = -150;
+//                // shift
+//                } else if (keyPressed[16]) {
+//                    step *= 2;
+//                }
+//                // forward
+//                if (keyPressed[87]) {
+//                    angleShift.push(0);
+//                }
+//                // backward
+//                if (keyPressed[83]) {
+//                    if (keyPressed[65]) {
+//                        angleShift.push(-Math.PI);
+//                    } else {
+//                        angleShift.push(Math.PI);
+//                    }
+//                }
+//                // left
+//                if (keyPressed[65]) {
+//                    angleShift.push(-Math.PI / 2);
+//                }
+//                // right
+//                if (keyPressed[68]) {
+//                    angleShift.push(Math.PI / 2);
+//                }
+//                if (jump) {
+//                    pos[2] += speedY;
+//                    speedY += G;
+//                    if (pos[2] <= 0) {
+//                        jump = false;
+//                        pos[2] = 0;
+//                        speedY = 0;
+//                        keyPressed = {};
+//                    }
+//                }
+//                if (angleShift.length) {
+//                    angleShift = angleShift.reduce(function(prev, cur) {
+//                        return prev + cur;
+//                    }) / angleShift.length;
+//
+//                    angleShift += toRad(angle[0]);
+//                    shift = [step * Math.sin(angleShift), step * Math.cos(angleShift)];
+//
+//                    pos[0] += shift[0];
+//                    pos[1] += shift[1];
+//                }
+//                sceneNode.style.transform = 'translate3d(' + -pos[0] + 'px, ' + (pos[2] + shiftY) + 'px, ' + pos[1] + 'px)';
+//
+//                requestAnimationFrame(loop);
+//            }
+//
+//            function toRad(deg) {
+//                return deg * Math.PI / 180;
+//            }
+//        })();
     </script>
 </body>
 </html>

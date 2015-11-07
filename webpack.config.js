@@ -3,8 +3,8 @@ var ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 module.exports = {
     entry: {
-        vendor: ['react', 'react-dom'],
-        bundle: './src/script'
+        bundle: './src/index',
+        vendor: ['react', 'react-dom', 'redux', 'react-redux']
     },
     output: {
         path: __dirname + '/dist',
@@ -22,12 +22,14 @@ module.exports = {
     module: {
         loaders: [
             {
-                test: /\.jsx?$/,
-                loader: 'babel-loader'
+                test: /\.js$/,
+                loader: 'babel-loader',
+                exclude: /node_modules/
             },
             {
                 test: /\.css$/,
-                loader: ExtractTextPlugin.extract('style-loader', 'css-loader!cssnext-loader')
+                loader: ExtractTextPlugin.extract('style-loader', 'css-loader!cssnext-loader'),
+                exclude: /node_modules/
             }
         ]
     },

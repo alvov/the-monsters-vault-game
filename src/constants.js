@@ -1,3 +1,4 @@
+export const FPS = 60;
 export const G = 1.9;
 export const KEY_SPACE = 32;
 export const KEY_SHIFT = 16;

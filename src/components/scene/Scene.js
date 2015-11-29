@@ -3,19 +3,24 @@ require('./scene.css');
 
 import React, { PropTypes } from 'react';
 import Field from 'components/field/Field';
+import Plain from 'components/obj/Plain';
 import Wall from 'components/wall/Wall';
 import utils from 'lib/utils';
 
-var Scene = ({ pos }) => {
+var Scene = ({ pos, objects }) => {
     var transformRule = utils.getTransformRule({
-        pos: [-pos[0], pos[2], pos[1]]
+        pos: [pos[0], pos[1], pos[2]]
+    });
+    var renderedObjects = objects.map((object, i) => {
+        switch(object.type) {
+            case 'plain':
+                return <Plain key={i} pos={object.pos} size={object.size} angle={object.angle} background={object.background}/>;
+            default:
+                return '';
+        }
     });
     return <div className="scene obj" style={transformRule}>
-        <Field/>
-        <Wall wallId={0}/>
-        <Wall wallId={1}/>
-        <Wall wallId={2}/>
-        <Wall wallId={3}/>
+        {renderedObjects}
     </div>;
 };
 Scene.propTypes = {

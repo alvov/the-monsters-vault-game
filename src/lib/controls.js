@@ -14,16 +14,16 @@ export default class Controls {
             this.keyPressed.delete(e.keyCode);
         });
 
-        document.addEventListener('mousemove', e => {
-            if (lastCursorPos) {
-                this.pointerDelta.x += lastCursorPos.x - e.clientX;
-                this.pointerDelta.y += lastCursorPos.y - e.clientY;
-            }
-            lastCursorPos = {
-                x: e.clientX,
-                y: e.clientY
-            };
-        });
+        //document.addEventListener('mousemove', e => {
+        //    if (lastCursorPos) {
+        //        this.pointerDelta.x += lastCursorPos.x - e.clientX;
+        //        this.pointerDelta.y += lastCursorPos.y - e.clientY;
+        //    }
+        //    lastCursorPos = {
+        //        x: e.clientX,
+        //        y: e.clientY
+        //    };
+        //});
     }
 
     getStack() {

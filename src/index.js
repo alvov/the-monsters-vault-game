@@ -1,6 +1,6 @@
 require('./index.css');
 
-import { G, KEY_C, KEY_W, KEY_S, KEY_A, KEY_D, STEP } from 'constants';
+import { FPS, G, KEY_C, KEY_W, KEY_S, KEY_A, KEY_D, STEP } from 'constants';
 import Controls from 'lib/Controls';
 import Loop from 'lib/Loop';
 import utils from 'lib/utils';
@@ -15,7 +15,7 @@ var store = createStore(viewportApp);
 
 var controls = new Controls();
 
-new Loop(() => {
+new Loop((frameRateCoefficient) => {
     store.dispatch({
         type: 'updateViewAngle',
         pointerDelta: controls.getPointerDelta()
@@ -43,11 +43,12 @@ new Loop(() => {
 
         angleShift += utils.toRad(store.getState().viewAngle[0]);
 
+        let step = frameRateCoefficient * STEP;
         store.dispatch({
             type: 'updatePos',
-            shift: [STEP * Math.sin(angleShift), STEP * Math.cos(angleShift), 0]
+            shift: [-step * Math.sin(angleShift), 0, step * Math.cos(angleShift)]
         });
     }
-}, true);
+}, FPS, true);
 
 render(<Provider store={store}><Camera/></Provider>, document.querySelector('.viewport'));

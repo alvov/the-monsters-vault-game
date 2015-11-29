@@ -3,12 +3,12 @@ import { connect } from 'react-redux';
 import Scene from 'components/scene/Scene';
 import utils from 'lib/utils';
 
-var Camera = ({ pos, viewAngle }) => {
+var Camera = ({ pos, viewAngle, objects }) => {
     var transformRule = utils.getTransformRule({
         pos: [0, 0, 600],
         angle: [viewAngle[1], viewAngle[0], viewAngle[2]]
     });
-    return <div className="camera" style={transformRule}><Scene pos={pos}/></div>;
+    return <div className="camera" style={transformRule}><Scene pos={pos} objects={objects}/></div>;
 };
 Camera.propTypes = {
     viewAngle: PropTypes.arrayOf(PropTypes.number)
@@ -17,7 +17,8 @@ Camera.propTypes = {
 function select(state) {
     return {
         pos: state.pos,
-        viewAngle: state.viewAngle
+        viewAngle: state.viewAngle,
+        objects: state.objects
     }
 }
 

@@ -1,11 +1,7 @@
 import { combineReducers } from 'redux';
+import level from 'level/level';
 
-var initialState = {
-    pos: [0, 0, 0],
-    viewAngle: [0, 0, 0]
-};
-
-function viewAngle(state = initialState.viewAngle, action) {
+function viewAngle(state = level.player[1], action) {
     switch(action.type) {
         case 'updateViewAngle':
             let viewAngle = [
@@ -20,10 +16,23 @@ function viewAngle(state = initialState.viewAngle, action) {
     }
 }
 
-function position(state = initialState.pos, action) {
+function position(state = level.player[0], action) {
     switch(action.type) {
         case 'updatePos':
-            return state.map((axisPos, i) => axisPos + action.shift[i]);
+            return state.map((axisPos, i) => {
+                var newAxisPos = axisPos + action.shift[i];
+                if (level.boundaries[i]) {
+                    newAxisPos = Math.min(Math.max(newAxisPos, level.boundaries[i][0]), level.boundaries[i][1]);
+                }
+                return newAxisPos;
+            });
+        default:
+            return state;
+    }
+}
+
+function objects(state = level.objects, action) {
+    switch(action.type) {
         default:
             return state;
     }
@@ -31,5 +40,6 @@ function position(state = initialState.pos, action) {
 
 export default combineReducers({
     viewAngle,
-    pos: position
+    pos: position,
+    objects
 });

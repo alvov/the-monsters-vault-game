@@ -33,13 +33,13 @@ webpackJsonp([0],{
 
 	var _Camera2 = _interopRequireDefault(_Camera);
 
-	var _reducers = __webpack_require__(196);
+	var _reducers = __webpack_require__(194);
 
 	var _reducers2 = _interopRequireDefault(_reducers);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	__webpack_require__(198);
+	__webpack_require__(196);
 
 	var store = (0, _redux.createStore)(_reducers2.default);
 
@@ -264,6 +264,13 @@ webpackJsonp([0],{
 	            }).join('');
 	        }
 	        return { transform: transform };
+	    },
+	    vectorsAdd: function vectorsAdd(v1, v2) {
+	        var result = [];
+	        for (var axis = 0; axis < v1.length; axis++) {
+	            result.push(v1[axis] + v2[axis]);
+	        }
+	        return result;
 	    }
 	};
 
@@ -350,6 +357,10 @@ webpackJsonp([0],{
 
 	var _Wall2 = _interopRequireDefault(_Wall);
 
+	var _Tree = __webpack_require__(198);
+
+	var _Tree2 = _interopRequireDefault(_Tree);
+
 	var _utils = __webpack_require__(4);
 
 	var _utils2 = _interopRequireDefault(_utils);
@@ -357,7 +368,7 @@ webpackJsonp([0],{
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	__webpack_require__(184);
-	__webpack_require__(194);
+	__webpack_require__(192);
 
 	var Scene = function Scene(_ref) {
 	    var pos = _ref.pos;
@@ -370,6 +381,10 @@ webpackJsonp([0],{
 	        switch (object.type) {
 	            case 'plain':
 	                return _react2.default.createElement(_Plain2.default, { key: i, pos: object.pos, size: object.size, angle: object.angle, background: object.background });
+	            case 'wall':
+	                return _react2.default.createElement(_Wall2.default, { key: i, pos: object.pos, size: object.size, angle: object.angle });
+	            case 'tree':
+	                return _react2.default.createElement(_Tree2.default, { key: i, pos: object.pos, size: object.size, angle: object.angle });
 	            default:
 	                return '';
 	        }
@@ -469,11 +484,11 @@ webpackJsonp([0],{
 	    var sizeRule = {
 	        width: size[0],
 	        height: size[1],
-	        margin: '-' + size[0] / 2 + 'px 0 0 -' + size[1] / 2 + 'px'
+	        margin: '-' + size[1] / 2 + 'px 0 0 -' + size[0] / 2 + 'px'
 	    };
 	    var bgRule = { background: background };
 	    var style = _extends({}, transformRule, sizeRule, bgRule);
-	    return _react2.default.createElement('div', { className: 'plain obj', style: style });
+	    return _react2.default.createElement('div', { className: 'obj', style: style });
 	};
 
 /***/ },
@@ -491,14 +506,36 @@ webpackJsonp([0],{
 
 	var _react2 = _interopRequireDefault(_react);
 
+	var _utils = __webpack_require__(4);
+
+	var _utils2 = _interopRequireDefault(_utils);
+
+	var _Plain = __webpack_require__(190);
+
+	var _Plain2 = _interopRequireDefault(_Plain);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	__webpack_require__(184);
-	__webpack_require__(192);
 
 	exports.default = function (_ref) {
-	    var wallId = _ref.wallId;
-	    return _react2.default.createElement('div', { className: 'wall obj', 'data-id': wallId });
+	    var pos = _ref.pos;
+	    var size = _ref.size;
+	    var angle = _ref.angle;
+
+	    var bg = '#b2adb2';
+	    var transformRule = _utils2.default.getTransformRule({ pos: pos, angle: angle });
+	    // F-B-L-R-T-B
+	    return _react2.default.createElement(
+	        'div',
+	        { className: 'obj', style: transformRule },
+	        _react2.default.createElement(_Plain2.default, { pos: [0, -size[1] / 2, size[2] / 2], size: size.slice(0, 2), angle: [0, 0, 0], background: bg }),
+	        _react2.default.createElement(_Plain2.default, { pos: [0, -size[1] / 2, -size[2] / 2], size: size.slice(0, 2), angle: [0, 0, 0], background: bg }),
+	        _react2.default.createElement(_Plain2.default, { pos: [-size[0] / 2, -size[1] / 2, 0], size: [size[2], size[1]], angle: [0, 90, 0], background: bg }),
+	        _react2.default.createElement(_Plain2.default, { pos: [size[0] / 2, -size[1] / 2, 0], size: [size[2], size[1]], angle: [0, -90, 0], background: bg }),
+	        _react2.default.createElement(_Plain2.default, { pos: [0, -size[1], 0], size: [size[0], size[2]], angle: [90, 0, 0], background: bg }),
+	        _react2.default.createElement(_Plain2.default, { pos: [0, 0, 0], size: [size[0], size[2]], angle: [-90, 0, 0], background: bg })
+	    );
 	};
 
 /***/ },
@@ -511,13 +548,6 @@ webpackJsonp([0],{
 /***/ },
 
 /***/ 194:
-/***/ function(module, exports) {
-
-	// removed by extract-text-webpack-plugin
-
-/***/ },
-
-/***/ 196:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -528,7 +558,7 @@ webpackJsonp([0],{
 
 	var _redux = __webpack_require__(163);
 
-	var _level = __webpack_require__(197);
+	var _level = __webpack_require__(195);
 
 	var _level2 = _interopRequireDefault(_level);
 
@@ -584,7 +614,7 @@ webpackJsonp([0],{
 
 /***/ },
 
-/***/ 197:
+/***/ 195:
 /***/ function(module, exports) {
 
 	'use strict';
@@ -597,19 +627,76 @@ webpackJsonp([0],{
 	    player: [[0, 350, 0], [0, 0, 0]],
 	    objects: [{
 	        type: 'plain',
-	        pos: [-2500, 0, -2500],
 	        size: [5000, 5000],
+	        pos: [-2500, 0, -2500],
 	        angle: [90, 0, 0],
 	        background: '#cfa'
+	    }, {
+	        type: 'wall',
+	        size: [700, 700, 100],
+	        pos: [-2500, 0, -2500],
+	        angle: [0, 0, 0]
+	    }, {
+	        type: 'tree',
+	        size: [100, 400],
+	        pos: [-1200, 0, -2500],
+	        angle: [0, 0, 0]
 	    }]
 	};
 
 /***/ },
 
-/***/ 198:
+/***/ 196:
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin
+
+/***/ },
+
+/***/ 198:
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	var _react = __webpack_require__(5);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _utils = __webpack_require__(4);
+
+	var _utils2 = _interopRequireDefault(_utils);
+
+	var _Plain = __webpack_require__(190);
+
+	var _Plain2 = _interopRequireDefault(_Plain);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	__webpack_require__(184);
+
+	exports.default = function (_ref) {
+	    var pos = _ref.pos;
+	    var size = _ref.size;
+	    var angle = _ref.angle;
+
+	    var stemBg = '#816b5e';
+	    var crownBg = '#428b41';
+	    var crownSize = size[1] * 2;
+	    var transformRule = _utils2.default.getTransformRule({ pos: pos, angle: angle });
+	    return _react2.default.createElement(
+	        'div',
+	        { className: 'obj', style: transformRule },
+	        _react2.default.createElement(_Plain2.default, { pos: [0, -size[1] / 2, 0], size: size, angle: [0, 0, 0], background: stemBg }),
+	        _react2.default.createElement(_Plain2.default, { pos: [0, -size[1] / 2, 0], size: size, angle: [0, -90, 0], background: stemBg }),
+	        _react2.default.createElement(_Plain2.default, { pos: [0, -size[1] - crownSize / 2, 0], size: [crownSize, crownSize], angle: [0, 10, 0], background: crownBg }),
+	        _react2.default.createElement(_Plain2.default, { pos: [0, -size[1] - crownSize / 2, 0], size: [crownSize, crownSize], angle: [0, -40, 0], background: crownBg }),
+	        _react2.default.createElement(_Plain2.default, { pos: [0, -size[1] - crownSize / 2, 0], size: [crownSize, crownSize], angle: [0, 100, 0], background: crownBg })
+	    );
+	};
 
 /***/ }
 

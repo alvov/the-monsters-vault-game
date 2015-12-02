@@ -6,7 +6,7 @@ export default {
     },
 
     getTransformRule(params) {
-        var transform = '';
+        let transform = '';
         if (params.pos) {
             transform += `translate3d(${params.pos.map(coord => coord + 'px').join()})`;
         }
@@ -14,5 +14,13 @@ export default {
             transform += params.angle.map((angle, i) => ` rotate${AXIS[i]}(${angle}deg)`).join('');
         }
         return { transform };
+    },
+
+    vectorsAdd(v1, v2) {
+        const result = [];
+        for (let axis = 0; axis < v1.length; axis++) {
+            result.push(v1[axis] + v2[axis]);
+        }
+        return result;
     }
 };

@@ -8,10 +8,12 @@ export default {
     getTransformRule(params) {
         let transform = '';
         if (params.pos) {
-            transform += `translate3d(${params.pos.map(coord => coord + 'px').join()})`;
+            transform += `translate3d(${params.pos[0]}px,${params.pos[1]}px,${params.pos[2]}px)`;
         }
         if (params.angle) {
-            transform += params.angle.map((angle, i) => ` rotate${AXIS[i]}(${angle}deg)`).join('');
+            for (let axis = 0; axis < params.angle.length; axis++) {
+                transform += ` rotate${AXIS[axis]}(${params.angle[axis]}deg)`;
+            }
         }
         return { transform };
     },

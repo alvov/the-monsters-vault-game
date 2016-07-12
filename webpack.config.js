@@ -1,18 +1,19 @@
+var path = require('path');
 var webpack = require('webpack');
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 module.exports = {
+    context: path.join(__dirname, 'src'),
     entry: {
-        bundle: './src/index',
+        bundle: 'index.js',
         vendor: ['react', 'react-dom', 'redux', 'react-redux']
     },
     output: {
-        path: __dirname + '/dist',
+        path: path.join(__dirname, 'dist'),
         filename: '[name].js'
     },
     resolve: {
-        root: __dirname + '/src',
-        modulesDirectories: ['node_modules'],
+        modules: [__dirname + '/src', 'node_modules'],
         extensions: ['', '.js', '.css']
     },
     resolveLoader: {
@@ -28,7 +29,7 @@ module.exports = {
             },
             {
                 test: /\.css$/,
-                loader: ExtractTextPlugin.extract('style-loader', 'css-loader!cssnext-loader'),
+                loader: ExtractTextPlugin.extract('style-loader', 'css-loader'),
                 exclude: /node_modules/
             }
         ]

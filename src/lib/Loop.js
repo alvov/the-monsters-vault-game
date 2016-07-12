@@ -1,5 +1,5 @@
 export default class Loop {
-    constructor(fn, fps = 60, startImmediately = false) {
+    constructor(fn = () => {}, fps = 60, startImmediately = false) {
         this.fn = fn;
         this.fps = fps;
         this.oldTimestamp = null;
@@ -11,7 +11,7 @@ export default class Loop {
 
     start(timestamp) {
         this.rafId = window.requestAnimationFrame(this.start.bind(this));
-        var frameRateCoefficient = 1;
+        let frameRateCoefficient = 1;
         if (timestamp) {
             if (this.oldTimestamp) {
                 frameRateCoefficient = (timestamp - this.oldTimestamp) * this.fps / 1000;

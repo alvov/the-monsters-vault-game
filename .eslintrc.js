@@ -1,24 +1,16 @@
 module.exports = {
-    ecmaFeatures: {
-        arrowFunctions: true,
-        blockBindings: true,
-        classes: true,
-        defaultParams: true,
-        destructuring: true,
-        forOf: true,
-        modules: true,
-        objectLiteralComputedProperties: true,
-        objectLiteralShorthandMethods: true,
-        objectLiteralShorthandProperties: true,
-        restParams: true,
-        spread: true,
-        superInFunctions: true,
-        templateStrings: true,
-        jsx: true,
-        experimentalObjectRestSpread: true
+    parserOptions: {
+        sourceType: 'module',
+        ecmaVersion: 6,
+        ecmaFeatures: {
+            jsx: true,
+            experimentalObjectRestSpread: true
+        }
     },
     env: {
-        es6: true
+        browser: true,
+        es6: true,
+        node: true
     },
     rules: {
         'comma-dangle': [2, 'never'],

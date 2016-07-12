@@ -1,205 +1,11 @@
-webpackJsonp([0],{
+webpackJsonp([1],{
 
-/***/ 0:
+/***/ 100:
 /***/ function(module, exports, __webpack_require__) {
 
-	'use strict';
-
-	var _constants = __webpack_require__(1);
-
-	var _Controls = __webpack_require__(2);
-
-	var _Controls2 = _interopRequireDefault(_Controls);
-
-	var _Loop = __webpack_require__(3);
-
-	var _Loop2 = _interopRequireDefault(_Loop);
-
-	var _utils = __webpack_require__(4);
-
-	var _utils2 = _interopRequireDefault(_utils);
-
-	var _react = __webpack_require__(5);
-
-	var _react2 = _interopRequireDefault(_react);
-
-	var _reactDom = __webpack_require__(162);
-
-	var _redux = __webpack_require__(163);
-
-	var _reactRedux = __webpack_require__(172);
-
-	var _Camera = __webpack_require__(181);
-
-	var _Camera2 = _interopRequireDefault(_Camera);
-
-	var _reducers = __webpack_require__(194);
-
-	var _reducers2 = _interopRequireDefault(_reducers);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	__webpack_require__(196);
-
-	var store = (0, _redux.createStore)(_reducers2.default);
-
-	var controls = new _Controls2.default();
-
-	new _Loop2.default(function (frameRateCoefficient) {
-	    store.dispatch({
-	        type: 'updateViewAngle',
-	        pointerDelta: controls.getPointerDelta()
-	    });
-
-	    var angleShift = [];
-	    if (controls.keyPressed.has(_constants.KEY_W)) {
-	        angleShift.push(0);
-	    }
-	    if (controls.keyPressed.has(_constants.KEY_S)) {
-	        if (controls.keyPressed.has(_constants.KEY_A)) {
-	            angleShift.push(-Math.PI);
-	        } else {
-	            angleShift.push(Math.PI);
-	        }
-	    }
-	    if (controls.keyPressed.has(_constants.KEY_A)) {
-	        angleShift.push(-Math.PI / 2);
-	    }
-	    if (controls.keyPressed.has(_constants.KEY_D)) {
-	        angleShift.push(Math.PI / 2);
-	    }
-	    if (angleShift.length) {
-	        angleShift = angleShift.reduce(function (prev, cur) {
-	            return prev + cur;
-	        }) / angleShift.length;
-
-	        angleShift += _utils2.default.toRad(store.getState().viewAngle[0]);
-
-	        var step = frameRateCoefficient * _constants.STEP;
-	        store.dispatch({
-	            type: 'updatePos',
-	            shift: [-step * Math.sin(angleShift), 0, step * Math.cos(angleShift)]
-	        });
-	    }
-	}, _constants.FPS, true);
-
-	(0, _reactDom.render)(_react2.default.createElement(
-	    _reactRedux.Provider,
-	    { store: store },
-	    _react2.default.createElement(_Camera2.default, null)
-	), document.querySelector('.viewport'));
-
-/***/ },
-
-/***/ 1:
-/***/ function(module, exports) {
-
 	"use strict";
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	var FPS = exports.FPS = 60;
-	var G = exports.G = 1.9;
-	var KEY_SPACE = exports.KEY_SPACE = 32;
-	var KEY_SHIFT = exports.KEY_SHIFT = 16;
-	var KEY_C = exports.KEY_C = 67;
-	var KEY_W = exports.KEY_W = 87;
-	var KEY_S = exports.KEY_S = 83;
-	var KEY_A = exports.KEY_A = 65;
-	var KEY_D = exports.KEY_D = 68;
-	var STEP = exports.STEP = 10;
-
-/***/ },
-
-/***/ 2:
-/***/ function(module, exports) {
-
-	'use strict';
-
-	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
-
-	Object.defineProperty(exports, "__esModule", {
-	    value: true
-	});
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-	var Controls = (function () {
-	    function Controls() {
-	        var _this = this;
-
-	        _classCallCheck(this, Controls);
-
-	        this.keyPressed = new Set();
-	        this.stack = new Set();
-	        var lastCursorPos = null;
-	        this.pointerDelta = { x: 0, y: 0 };
-
-	        document.addEventListener('keydown', function (e) {
-	            _this.keyPressed.add(e.keyCode);
-	            _this.stack.add(e.keyCode);
-	        });
-
-	        document.addEventListener('keyup', function (e) {
-	            _this.keyPressed.delete(e.keyCode);
-	        });
-
-	        //document.addEventListener('mousemove', e => {
-	        //    if (lastCursorPos) {
-	        //        this.pointerDelta.x += lastCursorPos.x - e.clientX;
-	        //        this.pointerDelta.y += lastCursorPos.y - e.clientY;
-	        //    }
-	        //    lastCursorPos = {
-	        //        x: e.clientX,
-	        //        y: e.clientY
-	        //    };
-	        //});
-	    }
-
-	    _createClass(Controls, [{
-	        key: 'getStack',
-	        value: function getStack() {
-	            var result = this.stack.values();
-	            this.stack.clear();
-	            return result;
-	        }
-	    }, {
-	        key: 'getPointerDelta',
-	        value: function getPointerDelta() {
-	            var pointerDelta = Object.assign({}, this.pointerDelta);
-	            this.pointerDelta = { x: 0, y: 0 };
-	            return pointerDelta;
-	        }
-	    }]);
-
-	    return Controls;
-	})();
-
-	exports.default = Controls;
-
-/***/ },
-
-/***/ 3:
-/***/ function(module, exports) {
-
-	"use strict";
-
-	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
-
-	Object.defineProperty(exports, "__esModule", {
-	    value: true
-	});
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-	var Loop = (function () {
-	    function Loop(fn) {
-	        var fps = arguments.length <= 1 || arguments[1] === undefined ? 60 : arguments[1];
-	        var startImmediately = arguments.length <= 2 || arguments[2] === undefined ? false : arguments[2];
-
-	        _classCallCheck(this, Loop);
-
+	class Loop {
+	    constructor(fn = () => {}, fps = 60, startImmediately = false) {
 	        this.fn = fn;
 	        this.fps = fps;
 	        this.oldTimestamp = null;
@@ -209,65 +15,599 @@ webpackJsonp([0],{
 	        }
 	    }
 
-	    _createClass(Loop, [{
-	        key: "start",
-	        value: function start(timestamp) {
-	            this.rafId = window.requestAnimationFrame(this.start.bind(this));
-	            var frameRateCoefficient = 1;
-	            if (timestamp) {
-	                if (this.oldTimestamp) {
-	                    frameRateCoefficient = (timestamp - this.oldTimestamp) * this.fps / 1000;
-	                }
-	                this.oldTimestamp = timestamp;
+	    start(timestamp) {
+	        this.rafId = window.requestAnimationFrame(this.start.bind(this));
+	        let frameRateCoefficient = 1;
+	        if (timestamp) {
+	            if (this.oldTimestamp) {
+	                frameRateCoefficient = (timestamp - this.oldTimestamp) * this.fps / 1000;
 	            }
-	            this.fn(frameRateCoefficient);
+	            this.oldTimestamp = timestamp;
 	        }
-	    }, {
-	        key: "stop",
-	        value: function stop() {
-	            window.cancelAnimationFrame(this.rafId);
-	            this.rafId = null;
-	        }
-	    }]);
+	        this.fn(frameRateCoefficient);
+	    }
 
-	    return Loop;
-	})();
-
-	exports.default = Loop;
+	    stop() {
+	        window.cancelAnimationFrame(this.rafId);
+	        this.rafId = null;
+	    }
+	}/* harmony export */ exports["a"] = Loop;
 
 /***/ },
 
-/***/ 4:
+/***/ 101:
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__constants__ = __webpack_require__(37);
+	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_redux__ = __webpack_require__(20);
+	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_redux___default = __WEBPACK_IMPORTED_MODULE_1_redux__ && __WEBPACK_IMPORTED_MODULE_1_redux__.__esModule ? function() { return __WEBPACK_IMPORTED_MODULE_1_redux__['default'] } : function() { return __WEBPACK_IMPORTED_MODULE_1_redux__; };
+	/* harmony import */ __webpack_require__.d(__WEBPACK_IMPORTED_MODULE_1_redux___default, 'a', __WEBPACK_IMPORTED_MODULE_1_redux___default);
+	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__level_level__ = __webpack_require__(108);
+
+
+
+
+	// fix lack of default parameters support in webpack 2
+	const level = __WEBPACK_IMPORTED_MODULE_2__level_level__["a" /* default */];
+
+	function viewAngle(state = level.player.angle, action) {
+	    switch (action.type) {
+	        case 'updateViewAngle':
+	            let viewAngle = [state[0] - action.pointerDelta.x * __WEBPACK_IMPORTED_MODULE_0__constants__["f" /* SENSITIVITY */], Math.min(Math.max(state[1] + action.pointerDelta.y * __WEBPACK_IMPORTED_MODULE_0__constants__["f" /* SENSITIVITY */], -90), 90), 0];
+	            viewAngle[0] %= 360;
+	            return viewAngle;
+	        default:
+	            return state;
+	    }
+	}
+
+	function position(state = level.player.pos, action) {
+	    switch (action.type) {
+	        case 'updatePos':
+	            let newPos = [];
+	            for (let i = 0; i < 3; i++) {
+	                let newAxisPos = state[i] + action.shift[i];
+	                if (level.boundaries[i]) {
+	                    newAxisPos = Math.min(Math.max(newAxisPos, 0), level.boundaries[i]);
+	                }
+	                newPos.push(newAxisPos);
+	            }
+	            const collision = level.getCollision([[state[0], state[2]], [newPos[0], newPos[2]]], level.objects);
+	            return [collision.newPos[0], newPos[1], collision.newPos[1]];
+	        default:
+	            return state;
+	    }
+	}
+
+	function objects(state = level.objects, action) {
+	    switch (action.type) {
+	        default:
+	            return state;
+	    }
+	}
+
+	/* harmony default export */ exports["a"] = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1_redux__["combineReducers"])({
+	    viewAngle,
+	    pos: position,
+	    objects
+	});
+
+/***/ },
+
+/***/ 102:
 /***/ function(module, exports) {
 
-	'use strict';
+	// removed by extract-text-webpack-plugin
 
-	Object.defineProperty(exports, "__esModule", {
-	    value: true
-	});
+/***/ },
+
+/***/ 103:
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(6);
+	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __WEBPACK_IMPORTED_MODULE_0_react__ && __WEBPACK_IMPORTED_MODULE_0_react__.__esModule ? function() { return __WEBPACK_IMPORTED_MODULE_0_react__['default'] } : function() { return __WEBPACK_IMPORTED_MODULE_0_react__; };
+	/* harmony import */ __webpack_require__.d(__WEBPACK_IMPORTED_MODULE_0_react___default, 'a', __WEBPACK_IMPORTED_MODULE_0_react___default);
+	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__plain_Plain__ = __webpack_require__(26);
+	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__wall_Wall__ = __webpack_require__(106);
+	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__tree_Larch__ = __webpack_require__(104);
+	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__tree_Spruce__ = __webpack_require__(105);
+	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__lib_utils__ = __webpack_require__(16);
+	__webpack_require__(21);
+	__webpack_require__(110);
+
+
+
+
+
+
+
+
+	var Scene = ({ pos, objects }) => {
+	    var transformRule = __WEBPACK_IMPORTED_MODULE_5__lib_utils__["a" /* default */].getTransformRule({
+	        pos: [-pos[0], pos[1], -pos[2]]
+	    });
+	    var renderedObjects = objects.map((object, i) => {
+	        switch (object.type) {
+	            case 'plain':
+	                return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1__plain_Plain__["a" /* default */], { key: i, pos: object.pos, size: [object.size[0], object.size[2]], angle: object.angle, background: object.background });
+	            case 'wall':
+	                return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2__wall_Wall__["a" /* default */], { key: i, pos: object.pos, size: object.size, angle: object.angle });
+	            case 'larch':
+	                return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3__tree_Larch__["a" /* default */], { key: i, pos: object.pos, size: object.size, angle: object.angle });
+	            case 'spruce':
+	                return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_4__tree_Spruce__["a" /* default */], { key: i, pos: object.pos, size: object.size, angle: object.angle });
+	            default:
+	                return '';
+	        }
+	    });
+	    return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+	        'div',
+	        { className: 'scene obj', style: transformRule },
+	        renderedObjects
+	    );
+	};
+	Scene.propTypes = {
+	    pos: __WEBPACK_IMPORTED_MODULE_0_react__["PropTypes"].arrayOf(__WEBPACK_IMPORTED_MODULE_0_react__["PropTypes"].number),
+	    viewAngle: __WEBPACK_IMPORTED_MODULE_0_react__["PropTypes"].arrayOf(__WEBPACK_IMPORTED_MODULE_0_react__["PropTypes"].number)
+	};
+
+	/* harmony default export */ exports["a"] = Scene;
+
+/***/ },
+
+/***/ 104:
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(6);
+	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __WEBPACK_IMPORTED_MODULE_0_react__ && __WEBPACK_IMPORTED_MODULE_0_react__.__esModule ? function() { return __WEBPACK_IMPORTED_MODULE_0_react__['default'] } : function() { return __WEBPACK_IMPORTED_MODULE_0_react__; };
+	/* harmony import */ __webpack_require__.d(__WEBPACK_IMPORTED_MODULE_0_react___default, 'a', __WEBPACK_IMPORTED_MODULE_0_react___default);
+	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__lib_utils__ = __webpack_require__(16);
+	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__plain_Plain__ = __webpack_require__(26);
+	__webpack_require__(21);
+
+
+
+
+
+	/* harmony default export */ exports["a"] = ({ pos, size, angle }) => {
+	    const stemBg = '#816b5e';
+	    const crownBg = 'rgba(66, 139, 65, 0.7)';
+	    const crownSize = size[1] * 2;
+	    const transformRule = __WEBPACK_IMPORTED_MODULE_1__lib_utils__["a" /* default */].getTransformRule({ pos, angle });
+	    return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+	        'div',
+	        { className: 'obj', style: transformRule },
+	        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2__plain_Plain__["a" /* default */], { pos: [0, -size[1] / 2, 0], size: size, angle: [0, 0, 0], background: stemBg }),
+	        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2__plain_Plain__["a" /* default */], { pos: [0, -size[1] / 2, 0], size: size, angle: [0, -90, 0], background: stemBg }),
+	        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2__plain_Plain__["a" /* default */], { pos: [0, -size[1] - crownSize / 2, 0], size: [crownSize, crownSize], angle: [0, 10, 0], background: crownBg }),
+	        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2__plain_Plain__["a" /* default */], { pos: [0, -size[1] - crownSize / 2, 0], size: [crownSize, crownSize], angle: [0, -40, 0], background: crownBg }),
+	        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2__plain_Plain__["a" /* default */], { pos: [0, -size[1] - crownSize / 2, 0], size: [crownSize, crownSize], angle: [0, 100, 0], background: crownBg })
+	    );
+	};
+
+/***/ },
+
+/***/ 105:
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(6);
+	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __WEBPACK_IMPORTED_MODULE_0_react__ && __WEBPACK_IMPORTED_MODULE_0_react__.__esModule ? function() { return __WEBPACK_IMPORTED_MODULE_0_react__['default'] } : function() { return __WEBPACK_IMPORTED_MODULE_0_react__; };
+	/* harmony import */ __webpack_require__.d(__WEBPACK_IMPORTED_MODULE_0_react___default, 'a', __WEBPACK_IMPORTED_MODULE_0_react___default);
+	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__lib_utils__ = __webpack_require__(16);
+	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__plain_Plain__ = __webpack_require__(26);
+	__webpack_require__(21);
+
+
+
+
+
+	/* harmony default export */ exports["a"] = ({ pos, size, angle }) => {
+	    const stemBg = '#816b5e';
+	    const crownBg = '#428b41';
+	    const crownSize = size[1] * 2;
+	    const transformRule = __WEBPACK_IMPORTED_MODULE_1__lib_utils__["a" /* default */].getTransformRule({ pos, angle });
+	    return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+	        'div',
+	        { className: 'obj', style: transformRule },
+	        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2__plain_Plain__["a" /* default */], { pos: [0, -size[1] / 2, 0], size: size, angle: [0, 0, 0], background: stemBg }),
+	        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2__plain_Plain__["a" /* default */], { pos: [0, -size[1] / 2, 0], size: size, angle: [0, -90, 0], background: stemBg })
+	    );
+	};
+
+/***/ },
+
+/***/ 106:
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(6);
+	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __WEBPACK_IMPORTED_MODULE_0_react__ && __WEBPACK_IMPORTED_MODULE_0_react__.__esModule ? function() { return __WEBPACK_IMPORTED_MODULE_0_react__['default'] } : function() { return __WEBPACK_IMPORTED_MODULE_0_react__; };
+	/* harmony import */ __webpack_require__.d(__WEBPACK_IMPORTED_MODULE_0_react___default, 'a', __WEBPACK_IMPORTED_MODULE_0_react___default);
+	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__lib_utils__ = __webpack_require__(16);
+	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__plain_Plain__ = __webpack_require__(26);
+	__webpack_require__(21);
+	__webpack_require__(111);
+
+
+
+
+
+	/* harmony default export */ exports["a"] = ({ pos, size, angle = [0, 0, 0] }) => {
+	    const transformRule = __WEBPACK_IMPORTED_MODULE_1__lib_utils__["a" /* default */].getTransformRule({ pos, angle });
+	    // Front-Back-Left-Right-Top-Bottom
+	    return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+	        'div',
+	        { className: 'obj wall', style: transformRule },
+	        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2__plain_Plain__["a" /* default */], { pos: [0, -size[1] / 2, size[2] / 2], size: size, angle: [0, 0, 0] }),
+	        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2__plain_Plain__["a" /* default */], { pos: [0, -size[1] / 2, -size[2] / 2], size: size, angle: [0, 0, 0] }),
+	        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2__plain_Plain__["a" /* default */], { pos: [-size[0] / 2, -size[1] / 2, 0], size: [size[2], size[1]], angle: [0, 90, 0] }),
+	        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2__plain_Plain__["a" /* default */], { pos: [size[0] / 2, -size[1] / 2, 0], size: [size[2], size[1]], angle: [0, -90, 0] }),
+	        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2__plain_Plain__["a" /* default */], { pos: [0, -size[1], 0], size: [size[0], size[2]], angle: [90, 0, 0] }),
+	        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2__plain_Plain__["a" /* default */], { pos: [0, 0, 0], size: [size[0], size[2]], angle: [-90, 0, 0] })
+	    );
+	};
+
+/***/ },
+
+/***/ 107:
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__constants__ = __webpack_require__(37);
+	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react__ = __webpack_require__(6);
+	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react___default = __WEBPACK_IMPORTED_MODULE_1_react__ && __WEBPACK_IMPORTED_MODULE_1_react__.__esModule ? function() { return __WEBPACK_IMPORTED_MODULE_1_react__['default'] } : function() { return __WEBPACK_IMPORTED_MODULE_1_react__; };
+	/* harmony import */ __webpack_require__.d(__WEBPACK_IMPORTED_MODULE_1_react___default, 'a', __WEBPACK_IMPORTED_MODULE_1_react___default);
+	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_react_dom__ = __webpack_require__(38);
+	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_react_dom___default = __WEBPACK_IMPORTED_MODULE_2_react_dom__ && __WEBPACK_IMPORTED_MODULE_2_react_dom__.__esModule ? function() { return __WEBPACK_IMPORTED_MODULE_2_react_dom__['default'] } : function() { return __WEBPACK_IMPORTED_MODULE_2_react_dom__; };
+	/* harmony import */ __webpack_require__.d(__WEBPACK_IMPORTED_MODULE_2_react_dom___default, 'a', __WEBPACK_IMPORTED_MODULE_2_react_dom___default);
+	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_redux__ = __webpack_require__(20);
+	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_redux___default = __WEBPACK_IMPORTED_MODULE_3_redux__ && __WEBPACK_IMPORTED_MODULE_3_redux__.__esModule ? function() { return __WEBPACK_IMPORTED_MODULE_3_redux__['default'] } : function() { return __WEBPACK_IMPORTED_MODULE_3_redux__; };
+	/* harmony import */ __webpack_require__.d(__WEBPACK_IMPORTED_MODULE_3_redux___default, 'a', __WEBPACK_IMPORTED_MODULE_3_redux___default);
+	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_react_redux__ = __webpack_require__(25);
+	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_react_redux___default = __WEBPACK_IMPORTED_MODULE_4_react_redux__ && __WEBPACK_IMPORTED_MODULE_4_react_redux__.__esModule ? function() { return __WEBPACK_IMPORTED_MODULE_4_react_redux__['default'] } : function() { return __WEBPACK_IMPORTED_MODULE_4_react_redux__; };
+	/* harmony import */ __webpack_require__.d(__WEBPACK_IMPORTED_MODULE_4_react_redux___default, 'a', __WEBPACK_IMPORTED_MODULE_4_react_redux___default);
+	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__lib_Controls__ = __webpack_require__(99);
+	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__lib_Loop__ = __webpack_require__(100);
+	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__lib_utils__ = __webpack_require__(16);
+	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__containers_Camera__ = __webpack_require__(98);
+	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__reducers__ = __webpack_require__(101);
+	__webpack_require__(102);
+
+
+
+
+
+
+
+
+
+
+
+
+	var store = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_3_redux__["createStore"])(__WEBPACK_IMPORTED_MODULE_9__reducers__["a" /* default */]);
+
+	var controls = new __WEBPACK_IMPORTED_MODULE_5__lib_Controls__["a" /* default */]();
+
+	new __WEBPACK_IMPORTED_MODULE_6__lib_Loop__["a" /* default */](frameRateCoefficient => {
+	    const pointerDelta = controls.getPointerDelta();
+	    if (pointerDelta.x || pointerDelta.y) {
+	        store.dispatch({
+	            type: 'updateViewAngle',
+	            pointerDelta
+	        });
+	    }
+
+	    let angleShift = [];
+	    if (controls.keyPressed[__WEBPACK_IMPORTED_MODULE_0__constants__["b" /* KEY_W */]]) {
+	        angleShift.push(Math.PI);
+	    }
+	    if (controls.keyPressed[__WEBPACK_IMPORTED_MODULE_0__constants__["c" /* KEY_S */]]) {
+	        angleShift.push(0);
+	    }
+	    if (controls.keyPressed[__WEBPACK_IMPORTED_MODULE_0__constants__["d" /* KEY_A */]]) {
+	        angleShift.push(Math.PI / 2);
+	    }
+	    if (controls.keyPressed[__WEBPACK_IMPORTED_MODULE_0__constants__["e" /* KEY_D */]]) {
+	        // hack for angles sum
+	        if (controls.keyPressed[__WEBPACK_IMPORTED_MODULE_0__constants__["b" /* KEY_W */]]) {
+	            angleShift.push(3 * Math.PI / 2);
+	        } else {
+	            angleShift.push(-Math.PI / 2);
+	        }
+	    }
+	    if (angleShift.length) {
+	        let reducedAngleShift = 0;
+	        for (let i = 0; i < angleShift.length; i++) {
+	            reducedAngleShift += angleShift[i];
+	        }
+	        reducedAngleShift /= angleShift.length;
+
+	        reducedAngleShift += __WEBPACK_IMPORTED_MODULE_7__lib_utils__["a" /* default */].toRad(store.getState().viewAngle[0]);
+
+	        let step = frameRateCoefficient * __WEBPACK_IMPORTED_MODULE_0__constants__["g" /* STEP */];
+	        store.dispatch({
+	            type: 'updatePos',
+	            shift: [-step * Math.sin(reducedAngleShift), 0, step * Math.cos(reducedAngleShift)]
+	        });
+	    }
+	}, __WEBPACK_IMPORTED_MODULE_0__constants__["h" /* FPS */], true);
+
+	__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2_react_dom__["render"])(__WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
+	    __WEBPACK_IMPORTED_MODULE_4_react_redux__["Provider"],
+	    { store: store },
+	    __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_8__containers_Camera__["a" /* default */], null)
+	), document.querySelector('.viewport'));
+
+/***/ },
+
+/***/ 108:
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__lib_collision_js__ = __webpack_require__(109);
+
+
+	const level = {
+	    boundaries: [5000, null, 5000],
+	    player: {
+	        pos: [0, 100, 0],
+	        angle: [135, 0, 0]
+	    },
+	    objects: [{
+	        name: 'floor',
+	        type: 'plain',
+	        size: [5000, 0, 5000],
+	        pos: [2500, 0, 2500],
+	        angle: [90, 0, 0],
+	        background: '#cfa',
+	        collides: false
+	    }, {
+	        name: 'test wall',
+	        type: 'wall',
+	        size: [700, 200, 50],
+	        pos: [1000, 0, 1000]
+	    }, {
+	        name: 'test tree',
+	        type: 'larch',
+	        size: [50, 100, 50],
+	        pos: [1500, 0, 1500]
+	    }]
+	};
+
+	// calculate 2d points coordinates for level objects
+	for (let i = 0; i < level.objects.length; i++) {
+	    const obj = level.objects[i];
+	    // enlarge object for 1px each side to prevent "looking through walls"
+	    const sizeX = obj.size[0] + 2;
+	    const sizeZ = obj.size[2] + 2;
+	    obj.coords2d = [[obj.pos[0] - sizeX / 2, obj.pos[2] - sizeZ / 2], [obj.pos[0] + sizeX / 2, obj.pos[2] - sizeZ / 2], [obj.pos[0] + sizeX / 2, obj.pos[2] + sizeZ / 2], [obj.pos[0] - sizeX / 2, obj.pos[2] + sizeZ / 2]];
+	}
+
+	/* harmony default export */ exports["a"] = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__lib_collision_js__["a" /* default */])(level, 500);
+
+/***/ },
+
+/***/ 109:
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	/* harmony export */ exports["a"] = collision;/**
+	 * Returns distance between two points in 2d space
+	 * @param {Array} point1 - coordinates of point 1
+	 * @param {Array} point2 - coordinates of point 2
+	 * @returns {number} - distance
+	 */
+	function getDistance(point1, point2) {
+	    return Math.sqrt(Math.pow(point1[0] - point2[0], 2) + Math.pow(point1[1] - point2[1], 2));
+	}
+
+	/**
+	 * Returns an object with info about collision
+	 * @param {Array} line2d - coordinates of initial and final player positions
+	 * @param {Array} objects - array of objects
+	 * @returns {{newPos: Array}} - object with info about collision
+	 */
+	function getCollision(line2d, objects) {
+	    let result = { newPos: line2d[1] };
+	    // if (line2d[1][0] > 975 || t) {
+	    //     debugger;
+	    // }
+	    // if moving line length is 0
+	    if (line2d[0][0] === line2d[1][0] && line2d[0][1] === line2d[1][1]) {
+	        return result;
+	    }
+	    const intersections = [];
+	    // search for collisions with all objects
+	    for (let k = 0; k < objects.length; k++) {
+	        const obj = objects[k];
+	        if (obj.collides === false) {
+	            continue;
+	        }
+	        const lineIntersections = [];
+	        for (let i = 0; i < 4; i++) {
+	            // break, if we've already found maximum number of possible intersections
+	            if (lineIntersections.length === 2) {
+	                break;
+	            }
+	            const obstacleLine = [obj.coords2d[i], obj.coords2d[i < 3 ? i + 1 : 0]];
+	            // check if obstacle line lies along axis X (has constant Z-coord)
+	            if (obstacleLine[0][1] === obstacleLine[1][1]) {
+	                const z = obstacleLine[0][1];
+	                // check if line2d intersects with z-line
+	                if ((line2d[0][1] - z) * (line2d[1][1] - z) > 0) {
+	                    continue;
+	                }
+	                // check if line2d lies along obstacleLine
+	                if (line2d[0][1] === z && line2d[1][1] === z) {
+	                    continue;
+	                }
+	                // get x-coordinate
+	                const x = (z - line2d[0][1]) * (line2d[0][1] - line2d[1][1]) / (line2d[0][0] - line2d[1][0]) + line2d[0][0];
+	                // check if intersection point lies inside obstacleLine
+	                if ((obstacleLine[0][0] - x) * (obstacleLine[1][0] - x) > 0) {
+	                    continue;
+	                }
+	                lineIntersections.push({ x, z, i });
+	                // positionAfterIntersection = [line2d[1][0], z];
+	                // check if obstacle line lies along axis Z (has constant X-coord)
+	            } else if (obstacleLine[0][0] === obstacleLine[1][0]) {
+	                    const x = obstacleLine[0][0];
+	                    // check if line2d intersects with x-line
+	                    if ((line2d[0][0] - x) * (line2d[1][0] - x) > 0) {
+	                        continue;
+	                    }
+	                    // check if line2d lies along obstacleLine
+	                    if (line2d[0][0] === x && line2d[1][0] === x) {
+	                        continue;
+	                    }
+	                    // get z-coordinate
+	                    const z = (x - line2d[0][0]) * (line2d[0][0] - line2d[1][0]) / (line2d[0][1] - line2d[1][1]) + line2d[0][1];
+	                    // check if intersection point lies inside obstacleLine
+	                    if ((obstacleLine[0][1] - z) * (obstacleLine[1][1] - z) > 0) {
+	                        continue;
+	                    }
+	                    lineIntersections.push({ x, z, i });
+	                    // positionAfterIntersection = [x, line2d[1][1]];
+	                }
+	        }
+	        if (lineIntersections.length === 1) {
+	            // check if end position is inside object
+	            if (line2d[1][0] >= obj.coords2d[0][0] && line2d[1][0] <= obj.coords2d[1][0] && line2d[1][1] >= obj.coords2d[0][1] && line2d[1][1] <= obj.coords2d[3][1]) {
+	                intersections.push(Object.assign(lineIntersections[0], {
+	                    obj,
+	                    distanceFromPos: getDistance(line2d[0], [lineIntersections[0].x, lineIntersections[0].z])
+	                }));
+	            }
+	        } else if (lineIntersections.length === 2) {
+	            // check if initial position is in the corner
+	            if (lineIntersections[0].x !== lineIntersections[1].x || lineIntersections[0].z !== lineIntersections[1].z) {
+	                for (let j = 0; j < 2; j++) {
+	                    lineIntersections[j].distanceFromPos = getDistance(line2d[0], [lineIntersections[j].x, lineIntersections[j].z]);
+	                    intersections.push(Object.assign(lineIntersections[j], { obj }));
+	                }
+	            }
+	        }
+	    }
+	    if (intersections.length) {
+	        let minDistancePointIndex = null;
+	        if (intersections.length === 1) {
+	            minDistancePointIndex = 0;
+	        } else {
+	            let minDistance = Infinity;
+	            for (let j = 0; j < intersections.length; j++) {
+	                if (intersections[j].distanceFromPos < minDistance) {
+	                    minDistance = intersections[j].distanceFromPos;
+	                    minDistancePointIndex = j;
+	                }
+	            }
+	        }
+	        const intersectionPoint = intersections[minDistancePointIndex];
+	        let positionAfterIntersection = null;
+	        // if obstacle line lies along axis X (has constant Z-coord)
+	        if (intersectionPoint.i === 0 || intersectionPoint.i === 2) {
+	            positionAfterIntersection = [line2d[1][0], intersectionPoint.z];
+	        } else {
+	            positionAfterIntersection = [intersectionPoint.x, line2d[1][1]];
+	        }
+	        result = {
+	            newPos: positionAfterIntersection
+	        };
+	    }
+	    return result;
+	}
+
+	/**
+	 * Links collision detection method to level object
+	 * @param {Object} level - level description object
+	 * @param {number} broadCellSize - size for broad collision search cell
+	 * @returns {Object} - level description object with collision detection method
+	 */
+	function collision(level, broadCellSize) {
+	    // const broadCells = [];
+	    //
+	    // let y = 0;
+	    // let j = 0;
+	    // do {
+	    //     broadCells[j] = [];
+	    //     let nextY = Math.min(y + broadCellSize, level.boundaries[1]);
+	    //     let x = 0;
+	    //     let i = 0;
+	    //     do {
+	    //         let nextX = Math.min(x + broadCellSize, level.boundaries[0]);
+	    //         broadCells[j][i] = {
+	    //             objects: [],
+	    //             coords: [
+	    //                 [x, y],
+	    //                 [nextX, y],
+	    //                 [nextX, nextY],
+	    //                 [x, nextY]
+	    //             ]
+	    //         };
+	    //         x = nextX;
+	    //     } while (x < level.boundaries[0]);
+	    //     y = nextY;
+	    // } while (y < level.boundaries[1]);
+	    //
+	    // for (let k = 0; k < level.objects.length; k++) {
+	    //     const object = level.objects[k];
+	    //     if (!object.collides) {
+	    //         continue;
+	    //     }
+	    //
+	    // }
+
+	    level.getCollision = getCollision;
+
+	    return level;
+	}
+
+/***/ },
+
+/***/ 110:
+/***/ function(module, exports) {
+
+	// removed by extract-text-webpack-plugin
+
+/***/ },
+
+/***/ 111:
+/***/ function(module, exports) {
+
+	// removed by extract-text-webpack-plugin
+
+/***/ },
+
+/***/ 16:
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
 	var AXIS = ['X', 'Y', 'Z'];
 
-	exports.default = {
-	    toRad: function toRad(deg) {
+	/* harmony default export */ exports["a"] = {
+	    toRad(deg) {
 	        return deg * Math.PI / 180;
 	    },
-	    getTransformRule: function getTransformRule(params) {
-	        var transform = '';
+
+	    getTransformRule(params) {
+	        let transform = '';
 	        if (params.pos) {
-	            transform += 'translate3d(' + params.pos.map(function (coord) {
-	                return coord + 'px';
-	            }).join() + ')';
+	            transform += `translate3d(${ params.pos[0] }px,${ params.pos[1] }px,${ params.pos[2] }px)`;
 	        }
 	        if (params.angle) {
-	            transform += params.angle.map(function (angle, i) {
-	                return ' rotate' + AXIS[i] + '(' + angle + 'deg)';
-	            }).join('');
+	            for (let axis = 0; axis < params.angle.length; axis++) {
+	                transform += ` rotate${ AXIS[axis] }(${ params.angle[axis] }deg)`;
+	            }
 	        }
-	        return { transform: transform };
+	        return { transform };
 	    },
-	    vectorsAdd: function vectorsAdd(v1, v2) {
-	        var result = [];
-	        for (var axis = 0; axis < v1.length; axis++) {
+
+	    vectorsAdd(v1, v2) {
+	        const result = [];
+	        for (let axis = 0; axis < v1.length; axis++) {
 	            result.push(v1[axis] + v2[axis]);
 	        }
 	        return result;
@@ -276,48 +616,89 @@ webpackJsonp([0],{
 
 /***/ },
 
-/***/ 181:
+/***/ 21:
+/***/ function(module, exports) {
+
+	// removed by extract-text-webpack-plugin
+
+/***/ },
+
+/***/ 26:
 /***/ function(module, exports, __webpack_require__) {
 
-	'use strict';
+	"use strict";
+	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__lib_utils__ = __webpack_require__(16);
+	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react__ = __webpack_require__(6);
+	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react___default = __WEBPACK_IMPORTED_MODULE_1_react__ && __WEBPACK_IMPORTED_MODULE_1_react__.__esModule ? function() { return __WEBPACK_IMPORTED_MODULE_1_react__['default'] } : function() { return __WEBPACK_IMPORTED_MODULE_1_react__; };
+	/* harmony import */ __webpack_require__.d(__WEBPACK_IMPORTED_MODULE_1_react___default, 'a', __WEBPACK_IMPORTED_MODULE_1_react___default);
+	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
-	Object.defineProperty(exports, "__esModule", {
-	    value: true
-	});
+	__webpack_require__(21);
 
-	var _react = __webpack_require__(5);
 
-	var _react2 = _interopRequireDefault(_react);
 
-	var _reactRedux = __webpack_require__(172);
 
-	var _Scene = __webpack_require__(182);
+	/* harmony default export */ exports["a"] = ({ pos, size, angle = [0, 0, 0], background }) => {
+	    const transformRule = __WEBPACK_IMPORTED_MODULE_0__lib_utils__["a" /* default */].getTransformRule({ pos, angle });
+	    const sizeRule = {
+	        width: size[0],
+	        height: size[1],
+	        margin: `-${ size[1] / 2 }px 0 0 -${ size[0] / 2 }px`
+	    };
+	    return __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement('div', { className: 'obj', style: _extends({}, transformRule, sizeRule, { background }) });
+	};
 
-	var _Scene2 = _interopRequireDefault(_Scene);
+/***/ },
 
-	var _utils = __webpack_require__(4);
+/***/ 37:
+/***/ function(module, exports, __webpack_require__) {
 
-	var _utils2 = _interopRequireDefault(_utils);
+	"use strict";
+	const FPS = 60;/* harmony export */ exports["h"] = FPS;
+	const G = 1.9;/* unused harmony export G */
+	const KEY_SPACE = 32;/* unused harmony export KEY_SPACE */
+	const KEY_SHIFT = 16;/* unused harmony export KEY_SHIFT */
+	const KEY_C = 67;/* harmony export */ exports["a"] = KEY_C;
+	const KEY_W = 87;/* harmony export */ exports["b"] = KEY_W;
+	const KEY_S = 83;/* harmony export */ exports["c"] = KEY_S;
+	const KEY_A = 65;/* harmony export */ exports["d"] = KEY_A;
+	const KEY_D = 68;/* harmony export */ exports["e"] = KEY_D;
+	const STEP = 4;/* harmony export */ exports["g"] = STEP;
+	const SENSITIVITY = 0.5;/* harmony export */ exports["f"] = SENSITIVITY;
 
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+/***/ },
 
-	var Camera = function Camera(_ref) {
-	    var pos = _ref.pos;
-	    var viewAngle = _ref.viewAngle;
-	    var objects = _ref.objects;
+/***/ 98:
+/***/ function(module, exports, __webpack_require__) {
 
-	    var transformRule = _utils2.default.getTransformRule({
+	"use strict";
+	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(6);
+	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __WEBPACK_IMPORTED_MODULE_0_react__ && __WEBPACK_IMPORTED_MODULE_0_react__.__esModule ? function() { return __WEBPACK_IMPORTED_MODULE_0_react__['default'] } : function() { return __WEBPACK_IMPORTED_MODULE_0_react__; };
+	/* harmony import */ __webpack_require__.d(__WEBPACK_IMPORTED_MODULE_0_react___default, 'a', __WEBPACK_IMPORTED_MODULE_0_react___default);
+	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react_redux__ = __webpack_require__(25);
+	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react_redux___default = __WEBPACK_IMPORTED_MODULE_1_react_redux__ && __WEBPACK_IMPORTED_MODULE_1_react_redux__.__esModule ? function() { return __WEBPACK_IMPORTED_MODULE_1_react_redux__['default'] } : function() { return __WEBPACK_IMPORTED_MODULE_1_react_redux__; };
+	/* harmony import */ __webpack_require__.d(__WEBPACK_IMPORTED_MODULE_1_react_redux___default, 'a', __WEBPACK_IMPORTED_MODULE_1_react_redux___default);
+	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__components_scene_Scene__ = __webpack_require__(103);
+	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__lib_utils__ = __webpack_require__(16);
+
+
+
+
+
+	const Camera = ({ pos, viewAngle, objects }) => {
+	    const transformRule = __WEBPACK_IMPORTED_MODULE_3__lib_utils__["a" /* default */].getTransformRule({
 	        pos: [0, 0, 600],
 	        angle: [viewAngle[1], viewAngle[0], viewAngle[2]]
 	    });
-	    return _react2.default.createElement(
+	    return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
 	        'div',
 	        { className: 'camera', style: transformRule },
-	        _react2.default.createElement(_Scene2.default, { pos: pos, objects: objects })
+	        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2__components_scene_Scene__["a" /* default */], { pos: pos, objects: objects })
 	    );
 	};
 	Camera.propTypes = {
-	    viewAngle: _react.PropTypes.arrayOf(_react.PropTypes.number)
+	    pos: __WEBPACK_IMPORTED_MODULE_0_react__["PropTypes"].arrayOf(__WEBPACK_IMPORTED_MODULE_0_react__["PropTypes"].number),
+	    viewAngle: __WEBPACK_IMPORTED_MODULE_0_react__["PropTypes"].arrayOf(__WEBPACK_IMPORTED_MODULE_0_react__["PropTypes"].number)
 	};
 
 	function select(state) {
@@ -328,376 +709,62 @@ webpackJsonp([0],{
 	    };
 	}
 
-	exports.default = (0, _reactRedux.connect)(select)(Camera);
+	/* harmony default export */ exports["a"] = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1_react_redux__["connect"])(select)(Camera);
 
 /***/ },
 
-/***/ 182:
+/***/ 99:
 /***/ function(module, exports, __webpack_require__) {
 
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	    value: true
-	});
-
-	var _react = __webpack_require__(5);
-
-	var _react2 = _interopRequireDefault(_react);
-
-	var _Field = __webpack_require__(183);
-
-	var _Field2 = _interopRequireDefault(_Field);
-
-	var _Plain = __webpack_require__(190);
-
-	var _Plain2 = _interopRequireDefault(_Plain);
-
-	var _Wall = __webpack_require__(191);
-
-	var _Wall2 = _interopRequireDefault(_Wall);
-
-	var _Tree = __webpack_require__(198);
-
-	var _Tree2 = _interopRequireDefault(_Tree);
-
-	var _utils = __webpack_require__(4);
-
-	var _utils2 = _interopRequireDefault(_utils);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	__webpack_require__(184);
-	__webpack_require__(192);
-
-	var Scene = function Scene(_ref) {
-	    var pos = _ref.pos;
-	    var objects = _ref.objects;
-
-	    var transformRule = _utils2.default.getTransformRule({
-	        pos: [pos[0], pos[1], pos[2]]
-	    });
-	    var renderedObjects = objects.map(function (object, i) {
-	        switch (object.type) {
-	            case 'plain':
-	                return _react2.default.createElement(_Plain2.default, { key: i, pos: object.pos, size: object.size, angle: object.angle, background: object.background });
-	            case 'wall':
-	                return _react2.default.createElement(_Wall2.default, { key: i, pos: object.pos, size: object.size, angle: object.angle });
-	            case 'tree':
-	                return _react2.default.createElement(_Tree2.default, { key: i, pos: object.pos, size: object.size, angle: object.angle });
-	            default:
-	                return '';
-	        }
-	    });
-	    return _react2.default.createElement(
-	        'div',
-	        { className: 'scene obj', style: transformRule },
-	        renderedObjects
-	    );
-	};
-	Scene.propTypes = {
-	    pos: _react.PropTypes.arrayOf(_react.PropTypes.number),
-	    viewAngle: _react.PropTypes.arrayOf(_react.PropTypes.number)
-	};
-
-	exports.default = Scene;
-
-/***/ },
-
-/***/ 183:
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	    value: true
-	});
-
-	var _utils = __webpack_require__(4);
-
-	var _utils2 = _interopRequireDefault(_utils);
-
-	var _react = __webpack_require__(5);
-
-	var _react2 = _interopRequireDefault(_react);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	__webpack_require__(184);
-	__webpack_require__(188);
-
-	exports.default = function (_ref) {
-	    var pos = _ref.pos;
-
-	    var transformRule = _utils2.default.getTransformRule({
-	        angle: [90, 0, 0]
-	    });
-	    return _react2.default.createElement('div', { className: 'obj', style: transformRule });
-	};
-
-/***/ },
-
-/***/ 184:
-/***/ function(module, exports) {
-
-	// removed by extract-text-webpack-plugin
-
-/***/ },
-
-/***/ 188:
-/***/ function(module, exports) {
-
-	// removed by extract-text-webpack-plugin
-
-/***/ },
-
-/***/ 190:
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-
-	Object.defineProperty(exports, "__esModule", {
-	    value: true
-	});
-
-	var _utils = __webpack_require__(4);
-
-	var _utils2 = _interopRequireDefault(_utils);
-
-	var _react = __webpack_require__(5);
-
-	var _react2 = _interopRequireDefault(_react);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	__webpack_require__(184);
-
-	exports.default = function (_ref) {
-	    var pos = _ref.pos;
-	    var size = _ref.size;
-	    var angle = _ref.angle;
-	    var background = _ref.background;
-
-	    var transformRule = _utils2.default.getTransformRule({ pos: pos, angle: angle });
-	    var sizeRule = {
-	        width: size[0],
-	        height: size[1],
-	        margin: '-' + size[1] / 2 + 'px 0 0 -' + size[0] / 2 + 'px'
-	    };
-	    var bgRule = { background: background };
-	    var style = _extends({}, transformRule, sizeRule, bgRule);
-	    return _react2.default.createElement('div', { className: 'obj', style: style });
-	};
-
-/***/ },
-
-/***/ 191:
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	    value: true
-	});
-
-	var _react = __webpack_require__(5);
-
-	var _react2 = _interopRequireDefault(_react);
-
-	var _utils = __webpack_require__(4);
-
-	var _utils2 = _interopRequireDefault(_utils);
-
-	var _Plain = __webpack_require__(190);
-
-	var _Plain2 = _interopRequireDefault(_Plain);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	__webpack_require__(184);
-
-	exports.default = function (_ref) {
-	    var pos = _ref.pos;
-	    var size = _ref.size;
-	    var angle = _ref.angle;
-
-	    var bg = '#b2adb2';
-	    var transformRule = _utils2.default.getTransformRule({ pos: pos, angle: angle });
-	    // F-B-L-R-T-B
-	    return _react2.default.createElement(
-	        'div',
-	        { className: 'obj', style: transformRule },
-	        _react2.default.createElement(_Plain2.default, { pos: [0, -size[1] / 2, size[2] / 2], size: size.slice(0, 2), angle: [0, 0, 0], background: bg }),
-	        _react2.default.createElement(_Plain2.default, { pos: [0, -size[1] / 2, -size[2] / 2], size: size.slice(0, 2), angle: [0, 0, 0], background: bg }),
-	        _react2.default.createElement(_Plain2.default, { pos: [-size[0] / 2, -size[1] / 2, 0], size: [size[2], size[1]], angle: [0, 90, 0], background: bg }),
-	        _react2.default.createElement(_Plain2.default, { pos: [size[0] / 2, -size[1] / 2, 0], size: [size[2], size[1]], angle: [0, -90, 0], background: bg }),
-	        _react2.default.createElement(_Plain2.default, { pos: [0, -size[1], 0], size: [size[0], size[2]], angle: [90, 0, 0], background: bg }),
-	        _react2.default.createElement(_Plain2.default, { pos: [0, 0, 0], size: [size[0], size[2]], angle: [-90, 0, 0], background: bg })
-	    );
-	};
-
-/***/ },
-
-/***/ 192:
-/***/ function(module, exports) {
-
-	// removed by extract-text-webpack-plugin
-
-/***/ },
-
-/***/ 194:
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	    value: true
-	});
-
-	var _redux = __webpack_require__(163);
-
-	var _level = __webpack_require__(195);
-
-	var _level2 = _interopRequireDefault(_level);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	function viewAngle() {
-	    var state = arguments.length <= 0 || arguments[0] === undefined ? _level2.default.player[1] : arguments[0];
-	    var action = arguments[1];
-
-	    switch (action.type) {
-	        case 'updateViewAngle':
-	            var viewAngle = [state[0] - action.pointerDelta.x, Math.min(Math.max(state[1] + action.pointerDelta.y, -90), 90), 0];
-	            viewAngle[0] %= 360;
-	            return viewAngle;
-	        default:
-	            return state;
+	"use strict";
+	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__constants__ = __webpack_require__(37);
+
+
+	class Controls {
+	    constructor() {
+	        this.keyPressed = {
+	            [__WEBPACK_IMPORTED_MODULE_0__constants__["a" /* KEY_C */]]: false,
+	            [__WEBPACK_IMPORTED_MODULE_0__constants__["b" /* KEY_W */]]: false,
+	            [__WEBPACK_IMPORTED_MODULE_0__constants__["c" /* KEY_S */]]: false,
+	            [__WEBPACK_IMPORTED_MODULE_0__constants__["d" /* KEY_A */]]: false,
+	            [__WEBPACK_IMPORTED_MODULE_0__constants__["e" /* KEY_D */]]: false
+	        };
+	        this.stack = new Set();
+	        let lastCursorPos = null;
+	        this.pointerDelta = { x: 0, y: 0 };
+
+	        document.addEventListener('keydown', e => {
+	            if (e.keyCode in this.keyPressed) {
+	                this.keyPressed[e.keyCode] = true;
+	                this.stack.add(e.keyCode);
+	            }
+	        });
+
+	        document.addEventListener('keyup', e => {
+	            if (e.keyCode in this.keyPressed) {
+	                this.keyPressed[e.keyCode] = false;
+	            }
+	        });
+
+	        document.addEventListener('mousemove', e => {
+	            if (lastCursorPos) {
+	                this.pointerDelta.x += lastCursorPos.x - e.clientX;
+	                this.pointerDelta.y += lastCursorPos.y - e.clientY;
+	            }
+	            lastCursorPos = {
+	                x: e.clientX,
+	                y: e.clientY
+	            };
+	        });
 	    }
-	}
 
-	function position() {
-	    var state = arguments.length <= 0 || arguments[0] === undefined ? _level2.default.player[0] : arguments[0];
-	    var action = arguments[1];
-
-	    switch (action.type) {
-	        case 'updatePos':
-	            return state.map(function (axisPos, i) {
-	                var newAxisPos = axisPos + action.shift[i];
-	                if (_level2.default.boundaries[i]) {
-	                    newAxisPos = Math.min(Math.max(newAxisPos, _level2.default.boundaries[i][0]), _level2.default.boundaries[i][1]);
-	                }
-	                return newAxisPos;
-	            });
-	        default:
-	            return state;
+	    getPointerDelta() {
+	        const pointerDelta = this.pointerDelta;
+	        this.pointerDelta = { x: 0, y: 0 };
+	        return pointerDelta;
 	    }
-	}
-
-	function objects() {
-	    var state = arguments.length <= 0 || arguments[0] === undefined ? _level2.default.objects : arguments[0];
-	    var action = arguments[1];
-
-	    switch (action.type) {
-	        default:
-	            return state;
-	    }
-	}
-
-	exports.default = (0, _redux.combineReducers)({
-	    viewAngle: viewAngle,
-	    pos: position,
-	    objects: objects
-	});
-
-/***/ },
-
-/***/ 195:
-/***/ function(module, exports) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	    value: true
-	});
-	exports.default = {
-	    boundaries: [[0, 5000], null, [0, 5000]],
-	    player: [[0, 350, 0], [0, 0, 0]],
-	    objects: [{
-	        type: 'plain',
-	        size: [5000, 5000],
-	        pos: [-2500, 0, -2500],
-	        angle: [90, 0, 0],
-	        background: '#cfa'
-	    }, {
-	        type: 'wall',
-	        size: [700, 700, 100],
-	        pos: [-2500, 0, -2500],
-	        angle: [0, 0, 0]
-	    }, {
-	        type: 'tree',
-	        size: [100, 400],
-	        pos: [-1200, 0, -2500],
-	        angle: [0, 0, 0]
-	    }]
-	};
-
-/***/ },
-
-/***/ 196:
-/***/ function(module, exports) {
-
-	// removed by extract-text-webpack-plugin
-
-/***/ },
-
-/***/ 198:
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	    value: true
-	});
-
-	var _react = __webpack_require__(5);
-
-	var _react2 = _interopRequireDefault(_react);
-
-	var _utils = __webpack_require__(4);
-
-	var _utils2 = _interopRequireDefault(_utils);
-
-	var _Plain = __webpack_require__(190);
-
-	var _Plain2 = _interopRequireDefault(_Plain);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	__webpack_require__(184);
-
-	exports.default = function (_ref) {
-	    var pos = _ref.pos;
-	    var size = _ref.size;
-	    var angle = _ref.angle;
-
-	    var stemBg = '#816b5e';
-	    var crownBg = '#428b41';
-	    var crownSize = size[1] * 2;
-	    var transformRule = _utils2.default.getTransformRule({ pos: pos, angle: angle });
-	    return _react2.default.createElement(
-	        'div',
-	        { className: 'obj', style: transformRule },
-	        _react2.default.createElement(_Plain2.default, { pos: [0, -size[1] / 2, 0], size: size, angle: [0, 0, 0], background: stemBg }),
-	        _react2.default.createElement(_Plain2.default, { pos: [0, -size[1] / 2, 0], size: size, angle: [0, -90, 0], background: stemBg }),
-	        _react2.default.createElement(_Plain2.default, { pos: [0, -size[1] - crownSize / 2, 0], size: [crownSize, crownSize], angle: [0, 10, 0], background: crownBg }),
-	        _react2.default.createElement(_Plain2.default, { pos: [0, -size[1] - crownSize / 2, 0], size: [crownSize, crownSize], angle: [0, -40, 0], background: crownBg }),
-	        _react2.default.createElement(_Plain2.default, { pos: [0, -size[1] - crownSize / 2, 0], size: [crownSize, crownSize], angle: [0, 100, 0], background: crownBg })
-	    );
-	};
+	}/* harmony export */ exports["a"] = Controls;
 
 /***/ }
 
-});
+},[107]);

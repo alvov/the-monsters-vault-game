@@ -1,0 +1,6 @@
+.wall {
+    background: #b2adb2;
+}
+    .wall > div {
+        background: inherit;
+    }

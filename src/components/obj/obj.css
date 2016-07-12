@@ -3,4 +3,5 @@
     top: 50%;
     left: 50%;
     transform-style: preserve-3d;
+    box-shadow: 0 0 1px;
 }

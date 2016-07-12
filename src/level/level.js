@@ -45,4 +45,4 @@ for (let i = 0; i < level.objects.length; i++) {
     ];
 }
 
-export default collision(level, 500);
+export default collision(level, { broadCellSize: 500 });

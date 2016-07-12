@@ -31,7 +31,7 @@ function position(state = level.player.pos, action) {
                 }
                 newPos.push(newAxisPos);
             }
-            const collision = level.getCollision([[state[0], state[2]], [newPos[0], newPos[2]]], level.objects);
+            const collision = level.getCollision([[state[0], state[2]], [newPos[0], newPos[2]]]);
             return [collision.newPos[0], newPos[1], collision.newPos[1]];
         default:
             return state;

@@ -1,13 +1,12 @@
 require('./index.css');
 
-import { FPS, G, KEY_C, KEY_W, KEY_S, KEY_A, KEY_D, STEP } from './constants';
+import { FPS, KEY_W, KEY_S, KEY_A, KEY_D, STEP } from './constants';
 import React from 'react';
 import { render } from 'react-dom';
 import { createStore } from 'redux';
 import { Provider } from 'react-redux'
 import Controls from './lib/Controls';
 import Loop from './lib/Loop';
-import utils from './lib/utils';
 import Camera from './containers/Camera';
 import viewportApp from './reducers';
 
@@ -49,7 +48,8 @@ new Loop(frameRateCoefficient => {
         }
         reducedAngleShift /= angleShift.length;
 
-        reducedAngleShift += utils.toRad(store.getState().viewAngle[0]);
+        // convert to radians and add
+        reducedAngleShift += store.getState().viewAngle[0] * Math.PI / 180;
 
         let step = frameRateCoefficient * STEP;
         store.dispatch({

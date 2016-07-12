@@ -1,9 +1,8 @@
-import { KEY_C, KEY_W, KEY_S, KEY_A, KEY_D } from '../constants';
+import { KEY_W, KEY_S, KEY_A, KEY_D } from '../constants';
 
 export default class Controls {
     constructor() {
         this.keyPressed = {
-            [KEY_C]: false,
             [KEY_W]: false,
             [KEY_S]: false,
             [KEY_A]: false,

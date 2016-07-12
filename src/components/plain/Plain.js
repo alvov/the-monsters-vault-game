@@ -1,10 +1,9 @@
 require('components/obj/obj.css');
 
-import utils from '../../lib/utils';
 import React from 'react';
 
-export default ({ pos, size, angle = [0, 0, 0], background }) => {
-    const transformRule = utils.getTransformRule({ pos, angle });
+export default ({ pos, size, angle = [0, 0, 0], background, getTransformRule }) => {
+    const transformRule = getTransformRule({ pos, angle });
     const sizeRule = {
         width: size[0],
         height: size[1],

@@ -4,8 +4,9 @@ require('components/wall/wall.css');
 import React from 'react';
 import Plain from '../plain/Plain';
 
-export default ({ pos, size, angle = [0, 0, 0], getTransformRule }) => {
-    const transformRule = getTransformRule({ pos, angle });
+// no support for rotated walls for now
+export default ({ pos, size, getTransformRule }) => {
+    const transformRule = getTransformRule({ pos });
     // Front-Back-Left-Right-Top-Bottom
     return <div className="obj wall" style={transformRule}>
         <Plain pos={[0, -size[1] / 2, size[2] / 2]} size={size} angle={[0, 0, 0]} getTransformRule={getTransformRule}/>

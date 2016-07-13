@@ -22,7 +22,7 @@ var Scene = ({ pos, objects, getTransformRule }) => {
                     getTransformRule={getTransformRule}
                 />;
             case 'wall':
-                return <Wall key={i} pos={object.pos} size={object.size} angle={object.angle} getTransformRule={getTransformRule}/>;
+                return <Wall key={i} pos={object.pos} size={object.size} getTransformRule={getTransformRule}/>;
             case 'larch':
                 return <Larch key={i} pos={object.pos} size={object.size} angle={object.angle} getTransformRule={getTransformRule}/>;
             default:

@@ -8,13 +8,13 @@ webpackJsonp([1],{
 	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_redux__ = __webpack_require__(19);
 	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_redux___default = __WEBPACK_IMPORTED_MODULE_1_redux__ && __WEBPACK_IMPORTED_MODULE_1_redux__.__esModule ? function() { return __WEBPACK_IMPORTED_MODULE_1_redux__['default'] } : function() { return __WEBPACK_IMPORTED_MODULE_1_redux__; };
 	/* harmony import */ __webpack_require__.d(__WEBPACK_IMPORTED_MODULE_1_redux___default, 'a', __WEBPACK_IMPORTED_MODULE_1_redux___default);
-	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__level_level__ = __webpack_require__(106);
+	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__levels_level__ = __webpack_require__(106);
 
 
 
 
 	// fix lack of default parameters support in webpack 2
-	const level = __WEBPACK_IMPORTED_MODULE_2__level_level__["a" /* default */];
+	const level = __WEBPACK_IMPORTED_MODULE_2__levels_level__["a" /* default */];
 
 	function viewAngle(state = level.player.angle, action) {
 	    switch (action.type) {
@@ -29,17 +29,22 @@ webpackJsonp([1],{
 
 	function position(state = level.player.pos, action) {
 	    switch (action.type) {
-	        case 'updatePos':
+	        case 'updatePlayerPos':
 	            let newPos = [];
 	            for (let i = 0; i < 3; i++) {
 	                let newAxisPos = state[i] + action.shift[i];
-	                if (level.boundaries[i]) {
-	                    newAxisPos = Math.min(Math.max(newAxisPos, 0), level.boundaries[i]);
+	                // check if got out of bounds
+	                for (let i = 0; i < 3; i++) {
+	                    if (level.boundaries[i]) {
+	                        newAxisPos = Math.min(Math.max(newAxisPos, 0), level.boundaries[i] - 1);
+	                    }
 	                }
 	                newPos.push(newAxisPos);
 	            }
-	            const collision = level.getCollision([[state[0], state[2]], [newPos[0], newPos[2]]]);
-	            return [collision.newPos[0], newPos[1], collision.newPos[1]];
+	            const collisions = level.getCollision([[state[0], state[2]], [newPos[0], newPos[2]]]);
+	            // get last collision result as new player position
+	            const collisionReboundPos = collisions[collisions.length - 1].newPos;
+	            return [collisionReboundPos[0], newPos[1], collisionReboundPos[1]];
 	        default:
 	            return state;
 	    }
@@ -101,7 +106,7 @@ webpackJsonp([1],{
 	                    getTransformRule: getTransformRule
 	                });
 	            case 'wall':
-	                return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2__wall_Wall__["a" /* default */], { key: i, pos: object.pos, size: object.size, angle: object.angle, getTransformRule: getTransformRule });
+	                return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2__wall_Wall__["a" /* default */], { key: i, pos: object.pos, size: object.size, getTransformRule: getTransformRule });
 	            case 'larch':
 	                return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3__tree_Larch__["a" /* default */], { key: i, pos: object.pos, size: object.size, angle: object.angle, getTransformRule: getTransformRule });
 	            default:
@@ -178,8 +183,9 @@ webpackJsonp([1],{
 
 
 
-	/* harmony default export */ exports["a"] = ({ pos, size, angle = [0, 0, 0], getTransformRule }) => {
-	    const transformRule = getTransformRule({ pos, angle });
+	// no support for rotated walls for now
+	/* harmony default export */ exports["a"] = ({ pos, size, getTransformRule }) => {
+	    const transformRule = getTransformRule({ pos });
 	    // Front-Back-Left-Right-Top-Bottom
 	    return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
 	        'div',
@@ -271,7 +277,7 @@ webpackJsonp([1],{
 
 	        let step = frameRateCoefficient * __WEBPACK_IMPORTED_MODULE_0__constants__["f" /* STEP */];
 	        store.dispatch({
-	            type: 'updatePos',
+	            type: 'updatePlayerPos',
 	            shift: [-step * Math.sin(reducedAngleShift), 0, step * Math.cos(reducedAngleShift)]
 	        });
 	    }
@@ -309,8 +315,13 @@ webpackJsonp([1],{
 	    }, {
 	        name: 'test wall',
 	        type: 'wall',
-	        size: [700, 200, 50],
+	        size: [200, 200, 50],
 	        pos: [1000, 0, 1000]
+	    }, {
+	        name: 'test wall to make corner',
+	        type: 'wall',
+	        size: [50, 200, 200],
+	        pos: [1125, 0, 925]
 	    }, {
 	        name: 'test tree',
 	        type: 'larch',
@@ -328,7 +339,9 @@ webpackJsonp([1],{
 	    obj.coords2d = [[obj.pos[0] - sizeX / 2, obj.pos[2] - sizeZ / 2], [obj.pos[0] + sizeX / 2, obj.pos[2] - sizeZ / 2], [obj.pos[0] + sizeX / 2, obj.pos[2] + sizeZ / 2], [obj.pos[0] - sizeX / 2, obj.pos[2] + sizeZ / 2]];
 	}
 
-	/* harmony default export */ exports["a"] = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__lib_collision_js__["a" /* default */])(level, { broadCellSize: 500 });
+	level.getCollision = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__lib_collision_js__["a" /* default */])(level, { broadCellSize: 500 });
+
+	/* harmony default export */ exports["a"] = level;
 
 /***/ },
 
@@ -347,12 +360,37 @@ webpackJsonp([1],{
 	}
 
 	/**
-	 * Returns an object with info about collision
-	 * @param {Array} line2d - coordinates of initial and final player positions
-	 * @param {Set} objectsSet - js set of objects
-	 * @returns {{newPos: Array}} - object with info about collision
+	 * Returns set of objects that can potentially collide with line2d
+	 * @param {Array} line2d - coordinates of initial and final subject positions
+	 * @param {number} broadCellSize - size for broad collision search cell
+	 * @param {Array} broadCells - array of all broad cells
+	 * @returns {Set} - js Set of objects, that can possibly collide with the subject
 	 */
-	function getCollision(line2d, objectsSet) {
+	function getRelativeObjectsSet({ line2d, broadCellSize, broadCells }) {
+	    const relativeBroadCells = [[Math.floor(line2d[0][0] / broadCellSize), Math.floor(line2d[0][1] / broadCellSize)], [Math.floor(line2d[1][0] / broadCellSize), Math.floor(line2d[1][1] / broadCellSize)]];
+	    // if subject moved to diagonal cell, include two adjacent cells
+	    if (relativeBroadCells[0][0] !== relativeBroadCells[1][0] && relativeBroadCells[0][1] !== relativeBroadCells[1][1]) {
+	        relativeBroadCells.push([relativeBroadCells[0][0], relativeBroadCells[1][1]], [relativeBroadCells[1][0], relativeBroadCells[0][1]]);
+	    }
+	    // include unique objects to objects set
+	    const objectsSet = new Set();
+	    for (let i = 0; i < relativeBroadCells.length; i++) {
+	        const broadCellObjects = broadCells[relativeBroadCells[i][1]][relativeBroadCells[i][0]].objects;
+	        for (let j = 0; j < broadCellObjects.length; j++) {
+	            objectsSet.add(broadCellObjects[j]);
+	        }
+	    }
+	    return objectsSet;
+	}
+
+	/**
+	 * Returns an object with info about collision
+	 * @param {Array} line2d - coordinates of initial and final subject positions
+	 * @param {number} broadCellSize - size for broad collision search cell
+	 * @param {Array} broadCells - array of all broad cells
+	 * @returns {Object} - object with info about collision
+	 */
+	function getCollision({ line2d, broadCellSize, broadCells }) {
 	    let result = { newPos: line2d[1] };
 	    // if (line2d[1][0] > 975 || t) {
 	    //     debugger;
@@ -361,6 +399,10 @@ webpackJsonp([1],{
 	    if (line2d[0][0] === line2d[1][0] && line2d[0][1] === line2d[1][1]) {
 	        return result;
 	    }
+
+	    // get broad cells relative to subject's movement
+	    const objectsSet = getRelativeObjectsSet({ line2d, broadCellSize, broadCells });
+
 	    const intersections = [];
 	    // search for collisions with given objects
 	    for (let obj of objectsSet) {
@@ -383,7 +425,12 @@ webpackJsonp([1],{
 	                    continue;
 	                }
 	                // get x-coordinate
-	                const x = (z - line2d[0][1]) * (line2d[0][1] - line2d[1][1]) / (line2d[0][0] - line2d[1][0]) + line2d[0][0];
+	                let x;
+	                if (line2d[0][0] === line2d[1][0]) {
+	                    x = line2d[0][0];
+	                } else {
+	                    x = (z - line2d[0][1]) * (line2d[0][1] - line2d[1][1]) / (line2d[0][0] - line2d[1][0]) + line2d[0][0];
+	                }
 	                // check if intersection point lies inside obstacleLine
 	                if ((obstacleLine[0][0] - x) * (obstacleLine[1][0] - x) > 0) {
 	                    continue;
@@ -402,13 +449,17 @@ webpackJsonp([1],{
 	                        continue;
 	                    }
 	                    // get z-coordinate
-	                    const z = (x - line2d[0][0]) * (line2d[0][0] - line2d[1][0]) / (line2d[0][1] - line2d[1][1]) + line2d[0][1];
+	                    let z;
+	                    if (line2d[0][1] === line2d[1][1]) {
+	                        z = line2d[0][1];
+	                    } else {
+	                        z = (x - line2d[0][0]) * (line2d[0][0] - line2d[1][0]) / (line2d[0][1] - line2d[1][1]) + line2d[0][1];
+	                    }
 	                    // check if intersection point lies inside obstacleLine
 	                    if ((obstacleLine[0][1] - z) * (obstacleLine[1][1] - z) > 0) {
 	                        continue;
 	                    }
 	                    lineIntersections.push({ x, z, i });
-	                    // positionAfterIntersection = [x, line2d[1][1]];
 	                }
 	        }
 	        if (lineIntersections.length === 1) {
@@ -430,10 +481,8 @@ webpackJsonp([1],{
 	        }
 	    }
 	    if (intersections.length) {
-	        let minDistancePointIndex = null;
-	        if (intersections.length === 1) {
-	            minDistancePointIndex = 0;
-	        } else {
+	        let minDistancePointIndex = 0;
+	        if (intersections.length !== 1) {
 	            let minDistance = Infinity;
 	            for (let j = 0; j < intersections.length; j++) {
 	                if (intersections[j].distanceFromPos < minDistance) {
@@ -451,6 +500,8 @@ webpackJsonp([1],{
 	            positionAfterIntersection = [intersectionPoint.x, line2d[1][1]];
 	        }
 	        result = {
+	            obj: intersectionPoint.obj,
+	            collisionPoint: [intersectionPoint.x, intersectionPoint.z],
 	            newPos: positionAfterIntersection
 	        };
 	    }
@@ -462,30 +513,29 @@ webpackJsonp([1],{
 	 * @param {number} broadCellSize - size for broad collision search cell
 	 * @param {Array} broadCells - array of all broad cells
 	 * @param {Array} line2d - coordinates of initial and final player positions
-	 * @returns {{newPos: Array}} - object with info about collision
+	 * @returns {Array} - Array of objects with info about collisions
 	 */
-	function getCollisionWrapper(broadCellSize, broadCells, line2d) {
-	    // get broad cells relative to players movement
-	    const relativeBroadCells = [[Math.floor(line2d[0][0] / broadCellSize), Math.floor(line2d[0][1] / broadCellSize)], [Math.floor(line2d[1][0] / broadCellSize), Math.floor(line2d[1][1] / broadCellSize)]];
-	    // if player moved to diagonal cell, include two adjacent cells
-	    if (relativeBroadCells[0][0] !== relativeBroadCells[1][0] && relativeBroadCells[0][1] !== relativeBroadCells[1][1]) {
-	        relativeBroadCells.push([relativeBroadCells[0][0], relativeBroadCells[1][1]], [relativeBroadCells[1][0], relativeBroadCells[0][1]]);
-	    }
-	    const objectsSet = new Set();
-	    for (let i = 0; i < relativeBroadCells.length; i++) {
-	        const broadCellObjects = broadCells[relativeBroadCells[i][1]][relativeBroadCells[i][0]].objects;
-	        for (let j = 0; j < broadCellObjects.length; j++) {
-	            objectsSet.add(broadCellObjects[j]);
+	function getCollisions(broadCellSize, broadCells, line2d) {
+	    const firstCollision = getCollision({ line2d, broadCellSize, broadCells });
+	    if (firstCollision.obj) {
+	        // if collision was registered check if rebound also collides with smth (literally, corner cases)
+	        const secondCollision = getCollision({
+	            line2d: [firstCollision.collisionPoint, firstCollision.newPos],
+	            broadCellSize, broadCells
+	        });
+	        if (secondCollision.obj) {
+	            // if it does, stop right there (no need to check further collisions)
+	            return [firstCollision, Object.assign(secondCollision, { newPos: secondCollision.collisionPoint })];
 	        }
 	    }
-	    return getCollision(line2d, objectsSet);
+	    return [firstCollision];
 	}
 
 	/**
-	 * Links collision detection method to level object
+	 * Returns collision detection method
 	 * @param {Object} level - level description object
 	 * @param {number} broadCellSize - size for broad collision search cell
-	 * @returns {Object} - level description object with collision detection method
+	 * @returns {Function} - collision detection method
 	 */
 	function collision(level, { broadCellSize }) {
 	    const broadCells = [];
@@ -493,6 +543,7 @@ webpackJsonp([1],{
 	    let y = 0;
 	    let j = 0;
 
+	    // build broad cells array
 	    do {
 	        broadCells[j] = [];
 	        let nextY = Math.min(y + broadCellSize, level.boundaries[2]);
@@ -511,6 +562,7 @@ webpackJsonp([1],{
 	        j++;
 	    } while (y < level.boundaries[2]);
 
+	    // fill broad cells with corresponding objects
 	    for (let k = 0; k < level.objects.length; k++) {
 	        const obj = level.objects[k];
 	        if (obj.collides === false) {
@@ -526,10 +578,7 @@ webpackJsonp([1],{
 	            }
 	        }
 	    }
-
-	    level.getCollision = getCollisionWrapper.bind(level, broadCellSize, broadCells);
-
-	    return level;
+	    return getCollisions.bind(level, broadCellSize, broadCells);
 	}
 
 /***/ },

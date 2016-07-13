@@ -53,7 +53,7 @@ new Loop(frameRateCoefficient => {
 
         let step = frameRateCoefficient * STEP;
         store.dispatch({
-            type: 'updatePos',
+            type: 'updatePlayerPos',
             shift: [-step * Math.sin(reducedAngleShift), 0, step * Math.cos(reducedAngleShift)]
         });
     }

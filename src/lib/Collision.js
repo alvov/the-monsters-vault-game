@@ -9,12 +9,51 @@ function getDistance(point1, point2) {
 }
 
 /**
- * Returns an object with info about collision
- * @param {Array} line2d - coordinates of initial and final player positions
- * @param {Set} objectsSet - js set of objects
- * @returns {{newPos: Array}} - object with info about collision
+ * Returns set of objects that can potentially collide with line2d
+ * @param {Array} line2d - coordinates of initial and final subject positions
+ * @param {number} broadCellSize - size for broad collision search cell
+ * @param {Array} broadCells - array of all broad cells
+ * @returns {Set} - js Set of objects, that can possibly collide with the subject
  */
-function getCollision(line2d, objectsSet) {
+function getRelativeObjectsSet({ line2d, broadCellSize, broadCells }) {
+    const relativeBroadCells = [
+        [
+            Math.floor(line2d[0][0] / broadCellSize),
+            Math.floor(line2d[0][1] / broadCellSize)
+        ], [
+            Math.floor(line2d[1][0] / broadCellSize),
+            Math.floor(line2d[1][1] / broadCellSize)
+        ]
+    ];
+    // if subject moved to diagonal cell, include two adjacent cells
+    if (
+        relativeBroadCells[0][0] !== relativeBroadCells[1][0] &&
+        relativeBroadCells[0][1] !== relativeBroadCells[1][1]
+    ) {
+        relativeBroadCells.push(
+            [relativeBroadCells[0][0], relativeBroadCells[1][1]],
+            [relativeBroadCells[1][0], relativeBroadCells[0][1]]
+        );
+    }
+    // include unique objects to objects set
+    const objectsSet = new Set();
+    for (let i = 0; i < relativeBroadCells.length; i++) {
+        const broadCellObjects = broadCells[relativeBroadCells[i][1]][relativeBroadCells[i][0]].objects;
+        for (let j = 0; j < broadCellObjects.length; j++) {
+            objectsSet.add(broadCellObjects[j]);
+        }
+    }
+    return objectsSet;
+}
+
+/**
+ * Returns an object with info about collision
+ * @param {Array} line2d - coordinates of initial and final subject positions
+ * @param {number} broadCellSize - size for broad collision search cell
+ * @param {Array} broadCells - array of all broad cells
+ * @returns {Object} - object with info about collision
+ */
+function getCollision({ line2d, broadCellSize, broadCells }) {
     let result = { newPos: line2d[1] };
     // if (line2d[1][0] > 975 || t) {
     //     debugger;
@@ -23,6 +62,10 @@ function getCollision(line2d, objectsSet) {
     if (line2d[0][0] === line2d[1][0] && line2d[0][1] === line2d[1][1]) {
         return result;
     }
+
+    // get broad cells relative to subject's movement
+    const objectsSet = getRelativeObjectsSet({ line2d, broadCellSize, broadCells });
+
     const intersections = [];
     // search for collisions with given objects
     for (let obj of objectsSet) {
@@ -45,7 +88,12 @@ function getCollision(line2d, objectsSet) {
                     continue;
                 }
                 // get x-coordinate
-                const x = (z - line2d[0][1]) * (line2d[0][1] - line2d[1][1]) / (line2d[0][0] - line2d[1][0]) + line2d[0][0];
+                let x;
+                if (line2d[0][0] === line2d[1][0]) {
+                    x = line2d[0][0];
+                } else {
+                    x = (z - line2d[0][1]) * (line2d[0][1] - line2d[1][1]) / (line2d[0][0] - line2d[1][0]) + line2d[0][0];
+                }
                 // check if intersection point lies inside obstacleLine
                 if ((obstacleLine[0][0] - x) * (obstacleLine[1][0] - x) > 0) {
                     continue;
@@ -64,13 +112,17 @@ function getCollision(line2d, objectsSet) {
                     continue;
                 }
                 // get z-coordinate
-                const z = (x - line2d[0][0]) * (line2d[0][0] - line2d[1][0]) / (line2d[0][1] - line2d[1][1]) + line2d[0][1];
+                let z;
+                if (line2d[0][1] === line2d[1][1]) {
+                    z = line2d[0][1];
+                } else {
+                    z = (x - line2d[0][0]) * (line2d[0][0] - line2d[1][0]) / (line2d[0][1] - line2d[1][1]) + line2d[0][1];
+                }
                 // check if intersection point lies inside obstacleLine
                 if ((obstacleLine[0][1] - z) * (obstacleLine[1][1] - z) > 0) {
                     continue;
                 }
                 lineIntersections.push({x, z, i});
-                // positionAfterIntersection = [x, line2d[1][1]];
             }
         }
         if (lineIntersections.length === 1) {
@@ -98,10 +150,8 @@ function getCollision(line2d, objectsSet) {
         }
     }
     if (intersections.length) {
-        let minDistancePointIndex = null;
-        if (intersections.length === 1) {
-            minDistancePointIndex = 0;
-        } else {
+        let minDistancePointIndex = 0;
+        if (intersections.length !== 1) {
             let minDistance = Infinity;
             for (let j = 0; j < intersections.length; j++) {
                 if (intersections[j].distanceFromPos < minDistance) {
@@ -119,6 +169,8 @@ function getCollision(line2d, objectsSet) {
             positionAfterIntersection = [intersectionPoint.x, line2d[1][1]];
         }
         result = {
+            obj: intersectionPoint.obj,
+            collisionPoint: [intersectionPoint.x, intersectionPoint.z],
             newPos: positionAfterIntersection
         };
     }
@@ -130,44 +182,32 @@ function getCollision(line2d, objectsSet) {
  * @param {number} broadCellSize - size for broad collision search cell
  * @param {Array} broadCells - array of all broad cells
  * @param {Array} line2d - coordinates of initial and final player positions
- * @returns {{newPos: Array}} - object with info about collision
+ * @returns {Array} - Array of objects with info about collisions
  */
-function getCollisionWrapper(broadCellSize, broadCells, line2d) {
-    // get broad cells relative to players movement
-    const relativeBroadCells = [
-        [
-            Math.floor(line2d[0][0] / broadCellSize),
-            Math.floor(line2d[0][1] / broadCellSize)
-        ], [
-            Math.floor(line2d[1][0] / broadCellSize),
-            Math.floor(line2d[1][1] / broadCellSize)
-        ]
-    ];
-    // if player moved to diagonal cell, include two adjacent cells
-    if (
-        relativeBroadCells[0][0] !== relativeBroadCells[1][0] &&
-        relativeBroadCells[0][1] !== relativeBroadCells[1][1]
-    ) {
-        relativeBroadCells.push(
-            [relativeBroadCells[0][0], relativeBroadCells[1][1]],
-            [relativeBroadCells[1][0], relativeBroadCells[0][1]]
-        );
-    }
-    const objectsSet = new Set();
-    for (let i = 0; i < relativeBroadCells.length; i++) {
-        const broadCellObjects = broadCells[relativeBroadCells[i][1]][relativeBroadCells[i][0]].objects;
-        for (let j = 0; j < broadCellObjects.length; j++) {
-            objectsSet.add(broadCellObjects[j]);
+function getCollisions(broadCellSize, broadCells, line2d) {
+    const firstCollision = getCollision({ line2d, broadCellSize, broadCells });
+    if (firstCollision.obj) {
+        // if collision was registered check if rebound also collides with smth (literally, corner cases)
+        const secondCollision = getCollision({
+            line2d: [firstCollision.collisionPoint, firstCollision.newPos],
+            broadCellSize, broadCells
+        });
+        if (secondCollision.obj) {
+            // if it does, stop right there (no need to check further collisions)
+            return [
+                firstCollision,
+                Object.assign(secondCollision, { newPos: secondCollision.collisionPoint })
+            ];
         }
     }
-    return getCollision(line2d, objectsSet);
+    return [firstCollision];
 }
 
 /**
- * Links collision detection method to level object
+ * Returns collision detection method
  * @param {Object} level - level description object
  * @param {number} broadCellSize - size for broad collision search cell
- * @returns {Object} - level description object with collision detection method
+ * @returns {Function} - collision detection method
  */
 export default function collision(level, { broadCellSize }) {
     const broadCells = [];
@@ -175,6 +215,7 @@ export default function collision(level, { broadCellSize }) {
     let y = 0;
     let j = 0;
 
+    // build broad cells array
     do {
         broadCells[j] = [];
         let nextY = Math.min(y + broadCellSize, level.boundaries[2]);
@@ -198,6 +239,7 @@ export default function collision(level, { broadCellSize }) {
         j++;
     } while (y < level.boundaries[2]);
 
+    // fill broad cells with corresponding objects
     for (let k = 0; k < level.objects.length; k++) {
         const obj = level.objects[k];
         if (obj.collides === false) {
@@ -213,8 +255,5 @@ export default function collision(level, { broadCellSize }) {
             }
         }
     }
-
-    level.getCollision = getCollisionWrapper.bind(level, broadCellSize, broadCells);
-
-    return level;
+    return getCollisions.bind(level, broadCellSize, broadCells);
 }

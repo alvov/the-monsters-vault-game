@@ -19,8 +19,14 @@ const level = {
         {
             name: 'test wall',
             type: 'wall',
-            size: [700, 200, 50],
+            size: [200, 200, 50],
             pos: [1000, 0, 1000]
+        },
+        {
+            name: 'test wall to make corner',
+            type: 'wall',
+            size: [50, 200, 200],
+            pos: [1125, 0, 925]
         },
         {
             name: 'test tree',
@@ -45,4 +51,6 @@ for (let i = 0; i < level.objects.length; i++) {
     ];
 }
 
-export default collision(level, { broadCellSize: 500 });
+level.getCollision = collision(level, { broadCellSize: 500 });
+
+export default level;

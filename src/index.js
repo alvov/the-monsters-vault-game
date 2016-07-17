@@ -2,15 +2,15 @@ require('./index.css');
 
 import { FPS, KEY_W, KEY_S, KEY_A, KEY_D, STEP } from './constants';
 import React from 'react';
-import { render } from 'react-dom';
-import { createStore } from 'redux';
+import ReactDOM from 'react-dom';
+import * as redux from 'redux';
 import { Provider } from 'react-redux'
 import Controls from './lib/Controls';
 import Loop from './lib/Loop';
 import Camera from './containers/Camera';
 import viewportApp from './reducers';
 
-var store = createStore(viewportApp);
+var store = redux.createStore(viewportApp);
 
 var controls = new Controls();
 
@@ -59,4 +59,4 @@ new Loop(frameRateCoefficient => {
     }
 }, FPS, true);
 
-render(<Provider store={store}><Camera/></Provider>, document.querySelector('.viewport'));
+ReactDOM.render(<Provider store={store}><Camera/></Provider>, document.querySelector('.viewport'));

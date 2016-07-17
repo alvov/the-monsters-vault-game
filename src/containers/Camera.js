@@ -17,7 +17,7 @@ Camera.propTypes = {
     viewAngle: PropTypes.arrayOf(PropTypes.number)
 };
 
-function select(state) {
+function mapStateToProps(state) {
     return {
         pos: state.pos,
         viewAngle: state.viewAngle,
@@ -25,4 +25,4 @@ function select(state) {
     }
 }
 
-export default connect(select)(Camera);
+export default connect(mapStateToProps)(Camera);

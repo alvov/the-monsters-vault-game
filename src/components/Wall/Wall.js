@@ -5,8 +5,10 @@ import React from 'react';
 import Plain from '../plain/Plain';
 
 // no support for rotated walls for now
-export default ({ pos, size, getTransformRule }) => {
-    const transformRule = getTransformRule({ pos });
+export default ({ pos, size, isVisible, getTransformRule }) => {
+    const transformRule = Object.assign(getTransformRule({ pos }), {
+        display: isVisible ? 'block' : 'none'
+    });
     // Front-Back-Left-Right-Top-Bottom
     return <div className="obj wall" style={transformRule}>
         <Plain pos={[0, -size[1] / 2, size[2] / 2]} size={size} angle={[0, 0, 0]} getTransformRule={getTransformRule}/>

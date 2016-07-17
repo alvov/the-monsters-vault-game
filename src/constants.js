@@ -5,3 +5,4 @@ export const KEY_A = 65;
 export const KEY_D = 68;
 export const STEP = 4;
 export const SENSITIVITY = 0.5;
+export const BROAD_CELL_SIZE = 500;

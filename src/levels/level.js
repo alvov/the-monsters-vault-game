@@ -1,7 +1,8 @@
-import collision from '../lib/collision.js';
+import Collision from '../lib/Collision.js';
 
 const level = {
     boundaries: [5000, null, 5000],
+    broadCellSize: 500,
     player: {
         pos: [0, 100, 0],
         angle: [135, 0, 0]
@@ -51,6 +52,6 @@ for (let i = 0; i < level.objects.length; i++) {
     ];
 }
 
-level.getCollision = collision(level, { broadCellSize: 500 });
+level.collision = new Collision(level);
 
 export default level;

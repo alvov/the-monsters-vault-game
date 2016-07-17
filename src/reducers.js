@@ -20,7 +20,7 @@ function viewAngle(state = level.player.angle, action) {
     }
 }
 
-function position(state = level.player.pos, action) {
+function playerPosition(state = level.player.pos, action) {
     switch(action.type) {
         case 'updatePlayerPos':
             let newPos = [];
@@ -34,7 +34,7 @@ function position(state = level.player.pos, action) {
                 }
                 newPos.push(newAxisPos);
             }
-            const collisions = level.getCollision([[state[0], state[2]], [newPos[0], newPos[2]]]);
+            const collisions = level.collision.getCollisions([[state[0], state[2]], [newPos[0], newPos[2]]]);
             // get last collision result as new player position
             const collisionReboundPos = collisions[collisions.length - 1].newPos;
             return [collisionReboundPos[0], newPos[1], collisionReboundPos[1]];
@@ -52,6 +52,6 @@ function objects(state = level.objects, action) {
 
 export default combineReducers({
     viewAngle,
-    pos: position,
+    pos: playerPosition,
     objects
 });

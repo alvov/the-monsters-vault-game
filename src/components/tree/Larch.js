@@ -3,11 +3,13 @@ require('components/obj/obj.css');
 import React from 'react';
 import Plain from '../plain/Plain';
 
-export default ({ pos, size, angle, getTransformRule }) => {
+export default ({ pos, size, angle, isVisible, getTransformRule }) => {
     const stemBg = '#816b5e';
     const crownBg = 'rgba(66, 139, 65, 0.7)';
     const crownSize = size[1] * 2;
-    const transformRule = getTransformRule({ pos, angle });
+    const transformRule = Object.assign(getTransformRule({ pos, angle }), {
+        display: isVisible ? 'block' : 'none'
+    });
     return <div className="obj" style={transformRule}>
         <Plain pos={[0, -size[1] / 2, 0]} size={size} angle={[0, 0, 0]} background={stemBg} getTransformRule={getTransformRule}/>
         <Plain pos={[0, -size[1] / 2, 0]} size={size} angle={[0, -90, 0]} background={stemBg} getTransformRule={getTransformRule}/>

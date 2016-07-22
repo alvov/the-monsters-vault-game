@@ -1,6 +1,9 @@
-.wall {
-    background: #b2adb2;
-}
-    .wall > div {
-        background: inherit;
-    }
+/*.wall {*/
+    /*background: #b2adb2;*/
+/*}*/
+    /*.wall > div {*/
+        /*background: inherit;*/
+    /*}*/
+    /*.wall > div:nth-child(1) {*/
+        /*background: blue;*/
+    /*}*/

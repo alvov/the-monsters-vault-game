@@ -4,7 +4,7 @@ webpackJsonp([1],{
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__constants__ = __webpack_require__(19);
+	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__constants__ = __webpack_require__(17);
 	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_redux__ = __webpack_require__(20);
 	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_redux___default = __WEBPACK_IMPORTED_MODULE_1_redux__ && __WEBPACK_IMPORTED_MODULE_1_redux__.__esModule ? function() { return __WEBPACK_IMPORTED_MODULE_1_redux__['default'] } : function() { return __WEBPACK_IMPORTED_MODULE_1_redux__; };
 	/* harmony import */ __webpack_require__.d(__WEBPACK_IMPORTED_MODULE_1_redux___default, 'a', __WEBPACK_IMPORTED_MODULE_1_redux___default);
@@ -82,7 +82,7 @@ webpackJsonp([1],{
 	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__plain_Plain__ = __webpack_require__(37);
 	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__wall_Wall__ = __webpack_require__(104);
 	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__tree_Larch__ = __webpack_require__(103);
-	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__constants__ = __webpack_require__(19);
+	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__constants__ = __webpack_require__(17);
 	__webpack_require__(25);
 	__webpack_require__(109);
 
@@ -121,11 +121,14 @@ webpackJsonp([1],{
 	            case 'wall':
 	                return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2__wall_Wall__["a" /* default */], {
 	                    key: i,
+	                    coords2d: object.coords2d,
 	                    pos: object.pos,
 	                    playerPos: pos,
 	                    isVisible: isVisible,
 	                    size: object.size,
-	                    getTransformRule: getTransformRule
+	                    background: object.background,
+	                    getTransformRule: getTransformRule,
+	                    getSpotLightBackground: getSpotLightBackground
 	                });
 	            case 'larch':
 	                return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3__tree_Larch__["a" /* default */], {
@@ -148,10 +151,18 @@ webpackJsonp([1],{
 	    );
 	};
 	Scene.propTypes = {
-	    pos: __WEBPACK_IMPORTED_MODULE_0_react__["PropTypes"].arrayOf(__WEBPACK_IMPORTED_MODULE_0_react__["PropTypes"].number),
-	    viewAngle: __WEBPACK_IMPORTED_MODULE_0_react__["PropTypes"].arrayOf(__WEBPACK_IMPORTED_MODULE_0_react__["PropTypes"].number),
-	    getTransformRule: __WEBPACK_IMPORTED_MODULE_0_react__["PropTypes"].func
+	    pos: __WEBPACK_IMPORTED_MODULE_0_react__["PropTypes"].arrayOf(__WEBPACK_IMPORTED_MODULE_0_react__["PropTypes"].number).isRequired,
+	    objects: __WEBPACK_IMPORTED_MODULE_0_react__["PropTypes"].arrayOf(__WEBPACK_IMPORTED_MODULE_0_react__["PropTypes"].object).isRequired,
+	    getTransformRule: __WEBPACK_IMPORTED_MODULE_0_react__["PropTypes"].number.isRequired
 	};
+
+	function getSpotLightBackground(pos, size) {
+	    if (size) {
+	        return `radial-gradient(${ size }px at ${ pos[0] }px ${ pos[1] }px, transparent, black)`;
+	    } else {
+	        return '';
+	    }
+	}
 
 	/* harmony default export */ exports["a"] = Scene;
 
@@ -207,27 +218,66 @@ webpackJsonp([1],{
 	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __WEBPACK_IMPORTED_MODULE_0_react__ && __WEBPACK_IMPORTED_MODULE_0_react__.__esModule ? function() { return __WEBPACK_IMPORTED_MODULE_0_react__['default'] } : function() { return __WEBPACK_IMPORTED_MODULE_0_react__; };
 	/* harmony import */ __webpack_require__.d(__WEBPACK_IMPORTED_MODULE_0_react___default, 'a', __WEBPACK_IMPORTED_MODULE_0_react___default);
 	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__plain_Plain__ = __webpack_require__(37);
+	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__constants__ = __webpack_require__(17);
 	__webpack_require__(25);
 	__webpack_require__(110);
 
 
 
 
+
 	// no support for rotated walls for now
-	/* harmony default export */ exports["a"] = ({ pos, size, isVisible, getTransformRule }) => {
+	/* harmony default export */ exports["a"] = ({ coords2d, pos, size, isVisible, playerPos, background, getTransformRule, getSpotLightBackground }) => {
 	    const transformRule = Object.assign(getTransformRule({ pos }), {
 	        display: isVisible ? 'block' : 'none'
 	    });
+
 	    // Front-Back-Left-Right-Top-Bottom
 	    return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
 	        'div',
-	        { className: 'obj wall', style: transformRule },
-	        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1__plain_Plain__["a" /* default */], { pos: [0, -size[1] / 2, size[2] / 2], size: size, angle: [0, 0, 0], getTransformRule: getTransformRule }),
-	        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1__plain_Plain__["a" /* default */], { pos: [0, -size[1] / 2, -size[2] / 2], size: size, angle: [0, 0, 0], getTransformRule: getTransformRule }),
-	        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1__plain_Plain__["a" /* default */], { pos: [-size[0] / 2, -size[1] / 2, 0], size: [size[2], size[1]], angle: [0, 90, 0], getTransformRule: getTransformRule }),
-	        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1__plain_Plain__["a" /* default */], { pos: [size[0] / 2, -size[1] / 2, 0], size: [size[2], size[1]], angle: [0, -90, 0], getTransformRule: getTransformRule }),
-	        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1__plain_Plain__["a" /* default */], { pos: [0, -size[1], 0], size: [size[0], size[2]], angle: [90, 0, 0], getTransformRule: getTransformRule }),
-	        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1__plain_Plain__["a" /* default */], { pos: [0, 0, 0], size: [size[0], size[2]], angle: [-90, 0, 0], getTransformRule: getTransformRule })
+	        { className: 'obj', style: transformRule },
+	        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1__plain_Plain__["a" /* default */], {
+	            pos: [0, -size[1] / 2, size[2] / 2],
+	            size: size,
+	            angle: [0, 0, 0],
+	            getTransformRule: getTransformRule,
+	            background: background + ' ' + getSpotLightBackground([playerPos[0] - coords2d[0][0], playerPos[1]], Math.max(0, __WEBPACK_IMPORTED_MODULE_2__constants__["e" /* BROAD_CELL_SIZE */] - Math.abs(playerPos[2] - coords2d[2][1])))
+	        }),
+	        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1__plain_Plain__["a" /* default */], {
+	            pos: [0, -size[1] / 2, -size[2] / 2],
+	            size: size,
+	            angle: [0, 0, 0],
+	            getTransformRule: getTransformRule,
+	            background: background + ' ' + getSpotLightBackground([playerPos[0] - coords2d[0][0], playerPos[1]], Math.max(0, __WEBPACK_IMPORTED_MODULE_2__constants__["e" /* BROAD_CELL_SIZE */] - Math.abs(playerPos[2] - coords2d[0][1])))
+	        }),
+	        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1__plain_Plain__["a" /* default */], {
+	            pos: [-size[0] / 2, -size[1] / 2, 0],
+	            size: [size[2], size[1]],
+	            angle: [0, -90, 0],
+	            getTransformRule: getTransformRule,
+	            background: background + ' ' + getSpotLightBackground([playerPos[2] - coords2d[0][1], playerPos[1]], Math.max(0, __WEBPACK_IMPORTED_MODULE_2__constants__["e" /* BROAD_CELL_SIZE */] - Math.abs(playerPos[0] - coords2d[0][0])))
+	        }),
+	        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1__plain_Plain__["a" /* default */], {
+	            pos: [size[0] / 2, -size[1] / 2, 0],
+	            size: [size[2], size[1]],
+	            angle: [0, -90, 0],
+	            getTransformRule: getTransformRule,
+	            background: background + ' ' + getSpotLightBackground([playerPos[2] - coords2d[0][1], playerPos[1]], Math.max(0, __WEBPACK_IMPORTED_MODULE_2__constants__["e" /* BROAD_CELL_SIZE */] - Math.abs(playerPos[0] - coords2d[1][0])))
+	        }),
+	        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1__plain_Plain__["a" /* default */], {
+	            pos: [0, -size[1], 0],
+	            size: [size[0], size[2]],
+	            angle: [90, 0, 0],
+	            getTransformRule: getTransformRule,
+	            background: background
+	        }),
+	        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1__plain_Plain__["a" /* default */], {
+	            pos: [0, 0, 0],
+	            size: [size[0], size[2]],
+	            angle: [-90, 0, 0],
+	            getTransformRule: getTransformRule,
+	            background: background
+	        })
 	    );
 	};
 
@@ -237,7 +287,7 @@ webpackJsonp([1],{
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__constants__ = __webpack_require__(19);
+	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__constants__ = __webpack_require__(17);
 	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react__ = __webpack_require__(8);
 	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react___default = __WEBPACK_IMPORTED_MODULE_1_react__ && __WEBPACK_IMPORTED_MODULE_1_react__.__esModule ? function() { return __WEBPACK_IMPORTED_MODULE_1_react__['default'] } : function() { return __WEBPACK_IMPORTED_MODULE_1_react__; };
 	/* harmony import */ __webpack_require__.d(__WEBPACK_IMPORTED_MODULE_1_react___default, 'a', __WEBPACK_IMPORTED_MODULE_1_react___default);
@@ -349,12 +399,14 @@ webpackJsonp([1],{
 	        name: 'test wall',
 	        type: 'wall',
 	        size: [200, 200, 50],
-	        pos: [1000, 0, 1000]
+	        pos: [1000, 0, 1000],
+	        background: '#b2adb2'
 	    }, {
 	        name: 'test wall to make corner',
 	        type: 'wall',
 	        size: [50, 200, 200],
-	        pos: [1125, 0, 925]
+	        pos: [1125, 0, 925],
+	        background: '#b2adb2'
 	    }, {
 	        name: 'test tree',
 	        type: 'larch',
@@ -367,9 +419,9 @@ webpackJsonp([1],{
 	for (let i = 0; i < level.objects.length; i++) {
 	    const obj = level.objects[i];
 	    // enlarge object for 1px each side to prevent "looking through walls"
-	    const sizeX = obj.size[0] + 2;
-	    const sizeZ = obj.size[2] + 2;
-	    obj.coords2d = [[obj.pos[0] - sizeX / 2, obj.pos[2] - sizeZ / 2], [obj.pos[0] + sizeX / 2, obj.pos[2] - sizeZ / 2], [obj.pos[0] + sizeX / 2, obj.pos[2] + sizeZ / 2], [obj.pos[0] - sizeX / 2, obj.pos[2] + sizeZ / 2]];
+	    const sizeXHalf = (obj.size[0] + 2) / 2;
+	    const sizeZHalf = (obj.size[2] + 2) / 2;
+	    obj.coords2d = [[obj.pos[0] - sizeXHalf, obj.pos[2] - sizeZHalf], [obj.pos[0] + sizeXHalf, obj.pos[2] - sizeZHalf], [obj.pos[0] + sizeXHalf, obj.pos[2] + sizeZHalf], [obj.pos[0] - sizeXHalf, obj.pos[2] + sizeZHalf]];
 	}
 
 	level.collision = new __WEBPACK_IMPORTED_MODULE_0__lib_Collision_js__["a" /* default */](level);
@@ -382,7 +434,7 @@ webpackJsonp([1],{
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__constants__ = __webpack_require__(19);
+	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__constants__ = __webpack_require__(17);
 
 
 	/**
@@ -660,7 +712,7 @@ webpackJsonp([1],{
 
 /***/ },
 
-/***/ 19:
+/***/ 17:
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -756,7 +808,7 @@ webpackJsonp([1],{
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__constants__ = __webpack_require__(19);
+	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__constants__ = __webpack_require__(17);
 
 
 	class Controls {

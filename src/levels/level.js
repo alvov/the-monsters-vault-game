@@ -21,13 +21,15 @@ const level = {
             name: 'test wall',
             type: 'wall',
             size: [200, 200, 50],
-            pos: [1000, 0, 1000]
+            pos: [1000, 0, 1000],
+            background: '#b2adb2'
         },
         {
             name: 'test wall to make corner',
             type: 'wall',
             size: [50, 200, 200],
-            pos: [1125, 0, 925]
+            pos: [1125, 0, 925],
+            background: '#b2adb2'
         },
         {
             name: 'test tree',
@@ -42,13 +44,13 @@ const level = {
 for (let i = 0; i < level.objects.length; i++) {
     const obj = level.objects[i];
     // enlarge object for 1px each side to prevent "looking through walls"
-    const sizeX = obj.size[0] + 2;
-    const sizeZ = obj.size[2] + 2;
+    const sizeXHalf = (obj.size[0] + 2) / 2;
+    const sizeZHalf = (obj.size[2] + 2) / 2;
     obj.coords2d = [
-        [obj.pos[0] - sizeX / 2, obj.pos[2] - sizeZ / 2],
-        [obj.pos[0] + sizeX / 2, obj.pos[2] - sizeZ / 2],
-        [obj.pos[0] + sizeX / 2, obj.pos[2] + sizeZ / 2],
-        [obj.pos[0] - sizeX / 2, obj.pos[2] + sizeZ / 2]
+        [obj.pos[0] - sizeXHalf, obj.pos[2] - sizeZHalf],
+        [obj.pos[0] + sizeXHalf, obj.pos[2] - sizeZHalf],
+        [obj.pos[0] + sizeXHalf, obj.pos[2] + sizeZHalf],
+        [obj.pos[0] - sizeXHalf, obj.pos[2] + sizeZHalf]
     ];
 }
 

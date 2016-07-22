@@ -39,11 +39,14 @@ const Scene = ({ pos, objects, getTransformRule }) => {
             case 'wall':
                 return <Wall
                     key={i}
+                    coords2d={object.coords2d}
                     pos={object.pos}
                     playerPos={pos}
                     isVisible={isVisible}
                     size={object.size}
+                    background={object.background}
                     getTransformRule={getTransformRule}
+                    getSpotLightBackground={getSpotLightBackground}
                 />;
             case 'larch':
                 return <Larch
@@ -64,9 +67,17 @@ const Scene = ({ pos, objects, getTransformRule }) => {
     </div>;
 };
 Scene.propTypes = {
-    pos: PropTypes.arrayOf(PropTypes.number),
-    viewAngle: PropTypes.arrayOf(PropTypes.number),
-    getTransformRule: PropTypes.func
+    pos: PropTypes.arrayOf(PropTypes.number).isRequired,
+    objects: PropTypes.arrayOf(PropTypes.object).isRequired,
+    getTransformRule: PropTypes.number.isRequired
 };
+
+function getSpotLightBackground(pos, size) {
+    if (size) {
+        return `radial-gradient(${size}px at ${pos[0]}px ${pos[1]}px, transparent, black)`;
+    } else {
+        return '';
+    }
+}
 
 export default Scene;

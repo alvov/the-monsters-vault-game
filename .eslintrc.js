@@ -34,7 +34,7 @@ module.exports = {
         'no-unexpected-multiline': 2,
         'no-unreachable': 2,
         'use-isnan': 2,
-        'valid-jsdoc': 2,
+        'valid-jsdoc': [2, { requireParamDescription: false, requireReturnDescription: false }],
         'valid-typeof': 2,
 
         'arrow-body-style': 2,

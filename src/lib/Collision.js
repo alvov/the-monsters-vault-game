@@ -35,8 +35,8 @@ export default class Collision {
      */
     getCollisions(line2d) {
         const firstCollision = this.getCollision(line2d);
-        if (firstCollision.obj) {
-            // if collision was registered check if rebound also collides with smth (literally, corner cases)
+        if (firstCollision.obj && !Collision.vectorsEqual2D(firstCollision.collisionPoint, firstCollision.newPos)) {
+            // if collision was registered and we didn't stop there, check if rebound also collides with smth
             const secondCollision = this.getCollision([firstCollision.collisionPoint, firstCollision.newPos]);
             if (secondCollision.obj) {
                 // if it does, stop right there (no need to check further collisions)
@@ -72,10 +72,6 @@ export default class Collision {
         for (let obj of objectsSet) {
             const lineIntersections = [];
             for (let i = 0; i < 4; i++) {
-                // break, if we've already found maximum number of possible intersections
-                if (lineIntersections.length === 2) {
-                    break;
-                }
                 const obstacleLine = [obj.coords2d[i], obj.coords2d[i < 3 ? i + 1 : 0]];
                 // check if obstacle line lies along axis X (has constant Z-coord)
                 if (obstacleLine[0][1] === obstacleLine[1][1]) {
@@ -93,14 +89,19 @@ export default class Collision {
                     if (line2d[0][0] === line2d[1][0]) {
                         x = line2d[0][0];
                     } else {
-                        x = (z - line2d[0][1]) * (line2d[0][1] - line2d[1][1]) / (line2d[0][0] - line2d[1][0]) + line2d[0][0];
+                        x = (z - line2d[0][1]) * (line2d[0][0] - line2d[1][0]) / (line2d[0][1] - line2d[1][1]) + line2d[0][0];
                     }
                     // check if intersection point lies inside obstacleLine
                     if ((obstacleLine[0][0] - x) * (obstacleLine[1][0] - x) > 0) {
                         continue;
                     }
-                    lineIntersections.push({ x, z, i });
-                    // positionAfterIntersection = [line2d[1][0], z];
+                    lineIntersections.push({
+                        x,
+                        z,
+                        obj,
+                        wallIndex: i,
+                        distanceFromPos: Collision.getDistance(line2d[0], [x, z])
+                    });
                 // check if obstacle line lies along axis Z (has constant X-coord)
                 } else if (obstacleLine[0][0] === obstacleLine[1][0]) {
                     const x = obstacleLine[0][0];
@@ -117,63 +118,115 @@ export default class Collision {
                     if (line2d[0][1] === line2d[1][1]) {
                         z = line2d[0][1];
                     } else {
-                        z = (x - line2d[0][0]) * (line2d[0][0] - line2d[1][0]) / (line2d[0][1] - line2d[1][1]) + line2d[0][1];
+                        z = (x - line2d[0][0]) * (line2d[0][1] - line2d[1][1]) / (line2d[0][0] - line2d[1][0]) + line2d[0][1];
                     }
                     // check if intersection point lies inside obstacleLine
                     if ((obstacleLine[0][1] - z) * (obstacleLine[1][1] - z) > 0) {
                         continue;
                     }
-                    lineIntersections.push({x, z, i});
-                }
-            }
-            if (lineIntersections.length === 1) {
-                // check if end position is inside object
-                if (
-                    line2d[1][0] >= obj.coords2d[0][0] && line2d[1][0] <= obj.coords2d[1][0] &&
-                    line2d[1][1] >= obj.coords2d[0][1] && line2d[1][1] <= obj.coords2d[3][1]
-                ) {
-                    intersections.push(Object.assign(lineIntersections[0], {
+                    lineIntersections.push({
+                        x,
+                        z,
                         obj,
-                        distanceFromPos: Collision.getDistance(line2d[0], [lineIntersections[0].x, lineIntersections[0].z])
-                    }));
-                }
-            } else if (lineIntersections.length === 2) {
-                // check if initial position is in the corner
-                if (
-                    lineIntersections[0].x !== lineIntersections[1].x ||
-                    lineIntersections[0].z !== lineIntersections[1].z
-                ) {
-                    for (let j = 0; j < 2; j++) {
-                        lineIntersections[j].distanceFromPos = Collision.getDistance(line2d[0], [lineIntersections[j].x, lineIntersections[j].z]);
-                        intersections.push(Object.assign(lineIntersections[j], { obj }));
-                    }
+                        wallIndex: i,
+                        distanceFromPos: Collision.getDistance(line2d[0], [x, z])
+                    });
                 }
             }
+            intersections.push(...lineIntersections);
         }
         if (intersections.length) {
-            let minDistancePointIndex = 0;
+            const minDistanceIntersections = [];
             if (intersections.length !== 1) {
                 let minDistance = Infinity;
                 for (let j = 0; j < intersections.length; j++) {
                     if (intersections[j].distanceFromPos < minDistance) {
                         minDistance = intersections[j].distanceFromPos;
-                        minDistancePointIndex = j;
                     }
                 }
-            }
-            const intersectionPoint = intersections[minDistancePointIndex];
-            let positionAfterIntersection = null;
-            // if obstacle line lies along axis X (has constant Z-coord)
-            if (intersectionPoint.i === 0 || intersectionPoint.i === 2) {
-                positionAfterIntersection = [line2d[1][0], intersectionPoint.z];
+                for (let j = 0; j < intersections.length; j++) {
+                    if (intersections[j].distanceFromPos === minDistance) {
+                        minDistanceIntersections.push(intersections[j]);
+                    }
+                }
             } else {
-                positionAfterIntersection = [intersectionPoint.x, line2d[1][1]];
+                minDistanceIntersections.push(intersections[0]);
             }
-            result = {
-                obj: intersectionPoint.obj,
-                collisionPoint: [intersectionPoint.x, intersectionPoint.z],
-                newPos: positionAfterIntersection
-            };
+            if (minDistanceIntersections.length > 1) {
+                const intersectionPoint = [minDistanceIntersections[0].x, minDistanceIntersections[0].z];
+                const quadrants = [{
+                    add: [
+                        line2d[1][0] >= intersectionPoint[0] ? 1 : -1,
+                        line2d[1][1] >= intersectionPoint[1] ? 1 : -1
+                    ]
+                }];
+                quadrants.push({ add: [-quadrants[0].add[0], quadrants[0].add[1]] });
+                quadrants.push({ add: [quadrants[0].add[0], -quadrants[0].add[1]] });
+                for (let i = 0; i < quadrants.length; i++) {
+                    quadrants[i].point = Collision.vectorsAdd2D(intersectionPoint, quadrants[i].add);
+                }
+                for (let i = 0; i < minDistanceIntersections.length; i++) {
+                    for (let j = 0; j < quadrants.length; j++) {
+                        if (quadrants[j].containedIn) {
+                            continue;
+                        }
+                        if (Collision.contains(minDistanceIntersections[i].obj, quadrants[j].point)) {
+                            quadrants[j].containedIn = minDistanceIntersections[i].obj;
+                        }
+                    }
+                }
+                // if quadrant which contains the movement endpoint is blocked by wall,
+                // check where to go next
+                if (quadrants[0].containedIn) {
+                    result = {
+                        obj: quadrants[0].containedIn
+                    };
+                    // if the two adjacent quadrants are also blocked, stay at the collision point
+                    if (quadrants[1].containedIn && quadrants[2].containedIn) {
+                        result.collisionPoint = Collision.vectorsAdd2D(intersectionPoint, [-quadrants[0].add[0], -quadrants[0].add[1]]);
+                        result.newPos = result.collisionPoint;
+                    // if one of the adjacent quadrants is empty of obstacles, go there
+                    } else if (quadrants[1].containedIn) {
+                        result.collisionPoint = [intersectionPoint[0], intersectionPoint[1] + quadrants[2].add[1]];
+                        result.newPos = [line2d[1][0], result.collisionPoint[1]];
+                    } else if (quadrants[2].containedIn) {
+                        result.collisionPoint = [intersectionPoint[0] + quadrants[1].add[0], intersectionPoint[1]];
+                        result.newPos = [result.collisionPoint[0], line2d[1][1]];
+                    // if the two adjacent quadrants are empty, chose between them
+                    } else {
+                        result.collisionPoint = Collision.vectorsAdd2D(intersectionPoint, [-quadrants[0].add[0], -quadrants[0].add[1]]);
+                        if (Math.abs(line2d[1][0] - result.collisionPoint[0]) >= Math.abs(line2d[1][1] - result.collisionPoint[1])) {
+                            result.newPos = [result.collisionPoint[0], line2d[1][1]];
+                        } else {
+                            result.newPos = [line2d[1][0], result.collisionPoint[1]];
+                        }
+                    }
+                }
+            } else {
+                let positionAfterIntersection = null;
+                const intersection = minDistanceIntersections[0];
+                const collisionPoint = [intersection.x, intersection.z];
+                // if obstacle line lies along axis X (has constant Z-coord)
+                if (intersection.wallIndex === 0) {
+                    positionAfterIntersection = [line2d[1][0], intersection.z - 1];
+                    collisionPoint[1] -= 1;
+                } else if (intersection.wallIndex === 2) {
+                    positionAfterIntersection = [line2d[1][0], intersection.z + 1];
+                    collisionPoint[1] += 1;
+                // if obstacle line lies along axis Z (has constant X-coord)
+                } else if (intersection.wallIndex === 1) {
+                    positionAfterIntersection = [intersection.x + 1, line2d[1][1]];
+                    collisionPoint[0] += 1;
+                } else {
+                    positionAfterIntersection = [intersection.x - 1, line2d[1][1]];
+                    collisionPoint[0] -= 1;
+                }
+                result = {
+                    obj: intersection.obj,
+                    collisionPoint,
+                    newPos: positionAfterIntersection
+                };
+            }
         }
         return result;
     }
@@ -255,11 +308,42 @@ export default class Collision {
 
     /**
      * Returns distance between two points in 2d space
-     * @param {Array} point1 - coordinates of point 1
-     * @param {Array} point2 - coordinates of point 2
-     * @returns {number} - distance
+     * @param {Array} point1
+     * @param {Array} point2
+     * @returns {number}
      */
     static getDistance(point1, point2) {
         return Math.sqrt(Math.pow(point1[0] - point2[0], 2) + Math.pow(point1[1] - point2[1], 2));
+    }
+
+    /**
+     * Returns true if point lies inside given object
+     * @param {Object} obj
+     * @param {Array} point
+     * @returns {boolean}
+     */
+    static contains(obj, point) {
+        return point[0] >= obj.coords2d[0][0] && point[0] <= obj.coords2d[1][0] &&
+            point[1] >= obj.coords2d[0][1] && point[1] <= obj.coords2d[3][1];
+    }
+
+    /**
+     * Returns 2d vectors sum
+     * @param {Array} v1
+     * @param {Array} v2
+     * @returns {Array}
+     */
+    static vectorsAdd2D(v1, v2) {
+        return [v1[0] + v2[0], v1[1] + v2[1]];
+    }
+
+    /**
+     * Retruns true if two 2d vectors are identical
+     * @param {Array} v1
+     * @param {Array} v2
+     * @returns {boolean}
+     */
+    static vectorsEqual2D(v1, v2) {
+        return v1[0] === v2[0] && v1[1] === v2[1];
     }
 }

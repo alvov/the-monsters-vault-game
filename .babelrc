@@ -1,9 +1,0 @@
-{
-  "presets": ["react"],
-  "plugins": [
-    "syntax-object-rest-spread",
-    "transform-object-rest-spread",
-    "syntax-export-extensions",
-    "transform-export-extensions"
-  ]
-}

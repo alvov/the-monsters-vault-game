@@ -3,9 +3,8 @@ var webpack = require('webpack');
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 module.exports = {
-    context: path.join(__dirname, 'src'),
     entry: {
-        bundle: 'index.js',
+        bundle: './src/index.js',
         vendor: ['react', 'react-dom', 'redux', 'react-redux']
     },
     output: {
@@ -25,7 +24,16 @@ module.exports = {
             {
                 test: /\.js$/,
                 loader: 'babel-loader',
-                exclude: /node_modules/
+                exclude: /node_modules/,
+                query: {
+                    'presets': ['react'],
+                    'plugins': [
+                        'syntax-object-rest-spread',
+                        'transform-object-rest-spread',
+                        'syntax-export-extensions',
+                        'transform-export-extensions'
+                    ]
+                }
             },
             {
                 test: /\.css$/,
@@ -33,9 +41,6 @@ module.exports = {
                 exclude: /node_modules/
             }
         ]
-    },
-    cssnext: {
-        browsers: 'last 1 version'
     },
     plugins: [
         new webpack.optimize.CommonsChunkPlugin({

@@ -1,8 +1,7 @@
-import Collision from '../lib/Collision.js';
+import Collision from '../lib/Collision';
 
 const level = {
     boundaries: [5000, null, 5000],
-    broadCellSize: 500,
     player: {
         pos: [0, 100, 0],
         angle: [135, 0, 0]
@@ -44,8 +43,8 @@ const level = {
 for (let i = 0; i < level.objects.length; i++) {
     const obj = level.objects[i];
     // enlarge object for 1px each side to prevent "looking through walls"
-    const sizeXHalf = (obj.size[0] + 2) / 2;
-    const sizeZHalf = (obj.size[2] + 2) / 2;
+    const sizeXHalf = obj.size[0] / 2;
+    const sizeZHalf = obj.size[2] / 2;
     obj.coords2d = [
         [obj.pos[0] - sizeXHalf, obj.pos[2] - sizeZHalf],
         [obj.pos[0] + sizeXHalf, obj.pos[2] - sizeZHalf],

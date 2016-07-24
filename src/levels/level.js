@@ -20,15 +20,13 @@ const level = {
             name: 'test wall',
             type: 'wall',
             size: [200, 200, 50],
-            pos: [1000, 0, 1000],
-            background: '#b2adb2'
+            pos: [1000, 0, 1000]
         },
         {
             name: 'test wall to make corner',
             type: 'wall',
             size: [50, 200, 200],
-            pos: [1125, 0, 925],
-            background: '#b2adb2'
+            pos: [1125, 0, 925]
         },
         {
             name: 'test tree',

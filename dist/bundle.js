@@ -126,7 +126,6 @@ webpackJsonp([1],{
 	                    playerPos: pos,
 	                    isVisible: isVisible,
 	                    size: object.size,
-	                    background: object.background,
 	                    getTransformRule: getTransformRule,
 	                    getSpotLightBackground: getSpotLightBackground
 	                });
@@ -220,63 +219,50 @@ webpackJsonp([1],{
 	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__plain_Plain__ = __webpack_require__(37);
 	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__constants__ = __webpack_require__(17);
 	__webpack_require__(25);
-	__webpack_require__(110);
 
 
 
 
+
+	const background = 'url(src/components/wall/wall.jpg)';
 
 	// no support for rotated walls for now
-	/* harmony default export */ exports["a"] = ({ coords2d, pos, size, isVisible, playerPos, background, getTransformRule, getSpotLightBackground }) => {
+	/* harmony default export */ exports["a"] = ({ coords2d, pos, size, isVisible, playerPos, getTransformRule, getSpotLightBackground }) => {
 	    const transformRule = Object.assign(getTransformRule({ pos }), {
 	        display: isVisible ? 'block' : 'none'
 	    });
 
-	    // Front-Back-Left-Right-Top-Bottom
+	    // Front-Back-Left-Right
 	    return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
 	        'div',
-	        { className: 'obj', style: transformRule },
+	        { className: 'wall obj', style: transformRule },
 	        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1__plain_Plain__["a" /* default */], {
 	            pos: [0, -size[1] / 2, size[2] / 2],
 	            size: size,
 	            angle: [0, 0, 0],
 	            getTransformRule: getTransformRule,
-	            background: background + ' ' + getSpotLightBackground([playerPos[0] - coords2d[0][0], playerPos[1]], Math.max(0, __WEBPACK_IMPORTED_MODULE_2__constants__["e" /* BROAD_CELL_SIZE */] - Math.abs(playerPos[2] - coords2d[2][1])))
+	            background: getSpotLightBackground([playerPos[0] - coords2d[0][0], playerPos[1]], Math.max(0, __WEBPACK_IMPORTED_MODULE_2__constants__["e" /* BROAD_CELL_SIZE */] - Math.abs(playerPos[2] - coords2d[2][1]))) + ', ' + background
 	        }),
 	        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1__plain_Plain__["a" /* default */], {
 	            pos: [0, -size[1] / 2, -size[2] / 2],
 	            size: size,
 	            angle: [0, 0, 0],
 	            getTransformRule: getTransformRule,
-	            background: background + ' ' + getSpotLightBackground([playerPos[0] - coords2d[0][0], playerPos[1]], Math.max(0, __WEBPACK_IMPORTED_MODULE_2__constants__["e" /* BROAD_CELL_SIZE */] - Math.abs(playerPos[2] - coords2d[0][1])))
+	            background: getSpotLightBackground([playerPos[0] - coords2d[0][0], playerPos[1]], Math.max(0, __WEBPACK_IMPORTED_MODULE_2__constants__["e" /* BROAD_CELL_SIZE */] - Math.abs(playerPos[2] - coords2d[0][1]))) + ', ' + background
 	        }),
 	        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1__plain_Plain__["a" /* default */], {
 	            pos: [-size[0] / 2, -size[1] / 2, 0],
 	            size: [size[2], size[1]],
 	            angle: [0, -90, 0],
 	            getTransformRule: getTransformRule,
-	            background: background + ' ' + getSpotLightBackground([playerPos[2] - coords2d[0][1], playerPos[1]], Math.max(0, __WEBPACK_IMPORTED_MODULE_2__constants__["e" /* BROAD_CELL_SIZE */] - Math.abs(playerPos[0] - coords2d[0][0])))
+	            background: getSpotLightBackground([playerPos[2] - coords2d[0][1], playerPos[1]], Math.max(0, __WEBPACK_IMPORTED_MODULE_2__constants__["e" /* BROAD_CELL_SIZE */] - Math.abs(playerPos[0] - coords2d[0][0]))) + ', ' + background
 	        }),
 	        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1__plain_Plain__["a" /* default */], {
 	            pos: [size[0] / 2, -size[1] / 2, 0],
 	            size: [size[2], size[1]],
 	            angle: [0, -90, 0],
 	            getTransformRule: getTransformRule,
-	            background: background + ' ' + getSpotLightBackground([playerPos[2] - coords2d[0][1], playerPos[1]], Math.max(0, __WEBPACK_IMPORTED_MODULE_2__constants__["e" /* BROAD_CELL_SIZE */] - Math.abs(playerPos[0] - coords2d[1][0])))
-	        }),
-	        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1__plain_Plain__["a" /* default */], {
-	            pos: [0, -size[1], 0],
-	            size: [size[0], size[2]],
-	            angle: [90, 0, 0],
-	            getTransformRule: getTransformRule,
-	            background: background
-	        }),
-	        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1__plain_Plain__["a" /* default */], {
-	            pos: [0, 0, 0],
-	            size: [size[0], size[2]],
-	            angle: [-90, 0, 0],
-	            getTransformRule: getTransformRule,
-	            background: background
+	            background: getSpotLightBackground([playerPos[2] - coords2d[0][1], playerPos[1]], Math.max(0, __WEBPACK_IMPORTED_MODULE_2__constants__["e" /* BROAD_CELL_SIZE */] - Math.abs(playerPos[0] - coords2d[1][0]))) + ', ' + background
 	        })
 	    );
 	};
@@ -398,14 +384,12 @@ webpackJsonp([1],{
 	        name: 'test wall',
 	        type: 'wall',
 	        size: [200, 200, 50],
-	        pos: [1000, 0, 1000],
-	        background: '#b2adb2'
+	        pos: [1000, 0, 1000]
 	    }, {
 	        name: 'test wall to make corner',
 	        type: 'wall',
 	        size: [50, 200, 200],
-	        pos: [1125, 0, 925],
-	        background: '#b2adb2'
+	        pos: [1125, 0, 925]
 	    }, {
 	        name: 'test tree',
 	        type: 'larch',
@@ -782,13 +766,6 @@ webpackJsonp([1],{
 /***/ },
 
 /***/ 109:
-/***/ function(module, exports) {
-
-	// removed by extract-text-webpack-plugin
-
-/***/ },
-
-/***/ 110:
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin

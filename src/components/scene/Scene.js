@@ -44,7 +44,6 @@ const Scene = ({ pos, objects, getTransformRule }) => {
                     playerPos={pos}
                     isVisible={isVisible}
                     size={object.size}
-                    background={object.background}
                     getTransformRule={getTransformRule}
                     getSpotLightBackground={getSpotLightBackground}
                 />;

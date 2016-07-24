@@ -26,12 +26,3 @@ html, body {
 .scene {
     transform: translate3d(0px, 0px, 0px);
 }
-/*.wall {*/
-    /*background: #b2adb2;*/
-/*}*/
-    /*.wall > div {*/
-        /*background: inherit;*/
-    /*}*/
-    /*.wall > div:nth-child(1) {*/
-        /*background: blue;*/
-    /*}*/

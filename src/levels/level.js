@@ -1,3 +1,4 @@
+import { BROAD_CELL_SIZE } from '../constants';
 import Collision from '../lib/Collision';
 
 const level = {
@@ -7,15 +8,6 @@ const level = {
         angle: [135, 0, 0]
     },
     objects: [
-        {
-            name: 'floor',
-            type: 'plain',
-            size: [5000, 0, 5000],
-            pos: [2500, 0, 2500],
-            angle: [90, 0, 0],
-            background: '#cfa',
-            collides: false
-        },
         {
             name: 'test wall',
             type: 'wall',
@@ -29,13 +21,32 @@ const level = {
             pos: [1125, 0, 925]
         },
         {
-            name: 'test tree',
-            type: 'larch',
-            size: [50, 100, 50],
-            pos: [1500, 0, 1500]
+            name: 'first wall to see',
+            type: 'wall',
+            size: [200, 200, 50],
+            pos: [200, 0, 425]
         }
+        // {
+        //     name: 'test tree',
+        //     type: 'larch',
+        //     size: [50, 100, 50],
+        //     pos: [1500, 0, 1500]
+        // }
     ]
 };
+
+// generate floor panels
+for (let i = 0; i < level.boundaries[2]; i += BROAD_CELL_SIZE) {
+    for (let j = 0; j < level.boundaries[0]; j += BROAD_CELL_SIZE) {
+        level.objects.push({
+            name: 'floor tile ' + i + '_' + j,
+            type: 'floor',
+            size: [BROAD_CELL_SIZE, 0, BROAD_CELL_SIZE],
+            pos: [j + BROAD_CELL_SIZE / 2, 0, i + BROAD_CELL_SIZE / 2],
+            collides: false
+        });
+    }
+}
 
 // calculate 2d points coordinates for level objects
 for (let i = 0; i < level.objects.length; i++) {

@@ -3,18 +3,19 @@ require('./scene.css');
 
 import React, { PropTypes } from 'react';
 import Plain from '../plain/Plain';
+import Floor from '../floor/Floor';
 import Wall from '../wall/Wall';
 import Larch from '../tree/Larch';
 import { BROAD_CELL_SIZE } from '../../constants';
 
-const Scene = ({ pos, objects, getTransformRule }) => {
+const Scene = ({ pos, objects, getTransformRule, getSpotLightBackground }) => {
     const transformRule = getTransformRule({
         pos: [-pos[0], pos[1], -pos[2]]
     });
     const playerCell = [Math.floor(pos[0] / BROAD_CELL_SIZE), Math.floor(pos[2] / BROAD_CELL_SIZE)];
     const renderedObjects = objects.map((object, i) => {
         let isVisible = false;
-        if (object.type !== 'plain') {
+        if (object.collides) {
             for (let k = 0; k < object.broadCells.length; k++) {
                 if (
                     Math.abs(playerCell[0] - object.broadCells[k][0]) < 2 &&
@@ -24,11 +25,18 @@ const Scene = ({ pos, objects, getTransformRule }) => {
                     break;
                 }
             }
+        } else {
+            if (
+                Math.abs(pos[0] - object.pos[0]) < 2 * BROAD_CELL_SIZE &&
+                Math.abs(pos[2] - object.pos[2]) < 2 * BROAD_CELL_SIZE
+            ) {
+                isVisible = true;
+            }
         }
         switch(object.type) {
             case 'plain':
                 return <Plain
-                    key={i}
+                    key={i + object.name}
                     pos={object.pos}
                     playerPos={pos}
                     size={[object.size[0], object.size[2]]}
@@ -36,9 +44,20 @@ const Scene = ({ pos, objects, getTransformRule }) => {
                     background={object.background}
                     getTransformRule={getTransformRule}
                 />;
+            case 'floor':
+                return <Floor
+                    key={object.name}
+                    coords2d={object.coords2d}
+                    pos={object.pos}
+                    playerPos={pos}
+                    isVisible={isVisible}
+                    size={object.size}
+                    getTransformRule={getTransformRule}
+                    getSpotLightBackground={getSpotLightBackground}
+                />;
             case 'wall':
                 return <Wall
-                    key={i}
+                    key={i + object.name}
                     coords2d={object.coords2d}
                     pos={object.pos}
                     playerPos={pos}
@@ -49,7 +68,7 @@ const Scene = ({ pos, objects, getTransformRule }) => {
                 />;
             case 'larch':
                 return <Larch
-                    key={i}
+                    key={i + object.name}
                     pos={object.pos}
                     playerPos={pos}
                     isVisible={isVisible}
@@ -68,15 +87,7 @@ const Scene = ({ pos, objects, getTransformRule }) => {
 Scene.propTypes = {
     pos: PropTypes.arrayOf(PropTypes.number).isRequired,
     objects: PropTypes.arrayOf(PropTypes.object).isRequired,
-    getTransformRule: PropTypes.number.isRequired
+    getTransformRule: PropTypes.func.isRequired
 };
-
-function getSpotLightBackground(pos, size) {
-    if (size) {
-        return `radial-gradient(${size}px at ${pos[0]}px ${pos[1]}px, transparent, black)`;
-    } else {
-        return '';
-    }
-}
 
 export default Scene;

@@ -12,3 +12,11 @@ export function getTransformRule(params) {
     }
     return { transform };
 }
+
+export function getSpotLightBackground(pos, size) {
+    if (size) {
+        return `radial-gradient(${size}px at ${pos[0]}px ${pos[1]}px, transparent, black)`;
+    } else {
+        return '';
+    }
+}

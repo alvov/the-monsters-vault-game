@@ -10,9 +10,12 @@ import Loop from './lib/Loop';
 import Camera from './containers/Camera';
 import viewportApp from './reducers';
 
-var store = redux.createStore(viewportApp);
+const store = redux.createStore(viewportApp);
 
-var controls = new Controls();
+const viewportNode = document.getElementById('viewport');
+var controls = new Controls({
+    pointerLockerNode: viewportNode
+});
 
 new Loop(frameRateCoefficient => {
     const pointerDelta = controls.getPointerDelta();
@@ -59,4 +62,4 @@ new Loop(frameRateCoefficient => {
     }
 }, FPS, true);
 
-ReactDOM.render(<Provider store={store}><Camera/></Provider>, document.querySelector('.viewport'));
+ReactDOM.render(<Provider store={store}><Camera/></Provider>, viewportNode);

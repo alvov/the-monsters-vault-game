@@ -1,7 +1,7 @@
 import { KEY_W, KEY_S, KEY_A, KEY_D } from '../constants';
 
 export default class Controls {
-    constructor() {
+    constructor({ pointerLockerNode }) {
         this.keyPressed = {
             [KEY_W]: false,
             [KEY_S]: false,
@@ -9,8 +9,6 @@ export default class Controls {
             [KEY_D]: false
         };
         this.stack = new Set();
-        let lastCursorPos = null;
-        this.pointerDelta = { x: 0, y: 0 };
 
         document.addEventListener('keydown', e => {
             if (e.keyCode in this.keyPressed) {
@@ -25,16 +23,42 @@ export default class Controls {
             }
         });
 
-        document.addEventListener('mousemove', e => {
-            if (lastCursorPos) {
-                this.pointerDelta.x += lastCursorPos.x - e.clientX;
-                this.pointerDelta.y += lastCursorPos.y - e.clientY;
-            }
-            lastCursorPos = {
-                x: e.clientX,
-                y: e.clientY
-            };
-        });
+        this.pointerDelta = { x: 0, y: 0 };
+
+        if (pointerLockerNode.requestPointerLock) {
+            this.updatePointerDelta = function(e) {
+                this.pointerDelta.x -= e.movementX;
+                this.pointerDelta.y -= e.movementY;
+            }.bind(this);
+
+            document.addEventListener('pointerlockchange', () => {
+                if (document.pointerLockElement === pointerLockerNode) {
+                    pointerLockerNode.addEventListener('mousemove', this.updatePointerDelta);
+                } else {
+                    pointerLockerNode.removeEventListener('mousemove', this.updatePointerDelta);
+                }
+            });
+
+            pointerLockerNode.addEventListener('click', e => {
+                pointerLockerNode.requestPointerLock();
+            });
+
+        } else {
+            let lastCursorPos = null;
+
+            this.updatePointerDelta = function() {
+                if (lastCursorPos) {
+                    this.pointerDelta.x += lastCursorPos.x - e.clientX;
+                    this.pointerDelta.y += lastCursorPos.y - e.clientY;
+                }
+                lastCursorPos = {
+                    x: e.clientX,
+                    y: e.clientY
+                };
+            }.bind(this);
+
+            document.addEventListener('mousemove', this.updatePointerDelta);
+        }
     }
 
     getPointerDelta() {

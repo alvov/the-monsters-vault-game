@@ -344,9 +344,12 @@ webpackJsonp([1],{
 
 
 
-	var store = __WEBPACK_IMPORTED_MODULE_3_redux__.createStore(__WEBPACK_IMPORTED_MODULE_8__reducers__["a" /* default */]);
+	const store = __WEBPACK_IMPORTED_MODULE_3_redux__.createStore(__WEBPACK_IMPORTED_MODULE_8__reducers__["a" /* default */]);
 
-	var controls = new __WEBPACK_IMPORTED_MODULE_5__lib_Controls__["a" /* default */]();
+	const viewportNode = document.getElementById('viewport');
+	var controls = new __WEBPACK_IMPORTED_MODULE_5__lib_Controls__["a" /* default */]({
+	    pointerLockerNode: viewportNode
+	});
 
 	new __WEBPACK_IMPORTED_MODULE_6__lib_Loop__["a" /* default */](frameRateCoefficient => {
 	    const pointerDelta = controls.getPointerDelta();
@@ -397,7 +400,7 @@ webpackJsonp([1],{
 	    __WEBPACK_IMPORTED_MODULE_4_react_redux__["Provider"],
 	    { store: store },
 	    __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_7__containers_Camera__["a" /* default */], null)
-	), document.querySelector('.viewport'));
+	), viewportNode);
 
 /***/ },
 
@@ -1005,7 +1008,7 @@ webpackJsonp([1],{
 
 
 	class Controls {
-	    constructor() {
+	    constructor({ pointerLockerNode }) {
 	        this.keyPressed = {
 	            [__WEBPACK_IMPORTED_MODULE_0__constants__["a" /* KEY_W */]]: false,
 	            [__WEBPACK_IMPORTED_MODULE_0__constants__["b" /* KEY_S */]]: false,
@@ -1013,8 +1016,6 @@ webpackJsonp([1],{
 	            [__WEBPACK_IMPORTED_MODULE_0__constants__["d" /* KEY_D */]]: false
 	        };
 	        this.stack = new Set();
-	        let lastCursorPos = null;
-	        this.pointerDelta = { x: 0, y: 0 };
 
 	        document.addEventListener('keydown', e => {
 	            if (e.keyCode in this.keyPressed) {
@@ -1029,16 +1030,41 @@ webpackJsonp([1],{
 	            }
 	        });
 
-	        document.addEventListener('mousemove', e => {
-	            if (lastCursorPos) {
-	                this.pointerDelta.x += lastCursorPos.x - e.clientX;
-	                this.pointerDelta.y += lastCursorPos.y - e.clientY;
-	            }
-	            lastCursorPos = {
-	                x: e.clientX,
-	                y: e.clientY
-	            };
-	        });
+	        this.pointerDelta = { x: 0, y: 0 };
+
+	        if (pointerLockerNode.requestPointerLock) {
+	            this.updatePointerDelta = function (e) {
+	                this.pointerDelta.x -= e.movementX;
+	                this.pointerDelta.y -= e.movementY;
+	            }.bind(this);
+
+	            document.addEventListener('pointerlockchange', () => {
+	                if (document.pointerLockElement === pointerLockerNode) {
+	                    pointerLockerNode.addEventListener('mousemove', this.updatePointerDelta);
+	                } else {
+	                    pointerLockerNode.removeEventListener('mousemove', this.updatePointerDelta);
+	                }
+	            });
+
+	            pointerLockerNode.addEventListener('click', e => {
+	                pointerLockerNode.requestPointerLock();
+	            });
+	        } else {
+	            let lastCursorPos = null;
+
+	            this.updatePointerDelta = function () {
+	                if (lastCursorPos) {
+	                    this.pointerDelta.x += lastCursorPos.x - e.clientX;
+	                    this.pointerDelta.y += lastCursorPos.y - e.clientY;
+	                }
+	                lastCursorPos = {
+	                    x: e.clientX,
+	                    y: e.clientY
+	                };
+	            }.bind(this);
+
+	            document.addEventListener('mousemove', this.updatePointerDelta);
+	        }
 	    }
 
 	    getPointerDelta() {

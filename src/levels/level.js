@@ -5,6 +5,7 @@ const level = {
     boundaries: [5000, null, 5000],
     player: {
         pos: [0, 100, 0],
+        size: [50, 150, 50],
         angle: [135, 0, 0]
     },
     objects: [
@@ -48,12 +49,12 @@ for (let i = 0; i < level.boundaries[2]; i += BROAD_CELL_SIZE) {
     }
 }
 
-// calculate 2d points coordinates for level objects
+// calculate 2d points coordinates for objects hitboxes
 for (let i = 0; i < level.objects.length; i++) {
     const obj = level.objects[i];
-    // enlarge object for 1px each side to prevent "looking through walls"
-    const sizeXHalf = obj.size[0] / 2;
-    const sizeZHalf = obj.size[2] / 2;
+    // enlarge object's hitbox to simulate players volume
+    const sizeXHalf = (obj.size[0] + level.player.size[0]) / 2;
+    const sizeZHalf = (obj.size[2] + level.player.size[2]) / 2;
     obj.coords2d = [
         [obj.pos[0] - sizeXHalf, obj.pos[2] - sizeZHalf],
         [obj.pos[0] + sizeXHalf, obj.pos[2] - sizeZHalf],

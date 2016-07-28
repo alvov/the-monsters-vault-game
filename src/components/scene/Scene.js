@@ -17,7 +17,7 @@ const Scene = ({ pos, objects, getTransformRule, getSpotLightBackground }) => {
     for (let i = 0; i < objects.length; i++) {
         const object = objects[i];
         let isVisible = false;
-        if (object.collides) {
+        if (object.collides !== false) {
             for (let k = 0; k < object.broadCells.length; k++) {
                 if (
                     Math.abs(playerCell[0] - object.broadCells[k][0]) < 2 &&
@@ -27,7 +27,7 @@ const Scene = ({ pos, objects, getTransformRule, getSpotLightBackground }) => {
                     break;
                 }
             }
-        } else {
+        } else if (object.type === 'floor') {
             if (
                 Math.abs(pos[0] - object.pos[0]) < 2 * BROAD_CELL_SIZE &&
                 Math.abs(pos[2] - object.pos[2]) < 2 * BROAD_CELL_SIZE
@@ -39,10 +39,10 @@ const Scene = ({ pos, objects, getTransformRule, getSpotLightBackground }) => {
             case 'plain':
                 renderedObjects.push(<Plain
                     key={i + object.name}
-                    pos={object.pos}
-                    playerPos={pos}
-                    size={[object.size[0], object.size[2]]}
+                    pos={[object.pos[0], -object.pos[1], object.pos[2]]}
+                    size={object.size.filter(value => value !== 0).slice(0, 2)}
                     angle={object.angle}
+                    isVisible={isVisible}
                     background={object.background}
                     getTransformRule={getTransformRule}
                 />);

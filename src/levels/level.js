@@ -45,6 +45,14 @@ const level = {
             pos: [1000, 0, 1250]
         },
         {
+            name: 'dickbutt',
+            type: 'plain',
+            size: [0, 50, 50],
+            pos: [1026, 100, 1250],
+            angle: [0, 90, 0],
+            background: '#fff url(src/assets/images/misc/dickbutt.png) 50% 50% / contain no-repeat'
+        },
+        {
             name: 'wall_007',
             type: 'wall',
             size: [500, 200, 50],

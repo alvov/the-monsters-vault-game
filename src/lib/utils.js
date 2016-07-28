@@ -13,9 +13,18 @@ export function getTransformRule(params) {
     return { transform };
 }
 
+const spotLightColorsString = (function(colorsCount) {
+    const result = [];
+    for (let i = 0; i < colorsCount; i++) {
+        result.push(`rgba(0, 0, 0, ${(i + 1) / colorsCount}) ${i * 100 / colorsCount}%`);
+        result.push(`rgba(0, 0, 0, ${(i + 1) / colorsCount}) ${(i + 1) * 100 / colorsCount}%`);
+    }
+    return result.join(', ');
+})(20);
+
 export function getSpotLightBackground(pos, size) {
     if (size) {
-        return `radial-gradient(${size}px at ${pos[0]}px ${pos[1]}px, transparent, black)`;
+        return `radial-gradient(${size}px at ${pos[0]}px ${pos[1]}px, ${spotLightColorsString})`;
     } else {
         return '';
     }

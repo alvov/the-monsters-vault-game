@@ -16,6 +16,6 @@ export default ({ coords2d, pos, playerPos, size, isVisible = true, getTransform
         getTransformRule={getTransformRule}
         background={isVisible ? getSpotLightBackground(
             [playerPos[0] - coords2d[0][0], playerPos[2] - coords2d[0][1]],
-            Math.max(0, BROAD_CELL_SIZE - playerPos[1])
+            2 * Math.max(0, BROAD_CELL_SIZE - playerPos[1])
         ) + ', ' + background : 'none'}
     />;

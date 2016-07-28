@@ -4,7 +4,7 @@ import React from 'react';
 import Plain from '../plain/Plain';
 import { BROAD_CELL_SIZE } from '../../constants';
 
-const background = 'url(src/components/wall/wall.jpg) 50% 50%/200px 200px';
+const background = 'url(src/components/wall/wall.jpg) 50% 50%/cover';
 
 // no support for rotated walls for now
 export default ({ coords2d, pos, size, isVisible = true, playerPos, getTransformRule, getSpotLightBackground }) => {
@@ -21,7 +21,7 @@ export default ({ coords2d, pos, size, isVisible = true, playerPos, getTransform
             getTransformRule={getTransformRule}
             background={isVisible ? getSpotLightBackground(
                 [playerPos[0] - coords2d[0][0], playerPos[1]],
-                Math.max(0, BROAD_CELL_SIZE - Math.abs(playerPos[2] - coords2d[2][1]))
+                2 * Math.max(0, BROAD_CELL_SIZE - Math.abs(playerPos[2] - coords2d[2][1]))
             ) + ', ' + background : 'none'}
         />
         <Plain
@@ -31,7 +31,7 @@ export default ({ coords2d, pos, size, isVisible = true, playerPos, getTransform
             getTransformRule={getTransformRule}
             background={isVisible ? getSpotLightBackground(
                 [playerPos[0] - coords2d[0][0], playerPos[1]],
-                Math.max(0, BROAD_CELL_SIZE - Math.abs(playerPos[2] - coords2d[0][1]))
+                2 * Math.max(0, BROAD_CELL_SIZE - Math.abs(playerPos[2] - coords2d[0][1]))
             ) + ', ' + background : 'none'}
         />
         <Plain
@@ -41,7 +41,7 @@ export default ({ coords2d, pos, size, isVisible = true, playerPos, getTransform
             getTransformRule={getTransformRule}
             background={isVisible ? getSpotLightBackground(
                 [playerPos[2] - coords2d[0][1], playerPos[1]],
-                Math.max(0, BROAD_CELL_SIZE - Math.abs(playerPos[0] - coords2d[0][0]))
+                2 * Math.max(0, BROAD_CELL_SIZE - Math.abs(playerPos[0] - coords2d[0][0]))
             ) + ', ' + background : 'none'}
         />
         <Plain
@@ -51,7 +51,7 @@ export default ({ coords2d, pos, size, isVisible = true, playerPos, getTransform
             getTransformRule={getTransformRule}
             background={isVisible ? getSpotLightBackground(
                 [playerPos[2] - coords2d[0][1], playerPos[1]],
-                Math.max(0, BROAD_CELL_SIZE - Math.abs(playerPos[0] - coords2d[1][0]))
+                2 * Math.max(0, BROAD_CELL_SIZE - Math.abs(playerPos[0] - coords2d[1][0]))
             ) + ', ' + background : 'none'}
         />
     </div>;

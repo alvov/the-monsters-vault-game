@@ -15,10 +15,22 @@ export default class Collision {
                 continue;
             }
             obj.broadCells = [];
-            const topLeftCellX = Math.floor(obj.coords2d[0][0] / BROAD_CELL_SIZE);
-            const topLeftCellZ = Math.floor(obj.coords2d[0][1] / BROAD_CELL_SIZE);
-            const bottomRightCellX = Math.floor(obj.coords2d[2][0] / BROAD_CELL_SIZE);
-            const bottomRightCellZ = Math.floor(obj.coords2d[2][1] / BROAD_CELL_SIZE);
+            const topLeftCellX = Math.min(
+                this.broadCells[0].length - 1,
+                Math.max(0, Math.floor(obj.hitbox[0][0] / BROAD_CELL_SIZE))
+            );
+            const topLeftCellZ = Math.min(
+                this.broadCells.length - 1,
+                Math.max(0, Math.floor(obj.hitbox[0][1] / BROAD_CELL_SIZE))
+            );
+            const bottomRightCellX = Math.min(
+                this.broadCells[0].length - 1,
+                Math.max(0, Math.floor(obj.hitbox[2][0] / BROAD_CELL_SIZE))
+            );
+            const bottomRightCellZ = Math.min(
+                this.broadCells.length - 1,
+                Math.max(0, Math.floor(obj.hitbox[2][1] / BROAD_CELL_SIZE))
+            );
             for (let j = topLeftCellZ; j <= bottomRightCellZ; j++) {
                 for (let i = topLeftCellX; i <= bottomRightCellX; i++) {
                     this.broadCells[j][i].objects.push(obj);
@@ -72,7 +84,7 @@ export default class Collision {
         for (let obj of objectsSet) {
             const lineIntersections = [];
             for (let i = 0; i < 4; i++) {
-                const obstacleLine = [obj.coords2d[i], obj.coords2d[i < 3 ? i + 1 : 0]];
+                const obstacleLine = [obj.hitbox[i], obj.hitbox[i < 3 ? i + 1 : 0]];
                 // check if obstacle line lies along axis X (has constant Z-coord)
                 if (obstacleLine[0][1] === obstacleLine[1][1]) {
                     const z = obstacleLine[0][1];
@@ -323,8 +335,8 @@ export default class Collision {
      * @returns {boolean}
      */
     static contains(obj, point) {
-        return point[0] >= obj.coords2d[0][0] && point[0] <= obj.coords2d[1][0] &&
-            point[1] >= obj.coords2d[0][1] && point[1] <= obj.coords2d[3][1];
+        return point[0] >= obj.hitbox[0][0] && point[0] <= obj.hitbox[1][0] &&
+            point[1] >= obj.hitbox[0][1] && point[1] <= obj.hitbox[3][1];
     }
 
     /**

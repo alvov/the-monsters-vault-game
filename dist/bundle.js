@@ -96,7 +96,7 @@ webpackJsonp([1],{
 	    size: [size[0], size[2]],
 	    angle: [90, 0, 0],
 	    getTransformRule: getTransformRule,
-	    background: isVisible ? getSpotLightBackground([playerPos[0] - coords2d[0][0], playerPos[2] - coords2d[0][1]], Math.max(0, __WEBPACK_IMPORTED_MODULE_0__constants__["e" /* BROAD_CELL_SIZE */] - playerPos[1])) + ', ' + background : 'none'
+	    background: isVisible ? getSpotLightBackground([playerPos[0] - coords2d[0][0], playerPos[2] - coords2d[0][1]], 2 * Math.max(0, __WEBPACK_IMPORTED_MODULE_0__constants__["e" /* BROAD_CELL_SIZE */] - playerPos[1])) + ', ' + background : 'none'
 	});
 
 /***/ },
@@ -128,7 +128,9 @@ webpackJsonp([1],{
 	        pos: [-pos[0], pos[1], -pos[2]]
 	    });
 	    const playerCell = [Math.floor(pos[0] / __WEBPACK_IMPORTED_MODULE_5__constants__["e" /* BROAD_CELL_SIZE */]), Math.floor(pos[2] / __WEBPACK_IMPORTED_MODULE_5__constants__["e" /* BROAD_CELL_SIZE */])];
-	    const renderedObjects = objects.map((object, i) => {
+	    const renderedObjects = [];
+	    for (let i = 0; i < objects.length; i++) {
+	        const object = objects[i];
 	        let isVisible = false;
 	        if (object.collides) {
 	            for (let k = 0; k < object.broadCells.length; k++) {
@@ -144,7 +146,7 @@ webpackJsonp([1],{
 	        }
 	        switch (object.type) {
 	            case 'plain':
-	                return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1__plain_Plain__["a" /* default */], {
+	                renderedObjects.push(__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1__plain_Plain__["a" /* default */], {
 	                    key: i + object.name,
 	                    pos: object.pos,
 	                    playerPos: pos,
@@ -152,9 +154,10 @@ webpackJsonp([1],{
 	                    angle: object.angle,
 	                    background: object.background,
 	                    getTransformRule: getTransformRule
-	                });
+	                }));
+	                break;
 	            case 'floor':
-	                return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2__floor_Floor__["a" /* default */], {
+	                renderedObjects.push(__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2__floor_Floor__["a" /* default */], {
 	                    key: object.name,
 	                    coords2d: object.coords2d,
 	                    pos: object.pos,
@@ -163,9 +166,10 @@ webpackJsonp([1],{
 	                    size: object.size,
 	                    getTransformRule: getTransformRule,
 	                    getSpotLightBackground: getSpotLightBackground
-	                });
+	                }));
+	                break;
 	            case 'wall':
-	                return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3__wall_Wall__["a" /* default */], {
+	                renderedObjects.push(__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3__wall_Wall__["a" /* default */], {
 	                    key: i + object.name,
 	                    coords2d: object.coords2d,
 	                    pos: object.pos,
@@ -174,9 +178,10 @@ webpackJsonp([1],{
 	                    size: object.size,
 	                    getTransformRule: getTransformRule,
 	                    getSpotLightBackground: getSpotLightBackground
-	                });
+	                }));
+	                break;
 	            case 'larch':
-	                return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_4__tree_Larch__["a" /* default */], {
+	                renderedObjects.push(__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_4__tree_Larch__["a" /* default */], {
 	                    key: i + object.name,
 	                    pos: object.pos,
 	                    playerPos: pos,
@@ -184,11 +189,10 @@ webpackJsonp([1],{
 	                    size: object.size,
 	                    angle: object.angle,
 	                    getTransformRule: getTransformRule
-	                });
-	            default:
-	                return '';
+	                }));
+	                break;
 	        }
-	    });
+	    }
 	    return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
 	        'div',
 	        { className: 'scene obj', style: transformRule },
@@ -262,7 +266,7 @@ webpackJsonp([1],{
 
 
 
-	const background = 'url(src/components/wall/wall.jpg) 50% 50%/200px 200px';
+	const background = 'url(src/components/wall/wall.jpg) 50% 50%/cover';
 
 	// no support for rotated walls for now
 	/* harmony default export */ exports["a"] = ({ coords2d, pos, size, isVisible = true, playerPos, getTransformRule, getSpotLightBackground }) => {
@@ -279,28 +283,28 @@ webpackJsonp([1],{
 	            size: size,
 	            angle: [0, 0, 0],
 	            getTransformRule: getTransformRule,
-	            background: isVisible ? getSpotLightBackground([playerPos[0] - coords2d[0][0], playerPos[1]], Math.max(0, __WEBPACK_IMPORTED_MODULE_2__constants__["e" /* BROAD_CELL_SIZE */] - Math.abs(playerPos[2] - coords2d[2][1]))) + ', ' + background : 'none'
+	            background: isVisible ? getSpotLightBackground([playerPos[0] - coords2d[0][0], playerPos[1]], 2 * Math.max(0, __WEBPACK_IMPORTED_MODULE_2__constants__["e" /* BROAD_CELL_SIZE */] - Math.abs(playerPos[2] - coords2d[2][1]))) + ', ' + background : 'none'
 	        }),
 	        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1__plain_Plain__["a" /* default */], {
 	            pos: [0, -size[1] / 2, -size[2] / 2],
 	            size: size,
 	            angle: [0, 0, 0],
 	            getTransformRule: getTransformRule,
-	            background: isVisible ? getSpotLightBackground([playerPos[0] - coords2d[0][0], playerPos[1]], Math.max(0, __WEBPACK_IMPORTED_MODULE_2__constants__["e" /* BROAD_CELL_SIZE */] - Math.abs(playerPos[2] - coords2d[0][1]))) + ', ' + background : 'none'
+	            background: isVisible ? getSpotLightBackground([playerPos[0] - coords2d[0][0], playerPos[1]], 2 * Math.max(0, __WEBPACK_IMPORTED_MODULE_2__constants__["e" /* BROAD_CELL_SIZE */] - Math.abs(playerPos[2] - coords2d[0][1]))) + ', ' + background : 'none'
 	        }),
 	        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1__plain_Plain__["a" /* default */], {
 	            pos: [-size[0] / 2, -size[1] / 2, 0],
 	            size: [size[2], size[1]],
 	            angle: [0, -90, 0],
 	            getTransformRule: getTransformRule,
-	            background: isVisible ? getSpotLightBackground([playerPos[2] - coords2d[0][1], playerPos[1]], Math.max(0, __WEBPACK_IMPORTED_MODULE_2__constants__["e" /* BROAD_CELL_SIZE */] - Math.abs(playerPos[0] - coords2d[0][0]))) + ', ' + background : 'none'
+	            background: isVisible ? getSpotLightBackground([playerPos[2] - coords2d[0][1], playerPos[1]], 2 * Math.max(0, __WEBPACK_IMPORTED_MODULE_2__constants__["e" /* BROAD_CELL_SIZE */] - Math.abs(playerPos[0] - coords2d[0][0]))) + ', ' + background : 'none'
 	        }),
 	        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1__plain_Plain__["a" /* default */], {
 	            pos: [size[0] / 2, -size[1] / 2, 0],
 	            size: [size[2], size[1]],
 	            angle: [0, -90, 0],
 	            getTransformRule: getTransformRule,
-	            background: isVisible ? getSpotLightBackground([playerPos[2] - coords2d[0][1], playerPos[1]], Math.max(0, __WEBPACK_IMPORTED_MODULE_2__constants__["e" /* BROAD_CELL_SIZE */] - Math.abs(playerPos[0] - coords2d[1][0]))) + ', ' + background : 'none'
+	            background: isVisible ? getSpotLightBackground([playerPos[2] - coords2d[0][1], playerPos[1]], 2 * Math.max(0, __WEBPACK_IMPORTED_MODULE_2__constants__["e" /* BROAD_CELL_SIZE */] - Math.abs(playerPos[0] - coords2d[1][0]))) + ', ' + background : 'none'
 	        })
 	    );
 	};
@@ -401,51 +405,104 @@ webpackJsonp([1],{
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__constants__ = __webpack_require__(13);
-	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__lib_Collision__ = __webpack_require__(108);
-
+	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__lib_Collision__ = __webpack_require__(108);
 
 
 	const level = {
-	    boundaries: [5000, null, 5000],
+	    boundaries: [2500, null, 2500],
 	    player: {
-	        pos: [0, 100, 0],
+	        pos: [1250, 100, 250],
 	        size: [50, 150, 50],
-	        angle: [135, 0, 0]
+	        angle: [0, 0, 0]
 	    },
 	    objects: [{
-	        name: 'test wall',
+	        name: 'wall_001',
 	        type: 'wall',
-	        size: [200, 200, 50],
-	        pos: [1000, 0, 1000]
+	        size: [500, 200, 50],
+	        pos: [750, 0, 500]
 	    }, {
-	        name: 'test wall to make corner',
+	        name: 'wall_002',
 	        type: 'wall',
-	        size: [50, 200, 200],
-	        pos: [1125, 0, 925]
+	        size: [500, 200, 50],
+	        pos: [1750, 0, 500]
 	    }, {
-	        name: 'first wall to see',
+	        name: 'wall_003',
 	        type: 'wall',
-	        size: [200, 200, 50],
-	        pos: [200, 0, 425]
-	    }
-	    // {
-	    //     name: 'test tree',
-	    //     type: 'larch',
-	    //     size: [50, 100, 50],
-	    //     pos: [1500, 0, 1500]
-	    // }
-	    ]
+	        size: [50, 200, 500],
+	        pos: [500, 0, 750]
+	    }, {
+	        name: 'wall_004',
+	        type: 'wall',
+	        size: [50, 200, 500],
+	        pos: [2000, 0, 750]
+	    }, {
+	        name: 'wall_005',
+	        type: 'wall',
+	        size: [500, 200, 50],
+	        pos: [1250, 0, 1000]
+	    }, {
+	        name: 'wall_006',
+	        type: 'wall',
+	        size: [50, 200, 500],
+	        pos: [1000, 0, 1250]
+	    }, {
+	        name: 'wall_007',
+	        type: 'wall',
+	        size: [500, 200, 50],
+	        pos: [1250, 0, 1500]
+	    }, {
+	        name: 'wall_008',
+	        type: 'wall',
+	        size: [50, 200, 500],
+	        pos: [500, 0, 1750]
+	    }, {
+	        name: 'wall_009',
+	        type: 'wall',
+	        size: [50, 200, 500],
+	        pos: [2000, 0, 1750]
+	    }, {
+	        name: 'wall_010',
+	        type: 'wall',
+	        size: [500, 200, 50],
+	        pos: [750, 0, 2000]
+	    }, {
+	        name: 'wall_011',
+	        type: 'wall',
+	        size: [500, 200, 50],
+	        pos: [1750, 0, 2000]
+	    }]
 	};
 
-	// generate floor panels
-	for (let i = 0; i < level.boundaries[2]; i += __WEBPACK_IMPORTED_MODULE_0__constants__["e" /* BROAD_CELL_SIZE */]) {
-	    for (let j = 0; j < level.boundaries[0]; j += __WEBPACK_IMPORTED_MODULE_0__constants__["e" /* BROAD_CELL_SIZE */]) {
+	// generate border walls
+	for (let x = 250; x < level.boundaries[0]; x += 500) {
+	    for (let z = 0; z <= level.boundaries[2]; z += level.boundaries[2]) {
 	        level.objects.push({
-	            name: 'floor tile ' + i + '_' + j,
+	            name: 'border wall ' + x + '_' + z,
+	            type: 'wall',
+	            size: [500, 200, 50],
+	            pos: [x, 0, z]
+	        });
+	    }
+	}
+	for (let z = 250; z < level.boundaries[2]; z += 500) {
+	    for (let x = 0; x <= level.boundaries[0]; x += level.boundaries[0]) {
+	        level.objects.push({
+	            name: 'border wall ' + x + '_' + z,
+	            type: 'wall',
+	            size: [50, 200, 500],
+	            pos: [x, 0, z]
+	        });
+	    }
+	}
+
+	// generate floor panels
+	for (let z = 0; z < level.boundaries[2]; z += 500) {
+	    for (let x = 0; x < level.boundaries[0]; x += 500) {
+	        level.objects.push({
+	            name: 'floor tile ' + z + '_' + x,
 	            type: 'floor',
-	            size: [__WEBPACK_IMPORTED_MODULE_0__constants__["e" /* BROAD_CELL_SIZE */], 0, __WEBPACK_IMPORTED_MODULE_0__constants__["e" /* BROAD_CELL_SIZE */]],
-	            pos: [j + __WEBPACK_IMPORTED_MODULE_0__constants__["e" /* BROAD_CELL_SIZE */] / 2, 0, i + __WEBPACK_IMPORTED_MODULE_0__constants__["e" /* BROAD_CELL_SIZE */] / 2],
+	            size: [500, 0, 500],
+	            pos: [x + 250, 0, z + 250],
 	            collides: false
 	        });
 	    }
@@ -455,12 +512,17 @@ webpackJsonp([1],{
 	for (let i = 0; i < level.objects.length; i++) {
 	    const obj = level.objects[i];
 	    // enlarge object's hitbox to simulate players volume
-	    const sizeXHalf = (obj.size[0] + level.player.size[0]) / 2;
-	    const sizeZHalf = (obj.size[2] + level.player.size[2]) / 2;
+	    const sizeXHalf = obj.size[0] / 2;
+	    const sizeZHalf = obj.size[2] / 2;
 	    obj.coords2d = [[obj.pos[0] - sizeXHalf, obj.pos[2] - sizeZHalf], [obj.pos[0] + sizeXHalf, obj.pos[2] - sizeZHalf], [obj.pos[0] + sizeXHalf, obj.pos[2] + sizeZHalf], [obj.pos[0] - sizeXHalf, obj.pos[2] + sizeZHalf]];
+	    if (obj.collides !== false) {
+	        const playerXHalf = level.player.size[0] / 2;
+	        const playerZHalf = level.player.size[2] / 2;
+	        obj.hitbox = [[obj.coords2d[0][0] - playerXHalf, obj.coords2d[0][1] - playerZHalf], [obj.coords2d[1][0] + playerXHalf, obj.coords2d[1][1] - playerZHalf], [obj.coords2d[2][0] + playerXHalf, obj.coords2d[2][1] + playerZHalf], [obj.coords2d[3][0] - playerXHalf, obj.coords2d[3][1] + playerZHalf]];
+	    }
 	}
 
-	level.collision = new __WEBPACK_IMPORTED_MODULE_1__lib_Collision__["a" /* default */](level);
+	level.collision = new __WEBPACK_IMPORTED_MODULE_0__lib_Collision__["a" /* default */](level);
 
 	/* harmony default export */ exports["a"] = level;
 
@@ -488,10 +550,10 @@ webpackJsonp([1],{
 	                continue;
 	            }
 	            obj.broadCells = [];
-	            const topLeftCellX = Math.floor(obj.coords2d[0][0] / __WEBPACK_IMPORTED_MODULE_0__constants__["e" /* BROAD_CELL_SIZE */]);
-	            const topLeftCellZ = Math.floor(obj.coords2d[0][1] / __WEBPACK_IMPORTED_MODULE_0__constants__["e" /* BROAD_CELL_SIZE */]);
-	            const bottomRightCellX = Math.floor(obj.coords2d[2][0] / __WEBPACK_IMPORTED_MODULE_0__constants__["e" /* BROAD_CELL_SIZE */]);
-	            const bottomRightCellZ = Math.floor(obj.coords2d[2][1] / __WEBPACK_IMPORTED_MODULE_0__constants__["e" /* BROAD_CELL_SIZE */]);
+	            const topLeftCellX = Math.min(this.broadCells[0].length - 1, Math.max(0, Math.floor(obj.hitbox[0][0] / __WEBPACK_IMPORTED_MODULE_0__constants__["e" /* BROAD_CELL_SIZE */])));
+	            const topLeftCellZ = Math.min(this.broadCells.length - 1, Math.max(0, Math.floor(obj.hitbox[0][1] / __WEBPACK_IMPORTED_MODULE_0__constants__["e" /* BROAD_CELL_SIZE */])));
+	            const bottomRightCellX = Math.min(this.broadCells[0].length - 1, Math.max(0, Math.floor(obj.hitbox[2][0] / __WEBPACK_IMPORTED_MODULE_0__constants__["e" /* BROAD_CELL_SIZE */])));
+	            const bottomRightCellZ = Math.min(this.broadCells.length - 1, Math.max(0, Math.floor(obj.hitbox[2][1] / __WEBPACK_IMPORTED_MODULE_0__constants__["e" /* BROAD_CELL_SIZE */])));
 	            for (let j = topLeftCellZ; j <= bottomRightCellZ; j++) {
 	                for (let i = topLeftCellX; i <= bottomRightCellX; i++) {
 	                    this.broadCells[j][i].objects.push(obj);
@@ -542,7 +604,7 @@ webpackJsonp([1],{
 	        for (let obj of objectsSet) {
 	            const lineIntersections = [];
 	            for (let i = 0; i < 4; i++) {
-	                const obstacleLine = [obj.coords2d[i], obj.coords2d[i < 3 ? i + 1 : 0]];
+	                const obstacleLine = [obj.hitbox[i], obj.hitbox[i < 3 ? i + 1 : 0]];
 	                // check if obstacle line lies along axis X (has constant Z-coord)
 	                if (obstacleLine[0][1] === obstacleLine[1][1]) {
 	                    const z = obstacleLine[0][1];
@@ -771,7 +833,7 @@ webpackJsonp([1],{
 	     * @returns {boolean}
 	     */
 	    static contains(obj, point) {
-	        return point[0] >= obj.coords2d[0][0] && point[0] <= obj.coords2d[1][0] && point[1] >= obj.coords2d[0][1] && point[1] <= obj.coords2d[3][1];
+	        return point[0] >= obj.hitbox[0][0] && point[0] <= obj.hitbox[1][0] && point[1] >= obj.hitbox[0][1] && point[1] <= obj.hitbox[3][1];
 	    }
 
 	    /**
@@ -816,9 +878,18 @@ webpackJsonp([1],{
 	    return { transform };
 	}
 
+	const spotLightColorsString = function (colorsCount) {
+	    const result = [];
+	    for (let i = 0; i < colorsCount; i++) {
+	        result.push(`rgba(0, 0, 0, ${ (i + 1) / colorsCount }) ${ i * 100 / colorsCount }%`);
+	        result.push(`rgba(0, 0, 0, ${ (i + 1) / colorsCount }) ${ (i + 1) * 100 / colorsCount }%`);
+	    }
+	    return result.join(', ');
+	}(20);
+
 	function getSpotLightBackground(pos, size) {
 	    if (size) {
-	        return `radial-gradient(${ size }px at ${ pos[0] }px ${ pos[1] }px, transparent, black)`;
+	        return `radial-gradient(${ size }px at ${ pos[0] }px ${ pos[1] }px, ${ spotLightColorsString })`;
 	    } else {
 	        return '';
 	    }
@@ -844,7 +915,7 @@ webpackJsonp([1],{
 	const KEY_D = 68;/* harmony export */ exports["d"] = KEY_D;
 	const STEP = 4;/* harmony export */ exports["g"] = STEP;
 	const SENSITIVITY = 0.5;/* harmony export */ exports["f"] = SENSITIVITY;
-	const BROAD_CELL_SIZE = 500;/* harmony export */ exports["e"] = BROAD_CELL_SIZE;
+	const BROAD_CELL_SIZE = 250;/* harmony export */ exports["e"] = BROAD_CELL_SIZE;
 
 /***/ },
 

@@ -13,7 +13,9 @@ const Scene = ({ pos, objects, getTransformRule, getSpotLightBackground }) => {
         pos: [-pos[0], pos[1], -pos[2]]
     });
     const playerCell = [Math.floor(pos[0] / BROAD_CELL_SIZE), Math.floor(pos[2] / BROAD_CELL_SIZE)];
-    const renderedObjects = objects.map((object, i) => {
+    const renderedObjects = [];
+    for (let i = 0; i < objects.length; i++) {
+        const object = objects[i];
         let isVisible = false;
         if (object.collides) {
             for (let k = 0; k < object.broadCells.length; k++) {
@@ -35,7 +37,7 @@ const Scene = ({ pos, objects, getTransformRule, getSpotLightBackground }) => {
         }
         switch(object.type) {
             case 'plain':
-                return <Plain
+                renderedObjects.push(<Plain
                     key={i + object.name}
                     pos={object.pos}
                     playerPos={pos}
@@ -43,9 +45,10 @@ const Scene = ({ pos, objects, getTransformRule, getSpotLightBackground }) => {
                     angle={object.angle}
                     background={object.background}
                     getTransformRule={getTransformRule}
-                />;
+                />);
+                break;
             case 'floor':
-                return <Floor
+                renderedObjects.push(<Floor
                     key={object.name}
                     coords2d={object.coords2d}
                     pos={object.pos}
@@ -54,9 +57,10 @@ const Scene = ({ pos, objects, getTransformRule, getSpotLightBackground }) => {
                     size={object.size}
                     getTransformRule={getTransformRule}
                     getSpotLightBackground={getSpotLightBackground}
-                />;
+                />);
+                break;
             case 'wall':
-                return <Wall
+                renderedObjects.push(<Wall
                     key={i + object.name}
                     coords2d={object.coords2d}
                     pos={object.pos}
@@ -65,9 +69,10 @@ const Scene = ({ pos, objects, getTransformRule, getSpotLightBackground }) => {
                     size={object.size}
                     getTransformRule={getTransformRule}
                     getSpotLightBackground={getSpotLightBackground}
-                />;
+                />);
+                break;
             case 'larch':
-                return <Larch
+                renderedObjects.push(<Larch
                     key={i + object.name}
                     pos={object.pos}
                     playerPos={pos}
@@ -75,11 +80,10 @@ const Scene = ({ pos, objects, getTransformRule, getSpotLightBackground }) => {
                     size={object.size}
                     angle={object.angle}
                     getTransformRule={getTransformRule}
-                />;
-            default:
-                return '';
+                />);
+                break;
         }
-    });
+    }
     return <div className="scene obj" style={transformRule}>
         {renderedObjects}
     </div>;

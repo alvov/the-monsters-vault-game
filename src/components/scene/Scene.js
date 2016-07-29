@@ -8,7 +8,7 @@ import Wall from '../wall/Wall';
 import Larch from '../tree/Larch';
 import { BROAD_CELL_SIZE } from '../../constants';
 
-const Scene = ({ pos, objects, getTransformRule, getSpotLightBackground }) => {
+const Scene = ({ pos, objects, getTransformRule, getPlayerSpotLightBackground }) => {
     const transformRule = getTransformRule({
         pos: [-pos[0], pos[1], -pos[2]]
     });
@@ -56,7 +56,7 @@ const Scene = ({ pos, objects, getTransformRule, getSpotLightBackground }) => {
                     isVisible={isVisible}
                     size={object.size}
                     getTransformRule={getTransformRule}
-                    getSpotLightBackground={getSpotLightBackground}
+                    getPlayerSpotLightBackground={getPlayerSpotLightBackground}
                 />);
                 break;
             case 'wall':
@@ -68,7 +68,7 @@ const Scene = ({ pos, objects, getTransformRule, getSpotLightBackground }) => {
                     isVisible={isVisible}
                     size={object.size}
                     getTransformRule={getTransformRule}
-                    getSpotLightBackground={getSpotLightBackground}
+                    getPlayerSpotLightBackground={getPlayerSpotLightBackground}
                 />);
                 break;
             case 'larch':

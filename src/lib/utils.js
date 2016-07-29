@@ -1,4 +1,4 @@
-var AXIS = ['X', 'Y', 'Z'];
+const AXIS = ['X', 'Y', 'Z'];
 
 export function getTransformRule(params) {
     let transform = '';
@@ -13,19 +13,25 @@ export function getTransformRule(params) {
     return { transform };
 }
 
-const spotLightColorsString = (function(colorsCount) {
+const MAX_COLORS_COUNT = 20;
+function getSpotLightColorsString(minOpacity = 0, colorsCount = MAX_COLORS_COUNT) {
     const result = [];
     for (let i = 0; i < colorsCount; i++) {
-        result.push(`rgba(0, 0, 0, ${(i + 1) / colorsCount}) ${i * 100 / colorsCount}%`);
-        result.push(`rgba(0, 0, 0, ${(i + 1) / colorsCount}) ${(i + 1) * 100 / colorsCount}%`);
+        const opacity = minOpacity + (i + 1) * (1 - minOpacity) / colorsCount;
+        result.push(`rgba(0, 0, 0, ${opacity}) ${i * 100 / colorsCount}%`);
+        result.push(`rgba(0, 0, 0, ${opacity}) ${(i + 1) * 100 / colorsCount}%`);
     }
     return result.join(', ');
-})(20);
+}
 
-export function getSpotLightBackground(pos, size) {
-    if (size) {
-        return `radial-gradient(${size}px at ${pos[0]}px ${pos[1]}px, ${spotLightColorsString})`;
+export function getSpotLightBackground({ pos, distance, background, radius }) {
+    const ratio = Math.max(0, radius - distance) / radius;
+    if (ratio) {
+        const size = (2 + ratio) * radius / 2;
+        const colorsCount = Math.round((1 + ratio) * MAX_COLORS_COUNT / 2);
+        return `radial-gradient(${size}px at ${pos[0]}px ${pos[1]}px, ` +
+            `${getSpotLightColorsString(1 - ratio, colorsCount)}), ` + background;
     } else {
-        return '';
+        return 'none';
     }
 }

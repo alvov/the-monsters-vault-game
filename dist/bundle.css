@@ -21,6 +21,7 @@ html, body {
     top: 50%;
     left: 50%;
     transform-style: preserve-3d;
+    backface-visibility: hidden;
 }
 .scene {
     transform: translate3d(0px, 0px, 0px);

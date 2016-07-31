@@ -4,7 +4,7 @@ import Scene from '../components/scene/Scene';
 import { getTransformRule, getSpotLightBackground } from '../lib/utils';
 import { BROAD_CELL_SIZE } from '../constants';
 
-const Camera = ({ pos, viewAngle, objects}) => {
+const Camera = ({ pos, playerState, viewAngle, objects}) => {
     const transformRule = getTransformRule({
         pos: [0, 0, 600],
         angle: [viewAngle[1], viewAngle[0], viewAngle[2]]
@@ -12,6 +12,7 @@ const Camera = ({ pos, viewAngle, objects}) => {
     return <div className="camera" style={transformRule}>
         <Scene
             pos={pos}
+            playerState={playerState}
             objects={objects}
             getTransformRule={getTransformRule}
             getPlayerSpotLightBackground={getPlayerSpotLightBackground}
@@ -19,13 +20,16 @@ const Camera = ({ pos, viewAngle, objects}) => {
     </div>;
 };
 Camera.propTypes = {
-    pos: PropTypes.arrayOf(PropTypes.number),
-    viewAngle: PropTypes.arrayOf(PropTypes.number)
+    pos: PropTypes.arrayOf(PropTypes.number).isRequired,
+    playerState: PropTypes.string.isRequired,
+    viewAngle: PropTypes.arrayOf(PropTypes.number).isRequired,
+    objects: PropTypes.arrayOf(PropTypes.object).isRequired
 };
 
 function mapStateToProps(state) {
     return {
         pos: state.pos,
+        playerState: state.playerState,
         viewAngle: state.viewAngle,
         objects: state.objects
     }

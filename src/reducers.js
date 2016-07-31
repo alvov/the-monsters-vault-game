@@ -43,6 +43,19 @@ function playerPosition(state = level.player.pos, action) {
     }
 }
 
+function playerState(state = 'stop', action) {
+    switch (action.type) {
+        case 'playerStateStop':
+            return 'stop';
+        case 'playerStateWalk':
+            return 'walk';
+        case 'playerStateRun':
+            return 'run';
+        default:
+            return state;
+    }
+}
+
 function objects(state = level.objects, action) {
     switch(action.type) {
         default:
@@ -53,5 +66,6 @@ function objects(state = level.objects, action) {
 export default combineReducers({
     viewAngle,
     pos: playerPosition,
+    playerState,
     objects
 });

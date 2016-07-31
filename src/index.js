@@ -1,6 +1,6 @@
 require('./index.css');
 
-import { FPS, KEY_W, KEY_S, KEY_A, KEY_D, STEP } from './constants';
+import { FPS, KEY_W, KEY_S, KEY_A, KEY_D, KEY_SHIFT, STEP, RUNNING_STEP } from './constants';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import * as redux from 'redux';
@@ -44,6 +44,22 @@ new Loop(frameRateCoefficient => {
             angleShift.push(-Math.PI / 2);
         }
     }
+
+    if (
+        controls.keyPressed[KEY_W] ||
+        controls.keyPressed[KEY_S] ||
+        controls.keyPressed[KEY_A] ||
+        controls.keyPressed[KEY_D]
+    ) {
+        if (controls.keyPressed[KEY_SHIFT]) {
+            store.dispatch({ type: 'playerStateRun' });
+        } else {
+            store.dispatch({ type: 'playerStateWalk' });
+        }
+    } else {
+        store.dispatch({ type: 'playerStateStop' });
+    }
+
     if (angleShift.length) {
         let reducedAngleShift = 0;
         for (let i = 0; i < angleShift.length; i++) {
@@ -54,7 +70,7 @@ new Loop(frameRateCoefficient => {
         // convert to radians and add
         reducedAngleShift += store.getState().viewAngle[0] * Math.PI / 180;
 
-        let step = frameRateCoefficient * STEP;
+        let step = frameRateCoefficient * (controls.keyPressed[KEY_SHIFT] ? RUNNING_STEP : STEP);
         store.dispatch({
             type: 'updatePlayerPos',
             shift: [-step * Math.sin(reducedAngleShift), 0, step * Math.cos(reducedAngleShift)]

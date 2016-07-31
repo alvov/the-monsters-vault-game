@@ -23,6 +23,32 @@ html, body {
     transform-style: preserve-3d;
     backface-visibility: hidden;
 }
-.scene {
-    transform: translate3d(0px, 0px, 0px);
+.player-animation_walking {
+    --animation-duration: 1s;
+}
+.player-animation_running {
+    --animation-duration: .66s;
+}
+.player-animation_walking,
+.player-animation_running {
+    animation: player-animation-walkingY calc(var(--animation-duration) / 2) ease-in-out infinite,
+        player-animation-walkingX var(--animation-duration) ease-in-out calc(var(--animation-duration) / -2) infinite;
+}
+
+@keyframes player-animation-walkingY {
+    0%, 100% {
+        margin-top: 0;
+    }
+    50% {
+        margin-top: -5px;
+    }
+}
+
+@keyframes player-animation-walkingX {
+    0%, 100% {
+        margin-left: -3px;
+    }
+    50% {
+        margin-left: 3px;
+    }
 }

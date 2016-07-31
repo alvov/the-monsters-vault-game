@@ -8,7 +8,7 @@ import Wall from '../wall/Wall';
 import Larch from '../tree/Larch';
 import { BROAD_CELL_SIZE } from '../../constants';
 
-const Scene = ({ pos, objects, getTransformRule, getPlayerSpotLightBackground }) => {
+const Scene = ({ pos, playerState, objects, getTransformRule, getPlayerSpotLightBackground }) => {
     const transformRule = getTransformRule({
         pos: [-pos[0], pos[1], -pos[2]]
     });
@@ -84,8 +84,12 @@ const Scene = ({ pos, objects, getTransformRule, getPlayerSpotLightBackground })
                 break;
         }
     }
-    return <div className="scene obj" style={transformRule}>
-        {renderedObjects}
+    const className = 'player-animation obj' +
+        (playerState === 'walk' ? ' player-animation_walking' : playerState === 'run' ? ' player-animation_running' : '');
+    return <div className={className}>
+        <div className="scene obj" style={transformRule}>
+            {renderedObjects}
+        </div>
     </div>;
 };
 Scene.propTypes = {

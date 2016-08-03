@@ -1,4 +1,4 @@
-import { KEY_W, KEY_S, KEY_A, KEY_D } from '../constants';
+import { KEY_W, KEY_S, KEY_A, KEY_D, KEY_SHIFT } from '../constants';
 
 export default class Controls {
     constructor({ pointerLockerNode }) {
@@ -6,14 +6,13 @@ export default class Controls {
             [KEY_W]: false,
             [KEY_S]: false,
             [KEY_A]: false,
-            [KEY_D]: false
+            [KEY_D]: false,
+            [KEY_SHIFT]: false
         };
-        this.stack = new Set();
 
         document.addEventListener('keydown', e => {
             if (e.keyCode in this.keyPressed) {
                 this.keyPressed[e.keyCode] = true;
-                this.stack.add(e.keyCode);
             }
         });
 

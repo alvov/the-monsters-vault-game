@@ -1,0 +1,3 @@
+.box > div {
+    background: url(/src/components/box/box01.jpg) 50% 50%/cover;
+}

@@ -1,8 +1,7 @@
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import Scene from '../components/scene/Scene';
-import { getTransformRule, getSpotLightBackground } from '../lib/utils';
-import { BROAD_CELL_SIZE } from '../constants';
+import { getTransformRule } from '../lib/utils';
 
 const Camera = ({ pos, playerState, viewAngle, objects}) => {
     const transformRule = getTransformRule({
@@ -15,7 +14,6 @@ const Camera = ({ pos, playerState, viewAngle, objects}) => {
             playerState={playerState}
             objects={objects}
             getTransformRule={getTransformRule}
-            getPlayerSpotLightBackground={getPlayerSpotLightBackground}
         />
     </div>;
 };
@@ -33,10 +31,6 @@ function mapStateToProps(state) {
         viewAngle: state.viewAngle,
         objects: state.objects
     }
-}
-
-function getPlayerSpotLightBackground(params) {
-    return getSpotLightBackground({ ...params, radius: 1.1 * BROAD_CELL_SIZE });
 }
 
 export default connect(mapStateToProps)(Camera);

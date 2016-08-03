@@ -1,0 +1,3 @@
+.wall > div {
+    background: url(/src/components/wall/wall.jpg) 50% 50%/cover;
+}

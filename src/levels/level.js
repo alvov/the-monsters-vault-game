@@ -46,8 +46,8 @@ const level = {
         },
         {
             name: 'dickbutt',
-            type: 'plain',
-            size: [0, 50, 50],
+            type: 'painting',
+            size: [50, 50, 0],
             pos: [1026, 100, 1250],
             angle: [0, 90, 0],
             background: '#fff url(src/assets/images/misc/dickbutt.png) 50% 50% / contain no-repeat'
@@ -81,6 +81,12 @@ const level = {
             type: 'wall',
             size: [500, 200, 50],
             pos: [1750, 0, 2000]
+        },
+        {
+            name: 'box_001',
+            type: 'box',
+            size: [150, 150, 150],
+            pos: [200, 0, 200]
         }
     ]
 };

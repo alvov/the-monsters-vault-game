@@ -2,13 +2,13 @@ require('components/obj/obj.css');
 require('./scene.css');
 
 import React, { PropTypes } from 'react';
-import Plain from '../plain/Plain';
+import Painting from '../painting/Painting';
 import Floor from '../floor/Floor';
 import Wall from '../wall/Wall';
-import Larch from '../tree/Larch';
+import Box from '../box/Box';
 import { BROAD_CELL_SIZE } from '../../constants';
 
-const Scene = ({ pos, playerState, objects, getTransformRule, getPlayerSpotLightBackground }) => {
+const Scene = ({ pos, playerState, objects, getTransformRule }) => {
     const transformRule = getTransformRule({
         pos: [-pos[0], pos[1], -pos[2]]
     });
@@ -36,12 +36,14 @@ const Scene = ({ pos, playerState, objects, getTransformRule, getPlayerSpotLight
             }
         }
         switch(object.type) {
-            case 'plain':
-                renderedObjects.push(<Plain
+            case 'painting':
+                renderedObjects.push(<Painting
                     key={i + object.name}
                     pos={[object.pos[0], -object.pos[1], object.pos[2]]}
-                    size={object.size.filter(value => value !== 0).slice(0, 2)}
+                    coords2d={object.coords2d}
+                    playerPos={pos}
                     angle={object.angle}
+                    size={object.size.filter(value => value !== 0).slice(0, 2)}
                     isVisible={isVisible}
                     background={object.background}
                     getTransformRule={getTransformRule}
@@ -56,7 +58,6 @@ const Scene = ({ pos, playerState, objects, getTransformRule, getPlayerSpotLight
                     isVisible={isVisible}
                     size={object.size}
                     getTransformRule={getTransformRule}
-                    getPlayerSpotLightBackground={getPlayerSpotLightBackground}
                 />);
                 break;
             case 'wall':
@@ -68,17 +69,15 @@ const Scene = ({ pos, playerState, objects, getTransformRule, getPlayerSpotLight
                     isVisible={isVisible}
                     size={object.size}
                     getTransformRule={getTransformRule}
-                    getPlayerSpotLightBackground={getPlayerSpotLightBackground}
                 />);
                 break;
-            case 'larch':
-                renderedObjects.push(<Larch
+            case 'box':
+                renderedObjects.push(<Box
                     key={i + object.name}
                     pos={object.pos}
                     playerPos={pos}
                     isVisible={isVisible}
                     size={object.size}
-                    angle={object.angle}
                     getTransformRule={getTransformRule}
                 />);
                 break;
@@ -94,6 +93,7 @@ const Scene = ({ pos, playerState, objects, getTransformRule, getPlayerSpotLight
 };
 Scene.propTypes = {
     pos: PropTypes.arrayOf(PropTypes.number).isRequired,
+    playerState: PropTypes.string.isRequired,
     objects: PropTypes.arrayOf(PropTypes.object).isRequired,
     getTransformRule: PropTypes.func.isRequired
 };

@@ -1,17 +1,17 @@
 require('components/obj/obj.css');
-require('./wall.css');
+require('./box.css');
 
 import React from 'react';
 import Plain from '../plain/Plain';
 
-// no support for rotated walls for now
-export default ({ pos, size, isVisible = true, playerPos, getTransformRule }) => {
+export default function({ pos, playerPos, isVisible, size, getTransformRule }) {
+
     const styleRules = Object.assign(getTransformRule({ pos }), {
         display: isVisible ? 'block' : 'none'
     });
 
-    // Front-Back-Left-Right
-    return <div className="wall obj" style={styleRules}>
+    // Front-Back-Left-Right-Top
+    return <div className="box obj" style={styleRules}>
         <Plain
             pos={[0, -size[1] / 2, size[2] / 2]}
             absPos={[pos[0], pos[1] - size[1] / 2, pos[2] + size[2] / 2]}
@@ -44,5 +44,16 @@ export default ({ pos, size, isVisible = true, playerPos, getTransformRule }) =>
             angle={[0, 90, 0]}
             getTransformRule={getTransformRule}
         />
-    </div>;
+        {playerPos[1] > size[1] ?
+            <Plain
+                pos={[0, -size[1], 0]}
+                absPos={[pos[0], pos[1] - size[1], pos[2]]}
+                playerPos={playerPos}
+                size={[size[0], size[2]]}
+                angle={[90, 0, 0]}
+                getTransformRule={getTransformRule}
+            />
+            : ''
+        }
+    </div>
 }

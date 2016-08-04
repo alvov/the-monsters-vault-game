@@ -9,6 +9,7 @@ module.exports = {
     },
     output: {
         path: path.join(__dirname, 'dist'),
+        publicPath: '/dist/',
         filename: '[name].js'
     },
     resolve: {
@@ -39,6 +40,10 @@ module.exports = {
                 test: /\.css$/,
                 loader: ExtractTextPlugin.extract('style-loader', 'css-loader'),
                 exclude: /node_modules/
+            },
+            {
+                test: /\.(svg|jpg)$/,
+                loader: 'file-loader'
             }
         ]
     },

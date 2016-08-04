@@ -1,6 +1,6 @@
-.plain-light {
+.plain-overlay {
     height: 100%;
-    background: url(/src/components/plain/mask.svg) no-repeat;
-    transform: translate3d(0, 0, 0.1px);
+    background: #000;
+    transform: translate3d(0, 0, 0.01px);
     backface-visibility: hidden;
 }

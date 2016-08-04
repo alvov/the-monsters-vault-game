@@ -51,13 +51,9 @@ html, body {
     50% {
         margin-left: 3px;
     }
-}.plain-light {
+}.plain-overlay {
     height: 100%;
-    background: url(/src/components/plain/mask.svg) no-repeat;
-    transform: translate3d(0, 0, 0.1px);
+    background: #000;
+    transform: translate3d(0, 0, 0.01px);
     backface-visibility: hidden;
-}.wall > div {
-    background: url(/src/components/wall/wall.jpg) 50% 50%/cover;
-}.box > div {
-    background: url(/src/components/box/box01.jpg) 50% 50%/cover;
 }

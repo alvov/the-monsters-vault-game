@@ -1,9 +1,7 @@
 import React from 'react';
 import Plain from '../plain/Plain';
 
-const background = 'url(src/components/floor/floor.jpg) 50% 50%/100px 100px';
-
-export default ({ coords2d, pos, playerPos, size, isVisible = true, getTransformRule, getPlayerSpotLightBackground }) =>
+export default ({ coords2d, pos, playerPos, size, isVisible = true, getTransformRule }) =>
     <Plain
         className="floor"
         isVisible={isVisible}
@@ -13,5 +11,5 @@ export default ({ coords2d, pos, playerPos, size, isVisible = true, getTransform
         size={[size[0], size[2]]}
         angle={[90, 0, 0]}
         getTransformRule={getTransformRule}
-        background={background}
+        background="url(src/components/floor/floor.jpg)"
     />;

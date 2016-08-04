@@ -21,6 +21,7 @@
     "babel-preset-react": "6.5.0",
     "css-loader": "0.23.1",
     "extract-text-webpack-plugin": "1.0.1",
+    "file-loader": "0.9.0",
     "react": "15.1.0",
     "react-dom": "15.1.0",
     "react-redux": "4.4.5",
@@ -29,7 +30,7 @@
     "webpack": "2.1.0-beta.13"
   },
   "scripts": {
-    "server": "node node_modules/http-server/bin/http-server",
+    "start": "node node_modules/http-server/bin/http-server",
     "test:debug": "BABEL_DISABLE_CACHE=1 node debug tests/collision.js",
     "test": "BABEL_DISABLE_CACHE=1 node tests/collision.js | node_modules/faucet/bin/cmd.js",
     "push": "git push origin master master:gh-pages"

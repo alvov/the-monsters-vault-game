@@ -1,5 +1,4 @@
 require('components/obj/obj.css');
-require('./box.css');
 
 import React from 'react';
 import Plain from '../plain/Plain';
@@ -10,6 +9,8 @@ export default function({ pos, playerPos, isVisible, size, getTransformRule }) {
         display: isVisible ? 'block' : 'none'
     });
 
+    const background = 'url(src/components/box/box01.jpg) 50% 50% / cover';
+
     // Front-Back-Left-Right-Top
     return <div className="box obj" style={styleRules}>
         <Plain
@@ -19,6 +20,7 @@ export default function({ pos, playerPos, isVisible, size, getTransformRule }) {
             size={size}
             angle={[0, 0, 0]}
             getTransformRule={getTransformRule}
+            background={background}
         />
         <Plain
             pos={[0, -size[1] / 2, -size[2] / 2]}
@@ -27,6 +29,7 @@ export default function({ pos, playerPos, isVisible, size, getTransformRule }) {
             size={size}
             angle={[0, 180, 0]}
             getTransformRule={getTransformRule}
+            background={background}
         />
         <Plain
             pos={[-size[0] / 2, -size[1] / 2, 0]}
@@ -35,6 +38,7 @@ export default function({ pos, playerPos, isVisible, size, getTransformRule }) {
             size={[size[2], size[1]]}
             angle={[0, -90, 0]}
             getTransformRule={getTransformRule}
+            background={background}
         />
         <Plain
             pos={[size[0] / 2, -size[1] / 2, 0]}
@@ -43,6 +47,7 @@ export default function({ pos, playerPos, isVisible, size, getTransformRule }) {
             size={[size[2], size[1]]}
             angle={[0, 90, 0]}
             getTransformRule={getTransformRule}
+            background={background}
         />
         {playerPos[1] > size[1] ?
             <Plain
@@ -52,6 +57,7 @@ export default function({ pos, playerPos, isVisible, size, getTransformRule }) {
                 size={[size[0], size[2]]}
                 angle={[90, 0, 0]}
                 getTransformRule={getTransformRule}
+                background={background}
             />
             : ''
         }

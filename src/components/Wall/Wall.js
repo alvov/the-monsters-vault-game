@@ -1,5 +1,4 @@
 require('components/obj/obj.css');
-require('./wall.css');
 
 import React from 'react';
 import Plain from '../plain/Plain';
@@ -9,6 +8,7 @@ export default ({ pos, size, isVisible = true, playerPos, getTransformRule }) =>
     const styleRules = Object.assign(getTransformRule({ pos }), {
         display: isVisible ? 'block' : 'none'
     });
+    const background = 'url(src/components/wall/wall.jpg) 50% 50% / cover';
 
     // Front-Back-Left-Right
     return <div className="wall obj" style={styleRules}>
@@ -19,6 +19,7 @@ export default ({ pos, size, isVisible = true, playerPos, getTransformRule }) =>
             size={size}
             angle={[0, 0, 0]}
             getTransformRule={getTransformRule}
+            background={background}
         />
         <Plain
             pos={[0, -size[1] / 2, -size[2] / 2]}
@@ -27,6 +28,7 @@ export default ({ pos, size, isVisible = true, playerPos, getTransformRule }) =>
             size={size}
             angle={[0, 180, 0]}
             getTransformRule={getTransformRule}
+            background={background}
         />
         <Plain
             pos={[-size[0] / 2, -size[1] / 2, 0]}
@@ -35,6 +37,7 @@ export default ({ pos, size, isVisible = true, playerPos, getTransformRule }) =>
             size={[size[2], size[1]]}
             angle={[0, -90, 0]}
             getTransformRule={getTransformRule}
+            background={background}
         />
         <Plain
             pos={[size[0] / 2, -size[1] / 2, 0]}
@@ -43,6 +46,7 @@ export default ({ pos, size, isVisible = true, playerPos, getTransformRule }) =>
             size={[size[2], size[1]]}
             angle={[0, 90, 0]}
             getTransformRule={getTransformRule}
+            background={background}
         />
     </div>;
 }

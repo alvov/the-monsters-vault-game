@@ -39,7 +39,7 @@ const Scene = ({ pos, playerState, objects, getTransformRule }) => {
             case 'painting':
                 renderedObjects.push(<Painting
                     key={i + object.name}
-                    pos={[object.pos[0], -object.pos[1], object.pos[2]]}
+                    pos={object.pos}
                     coords2d={object.coords2d}
                     playerPos={pos}
                     angle={object.angle}
@@ -78,6 +78,7 @@ const Scene = ({ pos, playerState, objects, getTransformRule }) => {
                     playerPos={pos}
                     isVisible={isVisible}
                     size={object.size}
+                    mode={object.mode}
                     getTransformRule={getTransformRule}
                 />);
                 break;

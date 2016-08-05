@@ -99,13 +99,15 @@ webpackJsonp([1],{
 
 
 
-	/* harmony default export */ exports["a"] = function ({ pos, playerPos, isVisible, size, getTransformRule }) {
+	const backgrounds = ['src/components/box/box01.jpg', 'src/components/box/box02.jpg', 'src/components/box/box03.jpg'];
 
-	    const styleRules = Object.assign(getTransformRule({ pos }), {
+	/* harmony default export */ exports["a"] = function ({ pos, playerPos, isVisible, size, mode = 1, getTransformRule }) {
+
+	    const styleRules = Object.assign(getTransformRule({ pos: [pos[0], -pos[1], pos[2]] }), {
 	        display: isVisible ? 'block' : 'none'
 	    });
 
-	    const background = 'url(src/components/box/box01.jpg) 50% 50% / cover';
+	    const background = `url(${ backgrounds[mode - 1] }) 50% 50% / cover`;
 
 	    // Front-Back-Left-Right-Top
 	    return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
@@ -113,7 +115,7 @@ webpackJsonp([1],{
 	        { className: 'box obj', style: styleRules },
 	        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1__plain_Plain__["a" /* default */], {
 	            pos: [0, -size[1] / 2, size[2] / 2],
-	            absPos: [pos[0], pos[1] - size[1] / 2, pos[2] + size[2] / 2],
+	            absPos: [pos[0], -pos[1] - size[1] / 2, pos[2] + size[2] / 2],
 	            playerPos: playerPos,
 	            size: size,
 	            angle: [0, 0, 0],
@@ -122,7 +124,7 @@ webpackJsonp([1],{
 	        }),
 	        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1__plain_Plain__["a" /* default */], {
 	            pos: [0, -size[1] / 2, -size[2] / 2],
-	            absPos: [pos[0], pos[1] - size[1] / 2, pos[2] - size[2] / 2],
+	            absPos: [pos[0], -pos[1] - size[1] / 2, pos[2] - size[2] / 2],
 	            playerPos: playerPos,
 	            size: size,
 	            angle: [0, 180, 0],
@@ -131,7 +133,7 @@ webpackJsonp([1],{
 	        }),
 	        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1__plain_Plain__["a" /* default */], {
 	            pos: [-size[0] / 2, -size[1] / 2, 0],
-	            absPos: [pos[0] - size[0] / 2, pos[1] - size[1] / 2, pos[2]],
+	            absPos: [pos[0] - size[0] / 2, -pos[1] - size[1] / 2, pos[2]],
 	            playerPos: playerPos,
 	            size: [size[2], size[1]],
 	            angle: [0, -90, 0],
@@ -140,16 +142,16 @@ webpackJsonp([1],{
 	        }),
 	        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1__plain_Plain__["a" /* default */], {
 	            pos: [size[0] / 2, -size[1] / 2, 0],
-	            absPos: [pos[0] + size[0] / 2, pos[1] - size[1] / 2, pos[2]],
+	            absPos: [pos[0] + size[0] / 2, -pos[1] - size[1] / 2, pos[2]],
 	            playerPos: playerPos,
 	            size: [size[2], size[1]],
 	            angle: [0, 90, 0],
 	            getTransformRule: getTransformRule,
 	            background: background
 	        }),
-	        playerPos[1] > size[1] ? __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1__plain_Plain__["a" /* default */], {
+	        playerPos[1] > pos[1] + size[1] / 2 ? __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1__plain_Plain__["a" /* default */], {
 	            pos: [0, -size[1], 0],
-	            absPos: [pos[0], pos[1] - size[1], pos[2]],
+	            absPos: [pos[0], -pos[1] - size[1], pos[2]],
 	            playerPos: playerPos,
 	            size: [size[0], size[2]],
 	            angle: [90, 0, 0],
@@ -199,8 +201,8 @@ webpackJsonp([1],{
 
 	/* harmony default export */ exports["a"] = ({ pos, playerPos, size, angle, isVisible, background, getTransformRule }) => __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1__plain_Plain__["a" /* default */], {
 	    className: 'painting',
-	    pos: pos,
-	    absPos: pos,
+	    pos: [pos[0], -pos[1], pos[2]],
+	    absPos: [pos[0], -pos[1], pos[2]],
 	    playerPos: playerPos,
 	    size: size,
 	    isVisible: isVisible,
@@ -224,7 +226,7 @@ webpackJsonp([1],{
 	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__box_Box__ = __webpack_require__(102);
 	/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__constants__ = __webpack_require__(17);
 	__webpack_require__(26);
-	__webpack_require__(113);
+	__webpack_require__(112);
 
 
 
@@ -258,7 +260,7 @@ webpackJsonp([1],{
 	            case 'painting':
 	                renderedObjects.push(__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1__painting_Painting__["a" /* default */], {
 	                    key: i + object.name,
-	                    pos: [object.pos[0], -object.pos[1], object.pos[2]],
+	                    pos: object.pos,
 	                    coords2d: object.coords2d,
 	                    playerPos: pos,
 	                    angle: object.angle,
@@ -297,6 +299,7 @@ webpackJsonp([1],{
 	                    playerPos: pos,
 	                    isVisible: isVisible,
 	                    size: object.size,
+	                    mode: object.mode,
 	                    getTransformRule: getTransformRule
 	                }));
 	                break;
@@ -350,7 +353,7 @@ webpackJsonp([1],{
 	        { className: 'wall obj', style: styleRules },
 	        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1__plain_Plain__["a" /* default */], {
 	            pos: [0, -size[1] / 2, size[2] / 2],
-	            absPos: [pos[0], pos[1] - size[1] / 2, pos[2] + size[2] / 2],
+	            absPos: [pos[0], -pos[1] - size[1] / 2, pos[2] + size[2] / 2],
 	            playerPos: playerPos,
 	            size: size,
 	            angle: [0, 0, 0],
@@ -359,7 +362,7 @@ webpackJsonp([1],{
 	        }),
 	        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1__plain_Plain__["a" /* default */], {
 	            pos: [0, -size[1] / 2, -size[2] / 2],
-	            absPos: [pos[0], pos[1] - size[1] / 2, pos[2] - size[2] / 2],
+	            absPos: [pos[0], -pos[1] - size[1] / 2, pos[2] - size[2] / 2],
 	            playerPos: playerPos,
 	            size: size,
 	            angle: [0, 180, 0],
@@ -368,7 +371,7 @@ webpackJsonp([1],{
 	        }),
 	        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1__plain_Plain__["a" /* default */], {
 	            pos: [-size[0] / 2, -size[1] / 2, 0],
-	            absPos: [pos[0] - size[0] / 2, pos[1] - size[1] / 2, pos[2]],
+	            absPos: [pos[0] - size[0] / 2, -pos[1] - size[1] / 2, pos[2]],
 	            playerPos: playerPos,
 	            size: [size[2], size[1]],
 	            angle: [0, -90, 0],
@@ -377,7 +380,7 @@ webpackJsonp([1],{
 	        }),
 	        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1__plain_Plain__["a" /* default */], {
 	            pos: [size[0] / 2, -size[1] / 2, 0],
-	            absPos: [pos[0] + size[0] / 2, pos[1] - size[1] / 2, pos[2]],
+	            absPos: [pos[0] + size[0] / 2, -pos[1] - size[1] / 2, pos[2]],
 	            playerPos: playerPos,
 	            size: [size[2], size[1]],
 	            angle: [0, 90, 0],
@@ -510,30 +513,40 @@ webpackJsonp([1],{
 	    objects: [{
 	        name: 'wall_001',
 	        type: 'wall',
-	        size: [500, 200, 50],
-	        pos: [750, 0, 500]
+	        size: [50, 200, 500],
+	        pos: [2000, 0, 250]
 	    }, {
 	        name: 'wall_002',
 	        type: 'wall',
 	        size: [500, 200, 50],
-	        pos: [1750, 0, 500]
+	        pos: [250, 0, 500]
 	    }, {
 	        name: 'wall_003',
+	        type: 'wall',
+	        size: [500, 200, 50],
+	        pos: [750, 0, 500]
+	    }, {
+	        name: 'wall_004',
+	        type: 'wall',
+	        size: [500, 200, 50],
+	        pos: [1750, 0, 500]
+	    }, {
+	        name: 'wall_005',
 	        type: 'wall',
 	        size: [50, 200, 500],
 	        pos: [500, 0, 750]
 	    }, {
-	        name: 'wall_004',
+	        name: 'wall_006',
 	        type: 'wall',
 	        size: [50, 200, 500],
 	        pos: [2000, 0, 750]
 	    }, {
-	        name: 'wall_005',
+	        name: 'wall_007',
 	        type: 'wall',
 	        size: [500, 200, 50],
 	        pos: [1250, 0, 1000]
 	    }, {
-	        name: 'wall_006',
+	        name: 'wall_008',
 	        type: 'wall',
 	        size: [50, 200, 500],
 	        pos: [1000, 0, 1250]
@@ -543,37 +556,84 @@ webpackJsonp([1],{
 	        size: [50, 50, 0],
 	        pos: [1026, 100, 1250],
 	        angle: [0, 90, 0],
-	        background: '#fff url(src/assets/images/misc/dickbutt.png) 50% 50% / contain no-repeat'
+	        background: 'url(src/assets/images/misc/dickbutt.png) 50% 50% / contain'
 	    }, {
-	        name: 'wall_007',
+	        name: 'wall_009',
 	        type: 'wall',
 	        size: [500, 200, 50],
 	        pos: [1250, 0, 1500]
 	    }, {
-	        name: 'wall_008',
+	        name: 'wall_010',
+	        type: 'wall',
+	        size: [500, 200, 50],
+	        pos: [2250, 0, 1500]
+	    }, {
+	        name: 'wall_011',
 	        type: 'wall',
 	        size: [50, 200, 500],
 	        pos: [500, 0, 1750]
 	    }, {
-	        name: 'wall_009',
+	        name: 'wall_012',
 	        type: 'wall',
 	        size: [50, 200, 500],
 	        pos: [2000, 0, 1750]
 	    }, {
-	        name: 'wall_010',
+	        name: 'wall_013',
 	        type: 'wall',
 	        size: [500, 200, 50],
 	        pos: [750, 0, 2000]
 	    }, {
-	        name: 'wall_011',
+	        name: 'wall_014',
 	        type: 'wall',
 	        size: [500, 200, 50],
 	        pos: [1750, 0, 2000]
 	    }, {
+	        name: 'wall_015',
+	        type: 'wall',
+	        size: [50, 200, 500],
+	        pos: [500, 0, 2250]
+	    }, {
 	        name: 'box_001',
 	        type: 'box',
 	        size: [150, 150, 150],
-	        pos: [200, 0, 200]
+	        pos: [200, 0, 200],
+	        mode: 1
+	    }, {
+	        name: 'box_002',
+	        type: 'box',
+	        size: [50, 50, 50],
+	        pos: [175, 150, 175],
+	        mode: 2
+	    }, {
+	        name: 'box_003',
+	        type: 'box',
+	        size: [150, 150, 150],
+	        pos: [2425, 0, 75],
+	        mode: 3
+	    }, {
+	        name: 'box_004',
+	        type: 'box',
+	        size: [150, 150, 150],
+	        pos: [1300, 0, 900],
+	        mode: 2
+	    }, {
+	        name: 'box_005',
+	        type: 'box',
+	        size: [150, 150, 150],
+	        pos: [2110, 0, 1975],
+	        mode: 1
+	    }, {
+	        name: 'box_006',
+	        type: 'box',
+	        size: [100, 150, 100],
+	        pos: [900, 0, 2400],
+	        mode: 2
+	    }, {
+	        name: 'box_006',
+	        type: 'box',
+	        size: [90, 70, 90],
+	        pos: [900, 150, 2390],
+	        mode: 3
 	    }]
 	};
 
@@ -984,14 +1044,14 @@ webpackJsonp([1],{
 
 /***/ },
 
-/***/ 112:
+/***/ 111:
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin
 
 /***/ },
 
-/***/ 113:
+/***/ 112:
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin
@@ -1026,7 +1086,7 @@ webpackJsonp([1],{
 	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
 	__webpack_require__(26);
-	__webpack_require__(112);
+	__webpack_require__(111);
 
 
 

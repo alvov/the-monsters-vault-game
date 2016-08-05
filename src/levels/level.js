@@ -11,35 +11,47 @@ const level = {
         {
             name: 'wall_001',
             type: 'wall',
-            size: [500, 200, 50],
-            pos: [750, 0, 500]
+            size: [50, 200, 500],
+            pos: [2000, 0, 250]
         },
         {
             name: 'wall_002',
             type: 'wall',
             size: [500, 200, 50],
-            pos: [1750, 0, 500]
+            pos: [250, 0, 500]
         },
         {
             name: 'wall_003',
+            type: 'wall',
+            size: [500, 200, 50],
+            pos: [750, 0, 500]
+        },
+        {
+            name: 'wall_004',
+            type: 'wall',
+            size: [500, 200, 50],
+            pos: [1750, 0, 500]
+        },
+        {
+            name: 'wall_005',
             type: 'wall',
             size: [50, 200, 500],
             pos: [500, 0, 750]
         },
         {
-            name: 'wall_004',
+            name: 'wall_006',
             type: 'wall',
             size: [50, 200, 500],
             pos: [2000, 0, 750]
         },
         {
-            name: 'wall_005',
+            name: 'wall_007',
             type: 'wall',
             size: [500, 200, 50],
             pos: [1250, 0, 1000]
         },
         {
-            name: 'wall_006',
+            name: 'wall_008',
             type: 'wall',
             size: [50, 200, 500],
             pos: [1000, 0, 1250]
@@ -50,43 +62,98 @@ const level = {
             size: [50, 50, 0],
             pos: [1026, 100, 1250],
             angle: [0, 90, 0],
-            background: '#fff url(src/assets/images/misc/dickbutt.png) 50% 50% / contain no-repeat'
+            background: 'url(src/assets/images/misc/dickbutt.png) 50% 50% / contain'
         },
         {
-            name: 'wall_007',
+            name: 'wall_009',
             type: 'wall',
             size: [500, 200, 50],
             pos: [1250, 0, 1500]
         },
         {
-            name: 'wall_008',
+            name: 'wall_010',
+            type: 'wall',
+            size: [500, 200, 50],
+            pos: [2250, 0, 1500]
+        },
+        {
+            name: 'wall_011',
             type: 'wall',
             size: [50, 200, 500],
             pos: [500, 0, 1750]
         },
         {
-            name: 'wall_009',
+            name: 'wall_012',
             type: 'wall',
             size: [50, 200, 500],
             pos: [2000, 0, 1750]
         },
         {
-            name: 'wall_010',
+            name: 'wall_013',
             type: 'wall',
             size: [500, 200, 50],
             pos: [750, 0, 2000]
         },
         {
-            name: 'wall_011',
+            name: 'wall_014',
             type: 'wall',
             size: [500, 200, 50],
             pos: [1750, 0, 2000]
         },
         {
+            name: 'wall_015',
+            type: 'wall',
+            size: [50, 200, 500],
+            pos: [500, 0, 2250]
+        },
+        {
             name: 'box_001',
             type: 'box',
             size: [150, 150, 150],
-            pos: [200, 0, 200]
+            pos: [200, 0, 200],
+            mode: 1
+        },
+        {
+            name: 'box_002',
+            type: 'box',
+            size: [50, 50, 50],
+            pos: [175, 150, 175],
+            mode: 2
+        },
+        {
+            name: 'box_003',
+            type: 'box',
+            size: [150, 150, 150],
+            pos: [2425, 0, 75],
+            mode: 3
+        },
+        {
+            name: 'box_004',
+            type: 'box',
+            size: [150, 150, 150],
+            pos: [1300, 0, 900],
+            mode: 2
+        },
+        {
+            name: 'box_005',
+            type: 'box',
+            size: [150, 150, 150],
+            pos: [2110, 0, 1975],
+            mode: 1
+        },
+        {
+            name: 'box_006',
+            type: 'box',
+            size: [100, 150, 100],
+            pos: [900, 0, 2400],
+            mode: 2
+        },
+        {
+            name: 'box_006',
+            type: 'box',
+            size: [90, 70, 90],
+            pos: [900, 150, 2390],
+            mode: 3
         }
     ]
 };

@@ -54,6 +54,6 @@ html, body {
 }.plain-overlay {
     height: 100%;
     background: #000;
-    transform: translate3d(0, 0, 0.01px);
+    transform: translate3d(0, 0, 0.5px);
     backface-visibility: hidden;
 }

@@ -62,7 +62,8 @@ const level = {
             size: [50, 50, 0],
             pos: [1026, 100, 1250],
             angle: [0, 90, 0],
-            background: 'url(src/assets/images/misc/dickbutt.png) 50% 50% / contain'
+            background: 'url(src/assets/images/misc/dickbutt.png) 50% 50% / contain',
+            collides: false
         },
         {
             name: 'wall_009',
@@ -154,6 +155,13 @@ const level = {
             size: [90, 70, 90],
             pos: [900, 150, 2390],
             mode: 3
+        },
+        {
+            name: 'switcher_01',
+            type: 'switcher',
+            pos: [1250, 100, 26],
+            size: [50, 0, 100],
+            angle: [0, 0, 0]
         }
     ]
 };
@@ -197,24 +205,19 @@ for (let z = 0; z < level.boundaries[2]; z += 500) {
 for (let i = 0; i < level.objects.length; i++) {
     const obj = level.objects[i];
     // enlarge object's hitbox to simulate players volume
+    if (obj.collides === false) {
+        continue;
+    }
     const sizeXHalf = obj.size[0] / 2;
     const sizeZHalf = obj.size[2] / 2;
-    obj.coords2d = [
-        [obj.pos[0] - sizeXHalf, obj.pos[2] - sizeZHalf],
-        [obj.pos[0] + sizeXHalf, obj.pos[2] - sizeZHalf],
-        [obj.pos[0] + sizeXHalf, obj.pos[2] + sizeZHalf],
-        [obj.pos[0] - sizeXHalf, obj.pos[2] + sizeZHalf]
+    const playerXHalf = level.player.size[0] / 2;
+    const playerZHalf = level.player.size[2] / 2;
+    obj.hitbox = [
+        [obj.pos[0] - sizeXHalf - playerXHalf, obj.pos[2] - sizeZHalf - playerZHalf],
+        [obj.pos[0] + sizeXHalf + playerXHalf, obj.pos[2] - sizeZHalf - playerZHalf],
+        [obj.pos[0] + sizeXHalf + playerXHalf, obj.pos[2] + sizeZHalf + playerZHalf],
+        [obj.pos[0] - sizeXHalf - playerXHalf, obj.pos[2] + sizeZHalf + playerZHalf]
     ];
-    if (obj.collides !== false) {
-        const playerXHalf = level.player.size[0] / 2;
-        const playerZHalf = level.player.size[2] / 2;
-        obj.hitbox = [
-            [obj.coords2d[0][0] - playerXHalf, obj.coords2d[0][1] - playerZHalf],
-            [obj.coords2d[1][0] + playerXHalf, obj.coords2d[1][1] - playerZHalf],
-            [obj.coords2d[2][0] + playerXHalf, obj.coords2d[2][1] + playerZHalf],
-            [obj.coords2d[3][0] - playerXHalf, obj.coords2d[3][1] + playerZHalf]
-        ];
-    }
 }
 
 level.collision = new Collision(level);

@@ -5,7 +5,6 @@ export default ({ pos, playerPos, size, angle, isVisible, background, getTransfo
     <Plain
         className="painting"
         pos={[pos[0], -pos[1], pos[2]]}
-        absPos={[pos[0], -pos[1], pos[2]]}
         playerPos={playerPos}
         size={size}
         isVisible={isVisible}

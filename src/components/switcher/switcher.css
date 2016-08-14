@@ -1,0 +1,12 @@
+.switcher-handle {
+    position: absolute;
+    transition: transform 0.5s ease-in;
+}
+
+.switcher_off .switcher-handle {
+    transform: rotateX(-45deg);
+}
+
+.switcher_on .switcher-handle {
+    transform: rotateX(45deg);
+}

@@ -31,6 +31,7 @@
   },
   "scripts": {
     "start": "node node_modules/http-server/bin/http-server",
+    "watch": "node_modules/webpack/bin/webpack.js --watch",
     "test:debug": "BABEL_DISABLE_CACHE=1 node debug tests/collision.js",
     "test": "BABEL_DISABLE_CACHE=1 node tests/collision.js | node_modules/faucet/bin/cmd.js",
     "push": "git push origin master master:gh-pages"

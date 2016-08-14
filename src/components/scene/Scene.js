@@ -6,9 +6,10 @@ import Painting from '../painting/Painting';
 import Floor from '../floor/Floor';
 import Wall from '../wall/Wall';
 import Box from '../box/Box';
+import Switcher from '../switcher/Switcher';
 import { BROAD_CELL_SIZE } from '../../constants';
 
-const Scene = ({ pos, playerState, objects, getTransformRule }) => {
+export default function Scene({ pos, playerState, objects, getTransformRule }) {
     const transformRule = getTransformRule({
         pos: [-pos[0], pos[1], -pos[2]]
     });
@@ -27,7 +28,7 @@ const Scene = ({ pos, playerState, objects, getTransformRule }) => {
                     break;
                 }
             }
-        } else if (object.type === 'floor') {
+        } else {
             if (
                 Math.abs(pos[0] - object.pos[0]) < 2 * BROAD_CELL_SIZE &&
                 Math.abs(pos[2] - object.pos[2]) < 2 * BROAD_CELL_SIZE
@@ -40,7 +41,6 @@ const Scene = ({ pos, playerState, objects, getTransformRule }) => {
                 renderedObjects.push(<Painting
                     key={i + object.name}
                     pos={object.pos}
-                    coords2d={object.coords2d}
                     playerPos={pos}
                     angle={object.angle}
                     size={object.size.filter(value => value !== 0).slice(0, 2)}
@@ -52,7 +52,6 @@ const Scene = ({ pos, playerState, objects, getTransformRule }) => {
             case 'floor':
                 renderedObjects.push(<Floor
                     key={object.name}
-                    coords2d={object.coords2d}
                     pos={object.pos}
                     playerPos={pos}
                     isVisible={isVisible}
@@ -63,7 +62,6 @@ const Scene = ({ pos, playerState, objects, getTransformRule }) => {
             case 'wall':
                 renderedObjects.push(<Wall
                     key={i + object.name}
-                    coords2d={object.coords2d}
                     pos={object.pos}
                     playerPos={pos}
                     isVisible={isVisible}
@@ -82,6 +80,16 @@ const Scene = ({ pos, playerState, objects, getTransformRule }) => {
                     getTransformRule={getTransformRule}
                 />);
                 break;
+            case 'switcher':
+                renderedObjects.push(<Switcher
+                    key={i + object.name}
+                    pos={object.pos}
+                    angle={object.angle}
+                    playerPos={pos}
+                    isVisible={isVisible}
+                    getTransformRule={getTransformRule}
+                />);
+                break;
         }
     }
     const className = 'player-animation obj' +
@@ -91,12 +99,10 @@ const Scene = ({ pos, playerState, objects, getTransformRule }) => {
             {renderedObjects}
         </div>
     </div>;
-};
+}
 Scene.propTypes = {
     pos: PropTypes.arrayOf(PropTypes.number).isRequired,
     playerState: PropTypes.string.isRequired,
     objects: PropTypes.arrayOf(PropTypes.object).isRequired,
     getTransformRule: PropTypes.func.isRequired
 };
-
-export default Scene;

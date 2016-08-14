@@ -6,7 +6,7 @@ import _level from './levels/level';
 const level = _level;
 
 function viewAngle(state = level.player.angle, action) {
-    switch(action.type) {
+    switch (action.type) {
         case 'updateViewAngle':
             let viewAngle = [
                 state[0] - action.pointerDelta.x * SENSITIVITY,
@@ -21,7 +21,7 @@ function viewAngle(state = level.player.angle, action) {
 }
 
 function playerPosition(state = level.player.pos, action) {
-    switch(action.type) {
+    switch (action.type) {
         case 'updatePlayerPos':
             let newPos = [];
             for (let i = 0; i < 3; i++) {
@@ -57,10 +57,7 @@ function playerState(state = 'stop', action) {
 }
 
 function objects(state = level.objects, action) {
-    switch(action.type) {
-        default:
-            return state;
-    }
+    return state;
 }
 
 export default combineReducers({

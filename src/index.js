@@ -1,16 +1,19 @@
 require('./index.css');
 
 import { FPS, KEY_W, KEY_S, KEY_A, KEY_D, KEY_SHIFT, STEP, RUNNING_STEP } from './constants';
+
 import React from 'react';
 import ReactDOM from 'react-dom';
 import * as redux from 'redux';
 import { Provider } from 'react-redux'
+import { batchActions, enableBatching } from 'redux-batched-actions';
+
 import Controls from './lib/Controls';
 import Loop from './lib/Loop';
 import Camera from './containers/Camera';
-import viewportApp from './reducers';
+import reducers from './reducers';
 
-const store = redux.createStore(viewportApp);
+const store = redux.createStore(enableBatching(reducers));
 
 const viewportNode = document.getElementById('viewport');
 var controls = new Controls({
@@ -18,9 +21,10 @@ var controls = new Controls({
 });
 
 new Loop(frameRateCoefficient => {
+    const actions = [];
     const pointerDelta = controls.getPointerDelta();
     if (pointerDelta.x || pointerDelta.y) {
-        store.dispatch({
+        actions.push({
             type: 'updateViewAngle',
             pointerDelta
         });
@@ -52,12 +56,12 @@ new Loop(frameRateCoefficient => {
         controls.keyPressed[KEY_D]
     ) {
         if (controls.keyPressed[KEY_SHIFT]) {
-            store.dispatch({ type: 'playerStateRun' });
+            actions.push({ type: 'playerStateRun' });
         } else {
-            store.dispatch({ type: 'playerStateWalk' });
+            actions.push({ type: 'playerStateWalk' });
         }
     } else {
-        store.dispatch({ type: 'playerStateStop' });
+        actions.push({ type: 'playerStateStop' });
     }
 
     if (angleShift.length) {
@@ -71,10 +75,13 @@ new Loop(frameRateCoefficient => {
         reducedAngleShift += store.getState().viewAngle[0] * Math.PI / 180;
 
         let step = frameRateCoefficient * (controls.keyPressed[KEY_SHIFT] ? RUNNING_STEP : STEP);
-        store.dispatch({
+        actions.push({
             type: 'updatePlayerPos',
             shift: [-step * Math.sin(reducedAngleShift), 0, step * Math.cos(reducedAngleShift)]
         });
+    }
+    if (actions.length) {
+        store.dispatch(batchActions(actions));
     }
 }, FPS, true);
 

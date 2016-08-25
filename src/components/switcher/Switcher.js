@@ -4,7 +4,6 @@ require('components/switcher/switcher.css');
 import React from 'react';
 import Plain from '../plain/Plain';
 
-const SIZE = [40, 60];
 const HANDLE_SIZE = [6, 40];
 const BACKGROUND = 'url(src/components/switcher/wood.jpg) 50% 50% / cover';
 
@@ -18,19 +17,24 @@ export default class Switcher extends React.Component{
     }
 
     render() {
-        const { pos, playerPos, angle, isVisible = false, getTransformRule } = this.props;
+        const { pos, playerPos, size, angle, isVisible = false, isInteractive = false, getTransformRule } = this.props;
         const posWithInvertedY = [pos[0], -pos[1], pos[2]];
         const { isOn } = this.state;
         const styleRules = Object.assign(getTransformRule({ pos: posWithInvertedY }), {
             display: isVisible ? 'block' : 'none'
         });
-        return <div className={`switcher obj ${isOn ? 'switcher_on' : 'switcher_off'}`} style={styleRules}>
+        const classNames = [
+            'switcher obj',
+            isOn ? 'switcher_on' : 'switcher_off',
+            isInteractive ? 'switcher_interactive' : ''
+        ].join(' ');
+        return <div className={classNames} style={styleRules}>
             <Plain
                 className="switcher-plate"
                 pos={[0, 0, 0]}
                 parentPos={[posWithInvertedY]}
                 playerPos={playerPos}
-                size={SIZE}
+                size={[size[0], size[1]]}
                 isVisible={isVisible}
                 angle={angle}
                 getTransformRule={getTransformRule}

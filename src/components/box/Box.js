@@ -16,7 +16,7 @@ export default function({ pos, playerPos, isVisible, size, mode = 1, getTransfor
     // Front-Back-Left-Right-Top
     return <div className="box obj" style={styleRules}>
         <Plain
-            pos={[0, -size[1] / 2, size[2] / 2]}
+            pos={[0, 0, size[2] / 2]}
             parentPos={[posWithInvertedY]}
             playerPos={playerPos}
             size={size}
@@ -25,7 +25,7 @@ export default function({ pos, playerPos, isVisible, size, mode = 1, getTransfor
             background={background}
         />
         <Plain
-            pos={[0, -size[1] / 2, -size[2] / 2]}
+            pos={[0, 0, -size[2] / 2]}
             parentPos={[posWithInvertedY]}
             playerPos={playerPos}
             size={size}
@@ -34,7 +34,7 @@ export default function({ pos, playerPos, isVisible, size, mode = 1, getTransfor
             background={background}
         />
         <Plain
-            pos={[-size[0] / 2, -size[1] / 2, 0]}
+            pos={[-size[0] / 2, 0, 0]}
             parentPos={[posWithInvertedY]}
             playerPos={playerPos}
             size={[size[2], size[1]]}
@@ -43,7 +43,7 @@ export default function({ pos, playerPos, isVisible, size, mode = 1, getTransfor
             background={background}
         />
         <Plain
-            pos={[size[0] / 2, -size[1] / 2, 0]}
+            pos={[size[0] / 2, 0, 0]}
             parentPos={[posWithInvertedY]}
             playerPos={playerPos}
             size={[size[2], size[1]]}
@@ -53,7 +53,7 @@ export default function({ pos, playerPos, isVisible, size, mode = 1, getTransfor
         />
         {playerPos[1] > pos[1] + size[1] / 2 ?
             <Plain
-                pos={[0, -size[1], 0]}
+                pos={[0, -size[1] / 2, 0]}
                 parentPos={[posWithInvertedY]}
                 playerPos={playerPos}
                 size={[size[0], size[2]]}

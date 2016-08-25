@@ -2,17 +2,21 @@ require('components/obj/obj.css');
 require('./scene.css');
 
 import React, { PropTypes } from 'react';
+
 import Painting from '../painting/Painting';
 import Floor from '../floor/Floor';
 import Wall from '../wall/Wall';
 import Box from '../box/Box';
 import Switcher from '../switcher/Switcher';
-import { BROAD_CELL_SIZE } from '../../constants';
+import { BROAD_CELL_SIZE, HAND_LENGTH } from '../../constants';
+import level from '../../levels/level';
 
-export default function Scene({ pos, playerState, objects, getTransformRule }) {
+export default function Scene({ pos, playerState, viewAngle, objects, getTransformRule }) {
     const transformRule = getTransformRule({
         pos: [-pos[0], pos[1], -pos[2]]
     });
+    const collisionView = level.collision.getCollisionView([pos, getPointPosition({ pos, distance: HAND_LENGTH, angle: viewAngle })]);
+
     const playerCell = [Math.floor(pos[0] / BROAD_CELL_SIZE), Math.floor(pos[2] / BROAD_CELL_SIZE)];
     const renderedObjects = [];
     for (let i = 0; i < objects.length; i++) {
@@ -84,9 +88,11 @@ export default function Scene({ pos, playerState, objects, getTransformRule }) {
                 renderedObjects.push(<Switcher
                     key={i + object.name}
                     pos={object.pos}
+                    size={object.size}
                     angle={object.angle}
                     playerPos={pos}
                     isVisible={isVisible}
+                    isInteractive={collisionView && collisionView[0].obj === object}
                     getTransformRule={getTransformRule}
                 />);
                 break;
@@ -106,3 +112,18 @@ Scene.propTypes = {
     objects: PropTypes.arrayOf(PropTypes.object).isRequired,
     getTransformRule: PropTypes.func.isRequired
 };
+
+/**
+ * Returns coordinates of a point which is `distance` away from `pos` in the direction `angle`
+ * @param {Array} pos
+ * @param {number} distance
+ * @param {Array} angle
+ * @returns {Array}
+ */
+function getPointPosition({ pos, distance, angle }) {
+    const y = pos[1] + Math.round(distance * Math.sin(Math.PI / 180 * angle[1]));
+    const tempDistance = distance * Math.cos(Math.PI / 180 * angle[1]);
+    const x = pos[0] + Math.round(tempDistance * Math.sin(Math.PI / 180 * angle[0]));
+    const z = pos[2] - Math.round(tempDistance * Math.cos(Math.PI / 180 * angle[0]));
+    return [x, y, z];
+}

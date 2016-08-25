@@ -14,7 +14,7 @@ export default ({ pos, size, isVisible = true, playerPos, getTransformRule }) =>
     // Front-Back-Left-Right
     return <div className="wall obj" style={styleRules}>
         <Plain
-            pos={[0, -size[1] / 2, size[2] / 2]}
+            pos={[0, 0, size[2] / 2]}
             parentPos={[posWithInvertedY]}
             playerPos={playerPos}
             size={size}
@@ -23,7 +23,7 @@ export default ({ pos, size, isVisible = true, playerPos, getTransformRule }) =>
             background={background}
         />
         <Plain
-            pos={[0, -size[1] / 2, -size[2] / 2]}
+            pos={[0, 0, -size[2] / 2]}
             parentPos={[posWithInvertedY]}
             playerPos={playerPos}
             size={size}
@@ -32,7 +32,7 @@ export default ({ pos, size, isVisible = true, playerPos, getTransformRule }) =>
             background={background}
         />
         <Plain
-            pos={[-size[0] / 2, -size[1] / 2, 0]}
+            pos={[-size[0] / 2, 0, 0]}
             parentPos={[posWithInvertedY]}
             playerPos={playerPos}
             size={[size[2], size[1]]}
@@ -41,7 +41,7 @@ export default ({ pos, size, isVisible = true, playerPos, getTransformRule }) =>
             background={background}
         />
         <Plain
-            pos={[size[0] / 2, -size[1] / 2, 0]}
+            pos={[size[0] / 2, 0, 0]}
             parentPos={[posWithInvertedY]}
             playerPos={playerPos}
             size={[size[2], size[1]]}

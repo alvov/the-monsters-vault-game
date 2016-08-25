@@ -12,6 +12,7 @@ const Camera = ({ pos, playerState, viewAngle, objects}) => {
         <Scene
             pos={pos}
             playerState={playerState}
+            viewAngle={viewAngle}
             objects={objects}
             getTransformRule={getTransformRule}
         />

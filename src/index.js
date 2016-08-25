@@ -1,6 +1,6 @@
 require('./index.css');
 
-import { FPS, KEY_W, KEY_S, KEY_A, KEY_D, KEY_SHIFT, STEP, RUNNING_STEP } from './constants';
+import { FPS, KEY_W, KEY_S, KEY_A, KEY_D, KEY_SHIFT, STEP, RUNNING_COEFF } from './constants';
 
 import React from 'react';
 import ReactDOM from 'react-dom';
@@ -74,7 +74,7 @@ new Loop(frameRateCoefficient => {
         // convert to radians and add
         reducedAngleShift += store.getState().viewAngle[0] * Math.PI / 180;
 
-        let step = frameRateCoefficient * (controls.keyPressed[KEY_SHIFT] ? RUNNING_STEP : STEP);
+        let step = frameRateCoefficient * (controls.keyPressed[KEY_SHIFT] ? RUNNING_COEFF : 1) * STEP;
         actions.push({
             type: 'updatePlayerPos',
             shift: [-step * Math.sin(reducedAngleShift), 0, step * Math.cos(reducedAngleShift)]

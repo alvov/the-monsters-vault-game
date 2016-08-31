@@ -1,4 +1,4 @@
-import { KEY_W, KEY_S, KEY_A, KEY_D, KEY_SHIFT } from '../constants';
+import { KEY_W, KEY_S, KEY_A, KEY_D, KEY_E, KEY_SHIFT } from '../constants';
 
 export default class Controls {
     constructor({ pointerLockerNode }) {
@@ -7,6 +7,7 @@ export default class Controls {
             [KEY_S]: false,
             [KEY_A]: false,
             [KEY_D]: false,
+            [KEY_E]: false,
             [KEY_SHIFT]: false
         };
 

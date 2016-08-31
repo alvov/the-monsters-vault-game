@@ -10,23 +10,18 @@ const BACKGROUND = 'url(src/components/switcher/wood.jpg) 50% 50% / cover';
 export default class Switcher extends React.Component{
     constructor(props) {
         super(props);
-
-        this.state = {
-            isOn: false
-        };
     }
 
     render() {
-        const { pos, playerPos, size, angle, isVisible = false, isInteractive = false, getTransformRule } = this.props;
+        const { pos, playerPos, size, angle, isVisible = true, isReachable = false, isOn = false, getTransformRule } = this.props;
         const posWithInvertedY = [pos[0], -pos[1], pos[2]];
-        const { isOn } = this.state;
         const styleRules = Object.assign(getTransformRule({ pos: posWithInvertedY }), {
             display: isVisible ? 'block' : 'none'
         });
         const classNames = [
             'switcher obj',
             isOn ? 'switcher_on' : 'switcher_off',
-            isInteractive ? 'switcher_interactive' : ''
+            isReachable ? 'switcher_reachable' : ''
         ].join(' ');
         return <div className={classNames} style={styleRules}>
             <Plain
@@ -103,13 +98,5 @@ export default class Switcher extends React.Component{
                 />
             </div>
         </div>
-    }
-
-    handleClick() {
-        this.setState({ isOn: !this.state.isOn });
-        // this.props.toggleSwitcher({
-        //     id: this.props.id,
-        //     isOn: this.state.isOn
-        // });
     }
 }

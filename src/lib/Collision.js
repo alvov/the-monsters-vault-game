@@ -1,57 +1,18 @@
-import { BROAD_CELL_SIZE } from '../constants';
-
-/**
- * Returns collision detection object instance
- * @param {Object} level - level description object
- */
 export default class Collision {
-    constructor(level) {
-        this.broadCells = Collision.getBroadCells(level.boundaries, BROAD_CELL_SIZE);
-
-        // fill broad cells with corresponding objects
-        for (let k = 0; k < level.objects.length; k++) {
-            const obj = level.objects[k];
-            if (obj.collides === false) {
-                continue;
-            }
-            obj.broadCells = [];
-            const topLeftCellX = Math.min(
-                this.broadCells[0].length - 1,
-                Math.max(0, Math.floor(obj.hitbox[0][0] / BROAD_CELL_SIZE))
-            );
-            const topLeftCellZ = Math.min(
-                this.broadCells.length - 1,
-                Math.max(0, Math.floor(obj.hitbox[2][0] / BROAD_CELL_SIZE))
-            );
-            const bottomRightCellX = Math.min(
-                this.broadCells[0].length - 1,
-                Math.max(0, Math.floor(obj.hitbox[0][1] / BROAD_CELL_SIZE))
-            );
-            const bottomRightCellZ = Math.min(
-                this.broadCells.length - 1,
-                Math.max(0, Math.floor(obj.hitbox[2][1] / BROAD_CELL_SIZE))
-            );
-            for (let j = topLeftCellZ; j <= bottomRightCellZ; j++) {
-                for (let i = topLeftCellX; i <= bottomRightCellX; i++) {
-                    this.broadCells[j][i].objects.push(obj);
-                    obj.broadCells.push([i, j]);
-                }
-            }
-        }
-    }
-
     /**
-     * Gets closest cells and counts collisions with objects on them
+     * Returns an array of collisions with objects
      * @param {Array} line - coordinates of initial and final player positions
-     * @returns {Array} - Array of objects with info about collisions
+     * @param {Array} objects - array of objects
+     * @param {Array} broadCellSize - maximum cell size
+     * @returns {Array} - array of objects with info about collisions
      */
-    getCollisions(line) {
-        const firstCollision = this.getCollisionPos(line);
+    static getCollisions(line, objects, broadCellSize) {
+        const firstCollision = Collision.getCollisionPos(line, objects, broadCellSize);
+        // if collision was registered and we didn't stop there, check if rebound also collides with smth
         if (firstCollision.obj && !Collision.vectorsEqual(firstCollision.collisionPoint, firstCollision.newPos)) {
-            // if collision was registered and we didn't stop there, check if rebound also collides with smth
-            const secondCollision = this.getCollisionPos([firstCollision.collisionPoint, firstCollision.newPos]);
+            const secondCollision = Collision.getCollisionPos([firstCollision.collisionPoint, firstCollision.newPos], objects, broadCellSize);
+            // if it does, stop right there (no need to check further collisions)
             if (secondCollision.obj) {
-                // if it does, stop right there (no need to check further collisions)
                 return [
                     firstCollision,
                     Object.assign(secondCollision, { newPos: secondCollision.collisionPoint })
@@ -64,9 +25,11 @@ export default class Collision {
     /**
      * Returns an object with info about collision
      * @param {Array} line - coordinates of initial and final subject positions
+     * @param {Array} objects - array of objects
+     * @param {Array} broadCellSize - maximum cell size
      * @returns {Object} - object with info about collision
      */
-    getCollisionPos(line) {
+    static getCollisionPos(line, objects, broadCellSize) {
         let result = { newPos: line[1] };
         // if moving line length is 0
         if (Collision.vectorsEqual(line[0], line[1])) {
@@ -74,11 +37,12 @@ export default class Collision {
         }
 
         // get objects from broad cells relative to subject's movement
-        const objectsSet = this.getRelativeObjectsSet(line, BROAD_CELL_SIZE);
+        objects = Collision.filterInvolvedObjects(line, objects, broadCellSize);
 
         const intersections = [];
         // search for collisions with given objects
-        for (let obj of objectsSet) {
+        for (let k = 0; k < objects.length; k++) {
+            const obj = objects[k];
             // const lineIntersections = [];
             for (let i = 0; i < 3; i++) {
                 // not checking collision on y-axis
@@ -111,7 +75,7 @@ export default class Collision {
                         coords: collisionCoords,
                         direction,
                         obj,
-                        distance: Collision.getDistance(line[0], collisionCoords)
+                        squareDistance: Collision.getSquareDistance(line[0], collisionCoords)
                     });
                 }
             }
@@ -120,10 +84,10 @@ export default class Collision {
             let minDistanceIntersections = [];
             let minDistance = Infinity;
             for (let j = 0; j < intersections.length; j++) {
-                if (intersections[j].distance < minDistance) {
-                    minDistance = intersections[j].distance;
+                if (intersections[j].squareDistance < minDistance) {
+                    minDistance = intersections[j].squareDistance;
                     minDistanceIntersections = [intersections[j]];
-                } else if (intersections[j].distance === minDistance) {
+                } else if (intersections[j].squareDistance === minDistance) {
                     minDistanceIntersections.push(intersections[j]);
                 }
             }
@@ -204,17 +168,20 @@ export default class Collision {
     /**
      * Returns array of objects which are first to intersect with `line` in 3d space (or null if there's none)
      * @param {Array} line
+     * @param {Array} objects
+     * @param {Array} broadCellSize - maximum cell size
      * @returns {null|Array}
      */
-    getCollisionView(line) {
+    static getCollisionView(line, objects, broadCellSize) {
         if (Collision.vectorsEqual(line[0], line[1])) {
             return null;
         }
 
         const intersections = [];
         // get objects from broad cells relative to subject's movement
-        const objectsSet = this.getRelativeObjectsSet(line, BROAD_CELL_SIZE);
-        for (const obj of objectsSet) {
+        objects = Collision.filterInvolvedObjects(line, objects, broadCellSize);
+        for (let k = 0; k < objects.length; k++) {
+            const obj = objects[k];
             for (let i = 0; i < 3; i++) {
                 if (line[0][i] === line[1][i]) {
                     continue;
@@ -243,23 +210,21 @@ export default class Collision {
                     intersections.push({
                         coords: collisionCoords,
                         obj,
-                        distance: Collision.getDistance(line[0], collisionCoords)
+                        squareDistance: Collision.getSquareDistance(line[0], collisionCoords)
                     });
                 }
             }
         }
         if (intersections.length) {
-            let minDistanceIntersections = [];
+            let minDistanceIntersection;
             let minDistance = Infinity;
             for (let i = 0; i < intersections.length; i++) {
-                if (intersections[i].distance < minDistance) {
-                    minDistance = intersections[i].distance;
-                    minDistanceIntersections = [intersections[i]];
-                } else if (intersections[i].distance === minDistance) {
-                    minDistanceIntersections.push(intersections[i]);
+                if (intersections[i].squareDistance < minDistance) {
+                    minDistance = intersections[i].squareDistance;
+                    minDistanceIntersection = intersections[i];
                 }
             }
-            return minDistanceIntersections;
+            return minDistanceIntersection;
         }
         return null;
     }
@@ -267,78 +232,35 @@ export default class Collision {
     /**
      * Returns set of objects that can potentially collide with line2d
      * @param {Array} line - coordinates of initial and final subject positions
+     * @param {Array} objects - array of objects
      * @param {Array} broadCellSize - maximum cell size
-     * @returns {Set} - js Set of objects, that can possibly collide with the subject
+     * @returns {Array} - array of objects, that can possibly collide with the subject
      */
-    getRelativeObjectsSet(line, broadCellSize) {
-        const relativeBroadCells = [
+    static filterInvolvedObjects(line, objects, broadCellSize) {
+        const involvedBroadCells = [
             [
-                Math.floor(line[0][0] / broadCellSize),
-                Math.floor(line[0][2] / broadCellSize)
+                Math.floor(Math.min(line[0][0], line[1][0]) / broadCellSize),
+                Math.floor(Math.min(line[0][2], line[1][2]) / broadCellSize)
             ], [
-                Math.floor(line[1][0] / broadCellSize),
-                Math.floor(line[1][2] / broadCellSize)
+                Math.floor(Math.max(line[0][0], line[1][0]) / broadCellSize),
+                Math.floor(Math.max(line[0][2], line[1][2]) / broadCellSize)
             ]
         ];
-        // if subject moved to diagonal cell, include two adjacent cells
-        if (
-            relativeBroadCells[0][0] !== relativeBroadCells[1][0] &&
-            relativeBroadCells[0][1] !== relativeBroadCells[1][1]
-        ) {
-            relativeBroadCells.push(
-                [relativeBroadCells[0][0], relativeBroadCells[1][1]],
-                [relativeBroadCells[1][0], relativeBroadCells[0][1]]
-            );
-        }
-        // include unique objects to objects set
-        const objectsSet = new Set();
-        for (let i = 0; i < relativeBroadCells.length; i++) {
-            const row = Math.max(Math.min(relativeBroadCells[i][1], this.broadCells.length - 1), 0);
-            const column = Math.max(Math.min(relativeBroadCells[i][0], this.broadCells[row].length - 1), 0);
-            const broadCellObjects = this.broadCells[row][column].objects;
-            for (let j = 0; j < broadCellObjects.length; j++) {
-                objectsSet.add(broadCellObjects[j]);
+        const involvedObjects = [];
+        for (let i = 0; i < objects.length; i++) {
+            for (let k = 0; k < objects[i].broadCells.length; k++) {
+                if (
+                    objects[i].broadCells[k][0] >= involvedBroadCells[0][0] &&
+                    objects[i].broadCells[k][0] <= involvedBroadCells[1][0] &&
+                    objects[i].broadCells[k][1] >= involvedBroadCells[0][1] &&
+                    objects[i].broadCells[k][1] <= involvedBroadCells[1][1]
+                ) {
+                    involvedObjects.push(objects[i]);
+                    break;
+                }
             }
         }
-        return objectsSet;
-    }
-
-    /**
-     * Returns array of cells which divide level field
-     * @param {Array} boundaries - level size
-     * @param {number} broadCellSize - maximum cell size
-     * @returns {Array} - array of cells
-     */
-    static getBroadCells(boundaries, broadCellSize) {
-        const broadCells = [];
-
-        let y = 0;
-        let j = 0;
-
-        do {
-            broadCells[j] = [];
-            let nextY = Math.min(y + broadCellSize, boundaries[2]);
-            let x = 0;
-            let i = 0;
-            do {
-                let nextX = Math.min(x + broadCellSize, boundaries[0]);
-                broadCells[j][i] = {
-                    objects: [],
-                    coords: [
-                        [x, y],
-                        [nextX, y],
-                        [nextX, nextY],
-                        [x, nextY]
-                    ]
-                };
-                x = nextX;
-                i++;
-            } while (x < boundaries[0]);
-            y = nextY;
-            j++;
-        } while (y < boundaries[2]);
-
-        return broadCells;
+        return involvedObjects;
     }
 
     /**
@@ -366,15 +288,15 @@ export default class Collision {
     }
 
     /**
-     * Returns distance between two points
+     * Returns square of distance between two points
      * @param {Array} point1
      * @param {Array} point2
      * @returns {number}
      */
-    static getDistance(point1, point2) {
-        return Math.sqrt(
-            Math.pow(point1[0] - point2[0], 2) + Math.pow(point1[1] - point2[1], 2) + Math.pow(point1[2] - point2[2], 2)
-        );
+    static getSquareDistance(point1, point2) {
+        return Math.pow(point1[0] - point2[0], 2) +
+            Math.pow(point1[1] - point2[1], 2) +
+            Math.pow(point1[2] - point2[2], 2);
     }
 
     /**

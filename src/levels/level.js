@@ -1,4 +1,6 @@
 import Collision from '../lib/Collision';
+import { getVisibleObjects, getPointPosition } from '../lib/utils';
+import { BROAD_CELL_SIZE, HAND_LENGTH } from '../constants';
 
 const level = {
     boundaries: [2500, null, 2500],
@@ -150,7 +152,7 @@ const level = {
             mode: 2
         },
         {
-            name: 'box_006',
+            name: 'box_007',
             type: 'box',
             size: [90, 70, 90],
             pos: [900, 185, 2390],
@@ -161,7 +163,11 @@ const level = {
             type: 'switcher',
             pos: [1250, 100, 26],
             size: [40, 60, 100],
-            angle: [0, 0, 0]
+            angle: [0, 0, 0],
+            props: {
+                id: 1,
+                opened: false
+            }
         }
     ]
 };
@@ -204,13 +210,15 @@ for (let z = 0; z < level.boundaries[2]; z += 500) {
 // calculate 2d points coordinates for objects hitboxes
 for (let i = 0; i < level.objects.length; i++) {
     const obj = level.objects[i];
-    // enlarge object's hitbox to simulate players volume
-    if (obj.collides === false) {
-        continue;
+    let sizeXHalf = 0;
+    let sizeYHalf = 0;
+    let sizeZHalf = 0;
+    // if object is 'collidable", enlarge its hitbox to simulate players size (actual player is a dot)
+    if (obj.collides !== false) {
+        sizeXHalf = obj.size[0] / 2;
+        sizeYHalf = obj.size[1] / 2;
+        sizeZHalf = obj.size[2] / 2;
     }
-    const sizeXHalf = obj.size[0] / 2;
-    const sizeYHalf = obj.size[1] / 2;
-    const sizeZHalf = obj.size[2] / 2;
     const playerXHalf = level.player.size[0] / 2;
     const playerYHalf = level.player.size[1] / 2;
     const playerZHalf = level.player.size[2] / 2;
@@ -219,8 +227,46 @@ for (let i = 0; i < level.objects.length; i++) {
         [obj.pos[1] - sizeYHalf - playerYHalf, obj.pos[1] + sizeYHalf + playerYHalf],
         [obj.pos[2] - sizeZHalf - playerZHalf, obj.pos[2] + sizeZHalf + playerZHalf]
     ];
+
+    // define to which broad cells does an object belong
+    obj.broadCells = [];
+    const broadCellsXMax = Math.ceil(level.boundaries[0] / BROAD_CELL_SIZE) - 1;
+    const broadCellsYMax = Math.ceil(level.boundaries[2] / BROAD_CELL_SIZE) - 1;
+    const topLeftCellX = Math.min(
+        broadCellsXMax,
+        Math.max(0, Math.floor(obj.hitbox[0][0] / BROAD_CELL_SIZE))
+    );
+    const topLeftCellZ = Math.min(
+        broadCellsYMax,
+        Math.max(0, Math.floor(obj.hitbox[2][0] / BROAD_CELL_SIZE))
+    );
+    const bottomRightCellX = Math.min(
+        broadCellsXMax,
+        Math.max(0, Math.floor(obj.hitbox[0][1] / BROAD_CELL_SIZE))
+    );
+    const bottomRightCellZ = Math.min(
+        broadCellsYMax,
+        Math.max(0, Math.floor(obj.hitbox[2][1] / BROAD_CELL_SIZE))
+    );
+    for (let j = topLeftCellZ; j <= bottomRightCellZ; j++) {
+        for (let i = topLeftCellX; i <= bottomRightCellX; i++) {
+            obj.broadCells.push([i, j]);
+        }
+    }
+
+    const visibleObjects = getVisibleObjects(level.player.pos, [obj]);
+    obj.isVisible = visibleObjects.length === 1;
+
+    obj.isReachable = false;
 }
 
-level.collision = new Collision(level);
+const collisionView = Collision.getCollisionView(
+    [level.player.pos, getPointPosition({ pos: level.player.pos, distance: HAND_LENGTH, angle: level.player.angle })],
+    level.objects,
+    BROAD_CELL_SIZE
+);
+if (collisionView) {
+    collisionView.obj.isReachable = true;
+}
 
 export default level;

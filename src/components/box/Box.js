@@ -5,7 +5,7 @@ import Plain from '../plain/Plain';
 
 const backgrounds = ['src/components/box/box01.jpg', 'src/components/box/box02.jpg', 'src/components/box/box03.jpg'];
 
-export default function({ pos, playerPos, isVisible, size, mode = 1, getTransformRule }) {
+export default function({ pos, playerPos, isVisible = true, size, mode = 1, getTransformRule }) {
     const posWithInvertedY = [pos[0], -pos[1], pos[2]];
     const styleRules = Object.assign(getTransformRule({ pos: posWithInvertedY }), {
         display: isVisible ? 'block' : 'none'

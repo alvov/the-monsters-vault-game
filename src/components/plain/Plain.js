@@ -101,17 +101,6 @@ export default ({
     </div>;
 }
 
-// const MAX_COLORS_COUNT = 20;
-// function getSpotLightColorsString(minOpacity = 0, colorsCount = MAX_COLORS_COUNT) {
-//     const result = [];
-//     for (let i = 0; i < colorsCount; i++) {
-//         const opacity = minOpacity + (i + 1) * (1 - minOpacity) / colorsCount;
-//         result.push(`rgba(0, 0, 0, ${opacity}) ${i * 100 / colorsCount}%`);
-//         result.push(`rgba(0, 0, 0, ${opacity}) ${(i + 1) * 100 / colorsCount}%`);
-//     }
-//     return result.join(', ');
-// }
-
 function getPlayerSpotLightBackground(params) {
     return getSpotLightBackground({ ...params, radius: 1.1 * BROAD_CELL_SIZE });
 }
@@ -122,12 +111,6 @@ function getSpotLightBackground({ pos, distance, background, radius, hasSimpleLi
         const result = {
             opacity: 1 - ratio
         };
-        // const size = (2 + ratio) * radius / 2;
-        // const colorsCount = Math.round((1 + ratio) * MAX_COLORS_COUNT / 2);
-        // return {
-        //     background: `radial-gradient(${size}px at ${pos[0]}px ${pos[1]}px, ` +
-        //         `${getSpotLightColorsString(1 - ratio, colorsCount)})`
-        // };
         if (!hasSimpleLight) {
             const size = (2 + ratio) * radius / 2 * 10;
             result.background = `url(src/components/plain/mask.svg) ${pos[0] - size / 2}px ${pos[1] - size / 2}px / ${size}px no-repeat, ` +

@@ -1,4 +1,3 @@
-import { SENSITIVITY } from './constants';
 import { combineReducers } from 'redux';
 import _level from './levels/level';
 
@@ -7,12 +6,8 @@ const level = _level;
 
 function viewAngle(state = level.player.angle, action) {
     switch (action.type) {
-        case 'updateViewAngle':
-            return [
-                (state[0] - action.pointerDelta.x * SENSITIVITY) % 360,
-                Math.min(Math.max(state[1] + action.pointerDelta.y * SENSITIVITY, -90), 90),
-                0
-            ];
+        case 'viewAngleUpdate':
+            return action.viewAngle;
         default:
             return state;
     }
@@ -20,21 +15,8 @@ function viewAngle(state = level.player.angle, action) {
 
 function playerPosition(state = level.player.pos, action) {
     switch (action.type) {
-        case 'updatePlayerPos':
-            let newPos = [];
-            for (let i = 0; i < 3; i++) {
-                let newAxisPos = state[i] + action.shift[i];
-                // check if got out of bounds
-                for (let i = 0; i < 3; i++) {
-                    if (level.boundaries[i]) {
-                        newAxisPos = Math.min(Math.max(newAxisPos, 0), level.boundaries[i] - 1);
-                    }
-                }
-                newPos.push(newAxisPos);
-            }
-            const collisions = level.collision.getCollisions([state, newPos]);
-            // get last collision result as new player position
-            return collisions[collisions.length - 1].newPos;
+        case 'playerPositionUpdate':
+            return action.pos;
         default:
             return state;
     }
@@ -53,13 +35,54 @@ function playerState(state = 'stop', action) {
     }
 }
 
+function doors(
+    state = level.objects.filter(obj => obj.type === 'switcher')
+        .reduce((result, obj) => {
+            result[obj.props.id] = obj.props.opened;
+            return result;
+        }, {}),
+    action
+) {
+    switch (action.type) {
+        case 'doorToggle':
+            return {
+                ...state,
+                [action.id]: !state[action.id]
+            };
+        default:
+            return state;
+    }
+}
+
 function objects(state = level.objects, action) {
-    return state;
+    switch (action.type) {
+        case 'objectsSetVisible': {
+            const objects = [];
+            for (let i = 0; i < state.length; i++) {
+                let object = state[i];
+                object.isVisible = object.name in action.visibleObjectIds;
+                objects.push(object);
+            }
+            return objects;
+        }
+        case 'objectsSetReachable': {
+            const objects = [];
+            for (let i = 0; i < state.length; i++) {
+                let object = state[i];
+                object.isReachable = object.name === action.reachableObjectId;
+                objects.push(object);
+            }
+            return objects;
+        }
+        default:
+            return state;
+    }
 }
 
 export default combineReducers({
     viewAngle,
     pos: playerPosition,
     playerState,
+    doors,
     objects
 });

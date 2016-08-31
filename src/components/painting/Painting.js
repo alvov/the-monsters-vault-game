@@ -1,7 +1,7 @@
 import React from 'react';
 import Plain from '../plain/Plain';
 
-export default ({ pos, playerPos, size, angle, isVisible, background, getTransformRule }) =>
+export default ({ pos, playerPos, size, angle, isVisible = true, background, getTransformRule }) =>
     <Plain
         className="painting"
         pos={[pos[0], -pos[1], pos[2]]}

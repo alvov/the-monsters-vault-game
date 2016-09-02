@@ -4,16 +4,17 @@ require('./scene.css');
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 
-import Painting from '../../components/painting/Painting';
-import Floor from '../../components/floor/Floor';
-import Wall from '../../components/wall/Wall';
-import Box from '../../components/box/Box';
-import Switcher from '../../components/switcher/Switcher';
+import Painting from '../../components/painting/painting';
+import Floor from '../../components/floor/floor';
+import Wall from '../../components/wall/wall';
+import Box from '../../components/box/box';
+import Switcher from '../../components/switcher/switcher';
+import Door from '../../components/door/door';
 import { getTransformRule } from '../../lib/utils';
 
 class Scene extends React.Component {
     render() {
-        const { pos, playerState, doors, objects } = this.props;
+        const { pos, viewAngle, playerState, doors, objects } = this.props;
         const transformRule = getTransformRule({
             pos: [-pos[0], pos[1], -pos[2]]
         });
@@ -78,6 +79,18 @@ class Scene extends React.Component {
                     />);
                     break;
                 }
+                case 'door':
+                    renderedObjects.push(<Door
+                        key={object.name}
+                        pos={object.pos}
+                        playerPos={pos}
+                        viewAngle={viewAngle}
+                        isVisible={object.isVisible}
+                        size={object.size}
+                        isOpen={Boolean(doors[object.props.id])}
+                        getTransformRule={getTransformRule}
+                    />);
+                    break;
             }
         }
         const className = 'player-animation obj' +
@@ -91,6 +104,7 @@ class Scene extends React.Component {
 }
 Scene.propTypes = {
     pos: PropTypes.arrayOf(PropTypes.number).isRequired,
+    viewAngle: PropTypes.arrayOf(PropTypes.number).isRequired,
     playerState: PropTypes.string.isRequired,
     doors: PropTypes.object.isRequired,
     objects: PropTypes.arrayOf(PropTypes.object).isRequired
@@ -99,6 +113,7 @@ Scene.propTypes = {
 function mapStateToProps(state) {
     return {
         pos: state.pos,
+        viewAngle: state.viewAngle,
         playerState: state.playerState,
         objects: state.objects,
         doors: state.doors

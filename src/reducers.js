@@ -36,7 +36,7 @@ function playerState(state = 'stop', action) {
 }
 
 function doors(
-    state = level.objects.filter(obj => obj.type === 'switcher')
+    state = level.objects.filter(obj => obj.type === 'door')
         .reduce((result, obj) => {
             result[obj.props.id] = obj.props.opened;
             return result;
@@ -70,6 +70,17 @@ function objects(state = level.objects, action) {
             for (let i = 0; i < state.length; i++) {
                 let object = state[i];
                 object.isReachable = object.name === action.reachableObjectId;
+                objects.push(object);
+            }
+            return objects;
+        }
+        case 'objectsToggleCollidable': {
+            const objects = [];
+            for (let i = 0; i < state.length; i++) {
+                let object = state[i];
+                if (object.type === 'door' && object.props.id === action.id) {
+                    object.collides = typeof object.collides === 'undefined' ? false : !object.collides;
+                }
                 objects.push(object);
             }
             return objects;

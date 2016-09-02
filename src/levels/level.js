@@ -1,4 +1,4 @@
-import Collision from '../lib/Collision';
+import Collision from '../lib/collision';
 import { getVisibleObjects, getPointPosition } from '../lib/utils';
 import { BROAD_CELL_SIZE, HAND_LENGTH } from '../constants';
 
@@ -165,6 +165,15 @@ const level = {
             size: [40, 60, 100],
             angle: [0, 0, 0],
             props: {
+                id: 1
+            }
+        },
+        {
+            name: 'door_01',
+            type: 'door',
+            size: [500, 200, 20],
+            pos: [1250, 100, 500],
+            props: {
                 id: 1,
                 opened: false
             }
@@ -213,7 +222,7 @@ for (let i = 0; i < level.objects.length; i++) {
     let sizeXHalf = 0;
     let sizeYHalf = 0;
     let sizeZHalf = 0;
-    // if object is 'collidable", enlarge its hitbox to simulate players size (actual player is a dot)
+    // if object is "collidable", enlarge its hitbox to simulate players size (actual player is a dot)
     if (obj.collides !== false) {
         sizeXHalf = obj.size[0] / 2;
         sizeYHalf = obj.size[1] / 2;

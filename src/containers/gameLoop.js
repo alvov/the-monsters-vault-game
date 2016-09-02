@@ -4,11 +4,11 @@ import { batchActions } from 'redux-batched-actions';
 import storeShape from 'react-redux/src/utils/storeShape';
 
 import { FPS, KEY_W, KEY_S, KEY_A, KEY_D, KEY_E, KEY_SHIFT, STEP, RUNNING_COEFF, BROAD_CELL_SIZE, SENSITIVITY, HAND_LENGTH } from '../constants';
-import Controls from '../lib/Controls';
-import Loop from '../lib/Loop';
+import Controls from '../lib/controls';
+import Loop from '../lib/loop';
 import level from '../levels/level';
-import Collision from '../lib/Collision';
-import Camera from '../containers/Camera';
+import Collision from '../lib/collision';
+import Camera from '../containers/camera';
 import { getVisibleObjects, getPointPosition } from '../lib/utils';
 
 class GameLoop extends React.Component {
@@ -162,6 +162,10 @@ class GameLoop extends React.Component {
                 if (objectIsReachable) {
                     actions.push({
                         type: 'doorToggle',
+                        id: objects[i].props.id
+                    });
+                    actions.push({
+                        type: 'objectsToggleCollidable',
                         id: objects[i].props.id
                     });
                     break;

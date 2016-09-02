@@ -1,5 +1,5 @@
 import React from 'react';
-import Plain from '../plain/Plain';
+import Plain from '../plain/plain';
 
 export default ({ pos, playerPos, size, angle, isVisible = true, background, getTransformRule }) =>
     <Plain

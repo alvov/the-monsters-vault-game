@@ -1,7 +1,7 @@
 require('components/obj/obj.css');
 
 import React from 'react';
-import Plain from '../plain/Plain';
+import Plain from '../plain/plain';
 
 // no support for rotated walls for now
 export default ({ pos, size, isVisible = true, playerPos, getTransformRule }) => {

@@ -2,7 +2,7 @@ require('components/obj/obj.css');
 require('components/switcher/switcher.css');
 
 import React from 'react';
-import Plain from '../plain/Plain';
+import Plain from '../plain/plain';
 
 const HANDLE_SIZE = [6, 40];
 const BACKGROUND = 'url(src/components/switcher/wood.jpg) 50% 50% / cover';
@@ -46,6 +46,7 @@ export default class Switcher extends React.Component{
                     angle={[0, -90, 0]}
                     parentAngle={[angle]}
                     background={BACKGROUND}
+                    simpleLight={true}
                     getTransformRule={getTransformRule}
                 />
                 {/*right*/}
@@ -58,6 +59,7 @@ export default class Switcher extends React.Component{
                     angle={[0, 90, 0]}
                     parentAngle={[angle]}
                     background={BACKGROUND}
+                    simpleLight={true}
                     getTransformRule={getTransformRule}
                 />
                 {/*top*/}
@@ -70,6 +72,7 @@ export default class Switcher extends React.Component{
                     angle={[90, 0, 0]}
                     parentAngle={[angle]}
                     background={BACKGROUND}
+                    simpleLight={true}
                     getTransformRule={getTransformRule}
                 />
                 {/*bottom*/}
@@ -82,6 +85,7 @@ export default class Switcher extends React.Component{
                     angle={[-90, 0, 0]}
                     parentAngle={[angle]}
                     background={BACKGROUND}
+                    simpleLight={true}
                     getTransformRule={getTransformRule}
                 />
                 {/*front*/}
@@ -94,6 +98,7 @@ export default class Switcher extends React.Component{
                     angle={[0, 0, 0]}
                     parentAngle={[angle]}
                     background={BACKGROUND}
+                    simpleLight={true}
                     getTransformRule={getTransformRule}
                 />
             </div>

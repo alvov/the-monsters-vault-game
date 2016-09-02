@@ -1,7 +1,7 @@
 require('components/obj/obj.css');
 
 import React from 'react';
-import Plain from '../plain/Plain';
+import Plain from '../plain/plain';
 
 const backgrounds = ['src/components/box/box01.jpg', 'src/components/box/box02.jpg', 'src/components/box/box03.jpg'];
 

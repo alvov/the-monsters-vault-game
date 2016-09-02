@@ -3,7 +3,6 @@ require('./plain.css');
 
 import React from 'react';
 import { BROAD_CELL_SIZE } from '../../constants';
-const MAX_SIMPLE_LIGHT_SIZE = 50;
 
 export default ({
     className = '',
@@ -15,6 +14,7 @@ export default ({
     angle = [0, 0, 0],
     parentAngle,
     background,
+    simpleLight = false,
     getTransformRule
 }) => {
     let backgroundStyle = {
@@ -26,8 +26,7 @@ export default ({
     if (isVisible) {
         const relativePos = parentPos ? [pos].concat(parentPos).reduce(vectorsAdd3D) : pos;
         const relativeAngle = parentAngle ? [angle].concat(parentAngle).reduce(vectorsAdd3D) : angle;
-        const hasSimpleLight = size[0] <= MAX_SIMPLE_LIGHT_SIZE && size[1] <= MAX_SIMPLE_LIGHT_SIZE;
-        if (hasSimpleLight) {
+        if (simpleLight) {
             backgroundStyle = getPlayerSpotLightBackground({
                 distance: vectorLength3D([
                     playerPos[0] - relativePos[0],
@@ -35,7 +34,7 @@ export default ({
                     playerPos[2] - relativePos[2]
                 ]),
                 background,
-                hasSimpleLight
+                simpleLight
             });
         } else {
             // front
@@ -105,13 +104,13 @@ function getPlayerSpotLightBackground(params) {
     return getSpotLightBackground({ ...params, radius: 1.1 * BROAD_CELL_SIZE });
 }
 
-function getSpotLightBackground({ pos, distance, background, radius, hasSimpleLight }) {
+function getSpotLightBackground({ pos, distance, background, simpleLight, radius }) {
     const ratio = Math.max(0, radius - distance) / radius;
     if (ratio) {
         const result = {
             opacity: 1 - ratio
         };
-        if (!hasSimpleLight) {
+        if (!simpleLight) {
             const size = (2 + ratio) * radius / 2 * 10;
             result.background = `url(src/components/plain/mask.svg) ${pos[0] - size / 2}px ${pos[1] - size / 2}px / ${size}px no-repeat, ` +
                 background;

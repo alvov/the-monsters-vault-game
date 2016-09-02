@@ -1,19 +1,31 @@
 import { BROAD_CELL_SIZE } from '../constants';
 const AXIS = ['X', 'Y', 'Z'];
 
-export function getTransformRule(params) {
+/**
+ * Returns css transform rule for given position and angle
+ * @param {Array} pos
+ * @param {Array} angle
+ * @returns {{transform: string}}
+ */
+export function getTransformRule({ pos, angle }) {
     let transform = '';
-    if (params.pos) {
-        transform += `translate3d(${params.pos[0]}px,${params.pos[1]}px,${params.pos[2]}px)`;
+    if (pos) {
+        transform += `translate3d(${pos[0]}px,${pos[1]}px,${pos[2]}px)`;
     }
-    if (params.angle) {
-        for (let axis = 0; axis < params.angle.length; axis++) {
-            transform += ` rotate${AXIS[axis]}(${params.angle[axis]}deg)`;
+    if (angle) {
+        for (let axis = 0; axis < angle.length; axis++) {
+            transform += ` rotate${AXIS[axis]}(${angle[axis]}deg)`;
         }
     }
     return { transform };
 }
 
+/**
+ * Returns array of objects to be shown on map
+ * @param {Array} playerPos
+ * @param {Array} objects
+ * @returns {Array}
+ */
 export function getVisibleObjects(playerPos, objects) {
     const playerCell = [
         Math.floor(playerPos[0] / BROAD_CELL_SIZE),

@@ -43,7 +43,6 @@ export default class Collision {
         // search for collisions with given objects
         for (let k = 0; k < objects.length; k++) {
             const obj = objects[k];
-            // const lineIntersections = [];
             for (let i = 0; i < 3; i++) {
                 // not checking collision on y-axis
                 if (i === 1) {
@@ -248,6 +247,9 @@ export default class Collision {
         ];
         const involvedObjects = [];
         for (let i = 0; i < objects.length; i++) {
+            if (objects[i].collides === false) {
+                continue;
+            }
             for (let k = 0; k < objects[i].broadCells.length; k++) {
                 if (
                     objects[i].broadCells[k][0] >= involvedBroadCells[0][0] &&

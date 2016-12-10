@@ -1,4 +1,3 @@
-require('components/obj/obj.css');
 require('./scene.css');
 
 import React, { PropTypes } from 'react';

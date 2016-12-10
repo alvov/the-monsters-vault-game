@@ -1,4 +1,3 @@
-require('components/obj/obj.css');
 require('components/switcher/switcher.css');
 
 import React from 'react';

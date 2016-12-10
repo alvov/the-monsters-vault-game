@@ -1,4 +1,3 @@
-require('components/obj/obj.css');
 require('components/door/door.css');
 
 import React, { PropTypes } from 'react';

@@ -1,4 +1,3 @@
-require('components/obj/obj.css');
 require('./plain.css');
 
 import React from 'react';

@@ -1,6 +1,6 @@
 import Collision from '../lib/collision';
 import { getVisibleObjects, getPointPosition } from '../lib/utils';
-import { BROAD_CELL_SIZE, HAND_LENGTH } from '../constants';
+import { BROAD_CELL_SIZE, HAND_LENGTH, DOOR_CLOSE } from '../constants';
 
 const level = {
     boundaries: [2500, null, 2500],
@@ -64,7 +64,7 @@ const level = {
             size: [50, 50, 0],
             pos: [1026, 100, 1250],
             angle: [0, 90, 0],
-            background: 'url(src/assets/images/misc/dickbutt.png) 50% 50% / contain',
+            background: 'url(assets/dickbutt.png) 50% 50% / contain',
             collides: false
         },
         {
@@ -114,49 +114,63 @@ const level = {
             type: 'box',
             size: [150, 150, 150],
             pos: [200, 75, 200],
-            mode: 1
+            props: {
+                mode: 1
+            }
         },
         {
             name: 'box_002',
             type: 'box',
             size: [50, 50, 50],
             pos: [175, 175, 175],
-            mode: 2
+            props: {
+                mode: 2
+            }
         },
         {
             name: 'box_003',
             type: 'box',
             size: [150, 150, 150],
             pos: [2425, 75, 75],
-            mode: 3
+            props: {
+                mode: 3
+            }
         },
         {
             name: 'box_004',
             type: 'box',
             size: [150, 150, 150],
             pos: [1300, 75, 900],
-            mode: 2
+            props: {
+                mode: 2
+            }
         },
         {
             name: 'box_005',
             type: 'box',
             size: [150, 150, 150],
             pos: [2110, 75, 1975],
-            mode: 1
+            props: {
+                mode: 1
+            }
         },
         {
             name: 'box_006',
             type: 'box',
             size: [100, 150, 100],
             pos: [900, 75, 2400],
-            mode: 2
+            props: {
+                mode: 2
+            }
         },
         {
             name: 'box_007',
             type: 'box',
             size: [90, 70, 90],
             pos: [900, 185, 2390],
-            mode: 3
+            props: {
+                mode: 3
+            }
         },
         {
             name: 'switcher_01',
@@ -166,7 +180,8 @@ const level = {
             angle: [0, 0, 0],
             props: {
                 id: 1
-            }
+            },
+            isInteractive: true
         },
         {
             name: 'door_01',
@@ -175,7 +190,7 @@ const level = {
             pos: [1250, 100, 500],
             props: {
                 id: 1,
-                opened: false
+                state: DOOR_CLOSE
             }
         }
     ]

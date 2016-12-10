@@ -3,8 +3,10 @@ import { connect } from 'react-redux';
 import { batchActions } from 'redux-batched-actions';
 import storeShape from 'react-redux/src/utils/storeShape';
 
-import { FPS, KEY_W, KEY_S, KEY_A, KEY_D, KEY_E, KEY_SHIFT, STEP, RUNNING_COEFF, BROAD_CELL_SIZE, SENSITIVITY, HAND_LENGTH } from '../constants';
-import Controls from '../lib/controls';
+import {
+    FPS, KEY_W, KEY_S, KEY_A, KEY_D, KEY_E, KEY_SHIFT, STEP, RUNNING_COEFF, BROAD_CELL_SIZE, SENSITIVITY, HAND_LENGTH,
+    DOOR_OPEN, DOOR_OPENING, DOOR_CLOSING
+} from '../constants';
 import Loop from '../lib/loop';
 import level from '../levels/level';
 import Collision from '../lib/collision';
@@ -12,14 +14,29 @@ import Camera from '../containers/camera';
 import { getVisibleObjects, getPointPosition } from '../lib/utils';
 
 class GameLoop extends React.Component {
-    constructor(props, context) {
-        super(props, context);
+    static contextTypes = {
+        store: storeShape.isRequired
+    };
+    static childContextTypes = {
+        audioCtx: PropTypes.object.isRequired
+    };
 
-        this.controls = new Controls({
-            pointerLockerNode: document.getElementById('viewport')
-        });
+    constructor(...args) {
+        super(...args);
+
+        this.delayedActions = [];
+
         this.loop = new Loop(this.loopCallback.bind(this), FPS);
+
         this.prevKeysPressed = {};
+
+        this.audioCtx = new window.AudioContext();
+    }
+
+    getChildContext() {
+        return {
+            audioCtx: this.audioCtx
+        };
     }
 
     componentDidMount() {
@@ -35,11 +52,17 @@ class GameLoop extends React.Component {
     }
 
     loopCallback(frameRateCoefficient) {
-        const actions = [];
+        const now = Date.now();
+        const actions = this.delayedActions.filter(action =>
+            action.timestamp <= now
+        );
+        this.delayedActions = this.delayedActions.filter(action =>
+            action.timestamp > now
+        );
 
         const newState = {};
 
-        const pointerDelta = this.controls.getPointerDelta();
+        const pointerDelta = this.context.store.getState().pointerDelta;
         if (pointerDelta.x || pointerDelta.y) {
             const currentViewAngle = this.context.store.getState().viewAngle;
             const newViewAngle = [
@@ -51,22 +74,26 @@ class GameLoop extends React.Component {
                 type: 'viewAngleUpdate',
                 viewAngle: newViewAngle
             });
+            actions.push({
+                type: 'resetPointerDelta'
+            });
             newState.viewAngle = newViewAngle;
         }
 
         let angleShift = [];
-        if (this.controls.keyPressed[KEY_W]) {
+        const keyPressed = this.context.store.getState().keyPressed;
+        if (keyPressed[KEY_W]) {
             angleShift.push(Math.PI);
         }
-        if (this.controls.keyPressed[KEY_S]) {
+        if (keyPressed[KEY_S]) {
             angleShift.push(0);
         }
-        if (this.controls.keyPressed[KEY_A]) {
+        if (keyPressed[KEY_A]) {
             angleShift.push(Math.PI / 2);
         }
-        if (this.controls.keyPressed[KEY_D]) {
+        if (keyPressed[KEY_D]) {
             // hack for angles sum
-            if (this.controls.keyPressed[KEY_W]) {
+            if (keyPressed[KEY_W]) {
                 angleShift.push(3 * Math.PI / 2);
             } else {
                 angleShift.push(-Math.PI / 2);
@@ -74,12 +101,12 @@ class GameLoop extends React.Component {
         }
 
         if (
-            this.controls.keyPressed[KEY_W] ||
-            this.controls.keyPressed[KEY_S] ||
-            this.controls.keyPressed[KEY_A] ||
-            this.controls.keyPressed[KEY_D]
+            keyPressed[KEY_W] ||
+            keyPressed[KEY_S] ||
+            keyPressed[KEY_A] ||
+            keyPressed[KEY_D]
         ) {
-            if (this.controls.keyPressed[KEY_SHIFT]) {
+            if (keyPressed[KEY_SHIFT]) {
                 actions.push({ type: 'playerStateRun' });
             } else {
                 actions.push({ type: 'playerStateWalk' });
@@ -95,10 +122,9 @@ class GameLoop extends React.Component {
             }
             reducedAngleShift /= angleShift.length;
 
-            // convert to radians and add
-            reducedAngleShift += this.context.store.getState().viewAngle[0] * Math.PI / 180;
+            reducedAngleShift += GameLoop.convertDegreeToRad(this.context.store.getState().viewAngle[0]);
 
-            let step = frameRateCoefficient * (this.controls.keyPressed[KEY_SHIFT] ? RUNNING_COEFF : 1) * STEP;
+            let step = frameRateCoefficient * (keyPressed[KEY_SHIFT] ? RUNNING_COEFF : 1) * STEP;
             const shift = [-step * Math.sin(reducedAngleShift), 0, step * Math.cos(reducedAngleShift)];
             const currentPos = this.context.store.getState().pos;
             const newPos = [];
@@ -124,6 +150,7 @@ class GameLoop extends React.Component {
         }
 
         if (newState.pos) {
+            // render only visible objects
             const visibleObjects = getVisibleObjects(newState.pos, this.context.store.getState().objects);
             const visibleObjectIds = {};
             for (let i = 0; i < visibleObjects.length; i++) {
@@ -134,9 +161,38 @@ class GameLoop extends React.Component {
                 type: 'objectsSetVisible',
                 visibleObjectIds
             });
+
+            // update audio listener position
+            this.audioCtx.listener.positionX.value = newState.pos[0];
+            this.audioCtx.listener.positionY.value = newState.pos[1];
+            this.audioCtx.listener.positionZ.value = newState.pos[2];
         }
 
-        let newReachableObjectId;
+        if (newState.viewAngle) {
+            const [forwardX, forwardY, forwardZ] = GameLoop.getVectorFromAngles(...newState.viewAngle);
+
+            let upVerticalAngle;
+            let upHorizontalAngle;
+            if (newState.viewAngle[1] > 0) {
+                upVerticalAngle = 90 - newState.viewAngle[1];
+                upHorizontalAngle = newState.viewAngle[0] - 180;
+            } else {
+                upVerticalAngle = 90 + newState.viewAngle[1];
+                upHorizontalAngle = newState.viewAngle[0];
+            }
+            const [upX, upY, upZ] = GameLoop.getVectorFromAngles(upHorizontalAngle, upVerticalAngle);
+
+            // update audio listener orientation
+            this.audioCtx.listener.forwardX.value = forwardX;
+            this.audioCtx.listener.forwardY.value = forwardY;
+            this.audioCtx.listener.forwardZ.value = forwardZ;
+            this.audioCtx.listener.upX.value = upX;
+            this.audioCtx.listener.upY.value = upY;
+            this.audioCtx.listener.upZ.value = upZ;
+        }
+
+        // find interactive object which we can reach with a hand
+        let reachableObject;
         if (newState.pos || newState.viewAngle) {
             const playerPosition = newState.pos || this.context.store.getState().pos;
             const viewAngle = newState.viewAngle || this.context.store.getState().viewAngle;
@@ -144,31 +200,52 @@ class GameLoop extends React.Component {
                 playerPosition,
                 getPointPosition({ pos: playerPosition, distance: HAND_LENGTH, angle: viewAngle })
             ], this.context.store.getState().objects, BROAD_CELL_SIZE);
-            if (collisionView) {
-                newReachableObjectId = collisionView.obj.name;
+            if (collisionView && collisionView.obj.isInteractive) {
+                reachableObject = collisionView.obj;
+                if (!reachableObject.isReachable) {
+                    actions.push({
+                        type: 'objectsSetReachable',
+                        reachableObjectId: reachableObject.name
+                    });
+                }
+            } else {
+                actions.push({
+                    type: 'objectsSetReachable',
+                    reachableObjectId: null
+                });
             }
-            actions.push({
-                type: 'objectsSetReachable',
-                reachableObjectId: newReachableObjectId
-            });
+        } else {
+            reachableObject = this.context.store.getState().objects.find(obj => obj.isReachable);
         }
 
-        if (this.controls.keyPressed[KEY_E] && !this.prevKeysPressed[KEY_E]) {
-            const objects = this.context.store.getState().objects;
-            for (let i = 0; i < objects.length; i++) {
-                const objectIsReachable = newReachableObjectId ?
-                    objects[i].name === newReachableObjectId :
-                    objects[i].isReachable;
-                if (objectIsReachable) {
+        // perform interaction if key E is pressed
+        if (keyPressed[KEY_E] && !this.prevKeysPressed[KEY_E] && reachableObject) {
+            if (reachableObject.type === 'switcher') {
+                const door = this.context.store.getState().doors[reachableObject.props.id];
+                if (![DOOR_OPENING, DOOR_CLOSING].includes(door)) {
                     actions.push({
-                        type: 'doorToggle',
-                        id: objects[i].props.id
+                        type: door === DOOR_OPEN ? 'doorSetClosing' : 'doorSetOpening',
+                        id: reachableObject.props.id
                     });
-                    actions.push({
-                        type: 'objectsToggleCollidable',
-                        id: objects[i].props.id
+                    this.delayedActions.push({
+                        type: door === DOOR_OPEN ? 'doorSetClosed' : 'doorSetOpened',
+                        id: reachableObject.props.id,
+                        timestamp: Date.now() + 1000
                     });
-                    break;
+                    if (door === DOOR_OPEN) {
+                        actions.push({
+                            type: 'doorsSetCollidable',
+                            isCollidable: true,
+                            id: reachableObject.props.id
+                        });
+                    } else {
+                        this.delayedActions.push({
+                            type: 'doorsSetCollidable',
+                            isCollidable: false,
+                            id: reachableObject.props.id,
+                            timestamp: Date.now() + 1000
+                        });
+                    }
                 }
             }
         }
@@ -177,11 +254,34 @@ class GameLoop extends React.Component {
             this.props.dispatch(batchActions(actions));
         }
 
-        this.prevKeysPressed = { ...this.controls.keyPressed };
+        this.prevKeysPressed = { ...keyPressed };
+    }
+
+    /**
+     * Returns radians for given degrees
+     * @param {number} angle
+     * @returns {number}
+     */
+    static convertDegreeToRad(angle) {
+        return angle / 180 * Math.PI;
+    }
+
+    /**
+     * Returns vector coordinates for given angles
+     * @param {number} horizontalAngle (rad)
+     * @param {number} verticalAngle (rad)
+     * @returns {number[]}
+     */
+    static getVectorFromAngles(horizontalAngle, verticalAngle) {
+        const y = -Math.sin(GameLoop.convertDegreeToRad(verticalAngle));
+        const xzProjectionDist = Math.sqrt(1 - y * y);
+        const x = Math.sin(GameLoop.convertDegreeToRad(horizontalAngle)) * xzProjectionDist;
+        let z = Math.sqrt(xzProjectionDist * xzProjectionDist - x * x);
+        if (Math.abs(horizontalAngle) > 90) {
+            z = -z;
+        }
+        return [x, y, z];
     }
 }
-GameLoop.contextTypes = {
-    store: storeShape.isRequired
-};
 
 export default connect()(GameLoop);

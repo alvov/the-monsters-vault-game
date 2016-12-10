@@ -2,6 +2,11 @@ html, body {
     height: 100%;
     margin: 0;
 }
+.app {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
 .viewport {
     perspective: 600px;
     width: 100%;
@@ -73,5 +78,5 @@ html, body {
 .switcher_reachable div {
     box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.5), inset 0 0 0 2px rgba(255, 255, 255, 0.2);
 }.door {
-    transition: transform 0.5s ease-in;
+    transition: transform 1s ease-in;
 }

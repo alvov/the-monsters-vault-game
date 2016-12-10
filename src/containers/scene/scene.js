@@ -11,6 +11,7 @@ import Box from '../../components/box/box';
 import Switcher from '../../components/switcher/switcher';
 import Door from '../../components/door/door';
 import { getTransformRule } from '../../lib/utils';
+import { DOOR_OPEN, DOOR_OPENING, DOOR_CLOSE } from '../../constants';
 
 class Scene extends React.Component {
     render() {
@@ -61,11 +62,11 @@ class Scene extends React.Component {
                         playerPos={pos}
                         isVisible={object.isVisible}
                         size={object.size}
-                        mode={object.mode}
+                        mode={object.props.mode}
                         getTransformRule={getTransformRule}
                     />);
                     break;
-                case 'switcher': {
+                case 'switcher':
                     renderedObjects.push(<Switcher
                         key={object.name}
                         pos={object.pos}
@@ -74,11 +75,11 @@ class Scene extends React.Component {
                         playerPos={pos}
                         isVisible={object.isVisible}
                         isReachable={object.isReachable}
-                        isOn={Boolean(doors[object.props.id])}
+                        isInteractive={[DOOR_OPEN, DOOR_CLOSE].includes(doors[object.props.id])}
+                        isOn={[DOOR_OPEN, DOOR_OPENING].includes(doors[object.props.id])}
                         getTransformRule={getTransformRule}
                     />);
                     break;
-                }
                 case 'door':
                     renderedObjects.push(<Door
                         key={object.name}
@@ -87,7 +88,7 @@ class Scene extends React.Component {
                         viewAngle={viewAngle}
                         isVisible={object.isVisible}
                         size={object.size}
-                        isOpen={Boolean(doors[object.props.id])}
+                        state={doors[object.props.id]}
                         getTransformRule={getTransformRule}
                     />);
                     break;

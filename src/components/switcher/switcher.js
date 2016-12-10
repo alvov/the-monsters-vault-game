@@ -13,17 +13,20 @@ export default class Switcher extends React.Component{
     }
 
     render() {
-        const { pos, playerPos, size, angle, isVisible = true, isReachable = false, isOn = false, getTransformRule } = this.props;
+        const { pos, playerPos, size, angle, isVisible = true, isReachable = false,
+            isOn = false, isInteractive = true, getTransformRule } = this.props;
         const posWithInvertedY = [pos[0], -pos[1], pos[2]];
         const styleRules = Object.assign(getTransformRule({ pos: posWithInvertedY }), {
             display: isVisible ? 'block' : 'none'
         });
         const classNames = [
             'switcher obj',
-            isOn ? 'switcher_on' : 'switcher_off',
-            isReachable ? 'switcher_reachable' : ''
-        ].join(' ');
-        return <div className={classNames} style={styleRules}>
+            isOn ? 'switcher_on' : 'switcher_off'
+        ];
+        if (isInteractive && isReachable) {
+            classNames.push('switcher_reachable');
+        }
+        return <div className={classNames.join(' ')} style={styleRules}>
             <Plain
                 className="switcher-plate"
                 pos={[0, 0, 0]}

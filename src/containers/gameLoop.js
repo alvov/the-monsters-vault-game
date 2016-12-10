@@ -10,14 +10,12 @@ import {
 import Loop from '../lib/loop';
 import level from '../levels/level';
 import Collision from '../lib/collision';
-import Camera from '../containers/camera';
+import Camera from './camera/camera';
 import { getVisibleObjects, getPointPosition } from '../lib/utils';
 
 class GameLoop extends React.Component {
     static contextTypes = {
-        store: storeShape.isRequired
-    };
-    static childContextTypes = {
+        store: storeShape.isRequired,
         audioCtx: PropTypes.object.isRequired
     };
 
@@ -29,14 +27,6 @@ class GameLoop extends React.Component {
         this.loop = new Loop(this.loopCallback.bind(this), FPS);
 
         this.prevKeysPressed = {};
-
-        this.audioCtx = new window.AudioContext();
-    }
-
-    getChildContext() {
-        return {
-            audioCtx: this.audioCtx
-        };
     }
 
     componentDidMount() {
@@ -61,10 +51,11 @@ class GameLoop extends React.Component {
         );
 
         const newState = {};
+        const currentStore = this.context.store.getState();
 
-        const pointerDelta = this.context.store.getState().pointerDelta;
+        const pointerDelta = currentStore.pointerDelta;
         if (pointerDelta.x || pointerDelta.y) {
-            const currentViewAngle = this.context.store.getState().viewAngle;
+            const currentViewAngle = currentStore.viewAngle;
             const newViewAngle = [
                 (currentViewAngle[0] - pointerDelta.x * SENSITIVITY) % 360,
                 Math.min(Math.max(currentViewAngle[1] + pointerDelta.y * SENSITIVITY, -90), 90),
@@ -81,7 +72,7 @@ class GameLoop extends React.Component {
         }
 
         let angleShift = [];
-        const keyPressed = this.context.store.getState().keyPressed;
+        const keyPressed = currentStore.keyPressed;
         if (keyPressed[KEY_W]) {
             angleShift.push(Math.PI);
         }
@@ -122,11 +113,11 @@ class GameLoop extends React.Component {
             }
             reducedAngleShift /= angleShift.length;
 
-            reducedAngleShift += GameLoop.convertDegreeToRad(this.context.store.getState().viewAngle[0]);
+            reducedAngleShift += GameLoop.convertDegreeToRad(currentStore.viewAngle[0]);
 
             let step = frameRateCoefficient * (keyPressed[KEY_SHIFT] ? RUNNING_COEFF : 1) * STEP;
             const shift = [-step * Math.sin(reducedAngleShift), 0, step * Math.cos(reducedAngleShift)];
-            const currentPos = this.context.store.getState().pos;
+            const currentPos = currentStore.pos;
             const newPos = [];
             for (let i = 0; i < 3; i++) {
                 let newAxisPos = currentPos[i] + shift[i];
@@ -138,7 +129,7 @@ class GameLoop extends React.Component {
                 }
                 newPos.push(newAxisPos);
             }
-            const objects = this.context.store.getState().objects;
+            const objects = currentStore.objects;
             const collisions = Collision.getCollisions([currentPos, newPos], objects, BROAD_CELL_SIZE);
             // get last collision result as new player position
             const newPosAfterCollisions = collisions[collisions.length - 1].newPos;
@@ -151,7 +142,7 @@ class GameLoop extends React.Component {
 
         if (newState.pos) {
             // render only visible objects
-            const visibleObjects = getVisibleObjects(newState.pos, this.context.store.getState().objects);
+            const visibleObjects = getVisibleObjects(newState.pos, currentStore.objects);
             const visibleObjectIds = {};
             for (let i = 0; i < visibleObjects.length; i++) {
                 const object = visibleObjects[i];
@@ -163,9 +154,9 @@ class GameLoop extends React.Component {
             });
 
             // update audio listener position
-            this.audioCtx.listener.positionX.value = newState.pos[0];
-            this.audioCtx.listener.positionY.value = newState.pos[1];
-            this.audioCtx.listener.positionZ.value = newState.pos[2];
+            this.context.audioCtx.listener.positionX.value = newState.pos[0];
+            this.context.audioCtx.listener.positionY.value = newState.pos[1];
+            this.context.audioCtx.listener.positionZ.value = newState.pos[2];
         }
 
         if (newState.viewAngle) {
@@ -183,23 +174,23 @@ class GameLoop extends React.Component {
             const [upX, upY, upZ] = GameLoop.getVectorFromAngles(upHorizontalAngle, upVerticalAngle);
 
             // update audio listener orientation
-            this.audioCtx.listener.forwardX.value = forwardX;
-            this.audioCtx.listener.forwardY.value = forwardY;
-            this.audioCtx.listener.forwardZ.value = forwardZ;
-            this.audioCtx.listener.upX.value = upX;
-            this.audioCtx.listener.upY.value = upY;
-            this.audioCtx.listener.upZ.value = upZ;
+            this.context.audioCtx.listener.forwardX.value = forwardX;
+            this.context.audioCtx.listener.forwardY.value = forwardY;
+            this.context.audioCtx.listener.forwardZ.value = forwardZ;
+            this.context.audioCtx.listener.upX.value = upX;
+            this.context.audioCtx.listener.upY.value = upY;
+            this.context.audioCtx.listener.upZ.value = upZ;
         }
 
         // find interactive object which we can reach with a hand
         let reachableObject;
         if (newState.pos || newState.viewAngle) {
-            const playerPosition = newState.pos || this.context.store.getState().pos;
-            const viewAngle = newState.viewAngle || this.context.store.getState().viewAngle;
+            const playerPosition = newState.pos || currentStore.pos;
+            const viewAngle = newState.viewAngle || currentStore.viewAngle;
             const collisionView = Collision.getCollisionView([
                 playerPosition,
                 getPointPosition({ pos: playerPosition, distance: HAND_LENGTH, angle: viewAngle })
-            ], this.context.store.getState().objects, BROAD_CELL_SIZE);
+            ], currentStore.objects, BROAD_CELL_SIZE);
             if (collisionView && collisionView.obj.isInteractive) {
                 reachableObject = collisionView.obj;
                 if (!reachableObject.isReachable) {
@@ -215,13 +206,13 @@ class GameLoop extends React.Component {
                 });
             }
         } else {
-            reachableObject = this.context.store.getState().objects.find(obj => obj.isReachable);
+            reachableObject = currentStore.objects.find(obj => obj.isReachable);
         }
 
         // perform interaction if key E is pressed
         if (keyPressed[KEY_E] && !this.prevKeysPressed[KEY_E] && reachableObject) {
             if (reachableObject.type === 'switcher') {
-                const door = this.context.store.getState().doors[reachableObject.props.id];
+                const door = currentStore.doors[reachableObject.props.id];
                 if (![DOOR_OPENING, DOOR_CLOSING].includes(door)) {
                     actions.push({
                         type: door === DOOR_OPEN ? 'doorSetClosing' : 'doorSetOpening',

@@ -10,7 +10,8 @@ const BAR_BACKGROUND = 'linear-gradient(to right, #000 0%, #e0e0e0 50%, #000 100
 
 class Door extends React.Component {
     static contextTypes = {
-        audioCtx: PropTypes.object.isRequired
+        audioCtx: PropTypes.object.isRequired,
+        assets: PropTypes.object.isRequired
     };
     static defaultProps = {
         isVisible: true,
@@ -23,6 +24,7 @@ class Door extends React.Component {
         const { pos } = this.props;
 
         this.audioSource = null;
+        this.decodedAudioBuffer = this.context.assets['src/components/door/mixdown.ogg'];
 
         this.panner = this.context.audioCtx.createPanner();
         this.panner.panningModel = 'HRTF';
@@ -37,14 +39,6 @@ class Door extends React.Component {
         this.panner.positionY.value = -2 * pos[1];
         this.panner.positionZ.value = -pos[2];
         this.panner.connect(this.context.audioCtx.destination);
-
-        this.decodedData = fetch('src/components/door/mixdown.ogg')
-            .then(response => response.arrayBuffer())
-            .then(buffer => new Promise((resolve, reject) => {
-                this.context.audioCtx.decodeAudioData(buffer, decodedData => {
-                    resolve(decodedData);
-                }, reject);
-            }));
     }
 
     componentWillUpdate(nextProps) {
@@ -100,24 +94,19 @@ class Door extends React.Component {
         return bars;
     }
 
-    createAudioSource() {
-        return this.decodedData.then(decodedData => {
-            this.audioSource = this.context.audioCtx.createBufferSource();
-            this.audioSource.connect(this.panner);
-            this.audioSource.buffer = decodedData;
-        });
-    }
-
     startSound() {
-        this.createAudioSource().then(() => {
-            this.audioSource.start(0);
-        });
+        this.audioSource = this.context.audioCtx.createBufferSource();
+        this.audioSource.connect(this.panner);
+        this.audioSource.buffer = this.decodedAudioBuffer;
+        this.audioSource.start(0);
     }
 
     stopSound() {
-        this.audioSource.stop();
-        this.audioSource.disconnect(this.panner);
-        this.audioSource = null;
+        if (this.audioSource) {
+            this.audioSource.stop();
+            this.audioSource.disconnect(this.panner);
+            this.audioSource = null;
+        }
     }
 }
 

@@ -1,8 +1,10 @@
+require('./camera.css');
+
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 
-import Scene from './scene/scene';
-import { getTransformRule } from '../lib/utils';
+import Scene from '../scene/scene';
+import { getTransformRule } from '../../lib/utils';
 
 const Camera = ({ viewAngle }) => {
     const transformRule = getTransformRule({

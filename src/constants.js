@@ -15,3 +15,8 @@ export const DOOR_OPEN = 'open';
 export const DOOR_OPENING = 'opening';
 export const DOOR_CLOSE = 'close';
 export const DOOR_CLOSING = 'closing';
+
+export const LOADING = 'loading';
+export const START = 'start';
+export const PLAY = 'play';
+export const END = 'end';

@@ -1,5 +1,3 @@
-require('components/obj/obj.css');
-
 import React from 'react';
 import Plain from '../plain/plain';
 

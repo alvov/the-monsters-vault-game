@@ -1,3 +1,5 @@
+require('./viewport.css');
+
 import React, { PropTypes } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
@@ -84,10 +86,4 @@ function mapDispatchToProps(dispatch) {
     }, dispatch);
 }
 
-function mapStateToProps(state) {
-    return {
-        keyPressed: state.keyPressed
-    }
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(Viewport);
+export default connect(null, mapDispatchToProps)(Viewport);

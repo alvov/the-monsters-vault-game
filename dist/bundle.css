@@ -7,7 +7,23 @@ html, body {
     height: 100%;
     overflow: hidden;
 }
-.viewport {
+.obj {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform-style: preserve-3d;
+    backface-visibility: hidden;
+}
+.loading-screen {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    background: #000;
+    color: #fff;
+}.viewport {
     perspective: 600px;
     width: 100%;
     height: 100%;
@@ -20,13 +36,6 @@ html, body {
     top: 50%;
     transform: translate3d(0px, 0px, 600px) rotateX(0deg) rotateY(0deg) rotateZ(0deg);
     transform-style: preserve-3d;
-}
-.obj {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform-style: preserve-3d;
-    backface-visibility: hidden;
 }
 .player-animation_walking {
     --animation-duration: 1s;

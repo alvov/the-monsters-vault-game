@@ -144,8 +144,8 @@ class Door extends __WEBPACK_IMPORTED_MODULE_1_react___default.a.Component {
         this.panner.coneOuterGain = 0;
         this.panner.positionX.value = pos[0];
         // 2x higher, because the opening mechanism is somewhere high
-        this.panner.positionY.value = -2 * pos[1];
-        this.panner.positionZ.value = -pos[2];
+        this.panner.positionY.value = 2 * pos[1];
+        this.panner.positionZ.value = pos[2];
         this.panner.connect(this.context.audioCtx.destination);
     }
 
@@ -750,6 +750,10 @@ class GameLoop extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
         this.loop = new __WEBPACK_IMPORTED_MODULE_5__lib_loop__["a" /* default */](this.loopCallback.bind(this), __WEBPACK_IMPORTED_MODULE_4__constants__["g" /* FPS */]);
 
         this.prevKeysPressed = {};
+
+        const currentStore = this.context.store.getState();
+        this.updateListenerPosition(currentStore.pos);
+        this.updateListenerOrientation(currentStore.viewAngle);
     }
 
     componentDidMount() {
@@ -866,33 +870,11 @@ class GameLoop extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
                 visibleObjectIds
             });
 
-            // update audio listener position
-            this.context.audioCtx.listener.positionX.value = newState.pos[0];
-            this.context.audioCtx.listener.positionY.value = newState.pos[1];
-            this.context.audioCtx.listener.positionZ.value = newState.pos[2];
+            this.updateListenerPosition(newState.pos);
         }
 
         if (newState.viewAngle) {
-            const [forwardX, forwardY, forwardZ] = GameLoop.getVectorFromAngles(...newState.viewAngle);
-
-            let upVerticalAngle;
-            let upHorizontalAngle;
-            if (newState.viewAngle[1] > 0) {
-                upVerticalAngle = 90 - newState.viewAngle[1];
-                upHorizontalAngle = newState.viewAngle[0] - 180;
-            } else {
-                upVerticalAngle = 90 + newState.viewAngle[1];
-                upHorizontalAngle = newState.viewAngle[0];
-            }
-            const [upX, upY, upZ] = GameLoop.getVectorFromAngles(upHorizontalAngle, upVerticalAngle);
-
-            // update audio listener orientation
-            this.context.audioCtx.listener.forwardX.value = forwardX;
-            this.context.audioCtx.listener.forwardY.value = forwardY;
-            this.context.audioCtx.listener.forwardZ.value = forwardZ;
-            this.context.audioCtx.listener.upX.value = upX;
-            this.context.audioCtx.listener.upY.value = upY;
-            this.context.audioCtx.listener.upZ.value = upZ;
+            this.updateListenerOrientation(newState.viewAngle);
         }
 
         // find interactive object which we can reach with a hand
@@ -959,6 +941,42 @@ class GameLoop extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
     }
 
     /**
+     * Updates audio listener position values
+     * @param {Array} pos
+     */
+    updateListenerPosition(pos) {
+        this.context.audioCtx.listener.positionX.value = pos[0];
+        this.context.audioCtx.listener.positionY.value = pos[1];
+        this.context.audioCtx.listener.positionZ.value = pos[2];
+    }
+
+    /**
+     * Updates audio listener orientation values
+     * @param {Array} angle
+     */
+    updateListenerOrientation(angle) {
+        const [forwardX, forwardY, forwardZ] = GameLoop.getVectorFromAngles(...angle);
+
+        let upVerticalAngle;
+        let upHorizontalAngle;
+        if (angle[1] > 0) {
+            upVerticalAngle = 90 - angle[1];
+            upHorizontalAngle = (angle[0] - 180) % 360;
+        } else {
+            upVerticalAngle = 90 + angle[1];
+            upHorizontalAngle = angle[0];
+        }
+        const [upX, upY, upZ] = GameLoop.getVectorFromAngles(upHorizontalAngle, upVerticalAngle);
+
+        this.context.audioCtx.listener.forwardX.value = forwardX;
+        this.context.audioCtx.listener.forwardY.value = forwardY;
+        this.context.audioCtx.listener.forwardZ.value = forwardZ;
+        this.context.audioCtx.listener.upX.value = upX;
+        this.context.audioCtx.listener.upY.value = upY;
+        this.context.audioCtx.listener.upZ.value = upZ;
+    }
+
+    /**
      * Returns radians for given degrees
      * @param {number} angle
      * @returns {number}
@@ -974,11 +992,11 @@ class GameLoop extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
      * @returns {number[]}
      */
     static getVectorFromAngles(horizontalAngle, verticalAngle) {
-        const y = -Math.sin(GameLoop.convertDegreeToRad(verticalAngle));
+        const y = Math.sin(GameLoop.convertDegreeToRad(verticalAngle));
         const xzProjectionDist = Math.sqrt(1 - y * y);
         const x = Math.sin(GameLoop.convertDegreeToRad(horizontalAngle)) * xzProjectionDist;
         let z = Math.sqrt(xzProjectionDist * xzProjectionDist - x * x);
-        if (Math.abs(horizontalAngle) > 90) {
+        if (Math.abs(horizontalAngle) < 90 || Math.abs(horizontalAngle) > 270) {
             z = -z;
         }
         return [x, y, z];
@@ -1634,12 +1652,12 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
     getTransformRule
 }) => {
     let backgroundStyle = {
-        // background: 'none'
-        background,
-        opacity: 0
+        background: 'none'
+        // background,
+        // opacity: 0
     };
-    if (false) {
-        // if (isVisible) {
+    // if (false && isVisible) {
+    if (isVisible) {
         const relativePos = parentPos ? [pos].concat(parentPos).reduce(vectorsAdd3D) : pos;
         const relativeAngle = parentAngle ? [angle].concat(parentAngle).reduce(vectorsAdd3D) : angle;
         if (simpleLight) {
@@ -1925,9 +1943,9 @@ const level = {
     }, {
         name: 'switcher_01',
         type: 'switcher',
-        pos: [1250, 100, 500],
+        pos: [1027, 100, 1250],
         size: [40, 60, 100],
-        angle: [0, 180, 0],
+        angle: [0, 90, 0],
         props: {
             id: 1
         },

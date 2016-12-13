@@ -17,12 +17,12 @@ export default ({
     getTransformRule
 }) => {
     let backgroundStyle = {
-        // background: 'none'
-        background,
-        opacity: 0
+        background: 'none'
+        // background,
+        // opacity: 0
     };
-    if (false && isVisible) {
-    // if (isVisible) {
+    // if (false && isVisible) {
+    if (isVisible) {
         const relativePos = parentPos ? [pos].concat(parentPos).reduce(vectorsAdd3D) : pos;
         const relativeAngle = parentAngle ? [angle].concat(parentAngle).reduce(vectorsAdd3D) : angle;
         if (simpleLight) {

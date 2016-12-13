@@ -175,9 +175,9 @@ const level = {
         {
             name: 'switcher_01',
             type: 'switcher',
-            pos: [1250, 100, 500],
+            pos: [1027, 100, 1250],
             size: [40, 60, 100],
-            angle: [0, 180, 0],
+            angle: [0, 90, 0],
             props: {
                 id: 1
             },

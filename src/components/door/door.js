@@ -36,8 +36,8 @@ class Door extends React.Component {
         this.panner.coneOuterGain = 0;
         this.panner.positionX.value = pos[0];
         // 2x higher, because the opening mechanism is somewhere high
-        this.panner.positionY.value = -2 * pos[1];
-        this.panner.positionZ.value = -pos[2];
+        this.panner.positionY.value = 2 * pos[1];
+        this.panner.positionZ.value = pos[2];
         this.panner.connect(this.context.audioCtx.destination);
     }
 

@@ -1,16 +1,16 @@
-.player-animation_walking {
+.playerAnimationWalking {
     --animation-duration: 1s;
 }
-.player-animation_running {
+.playerAnimationRunning {
     --animation-duration: .66s;
 }
-.player-animation_walking,
-.player-animation_running {
-    animation: player-animation-walkingY calc(var(--animation-duration) / 2) ease-in-out infinite,
-        player-animation-walkingX var(--animation-duration) ease-in-out calc(var(--animation-duration) / -2) infinite;
+.playerAnimationWalking,
+.playerAnimationRunning {
+    animation: playerAnimationWalkingY calc(var(--animation-duration) / 2) ease-in-out infinite,
+        playerAnimationWalkingX var(--animation-duration) ease-in-out calc(var(--animation-duration) / -2) infinite;
 }
 
-@keyframes player-animation-walkingY {
+@keyframes playerAnimationWalkingY {
     0%, 100% {
         margin-top: 0;
     }
@@ -19,7 +19,7 @@
     }
 }
 
-@keyframes player-animation-walkingX {
+@keyframes playerAnimationWalkingX {
     0%, 100% {
         margin-left: -3px;
     }

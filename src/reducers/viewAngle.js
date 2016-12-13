@@ -1,4 +1,4 @@
-import level from '../levels/level';
+import level from '../level';
 
 export default function viewAngle(state = level.player.angle, action) {
     switch (action.type) {

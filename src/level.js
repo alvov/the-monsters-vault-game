@@ -1,6 +1,6 @@
-import Collision from '../lib/collision';
-import { getVisibleObjects, getPointPosition } from '../lib/utils';
-import { BROAD_CELL_SIZE, HAND_LENGTH, DOOR_CLOSE } from '../constants';
+import Collision from './lib/collision';
+import { getVisibleObjects, getPointPosition } from './lib/utils';
+import { BROAD_CELL_SIZE, HAND_LENGTH, DOOR_CLOSE } from './constants';
 
 const level = {
     boundaries: [2500, null, 2500],
@@ -175,9 +175,9 @@ const level = {
         {
             name: 'switcher_01',
             type: 'switcher',
-            pos: [1250, 100, 26],
+            pos: [1250, 100, 500],
             size: [40, 60, 100],
-            angle: [0, 0, 0],
+            angle: [0, 180, 0],
             props: {
                 id: 1
             },
@@ -187,7 +187,8 @@ const level = {
             name: 'door_01',
             type: 'door',
             size: [500, 200, 20],
-            pos: [1250, 100, 500],
+            pos: [1250, 100, 0],
+            collides: false,
             props: {
                 id: 1,
                 state: DOOR_CLOSE
@@ -199,6 +200,10 @@ const level = {
 // generate border walls
 for (let x = 250; x < level.boundaries[0]; x += 500) {
     for (let z = 0; z <= level.boundaries[2]; z += level.boundaries[2]) {
+        // leave gap for exit door
+        if (x === 1250 && z === 0) {
+            continue;
+        }
         level.objects.push({
             name: 'border wall ' + x + '_' + z,
             type: 'wall',
@@ -237,7 +242,7 @@ for (let i = 0; i < level.objects.length; i++) {
     let sizeXHalf = 0;
     let sizeYHalf = 0;
     let sizeZHalf = 0;
-    // if object is "collidable", enlarge its hitbox to simulate players size (actual player is a dot)
+
     if (obj.collides !== false) {
         sizeXHalf = obj.size[0] / 2;
         sizeYHalf = obj.size[1] / 2;
@@ -246,6 +251,7 @@ for (let i = 0; i < level.objects.length; i++) {
     const playerXHalf = level.player.size[0] / 2;
     const playerYHalf = level.player.size[1] / 2;
     const playerZHalf = level.player.size[2] / 2;
+    // if object is "collidable", enlarge its hitbox to simulate players size (actual player is a dot)
     obj.hitbox = [
         [obj.pos[0] - sizeXHalf - playerXHalf, obj.pos[0] + sizeXHalf + playerXHalf],
         [obj.pos[1] - sizeYHalf - playerYHalf, obj.pos[1] + sizeYHalf + playerYHalf],

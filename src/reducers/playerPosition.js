@@ -1,4 +1,4 @@
-import level from '../levels/level';
+import level from '../level';
 
 export default function playerPosition(state = level.player.pos, action) {
     switch (action.type) {

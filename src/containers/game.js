@@ -4,6 +4,8 @@ import { connect } from 'react-redux';
 import { LOADING, START, PLAY, END } from '../constants'
 
 import LoadingScreen from '../components/loadingScreen/loadingScreen';
+import StartScreen from '../components/startScreen/startScreen';
+import EndScreen from '../components/endScreen/endScreen';
 import Viewport from './viewport/viewport';
 import GameLoop from './gameLoop';
 
@@ -28,6 +30,7 @@ class Game extends React.Component {
         this.setGameStateEnd = this.setGameState.bind(this, END);
 
         this.cacheAssetData = this.cacheAssetData.bind(this);
+        this.viewportNode = null;
     }
 
     getChildContext() {
@@ -41,16 +44,17 @@ class Game extends React.Component {
         const { gameState } = this.props;
         if (gameState === LOADING) {
             return <LoadingScreen
-                onLoaded={this.setGameStatePlay}
+                onLoaded={this.setGameStateStart}
                 cacheAssetData={this.cacheAssetData}
             />;
+        } else if (gameState === START) {
+            return <StartScreen onStart={this.setGameStatePlay} />
         } else if (gameState === PLAY) {
-            return <Viewport
-                onWin={this.setGameStateEnd}
-                onEscape={this.setGameStateStart}
-            >
-                <GameLoop />
+            return <Viewport>
+                <GameLoop onWin={this.setGameStateEnd} />
             </Viewport>;
+        } else if (gameState === END) {
+            return <EndScreen onEnd={this.setGameStateStart} />
         }
     }
 
@@ -73,9 +77,17 @@ function mapDispatchToProps(dispatch) {
     return bindActionCreators({
         setGameState(state) {
             switch(state) {
+                case START:
+                    return {
+                        type: 'setGameStart'
+                    };
                 case PLAY:
                     return {
                         type: 'setGamePlay'
+                    };
+                case END:
+                    return {
+                        type: 'setGameEnd'
                     };
             }
         }

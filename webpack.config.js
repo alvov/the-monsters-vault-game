@@ -1,6 +1,5 @@
-var path = require('path');
-var webpack = require('webpack');
-var ExtractTextPlugin = require('extract-text-webpack-plugin');
+const webpack = require('webpack');
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 module.exports = {
     entry: {
@@ -14,7 +13,7 @@ module.exports = {
     },
     resolve: {
         modules: [__dirname + '/src', 'node_modules'],
-        extensions: ['.js', '.css']
+        extensions: ['.js']
     },
     module: {
         rules: [
@@ -36,8 +35,15 @@ module.exports = {
             },
             {
                 test: /\.css$/,
-                loader: ExtractTextPlugin.extract({ fallbackLoader: 'style-loader', loader: 'css-loader' }),
-                exclude: /node_modules/
+                loader: ExtractTextPlugin.extract({
+                    fallbackLoader: 'style-loader',
+                    loader: 'css-loader',
+                    query: {
+                        modules: true,
+                        importLoaders: 2,
+                        localIdentName: '[name]-[local]-[hash:base64:5]'
+                    }
+                })
             },
             {
                 test: /\.(svg|jpg)$/,

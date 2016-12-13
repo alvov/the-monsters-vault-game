@@ -1,4 +1,4 @@
-require('./scene.css');
+import styles from './scene.css';
 
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
@@ -93,10 +93,13 @@ class Scene extends React.Component {
                     break;
             }
         }
-        const className = 'player-animation obj' +
-            (playerState === 'walk' ? ' player-animation_walking' : playerState === 'run' ? ' player-animation_running' : '');
+        const className = [
+            'obj',
+            playerState === 'walk' ? styles.playerAnimationWalking :
+                playerState === 'run' ? styles.playerAnimationRunning : ''
+        ].join(' ');
         return <div className={className}>
-            <div className="scene obj" style={transformRule}>
+            <div className="obj" style={transformRule}>
                 {renderedObjects}
             </div>
         </div>;

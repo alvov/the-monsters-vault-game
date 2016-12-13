@@ -1,4 +1,4 @@
-require('components/switcher/switcher.css');
+import styles from 'components/switcher/switcher.css';
 
 import React from 'react';
 import Plain from '../plain/plain';
@@ -15,29 +15,31 @@ export default class Switcher extends React.Component{
         const { pos, playerPos, size, angle, isVisible = true, isReachable = false,
             isOn = false, isInteractive = true, getTransformRule } = this.props;
         const posWithInvertedY = [pos[0], -pos[1], pos[2]];
-        const styleRules = Object.assign(getTransformRule({ pos: posWithInvertedY }), {
+        const styleRules = {
+            ...getTransformRule({
+                pos: posWithInvertedY,
+                angle
+            }),
             display: isVisible ? 'block' : 'none'
-        });
+        };
         const classNames = [
-            'switcher obj',
-            isOn ? 'switcher_on' : 'switcher_off'
+            'obj',
+            isOn ? styles.switcherOn : styles.switcherOff
         ];
         if (isInteractive && isReachable) {
-            classNames.push('switcher_reachable');
+            classNames.push(styles.reachable);
         }
         return <div className={classNames.join(' ')} style={styleRules}>
             <Plain
-                className="switcher-plate"
                 pos={[0, 0, 0]}
                 parentPos={[posWithInvertedY]}
                 playerPos={playerPos}
                 size={[size[0], size[1]]}
                 isVisible={isVisible}
-                angle={angle}
                 getTransformRule={getTransformRule}
                 background={BACKGROUND}
             />
-            <div className="switcher-handle obj">
+            <div className={`${styles.handle} obj`}>
                 {/*left*/}
                 <Plain
                     pos={[-HANDLE_SIZE[0] / 2, 0, HANDLE_SIZE[1] / 2]}

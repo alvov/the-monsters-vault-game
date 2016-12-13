@@ -8,7 +8,7 @@ import {
     DOOR_OPEN, DOOR_OPENING, DOOR_CLOSING
 } from '../constants';
 import Loop from '../lib/loop';
-import level from '../levels/level';
+import level from '../level';
 import Collision from '../lib/collision';
 import Camera from './camera/camera';
 import { getVisibleObjects, getPointPosition } from '../lib/utils';
@@ -17,6 +17,9 @@ class GameLoop extends React.Component {
     static contextTypes = {
         store: storeShape.isRequired,
         audioCtx: PropTypes.object.isRequired
+    };
+    static propTypes = {
+        onWin: PropTypes.func.isRequired
     };
 
     constructor(...args) {
@@ -120,14 +123,7 @@ class GameLoop extends React.Component {
             const currentPos = currentStore.pos;
             const newPos = [];
             for (let i = 0; i < 3; i++) {
-                let newAxisPos = currentPos[i] + shift[i];
-                // check if got out of bounds
-                for (let i = 0; i < 3; i++) {
-                    if (level.boundaries[i]) {
-                        newAxisPos = Math.min(Math.max(newAxisPos, 0), level.boundaries[i] - 1);
-                    }
-                }
-                newPos.push(newAxisPos);
+                newPos.push(currentPos[i] + shift[i]);
             }
             const objects = currentStore.objects;
             const collisions = Collision.getCollisions([currentPos, newPos], objects, BROAD_CELL_SIZE);
@@ -141,6 +137,16 @@ class GameLoop extends React.Component {
         }
 
         if (newState.pos) {
+            // if out of bounds - win
+            for (let i = 0; i < 3; i++) {
+                if (level.boundaries[i]) {
+                    if (newState.pos[i] < 0 || newState.pos[i] > level.boundaries[i]) {
+                        this.props.onWin();
+                        return;
+                    }
+                }
+            }
+
             // render only visible objects
             const visibleObjects = getVisibleObjects(newState.pos, currentStore.objects);
             const visibleObjectIds = {};

@@ -1,4 +1,4 @@
-require('./camera.css');
+import styles from './camera.css';
 
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
@@ -11,7 +11,7 @@ const Camera = ({ viewAngle }) => {
         pos: [0, 0, 600],
         angle: [viewAngle[1], viewAngle[0], viewAngle[2]]
     });
-    return <div className="camera" style={transformRule}>
+    return <div className={styles.root} style={transformRule}>
         <Scene />
     </div>;
 };

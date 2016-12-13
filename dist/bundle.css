@@ -1,6 +1,8 @@
-html, body {
+html,
+body {
     height: 100%;
     margin: 0;
+    font-family: Courier New, Courier, Lucida Sans Typewriter, Lucida Typewriter, monospace;
 }
 .app {
     width: 100%;
@@ -14,7 +16,7 @@ html, body {
     transform-style: preserve-3d;
     backface-visibility: hidden;
 }
-.loading-screen {
+.loadingScreen-root-1mysW {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -23,33 +25,104 @@ html, body {
     overflow: hidden;
     background: #000;
     color: #fff;
-}.viewport {
+}.startScreen-root-jM2W- {
+    width: 100%;
+    height: 100%;
+    padding: 10% 0 0 20%;
+    overflow: hidden;
+    background: #000;
+    color: #fff;
+    box-sizing: border-box;
+}
+.startScreen-menuItem-1ZrkU {
+    margin: 20px 0;
+}
+.startScreen-menuItemButton-3tYC1 {
+    border: 0;
+    background: none;
+    color: #fff;
+    font-family: inherit;
+    padding: 5px 10px;
+    font-size: 25px;
+    font-style: italic;
+    cursor: pointer;
+}
+.startScreen-menuItemButton-3tYC1:hover {
+    transform: scale(1.1);
+}
+.startScreen-menuItemButton-3tYC1:focus {
+    outline: 1px dotted;
+}.logo-root-1ptFe {
+    color: #fff;
+    font-size: 40px;
+    filter: blur(1px);
+    text-shadow: 0 0 9px;
+}
+.endScreen-root-37ZFZ {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    box-sizing: border-box;
+    color: #000;
+    animation: endScreen-root-37ZFZ 3s linear;
+}
+@keyframes endScreen-root-37ZFZ {
+    0% {
+        background-color: #000;
+    }
+    100% {
+        background-color: #fff;
+    }
+}
+
+.endScreen-message-2i6JW {
+    font-size: 32px;
+    animation: endScreen-message-2i6JW 3s linear;
+}
+@keyframes endScreen-message-2i6JW {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+.endScreen-anyKey--krEO {
+    margin-top: 40px;
+    font-size: 24px;
+    animation: endScreen-message-2i6JW 3s 3s backwards linear;
+}.viewport-root-goyag {
     perspective: 600px;
     width: 100%;
     height: 100%;
     overflow: hidden;
     background: #000;
 }
-.camera {
+.camera-root-3QZty {
     position: absolute;
     left: 50%;
     top: 50%;
     transform: translate3d(0px, 0px, 600px) rotateX(0deg) rotateY(0deg) rotateZ(0deg);
     transform-style: preserve-3d;
 }
-.player-animation_walking {
+.scene-playerAnimationWalking-P2K7v {
     --animation-duration: 1s;
 }
-.player-animation_running {
+.scene-playerAnimationRunning-JGR3l {
     --animation-duration: .66s;
 }
-.player-animation_walking,
-.player-animation_running {
-    animation: player-animation-walkingY calc(var(--animation-duration) / 2) ease-in-out infinite,
-        player-animation-walkingX var(--animation-duration) ease-in-out calc(var(--animation-duration) / -2) infinite;
+.scene-playerAnimationWalking-P2K7v,
+.scene-playerAnimationRunning-JGR3l {
+    animation: scene-playerAnimationWalkingY-IORpb calc(var(--animation-duration) / 2) ease-in-out infinite,
+        scene-playerAnimationWalkingX-BJDEa var(--animation-duration) ease-in-out calc(var(--animation-duration) / -2) infinite;
 }
 
-@keyframes player-animation-walkingY {
+@keyframes scene-playerAnimationWalkingY-IORpb {
     0%, 100% {
         margin-top: 0;
     }
@@ -58,34 +131,35 @@ html, body {
     }
 }
 
-@keyframes player-animation-walkingX {
+@keyframes scene-playerAnimationWalkingX-BJDEa {
     0%, 100% {
         margin-left: -3px;
     }
     50% {
         margin-left: 3px;
     }
-}.plain-overlay {
+}.plain-plainOverlay-RYH42 {
     height: 100%;
     background: #000;
-    transform: translate3d(0, 0, 0.1px);
+    transform: translate3d(0, 0, .1px);
     backface-visibility: hidden;
 }
-.switcher-handle {
+.switcher-handle-3j71N {
     position: absolute;
-    transition: transform 0.5s ease-in;
+    transition: transform .5s ease-in;
 }
 
-.switcher_off .switcher-handle {
-    transform: rotateX(45deg);
-}
-
-.switcher_on .switcher-handle {
+.switcher-switcherOff-BRU4r .switcher-handle-3j71N {
     transform: rotateX(-45deg);
 }
 
-.switcher_reachable div {
-    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.5), inset 0 0 0 2px rgba(255, 255, 255, 0.2);
-}.door {
+.switcher-switcherOn-2ZOdn .switcher-handle-3j71N {
+    transform: rotateX(45deg);
+}
+
+.switcher-reachable-24rEd div {
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .5), inset 0 0 0 2px rgba(255, 255, 255, .2);
+}
+.door-root-eMRzu {
     transition: transform 1s ease-in;
 }

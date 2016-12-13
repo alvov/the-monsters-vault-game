@@ -1,4 +1,4 @@
-require('./loadingScreen.css');
+import styles from './loadingScreen.css';
 
 import React, { PropTypes } from 'react';
 import preloadAssetsList from '../../preloadAssetsList';
@@ -17,51 +17,59 @@ class LoadingScreen extends React.Component {
 
         this.totalAssets = preloadAssetsList.length;
         this.state = {
-            assetsLoaded: 0
+            assetsLoaded: 0,
+            loadingFailed: false
         };
-        Promise.all(preloadAssetsList.map(([assetSrc, assetType]) => {
+
+        preloadAssetsList.forEach(([assetSrc, assetType]) => {
             if (assetType === 'image') {
-                return new Promise((resolve, reject) => {
-                    const image = new Image();
-                    image.onload = () => {
-                        this.handleAssetLoaded();
-                        resolve();
-                    };
-                    image.onerror = () => {
-                        reject(`Couldn't load image ${assetSrc}`);
-                    };
-                    image.src = assetSrc;
-                });
+                const image = new Image();
+                image.onload = () => {
+                    this.handleAssetLoaded();
+                };
+                image.onerror = () => {
+                    this.handleAssetError(`Couldn't load image ${assetSrc}`);
+                };
+                image.src = assetSrc;
             } else if (assetType === 'audio') {
-                return fetch(assetSrc)
+                fetch(assetSrc)
                     .then(response => response.arrayBuffer())
                     .then(buffer => new Promise((resolve, reject) => {
                         this.context.audioCtx.decodeAudioData(buffer, decodedData => {
-                            this.handleAssetLoaded();
                             this.props.cacheAssetData(assetSrc, decodedData);
                             resolve();
                         }, reject);
-                    }));
+                    }))
+                    .then(() => {
+                        this.handleAssetLoaded();
+                    })
+                    .catch(error => {
+                        this.handleAssetError(error);
+                    });
             }
-        }))
-            .then(() => {
-                this.props.onLoaded();
-            })
-            .catch(error => {
-                alert('Loading failed, sorry');
-                console.error(error);
-            });
+        });
+    }
+
+    componentDidUpdate() {
+        if (this.state.assetsLoaded === this.totalAssets) {
+            this.props.onLoaded();
+        }
     }
 
     render() {
         const percent = Math.ceil(100 * this.state.assetsLoaded / this.totalAssets);
-        return <div className="loading-screen">
-            Loading assets {percent} %
+        return <div className={styles.root}>
+            { this.state.loadingFailed ? 'Loading failed, sorry' : `Loading assets ${percent} %` }
         </div>
     }
 
     handleAssetLoaded() {
         this.setState({ assetsLoaded: this.state.assetsLoaded + 1 });
+    }
+
+    handleAssetError(error) {
+        this.setState({ loadingFailed: true });
+        console.error(error);
     }
 }
 

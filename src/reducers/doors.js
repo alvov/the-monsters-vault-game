@@ -1,4 +1,4 @@
-import level from '../levels/level'
+import level from '../level'
 import { DOOR_OPEN, DOOR_OPENING, DOOR_CLOSE, DOOR_CLOSING } from '../constants';
 
 export default function doors(

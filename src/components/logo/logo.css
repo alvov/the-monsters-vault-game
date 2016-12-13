@@ -1,0 +1,6 @@
+.root {
+    color: #fff;
+    font-size: 40px;
+    filter: blur(1px);
+    text-shadow: 0 0 9px;
+}

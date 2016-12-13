@@ -1,0 +1,39 @@
+.root {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    box-sizing: border-box;
+    color: #000;
+    animation: root 3s linear;
+}
+@keyframes root {
+    0% {
+        background-color: #000;
+    }
+    100% {
+        background-color: #fff;
+    }
+}
+
+.message {
+    font-size: 32px;
+    animation: message 3s linear;
+}
+@keyframes message {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+.anyKey {
+    margin-top: 40px;
+    font-size: 24px;
+    animation: message 3s 3s backwards linear;
+}

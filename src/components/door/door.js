@@ -1,4 +1,4 @@
-require('components/door/door.css');
+import styles from 'components/door/door.css';
 
 import React, { PropTypes } from 'react';
 import Plain from '../plain/plain';
@@ -66,7 +66,7 @@ class Door extends React.Component {
         });
         const angle = [0, -viewAngle[0], 0];
 
-        return <div className="door obj" style={styleRules}>
+        return <div className={[styles.root, 'obj'].join(' ')} style={styleRules}>
             {this.renderBars({ parentPos: [posWithInvertedY], angle })}
         </div>;
     }

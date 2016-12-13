@@ -1,4 +1,4 @@
-import level from '../levels/level';
+import level from '../level';
 
 export default function objects(state = level.objects, action) {
     switch (action.type) {

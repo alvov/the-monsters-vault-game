@@ -1,4 +1,4 @@
-require('./plain.css');
+import styles from './plain.css';
 
 import React from 'react';
 import { BROAD_CELL_SIZE } from '../../constants';
@@ -17,12 +17,12 @@ export default ({
     getTransformRule
 }) => {
     let backgroundStyle = {
-        background: 'none'
-        // background,
-        // opacity: 0
+        // background: 'none'
+        background,
+        opacity: 0
     };
-    // if (false && isVisible) {
-    if (isVisible) {
+    if (false && isVisible) {
+    // if (isVisible) {
         const relativePos = parentPos ? [pos].concat(parentPos).reduce(vectorsAdd3D) : pos;
         const relativeAngle = parentAngle ? [angle].concat(parentAngle).reduce(vectorsAdd3D) : angle;
         if (simpleLight) {
@@ -85,7 +85,7 @@ export default ({
             // todo bottom
         }
     }
-    return <div className={`plain obj ${className}`} style={{
+    return <div className={`obj ${className}`} style={{
         display: isVisible ? 'block' : 'none',
         ...getTransformRule({ pos, angle }),
         width: size[0],
@@ -93,7 +93,7 @@ export default ({
         margin: `-${size[1] / 2}px 0 0 -${size[0] / 2}px`,
         background: backgroundStyle.background
     }}>
-        <div className="plain-overlay" style={{
+        <div className={styles.plainOverlay} style={{
             opacity: 'opacity' in backgroundStyle ? backgroundStyle.opacity : 1
         }}/>
     </div>;

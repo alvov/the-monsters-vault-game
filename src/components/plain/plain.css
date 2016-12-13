@@ -1,6 +1,6 @@
-.plain-overlay {
+.plainOverlay {
     height: 100%;
     background: #000;
-    transform: translate3d(0, 0, 0.1px);
+    transform: translate3d(0, 0, .1px);
     backface-visibility: hidden;
 }

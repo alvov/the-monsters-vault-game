@@ -1,4 +1,4 @@
-require('./viewport.css');
+import styles from './viewport.css';
 
 import React, { PropTypes } from 'react';
 import { bindActionCreators } from 'redux';
@@ -24,6 +24,7 @@ class Viewport extends React.Component {
     }
 
     componentDidMount() {
+        this.viewportNode.requestPointerLock();
         document.addEventListener('pointerlockchange', this.onPointerLockChange);
         document.addEventListener('keyup', this.onKeyUp);
         document.addEventListener('keydown', this.onKeyDown);
@@ -37,9 +38,9 @@ class Viewport extends React.Component {
     }
 
     render() {
-        return <div className="viewport"
-            onClick={this.requestPointerLock}
+        return <div className={styles.root}
             onMouseMove={this.onMouseMove}
+            onClick={this.requestPointerLock}
             ref={viewportNode => { this.viewportNode = viewportNode; }}
         >
             {this.props.children}
@@ -60,8 +61,8 @@ class Viewport extends React.Component {
         }
     }
 
-    requestPointerLock(event) {
-        event.currentTarget.requestPointerLock();
+    requestPointerLock() {
+        this.viewportNode.requestPointerLock();
     }
 
     onPointerLockChange() {

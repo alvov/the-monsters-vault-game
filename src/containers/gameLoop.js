@@ -112,11 +112,11 @@ class GameLoop extends React.Component {
         if (angleShift.length) {
             let reducedAngleShift = 0;
             for (let i = 0; i < angleShift.length; i++) {
-                reducedAngleShift += angleShift[i];
+                reducedAngleShift = reducedAngleShift + angleShift[i];
             }
-            reducedAngleShift /= angleShift.length;
+            reducedAngleShift = reducedAngleShift / angleShift.length;
 
-            reducedAngleShift += GameLoop.convertDegreeToRad(currentStore.viewAngle[0]);
+            reducedAngleShift = reducedAngleShift + GameLoop.convertDegreeToRad(currentStore.viewAngle[0]);
 
             let step = frameRateCoefficient * (keyPressed[KEY_SHIFT] ? RUNNING_COEFF : 1) * STEP;
             const shift = [-step * Math.sin(reducedAngleShift), 0, step * Math.cos(reducedAngleShift)];
@@ -190,9 +190,7 @@ class GameLoop extends React.Component {
                         actionCreators.doors[door === DOOR_OPEN ? 'setClosing' : 'setOpening'](reachableObject.props.id)
                     );
                     this.delayedActions.push({
-                        action: actionCreators.doors[door === DOOR_OPEN ? 'setClose' : 'setOpen']({
-                            id: reachableObject.props.id
-                        }),
+                        action: actionCreators.doors[door === DOOR_OPEN ? 'setClose' : 'setOpen'](reachableObject.props.id),
                         timestamp: Date.now() + 1000
                     });
                     if (door === DOOR_OPEN) {

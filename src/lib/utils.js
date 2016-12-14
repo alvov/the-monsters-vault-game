@@ -10,11 +10,11 @@ const AXIS = ['X', 'Y', 'Z'];
 export function getTransformRule({ pos, angle }) {
     let transform = '';
     if (pos) {
-        transform += `translate3d(${pos[0]}px,${pos[1]}px,${pos[2]}px)`;
+        transform = `translate3d(${pos[0]}px,${pos[1]}px,${pos[2]}px)`;
     }
     if (angle) {
         for (let axis = 0; axis < angle.length; axis++) {
-            transform += ` rotate${AXIS[axis]}(${angle[axis]}deg)`;
+            transform = `${transform} rotate${AXIS[axis]}(${angle[axis]}deg)`;
         }
     }
     return { transform };

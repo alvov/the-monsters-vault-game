@@ -76,7 +76,7 @@ class Door extends React.Component {
         const bars = [];
         const maxDimension = size[0] > size[2] ? 0 : 2;
         let key = 0;
-        for (let i = Math.floor(BARS_GAP / 2); i < size[maxDimension]; i += BARS_GAP) {
+        for (let i = Math.floor(BARS_GAP / 2); i < size[maxDimension]; i = i + BARS_GAP) {
             bars.push(<Plain
                 key={key}
                 className="door-bar"
@@ -89,7 +89,7 @@ class Door extends React.Component {
                 background={BAR_BACKGROUND}
                 getTransformRule={getTransformRule}
             />);
-            key++;
+            key = key + 1;
         }
         return bars;
     }

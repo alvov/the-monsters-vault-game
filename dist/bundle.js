@@ -593,7 +593,7 @@ class Door extends __WEBPACK_IMPORTED_MODULE_1_react___default.a.Component {
         const bars = [];
         const maxDimension = size[0] > size[2] ? 0 : 2;
         let key = 0;
-        for (let i = Math.floor(BARS_GAP / 2); i < size[maxDimension]; i += BARS_GAP) {
+        for (let i = Math.floor(BARS_GAP / 2); i < size[maxDimension]; i = i + BARS_GAP) {
             bars.push(__WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2__plain_plain__["a" /* default */], {
                 key: key,
                 className: 'door-bar',
@@ -606,7 +606,7 @@ class Door extends __WEBPACK_IMPORTED_MODULE_1_react___default.a.Component {
                 background: BAR_BACKGROUND,
                 getTransformRule: getTransformRule
             }));
-            key++;
+            key = key + 1;
         }
         return bars;
     }
@@ -1239,11 +1239,11 @@ class GameLoop extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
         if (angleShift.length) {
             let reducedAngleShift = 0;
             for (let i = 0; i < angleShift.length; i++) {
-                reducedAngleShift += angleShift[i];
+                reducedAngleShift = reducedAngleShift + angleShift[i];
             }
-            reducedAngleShift /= angleShift.length;
+            reducedAngleShift = reducedAngleShift / angleShift.length;
 
-            reducedAngleShift += GameLoop.convertDegreeToRad(currentStore.viewAngle[0]);
+            reducedAngleShift = reducedAngleShift + GameLoop.convertDegreeToRad(currentStore.viewAngle[0]);
 
             let step = frameRateCoefficient * (keyPressed[__WEBPACK_IMPORTED_MODULE_4__constants_constants__["x" /* KEY_SHIFT */]] ? __WEBPACK_IMPORTED_MODULE_4__constants_constants__["y" /* RUNNING_COEFF */] : 1) * __WEBPACK_IMPORTED_MODULE_4__constants_constants__["z" /* STEP */];
             const shift = [-step * Math.sin(reducedAngleShift), 0, step * Math.cos(reducedAngleShift)];
@@ -1312,9 +1312,7 @@ class GameLoop extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
                 if (![__WEBPACK_IMPORTED_MODULE_4__constants_constants__["n" /* DOOR_OPENING */], __WEBPACK_IMPORTED_MODULE_4__constants_constants__["m" /* DOOR_CLOSING */]].includes(door)) {
                     actions.push(__WEBPACK_IMPORTED_MODULE_9__actionCreators__["d" /* doors */][door === __WEBPACK_IMPORTED_MODULE_4__constants_constants__["o" /* DOOR_OPEN */] ? 'setClosing' : 'setOpening'](reachableObject.props.id));
                     this.delayedActions.push({
-                        action: __WEBPACK_IMPORTED_MODULE_9__actionCreators__["d" /* doors */][door === __WEBPACK_IMPORTED_MODULE_4__constants_constants__["o" /* DOOR_OPEN */] ? 'setClose' : 'setOpen']({
-                            id: reachableObject.props.id
-                        }),
+                        action: __WEBPACK_IMPORTED_MODULE_9__actionCreators__["d" /* doors */][door === __WEBPACK_IMPORTED_MODULE_4__constants_constants__["o" /* DOOR_OPEN */] ? 'setClose' : 'setOpen'](reachableObject.props.id),
                         timestamp: Date.now() + 1000
                     });
                     if (door === __WEBPACK_IMPORTED_MODULE_4__constants_constants__["o" /* DOOR_OPEN */]) {
@@ -2530,11 +2528,11 @@ const AXIS = ['X', 'Y', 'Z'];
 function getTransformRule({ pos, angle }) {
     let transform = '';
     if (pos) {
-        transform += `translate3d(${ pos[0] }px,${ pos[1] }px,${ pos[2] }px)`;
+        transform = `translate3d(${ pos[0] }px,${ pos[1] }px,${ pos[2] }px)`;
     }
     if (angle) {
         for (let axis = 0; axis < angle.length; axis++) {
-            transform += ` rotate${ AXIS[axis] }(${ angle[axis] }deg)`;
+            transform = `${ transform } rotate${ AXIS[axis] }(${ angle[axis] }deg)`;
         }
     }
     return { transform };

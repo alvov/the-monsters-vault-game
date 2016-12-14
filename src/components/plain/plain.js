@@ -1,7 +1,7 @@
 import styles from './plain.css';
 
 import React from 'react';
-import { BROAD_CELL_SIZE } from '../../constants';
+import { BROAD_CELL_SIZE } from '../../constants/constants';
 
 export default ({
     className = '',

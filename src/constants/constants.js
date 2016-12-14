@@ -11,6 +11,13 @@ export const SENSITIVITY = 0.5;
 export const BROAD_CELL_SIZE = 250;
 export const HAND_LENGTH = 100;
 
+export const PAINTING_TYPE = 'painting';
+export const FLOOR_TYPE = 'floor';
+export const WALL_TYPE = 'wall';
+export const BOX_TYPE = 'box';
+export const SWITCHER_TYPE = 'switcher';
+export const DOOR_TYPE = 'door';
+
 export const DOOR_OPEN = 'open';
 export const DOOR_OPENING = 'opening';
 export const DOOR_CLOSE = 'close';
@@ -20,3 +27,7 @@ export const LOADING = 'loading';
 export const START = 'start';
 export const PLAY = 'play';
 export const END = 'end';
+
+export const PLAYER_RUN = 'run';
+export const PLAYER_WALK = 'walk';
+export const PLAYER_STOP = 'stop';

@@ -5,13 +5,16 @@ import storeShape from 'react-redux/src/utils/storeShape';
 
 import {
     FPS, KEY_W, KEY_S, KEY_A, KEY_D, KEY_E, KEY_SHIFT, STEP, RUNNING_COEFF, BROAD_CELL_SIZE, SENSITIVITY, HAND_LENGTH,
-    DOOR_OPEN, DOOR_OPENING, DOOR_CLOSING
-} from '../constants';
+    DOOR_OPEN, DOOR_OPENING, DOOR_CLOSING, SWITCHER_TYPE
+} from '../constants/constants';
+
 import Loop from '../lib/loop';
 import level from '../level';
 import Collision from '../lib/collision';
-import Camera from './camera/camera';
 import { getVisibleObjects, getPointPosition } from '../lib/utils';
+import * as actionCreators from '../actionCreators';
+
+import Camera from './camera/camera';
 
 class GameLoop extends React.Component {
     static contextTypes = {
@@ -50,12 +53,10 @@ class GameLoop extends React.Component {
 
     loopCallback(frameRateCoefficient) {
         const now = Date.now();
-        const actions = this.delayedActions.filter(action =>
-            action.timestamp <= now
-        );
-        this.delayedActions = this.delayedActions.filter(action =>
-            action.timestamp > now
-        );
+        const actions = this.delayedActions
+            .filter(entity => entity.timestamp <= now)
+            .map(entity => entity.action);
+        this.delayedActions = this.delayedActions.filter(entity => entity.timestamp > now);
 
         const newState = {};
         const currentStore = this.context.store.getState();
@@ -68,13 +69,8 @@ class GameLoop extends React.Component {
                 Math.min(Math.max(currentViewAngle[1] + pointerDelta.y * SENSITIVITY, -90), 90),
                 0
             ];
-            actions.push({
-                type: 'viewAngleUpdate',
-                viewAngle: newViewAngle
-            });
-            actions.push({
-                type: 'resetPointerDelta'
-            });
+            actions.push(actionCreators.player.updateViewAngle(newViewAngle));
+            actions.push(actionCreators.game.resetPointerDelta());
             newState.viewAngle = newViewAngle;
         }
 
@@ -105,12 +101,12 @@ class GameLoop extends React.Component {
             keyPressed[KEY_D]
         ) {
             if (keyPressed[KEY_SHIFT]) {
-                actions.push({ type: 'playerStateRun' });
+                actions.push(actionCreators.player.run());
             } else {
-                actions.push({ type: 'playerStateWalk' });
+                actions.push(actionCreators.player.walk());
             }
         } else {
-            actions.push({ type: 'playerStateStop' });
+            actions.push(actionCreators.player.stop());
         }
 
         if (angleShift.length) {
@@ -133,10 +129,7 @@ class GameLoop extends React.Component {
             const collisions = Collision.getCollisions([currentPos, newPos], objects, BROAD_CELL_SIZE);
             // get last collision result as new player position
             const newPosAfterCollisions = collisions[collisions.length - 1].newPos;
-            actions.push({
-                type: 'playerPositionUpdate',
-                pos: newPosAfterCollisions
-            });
+            actions.push(actionCreators.player.updatePosition(newPosAfterCollisions));
             newState.pos = newPosAfterCollisions;
         }
 
@@ -158,10 +151,7 @@ class GameLoop extends React.Component {
                 const object = visibleObjects[i];
                 visibleObjectIds[object.name] = true;
             }
-            actions.push({
-                type: 'objectsSetVisible',
-                visibleObjectIds
-            });
+            actions.push(actionCreators.objects.setVisible(visibleObjectIds));
 
             this.updateListenerPosition(newState.pos);
         }
@@ -182,16 +172,10 @@ class GameLoop extends React.Component {
             if (collisionView && collisionView.obj.isInteractive) {
                 reachableObject = collisionView.obj;
                 if (!reachableObject.isReachable) {
-                    actions.push({
-                        type: 'objectsSetReachable',
-                        reachableObjectId: reachableObject.name
-                    });
+                    actions.push(actionCreators.objects.setReachable(reachableObject.name));
                 }
             } else {
-                actions.push({
-                    type: 'objectsSetReachable',
-                    reachableObjectId: null
-                });
+                actions.push(actionCreators.objects.setReachable(null));
             }
         } else {
             reachableObject = currentStore.objects.find(obj => obj.isReachable);
@@ -199,29 +183,29 @@ class GameLoop extends React.Component {
 
         // perform interaction if key E is pressed
         if (keyPressed[KEY_E] && !this.prevKeysPressed[KEY_E] && reachableObject) {
-            if (reachableObject.type === 'switcher') {
+            if (reachableObject.type === SWITCHER_TYPE) {
                 const door = currentStore.doors[reachableObject.props.id];
                 if (![DOOR_OPENING, DOOR_CLOSING].includes(door)) {
-                    actions.push({
-                        type: door === DOOR_OPEN ? 'doorSetClosing' : 'doorSetOpening',
-                        id: reachableObject.props.id
-                    });
+                    actions.push(
+                        actionCreators.doors[door === DOOR_OPEN ? 'setClosing' : 'setOpening'](reachableObject.props.id)
+                    );
                     this.delayedActions.push({
-                        type: door === DOOR_OPEN ? 'doorSetClosed' : 'doorSetOpened',
-                        id: reachableObject.props.id,
+                        action: actionCreators.doors[door === DOOR_OPEN ? 'setClose' : 'setOpen']({
+                            id: reachableObject.props.id
+                        }),
                         timestamp: Date.now() + 1000
                     });
                     if (door === DOOR_OPEN) {
-                        actions.push({
-                            type: 'doorsSetCollidable',
-                            isCollidable: true,
+                        actions.push(actionCreators.doors.toggleCollidable({
+                            on: true,
                             id: reachableObject.props.id
-                        });
+                        }));
                     } else {
                         this.delayedActions.push({
-                            type: 'doorsSetCollidable',
-                            isCollidable: false,
-                            id: reachableObject.props.id,
+                            action: actionCreators.doors.toggleCollidable({
+                                on: false,
+                                id: reachableObject.props.id
+                            }),
                             timestamp: Date.now() + 1000
                         });
                     }

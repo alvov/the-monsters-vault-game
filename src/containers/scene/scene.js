@@ -10,7 +10,19 @@ import Box from '../../components/box/box';
 import Switcher from '../../components/switcher/switcher';
 import Door from '../../components/door/door';
 import { getTransformRule } from '../../lib/utils';
-import { DOOR_OPEN, DOOR_OPENING, DOOR_CLOSE } from '../../constants';
+import {
+    DOOR_OPEN,
+    DOOR_OPENING,
+    DOOR_CLOSE,
+    PLAYER_RUN,
+    PLAYER_WALK,
+    PAINTING_TYPE,
+    FLOOR_TYPE,
+    WALL_TYPE,
+    BOX_TYPE,
+    SWITCHER_TYPE,
+    DOOR_TYPE
+} from '../../constants/constants';
 
 class Scene extends React.Component {
     render() {
@@ -22,7 +34,7 @@ class Scene extends React.Component {
         for (let i = 0; i < objects.length; i++) {
             const object = objects[i];
             switch(object.type) {
-                case 'painting':
+                case PAINTING_TYPE:
                     renderedObjects.push(<Painting
                         key={object.name}
                         pos={object.pos}
@@ -34,7 +46,7 @@ class Scene extends React.Component {
                         getTransformRule={getTransformRule}
                     />);
                     break;
-                case 'floor':
+                case FLOOR_TYPE:
                     renderedObjects.push(<Floor
                         key={object.name}
                         pos={object.pos}
@@ -44,7 +56,7 @@ class Scene extends React.Component {
                         getTransformRule={getTransformRule}
                     />);
                     break;
-                case 'wall':
+                case WALL_TYPE:
                     renderedObjects.push(<Wall
                         key={object.name}
                         pos={object.pos}
@@ -54,7 +66,7 @@ class Scene extends React.Component {
                         getTransformRule={getTransformRule}
                     />);
                     break;
-                case 'box':
+                case BOX_TYPE:
                     renderedObjects.push(<Box
                         key={object.name}
                         pos={object.pos}
@@ -65,7 +77,7 @@ class Scene extends React.Component {
                         getTransformRule={getTransformRule}
                     />);
                     break;
-                case 'switcher':
+                case SWITCHER_TYPE:
                     renderedObjects.push(<Switcher
                         key={object.name}
                         pos={object.pos}
@@ -79,7 +91,7 @@ class Scene extends React.Component {
                         getTransformRule={getTransformRule}
                     />);
                     break;
-                case 'door':
+                case DOOR_TYPE:
                     renderedObjects.push(<Door
                         key={object.name}
                         pos={object.pos}
@@ -95,8 +107,8 @@ class Scene extends React.Component {
         }
         const className = [
             'obj',
-            playerState === 'walk' ? styles.playerAnimationWalking :
-                playerState === 'run' ? styles.playerAnimationRunning : ''
+            playerState === PLAYER_WALK ? styles.playerAnimationWalking :
+                playerState === PLAYER_RUN ? styles.playerAnimationRunning : ''
         ].join(' ');
         return <div className={className}>
             <div className="obj" style={transformRule}>

@@ -2,7 +2,7 @@ import styles from 'components/door/door.css';
 
 import React, { PropTypes } from 'react';
 import Plain from '../plain/plain';
-import { DOOR_OPEN, DOOR_OPENING, DOOR_CLOSE, DOOR_CLOSING } from '../../constants';
+import { DOOR_OPEN, DOOR_OPENING, DOOR_CLOSE, DOOR_CLOSING } from '../../constants/constants';
 
 const BAR_WIDTH = 5;
 const BARS_GAP = 25;

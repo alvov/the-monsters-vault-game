@@ -3,6 +3,7 @@ import styles from './viewport.css';
 import React, { PropTypes } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
+import * as actionCreators from '../../actionCreators';
 
 class Viewport extends React.Component {
     static propTypes = {
@@ -72,18 +73,8 @@ class Viewport extends React.Component {
 
 function mapDispatchToProps(dispatch) {
     return bindActionCreators({
-        toggleKeyPressed(keyCode, on) {
-            return {
-                type: 'toggleKeyPressed',
-                keyCode, on
-            }
-        },
-        updatePointerDelta(x, y) {
-            return {
-                type: 'updatePointerDelta',
-                x, y
-            }
-        }
+        updatePointerDelta: actionCreators.game.updatePointerDelta,
+        toggleKeyPressed: actionCreators.game.toggleKeyPressed
     }, dispatch);
 }
 

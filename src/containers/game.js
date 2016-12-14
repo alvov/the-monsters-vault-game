@@ -1,7 +1,8 @@
 import React, { PropTypes } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { LOADING, START, PLAY, END } from '../constants'
+import { LOADING, START, PLAY, END } from '../constants/constants'
+import * as actionCreators from '../actionCreators';
 
 import LoadingScreen from '../components/loadingScreen/loadingScreen';
 import StartScreen from '../components/startScreen/startScreen';
@@ -75,22 +76,7 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
     return bindActionCreators({
-        setGameState(state) {
-            switch(state) {
-                case START:
-                    return {
-                        type: 'setGameStart'
-                    };
-                case PLAY:
-                    return {
-                        type: 'setGamePlay'
-                    };
-                case END:
-                    return {
-                        type: 'setGameEnd'
-                    };
-            }
-        }
+        setGameState: actionCreators.game.setGameState
     }, dispatch);
 }
 

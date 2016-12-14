@@ -1,8 +1,14 @@
+import { DOOR_TYPE } from '../constants/constants';
+import {
+    OBJECTS_SET_VISIBLE,
+    OBJECTS_SET_REACHABLE,
+    DOOR_TOGGLE_COLLIDABLE
+} from '../constants/actionNames';
 import level from '../level';
 
 export default function objects(state = level.objects, action) {
     switch (action.type) {
-        case 'objectsSetVisible': {
+        case OBJECTS_SET_VISIBLE: {
             const objects = new Array(state.length);
             for (let i = 0; i < state.length; i++) {
                 const object = state[i];
@@ -15,7 +21,7 @@ export default function objects(state = level.objects, action) {
             }
             return objects;
         }
-        case 'objectsSetReachable': {
+        case OBJECTS_SET_REACHABLE: {
             const objects = new Array(state.length);
             for (let i = 0; i < state.length; i++) {
                 const object = state[i];
@@ -28,11 +34,11 @@ export default function objects(state = level.objects, action) {
             }
             return objects;
         }
-        case 'doorsSetCollidable': {
+        case DOOR_TOGGLE_COLLIDABLE: {
             const objects = new Array(state.length);
             for (let i = 0; i < state.length; i++) {
                 let object = state[i];
-                if (object.type === 'door' && object.props.id === action.id) {
+                if (object.type === DOOR_TYPE && object.props.id === action.id) {
                     object.collides = action.isCollidable;
                 }
                 objects[i] = object;

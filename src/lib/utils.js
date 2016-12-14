@@ -1,4 +1,4 @@
-import { BROAD_CELL_SIZE } from '../constants';
+import { BROAD_CELL_SIZE } from '../constants/constants';
 const AXIS = ['X', 'Y', 'Z'];
 
 /**

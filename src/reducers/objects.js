@@ -39,7 +39,7 @@ export default function objects(state = level.objects, action) {
             for (let i = 0; i < state.length; i++) {
                 let object = state[i];
                 if (object.type === DOOR_TYPE && object.props.id === action.id) {
-                    object.collides = action.isCollidable;
+                    object.collides = action.on;
                 }
                 objects[i] = object;
             }

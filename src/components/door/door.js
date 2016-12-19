@@ -80,7 +80,7 @@ class Door extends React.Component {
             bars.push(<Plain
                 key={key}
                 className="door-bar"
-                pos={maxDimension === 0 ? [-size[0] / 2 + i, 0, 0] : [0, 0, size[2] - i]}
+                pos={maxDimension === 0 ? [-size[0] / 2 + i, 0, 0] : [0, 0, -size[2] / 2 + i]}
                 size={[BAR_WIDTH, size[1]]}
                 angle={angle}
                 parentPos={parentPos}

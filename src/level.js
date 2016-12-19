@@ -68,15 +68,15 @@ const level = {
             size: [50, 200, 500],
             pos: [1000, 100, 1250]
         },
-        {
-            name: 'dickbutt',
-            type: PAINTING_TYPE,
-            size: [50, 50, 0],
-            pos: [1026, 100, 1250],
-            angle: [0, 90, 0],
-            background: 'url(assets/dickbutt.png) 50% 50% / contain',
-            collides: false
-        },
+        // {
+        //     name: 'dickbutt',
+        //     type: PAINTING_TYPE,
+        //     size: [50, 50, 0],
+        //     pos: [1026, 100, 1250],
+        //     angle: [0, 90, 0],
+        //     background: 'url(assets/dickbutt.png) 50% 50% / contain',
+        //     collides: false
+        // },
         {
             name: 'wall_009',
             type: WALL_TYPE,
@@ -197,10 +197,93 @@ const level = {
             name: 'door_01',
             type: DOOR_TYPE,
             size: [500, 200, 20],
-            pos: [1250, 100, 0],
-            collides: false,
+            pos: [250, 100, 1000],
             props: {
                 id: 1,
+                state: DOOR_CLOSE
+            }
+        },
+        {
+            name: 'switcher_02',
+            type: SWITCHER_TYPE,
+            pos: [250, 100, 526],
+            size: [40, 60, 100],
+            angle: [0, 0, 0],
+            props: {
+                id: 2
+            },
+            isInteractive: true
+        },
+        {
+            name: 'door_02',
+            type: DOOR_TYPE,
+            size: [500, 200, 20],
+            pos: [2250, 100, 1000],
+            props: {
+                id: 2,
+                state: DOOR_CLOSE
+            }
+        },
+        {
+            name: 'switcher_03',
+            type: SWITCHER_TYPE,
+            pos: [2026, 100, 250],
+            size: [40, 60, 100],
+            angle: [0, 90, 0],
+            props: {
+                id: 3
+            },
+            isInteractive: true
+        },
+        {
+            name: 'door_03',
+            type: DOOR_TYPE,
+            size: [500, 200, 20],
+            pos: [250, 100, 1500],
+            props: {
+                id: 3,
+                state: DOOR_CLOSE
+            }
+        },
+        {
+            name: 'switcher_04',
+            type: SWITCHER_TYPE,
+            pos: [250, 100, 2474],
+            size: [40, 60, 100],
+            angle: [0, 180, 0],
+            props: {
+                id: 4
+            },
+            isInteractive: true
+        },
+        {
+            name: 'door_04',
+            type: DOOR_TYPE,
+            size: [20, 200, 500],
+            pos: [1500, 100, 2250],
+            props: {
+                id: 4,
+                state: DOOR_CLOSE
+            }
+        },
+        {
+            name: 'switcher_05',
+            type: SWITCHER_TYPE,
+            pos: [2250, 100, 1526],
+            size: [40, 60, 100],
+            angle: [0, 0, 0],
+            props: {
+                id: 5
+            },
+            isInteractive: true
+        },
+        {
+            name: 'door_05',
+            type: DOOR_TYPE,
+            size: [500, 200, 20],
+            pos: [1250, 100, 0],
+            props: {
+                id: 5,
                 state: DOOR_CLOSE
             }
         }

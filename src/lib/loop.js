@@ -18,7 +18,7 @@ export default class Loop {
             }
             this.oldTimestamp = timestamp;
         }
-        this.fn(1 / frameRateCoefficient);
+        this.fn(frameRateCoefficient);
     }
 
     stop() {

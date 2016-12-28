@@ -7,7 +7,8 @@ import viewAngle from './viewAngle.js';
 import playerPosition from './playerPosition.js';
 import playerState from './playerState.js';
 import objects from './objects.js';
-import doors from './doors.js';
+import doorsState from './doorsState.js';
+import hints from './hints.js';
 
 export default combineReducers({
     gameState,
@@ -17,5 +18,6 @@ export default combineReducers({
     pos: playerPosition,
     playerState,
     objects,
-    doors
+    doorsState,
+    hints
 });

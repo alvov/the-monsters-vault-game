@@ -1,0 +1,14 @@
+.root {
+    position: absolute;
+    bottom: 10px;
+    left: 0;
+    width: 100%;
+    color: #fff;
+    font-size: 20px;
+    line-height: 24px;
+    text-align: center;
+    z-index: 1;
+}
+.hint {
+    margin: 0 0 10px;
+}

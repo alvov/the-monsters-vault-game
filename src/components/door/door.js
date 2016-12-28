@@ -2,7 +2,7 @@ import styles from 'components/door/door.css';
 
 import React, { PropTypes } from 'react';
 import Plain from '../plain/plain';
-import { DOOR_OPEN, DOOR_OPENING, DOOR_CLOSE, DOOR_CLOSING } from '../../constants/constants';
+import { DOOR_OPEN, DOOR_OPENING, DOOR_CLOSE, DOOR_CLOSING, DOOR_OPEN_TIME } from '../../constants/constants';
 
 const BAR_WIDTH = 5;
 const BARS_GAP = 25;
@@ -62,7 +62,8 @@ class Door extends React.Component {
         ];
 
         const styleRules = Object.assign(getTransformRule({ pos: posWithInvertedY }), {
-            display: isVisible ? 'block' : 'none'
+            display: isVisible ? 'block' : 'none',
+            transitionDuration: `${DOOR_OPEN_TIME}ms`
         });
         const angle = [0, -viewAngle[0], 0];
 

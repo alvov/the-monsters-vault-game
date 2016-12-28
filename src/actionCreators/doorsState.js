@@ -2,8 +2,7 @@ import {
     DOOR_SET_CLOSING,
     DOOR_SET_CLOSE,
     DOOR_SET_OPENING,
-    DOOR_SET_OPEN,
-    DOOR_TOGGLE_COLLIDABLE
+    DOOR_SET_OPEN
 } from '../constants/actionNames';
 
 export function setClosing(id) {
@@ -32,11 +31,4 @@ export function setOpen(id) {
         type: DOOR_SET_OPEN,
         id
     };
-}
-
-export function toggleCollidable({ id, on }) {
-    return {
-        type: DOOR_TOGGLE_COLLIDABLE,
-        id, on
-    }
 }

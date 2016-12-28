@@ -4,17 +4,20 @@ import {
     DOOR_SET_CLOSING,
     DOOR_SET_CLOSE,
     DOOR_SET_OPENING,
-    DOOR_SET_OPEN
+    DOOR_SET_OPEN,
+    SET_GAME_START
 } from '../constants/actionNames';
 
-export default function doors(
-    state = level.objects.filter(obj => obj.type === DOOR_TYPE)
+function getInitialState() {
+    return JSON.parse(level.objects)
+        .filter(obj => obj.type === DOOR_TYPE)
         .reduce((result, obj) => {
             result[obj.props.id] = obj.props.state;
             return result;
-        }, {}),
-    action
-) {
+        }, {})
+}
+
+export default function doorsState(state = {}, action) {
     switch (action.type) {
         case DOOR_SET_CLOSING:
             return {
@@ -36,6 +39,8 @@ export default function doors(
                 ...state,
                 [action.id]: DOOR_OPEN
             };
+        case SET_GAME_START:
+            return getInitialState();
         default:
             return state;
     }

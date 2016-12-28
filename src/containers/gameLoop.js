@@ -5,13 +5,21 @@ import storeShape from 'react-redux/src/utils/storeShape';
 
 import {
     FPS, KEY_W, KEY_S, KEY_A, KEY_D, KEY_E, KEY_SHIFT, STEP, RUNNING_COEFF, BROAD_CELL_SIZE, SENSITIVITY, HAND_LENGTH,
-    DOOR_OPEN, DOOR_OPENING, DOOR_CLOSING, SWITCHER_TYPE
+    DOOR_OPEN, DOOR_CLOSE, DOOR_OPENING, DOOR_CLOSING, DOOR_OPEN_TIME, SWITCHER_TYPE, HINT_SHOW_TIME
 } from '../constants/constants';
+import {
+    HINT_GOAL,
+    HINT_WASD,
+    HINT_SHIFT,
+    HINT_E,
+    HINT_FIRST_SWITCHER,
+    HINT_DOOR
+} from '../constants/hints';
 
 import Loop from '../lib/loop';
 import level from '../level';
 import Collision from '../lib/collision';
-import { getVisibleObjects, getPointPosition } from '../lib/utils';
+import { getVisibleObjects, getPointPosition, DelayedActions } from '../lib/utils';
 import * as actionCreators from '../actionCreators';
 
 import Camera from './camera/camera';
@@ -28,11 +36,12 @@ class GameLoop extends React.Component {
     constructor(...args) {
         super(...args);
 
-        this.delayedActions = [];
+        this.delayedActions = new DelayedActions();
 
         this.loop = new Loop(this.loopCallback.bind(this), FPS);
 
         this.prevKeysPressed = {};
+        this.shownHints = {};
 
         const currentStore = this.context.store.getState();
         this.updateListenerPosition(currentStore.pos);
@@ -45,6 +54,8 @@ class GameLoop extends React.Component {
 
     componentWillUnmount() {
         this.loop.stop();
+        this.delayedActions.clear();
+        this.shownHints = {};
     }
 
     render() {
@@ -52,14 +63,17 @@ class GameLoop extends React.Component {
     }
 
     loopCallback(frameRateCoefficient) {
-        const now = Date.now();
-        const actions = this.delayedActions
-            .filter(entity => entity.timestamp <= now)
-            .map(entity => entity.action);
-        this.delayedActions = this.delayedActions.filter(entity => entity.timestamp > now);
+        const actions = this.delayedActions.getActualActions();
 
         const newState = {};
         const currentStore = this.context.store.getState();
+
+        // show start hint
+        actions.push(this.showHints([
+            { hint: HINT_GOAL, once: true },
+            { hint: HINT_WASD, once: true },
+            { hint: HINT_SHIFT, once: true }
+        ]));
 
         const pointerDelta = currentStore.pointerDelta;
         if (pointerDelta.x || pointerDelta.y) {
@@ -172,7 +186,11 @@ class GameLoop extends React.Component {
             if (collisionView && collisionView.obj.isInteractive) {
                 reachableObject = collisionView.obj;
                 if (!reachableObject.isReachable) {
-                    actions.push(actionCreators.objects.setReachable(reachableObject.name));
+                    actions.push(actionCreators.objects.setReachable({ ...reachableObject }));
+                    actions.push(this.showHints([
+                        { hint: HINT_E },
+                        { hint: HINT_FIRST_SWITCHER, once: true }
+                    ]));
                 }
             } else {
                 actions.push(actionCreators.objects.setReachable(null));
@@ -184,27 +202,19 @@ class GameLoop extends React.Component {
         // perform interaction if key E is pressed
         if (keyPressed[KEY_E] && !this.prevKeysPressed[KEY_E] && reachableObject) {
             if (reachableObject.type === SWITCHER_TYPE) {
-                const door = currentStore.doors[reachableObject.props.id];
+                const door = currentStore.doorsState[reachableObject.props.id];
                 if (![DOOR_OPENING, DOOR_CLOSING].includes(door)) {
                     actions.push(
-                        actionCreators.doors[door === DOOR_OPEN ? 'setClosing' : 'setOpening'](reachableObject.props.id)
+                        actionCreators.doorsState[door === DOOR_OPEN ? 'setClosing' : 'setOpening'](reachableObject.props.id)
                     );
-                    this.delayedActions.push({
-                        action: actionCreators.doors[door === DOOR_OPEN ? 'setClose' : 'setOpen'](reachableObject.props.id),
-                        timestamp: Date.now() + 1000
+                    this.delayedActions.pushAction({
+                        action: actionCreators.doorsState[door === DOOR_OPEN ? 'setClose' : 'setOpen'](reachableObject.props.id),
+                        delay: DOOR_OPEN_TIME
                     });
-                    if (door === DOOR_OPEN) {
-                        actions.push(actionCreators.doors.toggleCollidable({
-                            on: true,
-                            id: reachableObject.props.id
-                        }));
-                    } else {
-                        this.delayedActions.push({
-                            action: actionCreators.doors.toggleCollidable({
-                                on: false,
-                                id: reachableObject.props.id
-                            }),
-                            timestamp: Date.now() + 1000
+                    if (door === DOOR_CLOSE) {
+                        this.delayedActions.pushAction({
+                            action: this.showHints([{ hint: HINT_DOOR }]),
+                            delay: DOOR_OPEN_TIME
                         });
                     }
                 }
@@ -252,6 +262,25 @@ class GameLoop extends React.Component {
         this.context.audioCtx.listener.upX.value = upX;
         this.context.audioCtx.listener.upY.value = upY;
         this.context.audioCtx.listener.upZ.value = upZ;
+    }
+
+    showHints(hints) {
+        const rawHints = hints
+            .filter(({ hint, once = false }) => {
+                if (once && this.shownHints[hint]) {
+                    return false;
+                }
+                this.shownHints[hint] = true;
+                return true;
+            })
+            .map(({ hint }) => hint);
+        if (rawHints.length) {
+            this.delayedActions.pushAction({
+                action: actionCreators.hints.removeHints(rawHints),
+                delay: HINT_SHOW_TIME
+            });
+        }
+        return actionCreators.hints.addHints(rawHints);
     }
 
     /**

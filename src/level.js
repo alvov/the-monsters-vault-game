@@ -392,4 +392,6 @@ if (collisionView) {
     collisionView.obj.isReachable = true;
 }
 
+level.objects = JSON.stringify(level.objects);
+
 export default level;

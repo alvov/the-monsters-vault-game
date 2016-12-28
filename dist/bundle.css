@@ -96,7 +96,21 @@ body {
     margin-top: 40px;
     font-size: 24px;
     animation: endScreen-message-2i6JW 3s 3s backwards linear;
-}.viewport-root-goyag {
+}.hints-root-3NehV {
+    position: absolute;
+    bottom: 10px;
+    left: 0;
+    width: 100%;
+    color: #fff;
+    font-size: 20px;
+    line-height: 24px;
+    text-align: center;
+    z-index: 1;
+}
+.hints-hint-2sBxI {
+    margin: 0 0 10px;
+}
+.viewport-root-goyag {
     perspective: 600px;
     width: 100%;
     height: 100%;
@@ -161,5 +175,5 @@ body {
     box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .5), inset 0 0 0 2px rgba(255, 255, 255, .2);
 }
 .door-root-eMRzu {
-    transition: transform 1s ease-in;
+    transition: transform ease-in;
 }

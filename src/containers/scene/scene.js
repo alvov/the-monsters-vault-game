@@ -26,7 +26,7 @@ import {
 
 class Scene extends React.Component {
     render() {
-        const { pos, viewAngle, playerState, doors, objects } = this.props;
+        const { pos, viewAngle, playerState, doorsState, objects } = this.props;
         const transformRule = getTransformRule({
             pos: [-pos[0], pos[1], -pos[2]]
         });
@@ -86,8 +86,8 @@ class Scene extends React.Component {
                         playerPos={pos}
                         isVisible={object.isVisible}
                         isReachable={object.isReachable}
-                        isInteractive={[DOOR_OPEN, DOOR_CLOSE].includes(doors[object.props.id])}
-                        isOn={[DOOR_OPEN, DOOR_OPENING].includes(doors[object.props.id])}
+                        isInteractive={[DOOR_OPEN, DOOR_CLOSE].includes(doorsState[object.props.id])}
+                        isOn={[DOOR_OPEN, DOOR_OPENING].includes(doorsState[object.props.id])}
                         getTransformRule={getTransformRule}
                     />);
                     break;
@@ -99,7 +99,7 @@ class Scene extends React.Component {
                         viewAngle={viewAngle}
                         isVisible={object.isVisible}
                         size={object.size}
-                        state={doors[object.props.id]}
+                        state={doorsState[object.props.id]}
                         getTransformRule={getTransformRule}
                     />);
                     break;
@@ -121,7 +121,7 @@ Scene.propTypes = {
     pos: PropTypes.arrayOf(PropTypes.number).isRequired,
     viewAngle: PropTypes.arrayOf(PropTypes.number).isRequired,
     playerState: PropTypes.string.isRequired,
-    doors: PropTypes.object.isRequired,
+    doorsState: PropTypes.object.isRequired,
     objects: PropTypes.arrayOf(PropTypes.object).isRequired
 };
 
@@ -131,7 +131,7 @@ function mapStateToProps(state) {
         viewAngle: state.viewAngle,
         playerState: state.playerState,
         objects: state.objects,
-        doors: state.doors
+        doorsState: state.doorsState
     }
 }
 

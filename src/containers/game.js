@@ -7,12 +7,14 @@ import * as actionCreators from '../actionCreators';
 import LoadingScreen from '../components/loadingScreen/loadingScreen';
 import StartScreen from '../components/startScreen/startScreen';
 import EndScreen from '../components/endScreen/endScreen';
+import Hints from '../components/hints/hints';
 import Viewport from './viewport/viewport';
 import GameLoop from './gameLoop';
 
 class Game extends React.Component {
     static propTypes = {
         gameState: PropTypes.string.isRequired,
+        hints: PropTypes.instanceOf(Map).isRequired,
         setGameState: PropTypes.func.isRequired
     };
     static childContextTypes = {
@@ -42,7 +44,7 @@ class Game extends React.Component {
     }
 
     render() {
-        const { gameState } = this.props;
+        const { gameState, hints } = this.props;
         if (gameState === LOADING) {
             return <LoadingScreen
                 onLoaded={this.setGameStateStart}
@@ -52,6 +54,7 @@ class Game extends React.Component {
             return <StartScreen onStart={this.setGameStatePlay} />
         } else if (gameState === PLAY) {
             return <Viewport>
+                <Hints hints={hints} />
                 <GameLoop onWin={this.setGameStateEnd} />
             </Viewport>;
         } else if (gameState === END) {
@@ -70,7 +73,8 @@ class Game extends React.Component {
 
 function mapStateToProps(state) {
     return {
-        gameState: state.gameState
+        gameState: state.gameState,
+        hints: state.hints
     }
 }
 

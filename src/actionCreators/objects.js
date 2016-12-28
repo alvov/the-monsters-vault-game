@@ -10,9 +10,9 @@ export function setVisible(visibleObjectIds) {
     };
 }
 
-export function setReachable(reachableObjectId) {
+export function setReachable(reachableObject) {
     return {
         type: OBJECTS_SET_REACHABLE,
-        reachableObjectId
+        reachableObject
     };
 }

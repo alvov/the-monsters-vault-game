@@ -15,7 +15,10 @@ export default class Collision {
             if (secondCollision.obj) {
                 return [
                     firstCollision,
-                    Object.assign(secondCollision, { newPos: secondCollision.collisionPoint })
+                    {
+                        ...secondCollision,
+                        newPos: secondCollision.collisionPoint
+                    }
                 ];
             }
         }

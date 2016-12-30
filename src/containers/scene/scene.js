@@ -26,13 +26,13 @@ import {
 
 class Scene extends React.Component {
     render() {
-        const { pos, viewAngle, playerState, doorsState, objects } = this.props;
+        const { pos, viewAngle, playerState, doorsState, visibleObjects } = this.props;
         const transformRule = getTransformRule({
             pos: [-pos[0], pos[1], -pos[2]]
         });
         const renderedObjects = [];
-        for (let i = 0; i < objects.length; i++) {
-            const object = objects[i];
+        for (let i = 0; i < visibleObjects.length; i++) {
+            const object = visibleObjects[i];
             switch(object.type) {
                 case PAINTING_TYPE:
                     renderedObjects.push(<Painting
@@ -41,7 +41,6 @@ class Scene extends React.Component {
                         playerPos={pos}
                         angle={object.angle}
                         size={object.size.filter(value => value !== 0).slice(0, 2)}
-                        isVisible={object.isVisible}
                         background={object.background}
                         getTransformRule={getTransformRule}
                     />);
@@ -51,7 +50,6 @@ class Scene extends React.Component {
                         key={object.name}
                         pos={object.pos}
                         playerPos={pos}
-                        isVisible={object.isVisible}
                         size={object.size}
                         getTransformRule={getTransformRule}
                     />);
@@ -61,7 +59,6 @@ class Scene extends React.Component {
                         key={object.name}
                         pos={object.pos}
                         playerPos={pos}
-                        isVisible={object.isVisible}
                         size={object.size}
                         getTransformRule={getTransformRule}
                     />);
@@ -71,7 +68,6 @@ class Scene extends React.Component {
                         key={object.name}
                         pos={object.pos}
                         playerPos={pos}
-                        isVisible={object.isVisible}
                         size={object.size}
                         mode={object.props.mode}
                         getTransformRule={getTransformRule}
@@ -84,7 +80,6 @@ class Scene extends React.Component {
                         size={object.size}
                         angle={object.angle}
                         playerPos={pos}
-                        isVisible={object.isVisible}
                         isReachable={object.isReachable}
                         isInteractive={[DOOR_OPEN, DOOR_CLOSE].includes(doorsState[object.props.id])}
                         isOn={[DOOR_OPEN, DOOR_OPENING].includes(doorsState[object.props.id])}
@@ -97,7 +92,6 @@ class Scene extends React.Component {
                         pos={object.pos}
                         playerPos={pos}
                         viewAngle={viewAngle}
-                        isVisible={object.isVisible}
                         size={object.size}
                         state={doorsState[object.props.id]}
                         getTransformRule={getTransformRule}
@@ -122,7 +116,7 @@ Scene.propTypes = {
     viewAngle: PropTypes.arrayOf(PropTypes.number).isRequired,
     playerState: PropTypes.string.isRequired,
     doorsState: PropTypes.object.isRequired,
-    objects: PropTypes.arrayOf(PropTypes.object).isRequired
+    visibleObjects: PropTypes.arrayOf(PropTypes.object).isRequired
 };
 
 function mapStateToProps(state) {
@@ -130,7 +124,7 @@ function mapStateToProps(state) {
         pos: state.pos,
         viewAngle: state.viewAngle,
         playerState: state.playerState,
-        objects: state.objects,
+        visibleObjects: state.objects.filter(obj => obj.isVisible),
         doorsState: state.doorsState
     }
 }

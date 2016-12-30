@@ -5,23 +5,31 @@ import Plain from '../plain/plain';
 
 const HANDLE_SIZE = [6, 40];
 const BACKGROUND = 'url(src/components/switcher/wood.jpg) 50% 50% / cover';
+const meaningfulProps = ['playerPos', 'isReachable', 'isOn', 'isInteractive'];
 
-export default class Switcher extends React.Component{
+export default class Switcher extends React.Component {
     constructor(props) {
         super(props);
+
+        this.posWithInvertedY = [props.pos[0], -props.pos[1], props.pos[2]];
+        this.styleRules = props.getTransformRule({
+            pos: this.posWithInvertedY,
+            angle: props.angle
+        });
+    }
+
+    shouldComponentUpdate(nextProps) {
+        for (let i = 0; i < meaningfulProps.length; i++) {
+            if (nextProps[meaningfulProps[i]] !== this.props[meaningfulProps[i]]) {
+                return true;
+            }
+        }
+        return false;
     }
 
     render() {
-        const { pos, playerPos, size, angle, isVisible = true, isReachable = false,
+        const { playerPos, size, angle, isReachable = false,
             isOn = false, isInteractive = true, getTransformRule } = this.props;
-        const posWithInvertedY = [pos[0], -pos[1], pos[2]];
-        const styleRules = {
-            ...getTransformRule({
-                pos: posWithInvertedY,
-                angle
-            }),
-            display: isVisible ? 'block' : 'none'
-        };
         const classNames = [
             'obj',
             isOn ? styles.switcherOn : styles.switcherOff
@@ -29,13 +37,13 @@ export default class Switcher extends React.Component{
         if (isInteractive && isReachable) {
             classNames.push(styles.reachable);
         }
-        return <div className={classNames.join(' ')} style={styleRules}>
+        return <div className={classNames.join(' ')} style={this.styleRules}>
             <Plain
                 pos={[0, 0, 0]}
-                parentPos={[posWithInvertedY]}
+                parentAngle={[angle]}
+                parentPos={[this.posWithInvertedY]}
                 playerPos={playerPos}
                 size={[size[0], size[1]]}
-                isVisible={isVisible}
                 getTransformRule={getTransformRule}
                 background={BACKGROUND}
             />
@@ -43,10 +51,9 @@ export default class Switcher extends React.Component{
                 {/*left*/}
                 <Plain
                     pos={[-HANDLE_SIZE[0] / 2, 0, HANDLE_SIZE[1] / 2]}
-                    parentPos={[posWithInvertedY]}
+                    parentPos={[this.posWithInvertedY]}
                     playerPos={playerPos}
                     size={[HANDLE_SIZE[1], HANDLE_SIZE[0]]}
-                    isVisible={isVisible}
                     angle={[0, -90, 0]}
                     parentAngle={[angle]}
                     background={BACKGROUND}
@@ -56,10 +63,9 @@ export default class Switcher extends React.Component{
                 {/*right*/}
                 <Plain
                     pos={[HANDLE_SIZE[0] / 2, 0, HANDLE_SIZE[1] / 2]}
-                    parentPos={[posWithInvertedY]}
+                    parentPos={[this.posWithInvertedY]}
                     playerPos={playerPos}
                     size={[HANDLE_SIZE[1], HANDLE_SIZE[0]]}
-                    isVisible={isVisible}
                     angle={[0, 90, 0]}
                     parentAngle={[angle]}
                     background={BACKGROUND}
@@ -69,10 +75,9 @@ export default class Switcher extends React.Component{
                 {/*top*/}
                 <Plain
                     pos={[0, -HANDLE_SIZE[0] / 2, HANDLE_SIZE[1] / 2]}
-                    parentPos={[posWithInvertedY]}
+                    parentPos={[this.posWithInvertedY]}
                     playerPos={playerPos}
                     size={[HANDLE_SIZE[0], HANDLE_SIZE[1]]}
-                    isVisible={isVisible}
                     angle={[90, 0, 0]}
                     parentAngle={[angle]}
                     background={BACKGROUND}
@@ -82,10 +87,9 @@ export default class Switcher extends React.Component{
                 {/*bottom*/}
                 <Plain
                     pos={[0, HANDLE_SIZE[0] / 2, HANDLE_SIZE[1] / 2]}
-                    parentPos={[posWithInvertedY]}
+                    parentPos={[this.posWithInvertedY]}
                     playerPos={playerPos}
                     size={[HANDLE_SIZE[0], HANDLE_SIZE[1]]}
-                    isVisible={isVisible}
                     angle={[-90, 0, 0]}
                     parentAngle={[angle]}
                     background={BACKGROUND}
@@ -95,10 +99,9 @@ export default class Switcher extends React.Component{
                 {/*front*/}
                 <Plain
                     pos={[0, 0, HANDLE_SIZE[1]]}
-                    parentPos={[posWithInvertedY]}
+                    parentPos={[this.posWithInvertedY]}
                     playerPos={playerPos}
                     size={[HANDLE_SIZE[0], HANDLE_SIZE[0]]}
-                    isVisible={isVisible}
                     angle={[0, 0, 0]}
                     parentAngle={[angle]}
                     background={BACKGROUND}

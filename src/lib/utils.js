@@ -3,21 +3,20 @@ const AXIS = ['X', 'Y', 'Z'];
 
 /**
  * Returns css transform rule for given position and angle
- * @param {Array} pos
- * @param {Array} angle
+ * @param {Object} data
  * @returns {{transform: string}}
  */
-export function getTransformRule({ pos, angle }) {
+export function getTransformRule(data) {
     let transform = '';
-    if (pos) {
-        transform = `translate3d(${pos[0]}px,${pos[1]}px,${pos[2]}px)`;
+    if (data.pos) {
+        transform = 'translate3d(' + data.pos[0] + 'px,' + data.pos[1] + 'px,' + data.pos[2] + 'px)';
     }
-    if (angle) {
-        for (let axis = 0; axis < angle.length; axis++) {
-            transform = `${transform} rotate${AXIS[axis]}(${angle[axis]}deg)`;
+    if (data.angle) {
+        for (let axis = 0; axis < data.angle.length; axis++) {
+            transform = transform + ' rotate' + AXIS[axis] + '(' + data.angle[axis] + 'deg)';
         }
     }
-    return { transform };
+    return { transform: transform };
 }
 
 /**
@@ -27,24 +26,38 @@ export function getTransformRule({ pos, angle }) {
  * @returns {Array}
  */
 export function getVisibleObjects(playerPos, objects) {
-    const playerCell = [
+    const playerCell = getPlayerCell(playerPos);
+    const addVisibleObjects = {};
+    const removeVisibleObjects = {};
+    for (let i = 0; i < objects.length; i = i + 1) {
+        const object = objects[i];
+        const isVisible = isObjectVisible(playerCell, object);
+        if (object.isVisible !== isVisible) {
+            (isVisible ? addVisibleObjects : removeVisibleObjects)[object.name] = true;
+        }
+    }
+    return { addVisibleObjects, removeVisibleObjects };
+}
+
+export function getPlayerCell(playerPos) {
+    return [
         Math.floor(playerPos[0] / BROAD_CELL_SIZE),
         Math.floor(playerPos[2] / BROAD_CELL_SIZE)
     ];
-    const visibleObjects = [];
-    for (let i = 0; i < objects.length; i++) {
-        const object = objects[i];
-        for (let k = 0; k < object.broadCells.length; k++) {
-            if (
-                Math.abs(playerCell[0] - object.broadCells[k][0]) < 2 &&
-                Math.abs(playerCell[1] - object.broadCells[k][1]) < 2
-            ) {
-                visibleObjects.push(object);
-                break;
-            }
+}
+
+export function isObjectVisible(playerCell, object) {
+    let isVisible = false;
+    for (let k = 0; k < object.broadCells.length; k = k + 1) {
+        if (
+            Math.abs(playerCell[0] - object.broadCells[k][0]) < 2 &&
+            Math.abs(playerCell[1] - object.broadCells[k][1]) < 2
+        ) {
+            isVisible = true;
+            break;
         }
     }
-    return visibleObjects;
+    return isVisible;
 }
 
 /**

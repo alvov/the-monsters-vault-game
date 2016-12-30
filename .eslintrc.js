@@ -57,7 +57,22 @@ module.exports = {
         'no-unreachable': 2,
         'no-unused-vars': [2, {'vars': 'all', 'args': 'after-used', 'varsIgnorePattern': '^React$'}],
         'use-isnan': 2,
-        'valid-jsdoc': [2, { requireParamDescription: false, requireReturnDescription: false }],
+        'valid-jsdoc': [2, {
+            preferType: {
+                object: 'Object',
+                function: 'Function',
+                array: 'Array',
+                Number: 'number',
+                String: 'string',
+                Boolean: 'boolean',
+                Null: 'null',
+                Symbol: 'symbol',
+                Undefined: 'undefined'
+            },
+            requireReturn: false,
+            requireParamDescription: false,
+            requireReturnDescription: false
+        }],
         'valid-typeof': 2,
 
         'react/jsx-uses-vars': 2,

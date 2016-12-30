@@ -22,8 +22,6 @@ import Collision from '../lib/collision';
 import { getVisibleObjects, getPointPosition, DelayedActions } from '../lib/utils';
 import * as actionCreators from '../actionCreators';
 
-import Camera from './camera/camera';
-
 class GameLoop extends React.Component {
     static contextTypes = {
         store: storeShape.isRequired,
@@ -59,7 +57,7 @@ class GameLoop extends React.Component {
     }
 
     render() {
-        return <Camera />
+        return React.Children.only(this.props.children);
     }
 
     loopCallback(frameRateCoefficient) {
@@ -159,13 +157,10 @@ class GameLoop extends React.Component {
             }
 
             // render only visible objects
-            const visibleObjects = getVisibleObjects(newState.pos, currentStore.objects);
-            const visibleObjectIds = {};
-            for (let i = 0; i < visibleObjects.length; i++) {
-                const object = visibleObjects[i];
-                visibleObjectIds[object.name] = true;
+            const { addVisibleObjects, removeVisibleObjects } = getVisibleObjects(newState.pos, currentStore.objects);
+            if (Object.keys(addVisibleObjects).length || Object.keys(removeVisibleObjects).length) {
+                actions.push(actionCreators.objects.setVisible({ addVisibleObjects, removeVisibleObjects }));
             }
-            actions.push(actionCreators.objects.setVisible(visibleObjectIds));
 
             this.updateListenerPosition(newState.pos);
         }

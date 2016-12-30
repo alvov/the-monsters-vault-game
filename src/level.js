@@ -1,5 +1,5 @@
 import Collision from './lib/collision';
-import { getVisibleObjects, getPointPosition } from './lib/utils';
+import { isObjectVisible, getPlayerCell, getPointPosition } from './lib/utils';
 import {
     BROAD_CELL_SIZE,
     HAND_LENGTH,
@@ -277,6 +277,17 @@ const level = {
             },
             isInteractive: true
         },
+        // {
+        //     name: 'switcher_05_t',
+        //     type: SWITCHER_TYPE,
+        //     pos: [1027, 100, 500],
+        //     size: [40, 60, 100],
+        //     angle: [0, 90, 0],
+        //     props: {
+        //         id: 5
+        //     },
+        //     isInteractive: true
+        // },
         {
             name: 'door_05',
             type: DOOR_TYPE,
@@ -330,6 +341,7 @@ for (let z = 0; z < level.boundaries[2]; z += 500) {
 }
 
 // calculate 2d points coordinates for objects hitboxes
+const playerCell = getPlayerCell(level.player.pos);
 for (let i = 0; i < level.objects.length; i++) {
     const obj = level.objects[i];
     let sizeXHalf = 0;
@@ -377,8 +389,7 @@ for (let i = 0; i < level.objects.length; i++) {
         }
     }
 
-    const visibleObjects = getVisibleObjects(level.player.pos, [obj]);
-    obj.isVisible = visibleObjects.length === 1;
+    obj.isVisible = isObjectVisible(playerCell, obj);
 
     obj.isReachable = false;
 }

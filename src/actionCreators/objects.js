@@ -3,10 +3,11 @@ import {
     OBJECTS_SET_REACHABLE
 } from '../constants/actionNames';
 
-export function setVisible(visibleObjectIds) {
+export function setVisible({ addVisibleObjects, removeVisibleObjects }) {
     return {
         type: OBJECTS_SET_VISIBLE,
-        visibleObjectIds
+        addVisibleObjects,
+        removeVisibleObjects
     };
 }
 

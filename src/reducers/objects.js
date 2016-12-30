@@ -24,15 +24,16 @@ function setDoorCollidable({ state, id, on }) {
     return objects;
 }
 
-export default function objects(state = {}, action) {
+export default function objects(state = getInitialState(), action) {
     switch (action.type) {
         case OBJECTS_SET_VISIBLE: {
             const objects = new Array(state.length);
             for (let i = 0; i < state.length; i++) {
                 const object = state[i];
-                const isVisible = object.name in action.visibleObjectIds;
-                if (isVisible !== object.isVisible) {
-                    objects[i] = { ...object, isVisible }
+                if (object.name in action.addVisibleObjects) {
+                    objects[i] = { ...object, isVisible: true };
+                } else if (object.name in action.removeVisibleObjects) {
+                    objects[i] = { ...object, isVisible: false };
                 } else {
                     objects[i] = object;
                 }

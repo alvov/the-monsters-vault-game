@@ -21,7 +21,11 @@ class Door extends React.Component {
     constructor(props, context) {
         super(props, context);
 
-        const { pos } = this.props;
+        const { pos, getTransformRule } = props;
+
+        this.posWithInvertedY = [pos[0], -pos[1], pos[2]];
+        this.rootStyleRules = getTransformRule({ pos: this.posWithInvertedY });
+        this.doorStyleRules = { transitionDuration: DOOR_OPEN_TIME + 'ms' };
 
         this.audioSource = null;
         this.decodedAudioBuffer = this.context.assets['src/components/door/mixdown.ogg'];
@@ -54,21 +58,19 @@ class Door extends React.Component {
     }
 
     render() {
-        const { pos, viewAngle, isVisible, state, getTransformRule } = this.props;
-        const posWithInvertedY = [
-            pos[0],
-            [DOOR_OPENING, DOOR_OPEN].includes(state) ? -pos[1] * 3 : -pos[1],
-            pos[2]
-        ];
-
-        const styleRules = Object.assign(getTransformRule({ pos: posWithInvertedY }), {
-            display: isVisible ? 'block' : 'none',
-            transitionDuration: `${DOOR_OPEN_TIME}ms`
-        });
+        const { viewAngle, state, size } = this.props;
+        const isOpen = [DOOR_OPENING, DOOR_OPEN].includes(state);
+        const doorStyleRules = {
+            ...this.doorStyleRules,
+            transform: 'translateY(' + (isOpen ? -size[1] : 0) + 'px)'
+        };
         const angle = [0, -viewAngle[0], 0];
 
-        return <div className={[styles.root, 'obj'].join(' ')} style={styleRules}>
-            {this.renderBars({ parentPos: [posWithInvertedY], angle })}
+        return <div className='obj' style={this.rootStyleRules}>
+            <div className={[styles.door].join(' ')}
+                style={doorStyleRules}>
+                {this.renderBars({ parentPos: [this.posWithInvertedY], angle })}
+            </div>
         </div>;
     }
 

@@ -9,6 +9,8 @@ import StartScreen from '../components/startScreen/startScreen';
 import EndScreen from '../components/endScreen/endScreen';
 import Hints from '../components/hints/hints';
 import Viewport from './viewport/viewport';
+import Camera from './camera/camera';
+import Scene from './scene/scene';
 import GameLoop from './gameLoop';
 
 class Game extends React.Component {
@@ -55,7 +57,11 @@ class Game extends React.Component {
         } else if (gameState === PLAY) {
             return <Viewport>
                 <Hints hints={hints} />
-                <GameLoop onWin={this.setGameStateEnd} />
+                <GameLoop onWin={this.setGameStateEnd}>
+                    <Camera>
+                        <Scene />
+                    </Camera>
+                </GameLoop>
             </Viewport>;
         } else if (gameState === END) {
             return <EndScreen onEnd={this.setGameStateStart} />

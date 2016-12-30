@@ -6,7 +6,7 @@ webpackJsonp([0],{
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(4);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_redux__ = __webpack_require__(18);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_redux__ = __webpack_require__(17);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_react_redux__ = __webpack_require__(16);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_react_redux___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_react_redux__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__constants_constants__ = __webpack_require__(9);
@@ -16,7 +16,11 @@ webpackJsonp([0],{
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__components_endScreen_endScreen__ = __webpack_require__(111);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__components_hints_hints__ = __webpack_require__(113);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__viewport_viewport__ = __webpack_require__(123);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__gameLoop__ = __webpack_require__(121);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__camera_camera__ = __webpack_require__(120);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__scene_scene__ = __webpack_require__(122);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__gameLoop__ = __webpack_require__(121);
+
+
 
 
 
@@ -67,7 +71,15 @@ class Game extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
                 __WEBPACK_IMPORTED_MODULE_9__viewport_viewport__["a" /* default */],
                 null,
                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_8__components_hints_hints__["a" /* default */], { hints: hints }),
-                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_10__gameLoop__["a" /* default */], { onWin: this.setGameStateEnd })
+                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                    __WEBPACK_IMPORTED_MODULE_12__gameLoop__["a" /* default */],
+                    { onWin: this.setGameStateEnd },
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                        __WEBPACK_IMPORTED_MODULE_10__camera_camera__["a" /* default */],
+                        null,
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_11__scene_scene__["a" /* default */], null)
+                    )
+                )
             );
         } else if (gameState === __WEBPACK_IMPORTED_MODULE_3__constants_constants__["c" /* END */]) {
             return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_7__components_endScreen_endScreen__["a" /* default */], { onEnd: this.setGameStateStart });
@@ -113,7 +125,7 @@ function mapDispatchToProps(dispatch) {
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_redux__ = __webpack_require__(18);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_redux__ = __webpack_require__(17);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__gameState_js__ = __webpack_require__(127);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__keyPressed_js__ = __webpack_require__(129);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__pointerDelta_js__ = __webpack_require__(133);
@@ -283,10 +295,11 @@ function removeHints(hints) {
 /* harmony export (immutable) */ exports["setReachable"] = setReachable;
 
 
-function setVisible(visibleObjectIds) {
+function setVisible({ addVisibleObjects, removeVisibleObjects }) {
     return {
         type: __WEBPACK_IMPORTED_MODULE_0__constants_actionNames__["l" /* OBJECTS_SET_VISIBLE */],
-        visibleObjectIds
+        addVisibleObjects,
+        removeVisibleObjects
     };
 }
 
@@ -380,65 +393,76 @@ function Logo() {
 
 const backgrounds = ['src/components/box/box01.jpg', 'src/components/box/box02.jpg', 'src/components/box/box03.jpg'];
 
-/* harmony default export */ exports["a"] = function ({ pos, playerPos, isVisible = true, size, mode = 1, getTransformRule }) {
-    const posWithInvertedY = [pos[0], -pos[1], pos[2]];
-    const styleRules = Object.assign(getTransformRule({ pos: posWithInvertedY }), {
-        display: isVisible ? 'block' : 'none'
-    });
+class Box extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
+    constructor(props) {
+        super(props);
 
-    const background = `url(${ backgrounds[mode - 1] }) 50% 50% / cover`;
+        this.posWithInvertedY = [props.pos[0], -props.pos[1], props.pos[2]];
+        this.styleRules = props.getTransformRule({ pos: this.posWithInvertedY });
+        this.background = `url(${ backgrounds[props.mode - 1] }) 50% 50% / cover`;
+    }
 
-    // Front-Back-Left-Right-Top
-    return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-        'div',
-        { className: 'box obj', style: styleRules },
-        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1__plain_plain__["a" /* default */], {
-            pos: [0, 0, size[2] / 2],
-            parentPos: [posWithInvertedY],
-            playerPos: playerPos,
-            size: size,
-            angle: [0, 0, 0],
-            getTransformRule: getTransformRule,
-            background: background
-        }),
-        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1__plain_plain__["a" /* default */], {
-            pos: [0, 0, -size[2] / 2],
-            parentPos: [posWithInvertedY],
-            playerPos: playerPos,
-            size: size,
-            angle: [0, 180, 0],
-            getTransformRule: getTransformRule,
-            background: background
-        }),
-        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1__plain_plain__["a" /* default */], {
-            pos: [-size[0] / 2, 0, 0],
-            parentPos: [posWithInvertedY],
-            playerPos: playerPos,
-            size: [size[2], size[1]],
-            angle: [0, -90, 0],
-            getTransformRule: getTransformRule,
-            background: background
-        }),
-        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1__plain_plain__["a" /* default */], {
-            pos: [size[0] / 2, 0, 0],
-            parentPos: [posWithInvertedY],
-            playerPos: playerPos,
-            size: [size[2], size[1]],
-            angle: [0, 90, 0],
-            getTransformRule: getTransformRule,
-            background: background
-        }),
-        playerPos[1] > pos[1] + size[1] / 2 ? __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1__plain_plain__["a" /* default */], {
-            pos: [0, -size[1] / 2, 0],
-            parentPos: [posWithInvertedY],
-            playerPos: playerPos,
-            size: [size[0], size[2]],
-            angle: [90, 0, 0],
-            getTransformRule: getTransformRule,
-            background: background
-        }) : ''
-    );
-};
+    shouldComponentUpdate(nextProps) {
+        return nextProps.playerPos !== this.props.playerPos;
+    }
+
+    render() {
+        const { pos, playerPos, size, getTransformRule } = this.props;
+
+        // Front-Back-Left-Right-Top
+        return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+            'div',
+            { className: 'box obj', style: this.styleRules },
+            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1__plain_plain__["a" /* default */], {
+                pos: [0, 0, size[2] / 2],
+                parentPos: [this.posWithInvertedY],
+                playerPos: playerPos,
+                size: size,
+                angle: [0, 0, 0],
+                getTransformRule: getTransformRule,
+                background: this.background
+            }),
+            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1__plain_plain__["a" /* default */], {
+                pos: [0, 0, -size[2] / 2],
+                parentPos: [this.posWithInvertedY],
+                playerPos: playerPos,
+                size: size,
+                angle: [0, 180, 0],
+                getTransformRule: getTransformRule,
+                background: this.background
+            }),
+            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1__plain_plain__["a" /* default */], {
+                pos: [-size[0] / 2, 0, 0],
+                parentPos: [this.posWithInvertedY],
+                playerPos: playerPos,
+                size: [size[2], size[1]],
+                angle: [0, -90, 0],
+                getTransformRule: getTransformRule,
+                background: this.background
+            }),
+            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1__plain_plain__["a" /* default */], {
+                pos: [size[0] / 2, 0, 0],
+                parentPos: [this.posWithInvertedY],
+                playerPos: playerPos,
+                size: [size[2], size[1]],
+                angle: [0, 90, 0],
+                getTransformRule: getTransformRule,
+                background: this.background
+            }),
+            playerPos[1] > pos[1] + size[1] / 2 ? __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1__plain_plain__["a" /* default */], {
+                pos: [0, -size[1] / 2, 0],
+                parentPos: [this.posWithInvertedY],
+                playerPos: playerPos,
+                size: [size[0], size[2]],
+                angle: [90, 0, 0],
+                getTransformRule: getTransformRule,
+                background: this.background
+            }) : ''
+        );
+    }
+}
+
+/* harmony default export */ exports["a"] = Box;
 
 /***/ },
 
@@ -452,6 +476,8 @@ const backgrounds = ['src/components/box/box01.jpg', 'src/components/box/box02.j
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_react__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__plain_plain__ = __webpack_require__(22);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__constants_constants__ = __webpack_require__(9);
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
 
 
 
@@ -467,7 +493,11 @@ class Door extends __WEBPACK_IMPORTED_MODULE_1_react___default.a.Component {
     constructor(props, context) {
         super(props, context);
 
-        const { pos } = this.props;
+        const { pos, getTransformRule } = props;
+
+        this.posWithInvertedY = [pos[0], -pos[1], pos[2]];
+        this.rootStyleRules = getTransformRule({ pos: this.posWithInvertedY });
+        this.doorStyleRules = { transitionDuration: __WEBPACK_IMPORTED_MODULE_3__constants_constants__["e" /* DOOR_OPEN_TIME */] + 'ms' };
 
         this.audioSource = null;
         this.decodedAudioBuffer = this.context.assets['src/components/door/mixdown.ogg'];
@@ -488,9 +518,9 @@ class Door extends __WEBPACK_IMPORTED_MODULE_1_react___default.a.Component {
     }
 
     componentWillUpdate(nextProps) {
-        if ([__WEBPACK_IMPORTED_MODULE_3__constants_constants__["l" /* DOOR_CLOSING */], __WEBPACK_IMPORTED_MODULE_3__constants_constants__["m" /* DOOR_OPENING */]].includes(nextProps.state) && nextProps.state !== this.props.state) {
+        if ([__WEBPACK_IMPORTED_MODULE_3__constants_constants__["f" /* DOOR_CLOSING */], __WEBPACK_IMPORTED_MODULE_3__constants_constants__["g" /* DOOR_OPENING */]].includes(nextProps.state) && nextProps.state !== this.props.state) {
             this.startSound();
-        } else if ([__WEBPACK_IMPORTED_MODULE_3__constants_constants__["n" /* DOOR_OPEN */], __WEBPACK_IMPORTED_MODULE_3__constants_constants__["i" /* DOOR_CLOSE */]].includes(nextProps.state) && nextProps.state !== this.props.state) {
+        } else if ([__WEBPACK_IMPORTED_MODULE_3__constants_constants__["h" /* DOOR_OPEN */], __WEBPACK_IMPORTED_MODULE_3__constants_constants__["i" /* DOOR_CLOSE */]].includes(nextProps.state) && nextProps.state !== this.props.state) {
             this.stopSound();
         }
     }
@@ -500,19 +530,22 @@ class Door extends __WEBPACK_IMPORTED_MODULE_1_react___default.a.Component {
     }
 
     render() {
-        const { pos, viewAngle, isVisible, state, getTransformRule } = this.props;
-        const posWithInvertedY = [pos[0], [__WEBPACK_IMPORTED_MODULE_3__constants_constants__["m" /* DOOR_OPENING */], __WEBPACK_IMPORTED_MODULE_3__constants_constants__["n" /* DOOR_OPEN */]].includes(state) ? -pos[1] * 3 : -pos[1], pos[2]];
-
-        const styleRules = Object.assign(getTransformRule({ pos: posWithInvertedY }), {
-            display: isVisible ? 'block' : 'none',
-            transitionDuration: `${ __WEBPACK_IMPORTED_MODULE_3__constants_constants__["o" /* DOOR_OPEN_TIME */] }ms`
+        const { viewAngle, state, size } = this.props;
+        const isOpen = [__WEBPACK_IMPORTED_MODULE_3__constants_constants__["g" /* DOOR_OPENING */], __WEBPACK_IMPORTED_MODULE_3__constants_constants__["h" /* DOOR_OPEN */]].includes(state);
+        const doorStyleRules = _extends({}, this.doorStyleRules, {
+            transform: 'translateY(' + (isOpen ? -size[1] : 0) + 'px)'
         });
         const angle = [0, -viewAngle[0], 0];
 
         return __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
             'div',
-            { className: [__WEBPACK_IMPORTED_MODULE_0_components_door_door_css___default.a.root, 'obj'].join(' '), style: styleRules },
-            this.renderBars({ parentPos: [posWithInvertedY], angle })
+            { className: 'obj', style: this.rootStyleRules },
+            __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
+                'div',
+                { className: [__WEBPACK_IMPORTED_MODULE_0_components_door_door_css___default.a.door].join(' '),
+                    style: doorStyleRules },
+                this.renderBars({ parentPos: [this.posWithInvertedY], angle })
+            )
         );
     }
 
@@ -652,16 +685,26 @@ EndScreen.propTypes = {
 
 
 
-/* harmony default export */ exports["a"] = ({ pos, playerPos, size, isVisible = true, getTransformRule }) => __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1__plain_plain__["a" /* default */], {
-    className: 'floor',
-    isVisible: isVisible,
-    pos: pos,
-    playerPos: playerPos,
-    size: [size[0], size[2]],
-    angle: [90, 0, 0],
-    getTransformRule: getTransformRule,
-    background: 'url(src/components/floor/floor.jpg)'
-});
+class Floor extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
+    shouldComponentUpdate(nextProps) {
+        return nextProps.playerPos !== this.props.playerPos;
+    }
+
+    render() {
+        const { pos, playerPos, size, getTransformRule } = this.props;
+        return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1__plain_plain__["a" /* default */], {
+            className: 'floor',
+            pos: pos,
+            playerPos: playerPos,
+            size: [size[0], size[2]],
+            angle: [90, 0, 0],
+            getTransformRule: getTransformRule,
+            background: 'url(src/components/floor/floor.jpg)'
+        });
+    }
+}
+
+/* harmony default export */ exports["a"] = Floor;
 
 /***/ },
 
@@ -795,16 +838,26 @@ LoadingScreen.contextTypes = {
 
 
 
-/* harmony default export */ exports["a"] = ({ pos, playerPos, size, angle, isVisible = true, background, getTransformRule }) => __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1__plain_plain__["a" /* default */], {
-    className: 'painting',
-    pos: [pos[0], -pos[1], pos[2]],
-    playerPos: playerPos,
-    size: size,
-    isVisible: isVisible,
-    angle: angle,
-    getTransformRule: getTransformRule,
-    background: background
-});
+class Painting extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
+    shouldComponentUpdate(nextProps) {
+        return nextProps.playerPos !== this.props.playerPos;
+    }
+
+    render() {
+        const { pos, playerPos, size, angle, background, getTransformRule } = this.props;
+        return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1__plain_plain__["a" /* default */], {
+            className: 'painting',
+            pos: [pos[0], -pos[1], pos[2]],
+            playerPos: playerPos,
+            size: size,
+            angle: angle,
+            getTransformRule: getTransformRule,
+            background: background
+        });
+    }
+}
+
+/* harmony default export */ exports["a"] = Painting;
 
 /***/ },
 
@@ -867,8 +920,6 @@ StartScreen.propTypes = {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react__ = __webpack_require__(4);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_react__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__plain_plain__ = __webpack_require__(22);
-var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-
 
 
 
@@ -876,35 +927,44 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 
 const HANDLE_SIZE = [6, 40];
 const BACKGROUND = 'url(src/components/switcher/wood.jpg) 50% 50% / cover';
+const meaningfulProps = ['playerPos', 'isReachable', 'isOn', 'isInteractive'];
 
 class Switcher extends __WEBPACK_IMPORTED_MODULE_1_react___default.a.Component {
     constructor(props) {
         super(props);
+
+        this.posWithInvertedY = [props.pos[0], -props.pos[1], props.pos[2]];
+        this.styleRules = props.getTransformRule({
+            pos: this.posWithInvertedY,
+            angle: props.angle
+        });
+    }
+
+    shouldComponentUpdate(nextProps) {
+        for (let i = 0; i < meaningfulProps.length; i++) {
+            if (nextProps[meaningfulProps[i]] !== this.props[meaningfulProps[i]]) {
+                return true;
+            }
+        }
+        return false;
     }
 
     render() {
-        const { pos, playerPos, size, angle, isVisible = true, isReachable = false,
+        const { playerPos, size, angle, isReachable = false,
             isOn = false, isInteractive = true, getTransformRule } = this.props;
-        const posWithInvertedY = [pos[0], -pos[1], pos[2]];
-        const styleRules = _extends({}, getTransformRule({
-            pos: posWithInvertedY,
-            angle
-        }), {
-            display: isVisible ? 'block' : 'none'
-        });
         const classNames = ['obj', isOn ? __WEBPACK_IMPORTED_MODULE_0_components_switcher_switcher_css___default.a.switcherOn : __WEBPACK_IMPORTED_MODULE_0_components_switcher_switcher_css___default.a.switcherOff];
         if (isInteractive && isReachable) {
             classNames.push(__WEBPACK_IMPORTED_MODULE_0_components_switcher_switcher_css___default.a.reachable);
         }
         return __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
             'div',
-            { className: classNames.join(' '), style: styleRules },
+            { className: classNames.join(' '), style: this.styleRules },
             __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2__plain_plain__["a" /* default */], {
                 pos: [0, 0, 0],
-                parentPos: [posWithInvertedY],
+                parentAngle: [angle],
+                parentPos: [this.posWithInvertedY],
                 playerPos: playerPos,
                 size: [size[0], size[1]],
-                isVisible: isVisible,
                 getTransformRule: getTransformRule,
                 background: BACKGROUND
             }),
@@ -913,10 +973,9 @@ class Switcher extends __WEBPACK_IMPORTED_MODULE_1_react___default.a.Component {
                 { className: `${ __WEBPACK_IMPORTED_MODULE_0_components_switcher_switcher_css___default.a.handle } obj` },
                 __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2__plain_plain__["a" /* default */], {
                     pos: [-HANDLE_SIZE[0] / 2, 0, HANDLE_SIZE[1] / 2],
-                    parentPos: [posWithInvertedY],
+                    parentPos: [this.posWithInvertedY],
                     playerPos: playerPos,
                     size: [HANDLE_SIZE[1], HANDLE_SIZE[0]],
-                    isVisible: isVisible,
                     angle: [0, -90, 0],
                     parentAngle: [angle],
                     background: BACKGROUND,
@@ -925,10 +984,9 @@ class Switcher extends __WEBPACK_IMPORTED_MODULE_1_react___default.a.Component {
                 }),
                 __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2__plain_plain__["a" /* default */], {
                     pos: [HANDLE_SIZE[0] / 2, 0, HANDLE_SIZE[1] / 2],
-                    parentPos: [posWithInvertedY],
+                    parentPos: [this.posWithInvertedY],
                     playerPos: playerPos,
                     size: [HANDLE_SIZE[1], HANDLE_SIZE[0]],
-                    isVisible: isVisible,
                     angle: [0, 90, 0],
                     parentAngle: [angle],
                     background: BACKGROUND,
@@ -937,10 +995,9 @@ class Switcher extends __WEBPACK_IMPORTED_MODULE_1_react___default.a.Component {
                 }),
                 __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2__plain_plain__["a" /* default */], {
                     pos: [0, -HANDLE_SIZE[0] / 2, HANDLE_SIZE[1] / 2],
-                    parentPos: [posWithInvertedY],
+                    parentPos: [this.posWithInvertedY],
                     playerPos: playerPos,
                     size: [HANDLE_SIZE[0], HANDLE_SIZE[1]],
-                    isVisible: isVisible,
                     angle: [90, 0, 0],
                     parentAngle: [angle],
                     background: BACKGROUND,
@@ -949,10 +1006,9 @@ class Switcher extends __WEBPACK_IMPORTED_MODULE_1_react___default.a.Component {
                 }),
                 __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2__plain_plain__["a" /* default */], {
                     pos: [0, HANDLE_SIZE[0] / 2, HANDLE_SIZE[1] / 2],
-                    parentPos: [posWithInvertedY],
+                    parentPos: [this.posWithInvertedY],
                     playerPos: playerPos,
                     size: [HANDLE_SIZE[0], HANDLE_SIZE[1]],
-                    isVisible: isVisible,
                     angle: [-90, 0, 0],
                     parentAngle: [angle],
                     background: BACKGROUND,
@@ -961,10 +1017,9 @@ class Switcher extends __WEBPACK_IMPORTED_MODULE_1_react___default.a.Component {
                 }),
                 __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2__plain_plain__["a" /* default */], {
                     pos: [0, 0, HANDLE_SIZE[1]],
-                    parentPos: [posWithInvertedY],
+                    parentPos: [this.posWithInvertedY],
                     playerPos: playerPos,
                     size: [HANDLE_SIZE[0], HANDLE_SIZE[0]],
-                    isVisible: isVisible,
                     angle: [0, 0, 0],
                     parentAngle: [angle],
                     background: BACKGROUND,
@@ -991,55 +1046,67 @@ class Switcher extends __WEBPACK_IMPORTED_MODULE_1_react___default.a.Component {
 
 
 // no support for rotated walls for now
-/* harmony default export */ exports["a"] = ({ pos, size, isVisible = true, playerPos, getTransformRule }) => {
-    const posWithInvertedY = [pos[0], -pos[1], pos[2]];
-    const styleRules = Object.assign(getTransformRule({ pos: posWithInvertedY }), {
-        display: isVisible ? 'block' : 'none'
-    });
-    const background = 'url(src/components/wall/wall.jpg) 50% 50% / cover';
+class Wall extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
+    constructor(props) {
+        super(props);
 
-    // Front-Back-Left-Right
-    return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-        'div',
-        { className: 'wall obj', style: styleRules },
-        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1__plain_plain__["a" /* default */], {
-            pos: [0, 0, size[2] / 2],
-            parentPos: [posWithInvertedY],
-            playerPos: playerPos,
-            size: size,
-            angle: [0, 0, 0],
-            getTransformRule: getTransformRule,
-            background: background
-        }),
-        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1__plain_plain__["a" /* default */], {
-            pos: [0, 0, -size[2] / 2],
-            parentPos: [posWithInvertedY],
-            playerPos: playerPos,
-            size: size,
-            angle: [0, 180, 0],
-            getTransformRule: getTransformRule,
-            background: background
-        }),
-        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1__plain_plain__["a" /* default */], {
-            pos: [-size[0] / 2, 0, 0],
-            parentPos: [posWithInvertedY],
-            playerPos: playerPos,
-            size: [size[2], size[1]],
-            angle: [0, -90, 0],
-            getTransformRule: getTransformRule,
-            background: background
-        }),
-        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1__plain_plain__["a" /* default */], {
-            pos: [size[0] / 2, 0, 0],
-            parentPos: [posWithInvertedY],
-            playerPos: playerPos,
-            size: [size[2], size[1]],
-            angle: [0, 90, 0],
-            getTransformRule: getTransformRule,
-            background: background
-        })
-    );
-};
+        this.posWithInvertedY = [props.pos[0], -props.pos[1], props.pos[2]];
+        this.styleRules = props.getTransformRule({ pos: this.posWithInvertedY });
+        this.background = 'url(src/components/wall/wall.jpg) 50% 50% / cover';
+    }
+
+    shouldComponentUpdate(nextProps) {
+        return nextProps.playerPos !== this.props.playerPos;
+    }
+
+    render() {
+        const { size, playerPos, getTransformRule } = this.props;
+
+        // Front-Back-Left-Right
+        return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+            'div',
+            { className: 'wall obj', style: this.styleRules },
+            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1__plain_plain__["a" /* default */], {
+                pos: [0, 0, size[2] / 2],
+                parentPos: [this.posWithInvertedY],
+                playerPos: playerPos,
+                size: size,
+                angle: [0, 0, 0],
+                getTransformRule: getTransformRule,
+                background: this.background
+            }),
+            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1__plain_plain__["a" /* default */], {
+                pos: [0, 0, -size[2] / 2],
+                parentPos: [this.posWithInvertedY],
+                playerPos: playerPos,
+                size: size,
+                angle: [0, 180, 0],
+                getTransformRule: getTransformRule,
+                background: this.background
+            }),
+            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1__plain_plain__["a" /* default */], {
+                pos: [-size[0] / 2, 0, 0],
+                parentPos: [this.posWithInvertedY],
+                playerPos: playerPos,
+                size: [size[2], size[1]],
+                angle: [0, -90, 0],
+                getTransformRule: getTransformRule,
+                background: this.background
+            }),
+            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1__plain_plain__["a" /* default */], {
+                pos: [size[0] / 2, 0, 0],
+                parentPos: [this.posWithInvertedY],
+                playerPos: playerPos,
+                size: [size[2], size[1]],
+                angle: [0, 90, 0],
+                getTransformRule: getTransformRule,
+                background: this.background
+            })
+        );
+    }
+}
+
+/* harmony default export */ exports["a"] = Wall;
 
 /***/ },
 
@@ -1078,8 +1145,7 @@ const HINT_E = 'Press `E` to interact';
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_react__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_react_redux__ = __webpack_require__(16);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_react_redux___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_react_redux__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__scene_scene__ = __webpack_require__(122);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__lib_utils__ = __webpack_require__(33);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__lib_utils__ = __webpack_require__(33);
 
 
 
@@ -1087,18 +1153,17 @@ const HINT_E = 'Press `E` to interact';
 
 
 
-
-const Camera = ({ viewAngle }) => {
-    const transformRule = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_4__lib_utils__["c" /* getTransformRule */])({
+function Camera({ viewAngle, children }) {
+    const transformRule = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_3__lib_utils__["a" /* getTransformRule */])({
         pos: [0, 0, 600],
         angle: [viewAngle[1], viewAngle[0], viewAngle[2]]
     });
     return __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
         'div',
         { className: __WEBPACK_IMPORTED_MODULE_0__camera_css___default.a.root, style: transformRule },
-        __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3__scene_scene__["a" /* default */], null)
+        children
     );
-};
+}
 Camera.propTypes = {
     viewAngle: __WEBPACK_IMPORTED_MODULE_1_react__["PropTypes"].arrayOf(__WEBPACK_IMPORTED_MODULE_1_react__["PropTypes"].number).isRequired
 };
@@ -1131,10 +1196,7 @@ function mapStateToProps(state) {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__lib_collision__ = __webpack_require__(64);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__lib_utils__ = __webpack_require__(33);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__actionCreators__ = __webpack_require__(41);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__camera_camera__ = __webpack_require__(120);
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-
-
 
 
 
@@ -1155,7 +1217,7 @@ class GameLoop extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
     constructor(...args) {
         super(...args);
 
-        this.delayedActions = new __WEBPACK_IMPORTED_MODULE_9__lib_utils__["d" /* DelayedActions */]();
+        this.delayedActions = new __WEBPACK_IMPORTED_MODULE_9__lib_utils__["e" /* DelayedActions */]();
 
         this.loop = new __WEBPACK_IMPORTED_MODULE_6__lib_loop__["a" /* default */](this.loopCallback.bind(this), __WEBPACK_IMPORTED_MODULE_4__constants_constants__["s" /* FPS */]);
 
@@ -1178,7 +1240,7 @@ class GameLoop extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
     }
 
     render() {
-        return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_11__camera_camera__["a" /* default */], null);
+        return __WEBPACK_IMPORTED_MODULE_0_react___default.a.Children.only(this.props.children);
     }
 
     loopCallback(frameRateCoefficient) {
@@ -1265,13 +1327,10 @@ class GameLoop extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
             }
 
             // render only visible objects
-            const visibleObjects = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_9__lib_utils__["a" /* getVisibleObjects */])(newState.pos, currentStore.objects);
-            const visibleObjectIds = {};
-            for (let i = 0; i < visibleObjects.length; i++) {
-                const object = visibleObjects[i];
-                visibleObjectIds[object.name] = true;
+            const { addVisibleObjects, removeVisibleObjects } = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_9__lib_utils__["f" /* getVisibleObjects */])(newState.pos, currentStore.objects);
+            if (Object.keys(addVisibleObjects).length || Object.keys(removeVisibleObjects).length) {
+                actions.push(__WEBPACK_IMPORTED_MODULE_10__actionCreators__["c" /* objects */].setVisible({ addVisibleObjects, removeVisibleObjects }));
             }
-            actions.push(__WEBPACK_IMPORTED_MODULE_10__actionCreators__["c" /* objects */].setVisible(visibleObjectIds));
 
             this.updateListenerPosition(newState.pos);
         }
@@ -1285,7 +1344,7 @@ class GameLoop extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
         if (newState.pos || newState.viewAngle) {
             const playerPosition = newState.pos || currentStore.pos;
             const viewAngle = newState.viewAngle || currentStore.viewAngle;
-            const collisionView = __WEBPACK_IMPORTED_MODULE_8__lib_collision__["a" /* default */].getCollisionView([playerPosition, __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_9__lib_utils__["b" /* getPointPosition */])({ pos: playerPosition, distance: __WEBPACK_IMPORTED_MODULE_4__constants_constants__["k" /* HAND_LENGTH */], angle: viewAngle })], currentStore.objects, __WEBPACK_IMPORTED_MODULE_4__constants_constants__["d" /* BROAD_CELL_SIZE */]);
+            const collisionView = __WEBPACK_IMPORTED_MODULE_8__lib_collision__["a" /* default */].getCollisionView([playerPosition, __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_9__lib_utils__["d" /* getPointPosition */])({ pos: playerPosition, distance: __WEBPACK_IMPORTED_MODULE_4__constants_constants__["r" /* HAND_LENGTH */], angle: viewAngle })], currentStore.objects, __WEBPACK_IMPORTED_MODULE_4__constants_constants__["d" /* BROAD_CELL_SIZE */]);
             if (collisionView && collisionView.obj.isInteractive) {
                 reachableObject = collisionView.obj;
                 if (!reachableObject.isReachable) {
@@ -1301,18 +1360,18 @@ class GameLoop extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
 
         // perform interaction if key E is pressed
         if (keyPressed[__WEBPACK_IMPORTED_MODULE_4__constants_constants__["B" /* KEY_E */]] && !this.prevKeysPressed[__WEBPACK_IMPORTED_MODULE_4__constants_constants__["B" /* KEY_E */]] && reachableObject) {
-            if (reachableObject.type === __WEBPACK_IMPORTED_MODULE_4__constants_constants__["g" /* SWITCHER_TYPE */]) {
+            if (reachableObject.type === __WEBPACK_IMPORTED_MODULE_4__constants_constants__["n" /* SWITCHER_TYPE */]) {
                 const door = currentStore.doorsState[reachableObject.props.id];
-                if (![__WEBPACK_IMPORTED_MODULE_4__constants_constants__["m" /* DOOR_OPENING */], __WEBPACK_IMPORTED_MODULE_4__constants_constants__["l" /* DOOR_CLOSING */]].includes(door)) {
-                    actions.push(__WEBPACK_IMPORTED_MODULE_10__actionCreators__["d" /* doorsState */][door === __WEBPACK_IMPORTED_MODULE_4__constants_constants__["n" /* DOOR_OPEN */] ? 'setClosing' : 'setOpening'](reachableObject.props.id));
+                if (![__WEBPACK_IMPORTED_MODULE_4__constants_constants__["g" /* DOOR_OPENING */], __WEBPACK_IMPORTED_MODULE_4__constants_constants__["f" /* DOOR_CLOSING */]].includes(door)) {
+                    actions.push(__WEBPACK_IMPORTED_MODULE_10__actionCreators__["d" /* doorsState */][door === __WEBPACK_IMPORTED_MODULE_4__constants_constants__["h" /* DOOR_OPEN */] ? 'setClosing' : 'setOpening'](reachableObject.props.id));
                     this.delayedActions.pushAction({
-                        action: __WEBPACK_IMPORTED_MODULE_10__actionCreators__["d" /* doorsState */][door === __WEBPACK_IMPORTED_MODULE_4__constants_constants__["n" /* DOOR_OPEN */] ? 'setClose' : 'setOpen'](reachableObject.props.id),
-                        delay: __WEBPACK_IMPORTED_MODULE_4__constants_constants__["o" /* DOOR_OPEN_TIME */]
+                        action: __WEBPACK_IMPORTED_MODULE_10__actionCreators__["d" /* doorsState */][door === __WEBPACK_IMPORTED_MODULE_4__constants_constants__["h" /* DOOR_OPEN */] ? 'setClose' : 'setOpen'](reachableObject.props.id),
+                        delay: __WEBPACK_IMPORTED_MODULE_4__constants_constants__["e" /* DOOR_OPEN_TIME */]
                     });
                     if (door === __WEBPACK_IMPORTED_MODULE_4__constants_constants__["i" /* DOOR_CLOSE */]) {
                         this.delayedActions.pushAction({
                             action: this.showHints([{ hint: __WEBPACK_IMPORTED_MODULE_5__constants_hints__["f" /* HINT_DOOR */] }]),
-                            delay: __WEBPACK_IMPORTED_MODULE_4__constants_constants__["o" /* DOOR_OPEN_TIME */]
+                            delay: __WEBPACK_IMPORTED_MODULE_4__constants_constants__["e" /* DOOR_OPEN_TIME */]
                         });
                     }
                 }
@@ -1451,86 +1510,80 @@ GameLoop.propTypes = {
 
 class Scene extends __WEBPACK_IMPORTED_MODULE_1_react___default.a.Component {
     render() {
-        const { pos, viewAngle, playerState, doorsState, objects } = this.props;
-        const transformRule = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_9__lib_utils__["c" /* getTransformRule */])({
+        const { pos, viewAngle, playerState, doorsState, visibleObjects } = this.props;
+        const transformRule = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_9__lib_utils__["a" /* getTransformRule */])({
             pos: [-pos[0], pos[1], -pos[2]]
         });
         const renderedObjects = [];
-        for (let i = 0; i < objects.length; i++) {
-            const object = objects[i];
+        for (let i = 0; i < visibleObjects.length; i++) {
+            const object = visibleObjects[i];
             switch (object.type) {
-                case __WEBPACK_IMPORTED_MODULE_10__constants_constants__["p" /* PAINTING_TYPE */]:
+                case __WEBPACK_IMPORTED_MODULE_10__constants_constants__["j" /* PAINTING_TYPE */]:
                     renderedObjects.push(__WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3__components_painting_painting__["a" /* default */], {
                         key: object.name,
                         pos: object.pos,
                         playerPos: pos,
                         angle: object.angle,
                         size: object.size.filter(value => value !== 0).slice(0, 2),
-                        isVisible: object.isVisible,
                         background: object.background,
-                        getTransformRule: __WEBPACK_IMPORTED_MODULE_9__lib_utils__["c" /* getTransformRule */]
+                        getTransformRule: __WEBPACK_IMPORTED_MODULE_9__lib_utils__["a" /* getTransformRule */]
                     }));
                     break;
-                case __WEBPACK_IMPORTED_MODULE_10__constants_constants__["j" /* FLOOR_TYPE */]:
+                case __WEBPACK_IMPORTED_MODULE_10__constants_constants__["k" /* FLOOR_TYPE */]:
                     renderedObjects.push(__WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_4__components_floor_floor__["a" /* default */], {
                         key: object.name,
                         pos: object.pos,
                         playerPos: pos,
-                        isVisible: object.isVisible,
                         size: object.size,
-                        getTransformRule: __WEBPACK_IMPORTED_MODULE_9__lib_utils__["c" /* getTransformRule */]
+                        getTransformRule: __WEBPACK_IMPORTED_MODULE_9__lib_utils__["a" /* getTransformRule */]
                     }));
                     break;
-                case __WEBPACK_IMPORTED_MODULE_10__constants_constants__["e" /* WALL_TYPE */]:
+                case __WEBPACK_IMPORTED_MODULE_10__constants_constants__["l" /* WALL_TYPE */]:
                     renderedObjects.push(__WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_5__components_wall_wall__["a" /* default */], {
                         key: object.name,
                         pos: object.pos,
                         playerPos: pos,
-                        isVisible: object.isVisible,
                         size: object.size,
-                        getTransformRule: __WEBPACK_IMPORTED_MODULE_9__lib_utils__["c" /* getTransformRule */]
+                        getTransformRule: __WEBPACK_IMPORTED_MODULE_9__lib_utils__["a" /* getTransformRule */]
                     }));
                     break;
-                case __WEBPACK_IMPORTED_MODULE_10__constants_constants__["f" /* BOX_TYPE */]:
+                case __WEBPACK_IMPORTED_MODULE_10__constants_constants__["m" /* BOX_TYPE */]:
                     renderedObjects.push(__WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_6__components_box_box__["a" /* default */], {
                         key: object.name,
                         pos: object.pos,
                         playerPos: pos,
-                        isVisible: object.isVisible,
                         size: object.size,
                         mode: object.props.mode,
-                        getTransformRule: __WEBPACK_IMPORTED_MODULE_9__lib_utils__["c" /* getTransformRule */]
+                        getTransformRule: __WEBPACK_IMPORTED_MODULE_9__lib_utils__["a" /* getTransformRule */]
                     }));
                     break;
-                case __WEBPACK_IMPORTED_MODULE_10__constants_constants__["g" /* SWITCHER_TYPE */]:
+                case __WEBPACK_IMPORTED_MODULE_10__constants_constants__["n" /* SWITCHER_TYPE */]:
                     renderedObjects.push(__WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_7__components_switcher_switcher__["a" /* default */], {
                         key: object.name,
                         pos: object.pos,
                         size: object.size,
                         angle: object.angle,
                         playerPos: pos,
-                        isVisible: object.isVisible,
                         isReachable: object.isReachable,
-                        isInteractive: [__WEBPACK_IMPORTED_MODULE_10__constants_constants__["n" /* DOOR_OPEN */], __WEBPACK_IMPORTED_MODULE_10__constants_constants__["i" /* DOOR_CLOSE */]].includes(doorsState[object.props.id]),
-                        isOn: [__WEBPACK_IMPORTED_MODULE_10__constants_constants__["n" /* DOOR_OPEN */], __WEBPACK_IMPORTED_MODULE_10__constants_constants__["m" /* DOOR_OPENING */]].includes(doorsState[object.props.id]),
-                        getTransformRule: __WEBPACK_IMPORTED_MODULE_9__lib_utils__["c" /* getTransformRule */]
+                        isInteractive: [__WEBPACK_IMPORTED_MODULE_10__constants_constants__["h" /* DOOR_OPEN */], __WEBPACK_IMPORTED_MODULE_10__constants_constants__["i" /* DOOR_CLOSE */]].includes(doorsState[object.props.id]),
+                        isOn: [__WEBPACK_IMPORTED_MODULE_10__constants_constants__["h" /* DOOR_OPEN */], __WEBPACK_IMPORTED_MODULE_10__constants_constants__["g" /* DOOR_OPENING */]].includes(doorsState[object.props.id]),
+                        getTransformRule: __WEBPACK_IMPORTED_MODULE_9__lib_utils__["a" /* getTransformRule */]
                     }));
                     break;
-                case __WEBPACK_IMPORTED_MODULE_10__constants_constants__["h" /* DOOR_TYPE */]:
+                case __WEBPACK_IMPORTED_MODULE_10__constants_constants__["o" /* DOOR_TYPE */]:
                     renderedObjects.push(__WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_8__components_door_door__["a" /* default */], {
                         key: object.name,
                         pos: object.pos,
                         playerPos: pos,
                         viewAngle: viewAngle,
-                        isVisible: object.isVisible,
                         size: object.size,
                         state: doorsState[object.props.id],
-                        getTransformRule: __WEBPACK_IMPORTED_MODULE_9__lib_utils__["c" /* getTransformRule */]
+                        getTransformRule: __WEBPACK_IMPORTED_MODULE_9__lib_utils__["a" /* getTransformRule */]
                     }));
                     break;
             }
         }
-        const className = ['obj', playerState === __WEBPACK_IMPORTED_MODULE_10__constants_constants__["q" /* PLAYER_WALK */] ? __WEBPACK_IMPORTED_MODULE_0__scene_css___default.a.playerAnimationWalking : playerState === __WEBPACK_IMPORTED_MODULE_10__constants_constants__["r" /* PLAYER_RUN */] ? __WEBPACK_IMPORTED_MODULE_0__scene_css___default.a.playerAnimationRunning : ''].join(' ');
+        const className = ['obj', playerState === __WEBPACK_IMPORTED_MODULE_10__constants_constants__["p" /* PLAYER_WALK */] ? __WEBPACK_IMPORTED_MODULE_0__scene_css___default.a.playerAnimationWalking : playerState === __WEBPACK_IMPORTED_MODULE_10__constants_constants__["q" /* PLAYER_RUN */] ? __WEBPACK_IMPORTED_MODULE_0__scene_css___default.a.playerAnimationRunning : ''].join(' ');
         return __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
             'div',
             { className: className },
@@ -1547,7 +1600,7 @@ Scene.propTypes = {
     viewAngle: __WEBPACK_IMPORTED_MODULE_1_react__["PropTypes"].arrayOf(__WEBPACK_IMPORTED_MODULE_1_react__["PropTypes"].number).isRequired,
     playerState: __WEBPACK_IMPORTED_MODULE_1_react__["PropTypes"].string.isRequired,
     doorsState: __WEBPACK_IMPORTED_MODULE_1_react__["PropTypes"].object.isRequired,
-    objects: __WEBPACK_IMPORTED_MODULE_1_react__["PropTypes"].arrayOf(__WEBPACK_IMPORTED_MODULE_1_react__["PropTypes"].object).isRequired
+    visibleObjects: __WEBPACK_IMPORTED_MODULE_1_react__["PropTypes"].arrayOf(__WEBPACK_IMPORTED_MODULE_1_react__["PropTypes"].object).isRequired
 };
 
 function mapStateToProps(state) {
@@ -1555,7 +1608,7 @@ function mapStateToProps(state) {
         pos: state.pos,
         viewAngle: state.viewAngle,
         playerState: state.playerState,
-        objects: state.objects,
+        visibleObjects: state.objects.filter(obj => obj.isVisible),
         doorsState: state.doorsState
     };
 }
@@ -1572,7 +1625,7 @@ function mapStateToProps(state) {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__viewport_css___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__viewport_css__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react__ = __webpack_require__(4);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_react__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_redux__ = __webpack_require__(18);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_redux__ = __webpack_require__(17);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_react_redux__ = __webpack_require__(16);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_react_redux___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_react_redux__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__actionCreators__ = __webpack_require__(41);
@@ -1724,7 +1777,7 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 
 
 function getInitialState() {
-    return JSON.parse(__WEBPACK_IMPORTED_MODULE_0__level__["a" /* default */].objects).filter(obj => obj.type === __WEBPACK_IMPORTED_MODULE_1__constants_constants__["h" /* DOOR_TYPE */]).reduce((result, obj) => {
+    return JSON.parse(__WEBPACK_IMPORTED_MODULE_0__level__["a" /* default */].objects).filter(obj => obj.type === __WEBPACK_IMPORTED_MODULE_1__constants_constants__["o" /* DOOR_TYPE */]).reduce((result, obj) => {
         result[obj.props.id] = obj.props.state;
         return result;
     }, {});
@@ -1734,11 +1787,11 @@ function doorsState(state = {}, action) {
     switch (action.type) {
         case __WEBPACK_IMPORTED_MODULE_2__constants_actionNames__["n" /* DOOR_SET_CLOSING */]:
             return _extends({}, state, {
-                [action.id]: __WEBPACK_IMPORTED_MODULE_1__constants_constants__["l" /* DOOR_CLOSING */]
+                [action.id]: __WEBPACK_IMPORTED_MODULE_1__constants_constants__["f" /* DOOR_CLOSING */]
             });
         case __WEBPACK_IMPORTED_MODULE_2__constants_actionNames__["o" /* DOOR_SET_OPENING */]:
             return _extends({}, state, {
-                [action.id]: __WEBPACK_IMPORTED_MODULE_1__constants_constants__["m" /* DOOR_OPENING */]
+                [action.id]: __WEBPACK_IMPORTED_MODULE_1__constants_constants__["g" /* DOOR_OPENING */]
             });
         case __WEBPACK_IMPORTED_MODULE_2__constants_actionNames__["p" /* DOOR_SET_CLOSE */]:
             return _extends({}, state, {
@@ -1746,7 +1799,7 @@ function doorsState(state = {}, action) {
             });
         case __WEBPACK_IMPORTED_MODULE_2__constants_actionNames__["q" /* DOOR_SET_OPEN */]:
             return _extends({}, state, {
-                [action.id]: __WEBPACK_IMPORTED_MODULE_1__constants_constants__["n" /* DOOR_OPEN */]
+                [action.id]: __WEBPACK_IMPORTED_MODULE_1__constants_constants__["h" /* DOOR_OPEN */]
             });
         case __WEBPACK_IMPORTED_MODULE_2__constants_actionNames__["a" /* SET_GAME_START */]:
             return getInitialState();
@@ -1887,7 +1940,7 @@ function setDoorCollidable({ state, id, on }) {
     const objects = new Array(state.length);
     for (let i = 0; i < state.length; i++) {
         let object = state[i];
-        if (object.type === __WEBPACK_IMPORTED_MODULE_0__constants_constants__["h" /* DOOR_TYPE */] && object.props.id === id) {
+        if (object.type === __WEBPACK_IMPORTED_MODULE_0__constants_constants__["o" /* DOOR_TYPE */] && object.props.id === id) {
             object.collides = on;
         }
         objects[i] = object;
@@ -1895,16 +1948,17 @@ function setDoorCollidable({ state, id, on }) {
     return objects;
 }
 
-function objects(state = {}, action) {
+function objects(state = getInitialState(), action) {
     switch (action.type) {
         case __WEBPACK_IMPORTED_MODULE_1__constants_actionNames__["l" /* OBJECTS_SET_VISIBLE */]:
             {
                 const objects = new Array(state.length);
                 for (let i = 0; i < state.length; i++) {
                     const object = state[i];
-                    const isVisible = object.name in action.visibleObjectIds;
-                    if (isVisible !== object.isVisible) {
-                        objects[i] = _extends({}, object, { isVisible });
+                    if (object.name in action.addVisibleObjects) {
+                        objects[i] = _extends({}, object, { isVisible: true });
+                    } else if (object.name in action.removeVisibleObjects) {
+                        objects[i] = _extends({}, object, { isVisible: false });
                     } else {
                         objects[i] = object;
                     }
@@ -1989,9 +2043,9 @@ function playerState(state = __WEBPACK_IMPORTED_MODULE_0__constants_constants__[
         case __WEBPACK_IMPORTED_MODULE_1__constants_actionNames__["k" /* PLAYER_STATE_STOP */]:
             return __WEBPACK_IMPORTED_MODULE_0__constants_constants__["E" /* PLAYER_STOP */];
         case __WEBPACK_IMPORTED_MODULE_1__constants_actionNames__["j" /* PLAYER_STATE_WALK */]:
-            return __WEBPACK_IMPORTED_MODULE_0__constants_constants__["q" /* PLAYER_WALK */];
+            return __WEBPACK_IMPORTED_MODULE_0__constants_constants__["p" /* PLAYER_WALK */];
         case __WEBPACK_IMPORTED_MODULE_1__constants_actionNames__["i" /* PLAYER_STATE_RUN */]:
-            return __WEBPACK_IMPORTED_MODULE_0__constants_constants__["r" /* PLAYER_RUN */];
+            return __WEBPACK_IMPORTED_MODULE_0__constants_constants__["q" /* PLAYER_RUN */];
         default:
             return state;
     }
@@ -2062,7 +2116,7 @@ module.exports = {"root":"logo-root-1ptFe"};
 /***/ function(module, exports) {
 
 // removed by extract-text-webpack-plugin
-module.exports = {"root":"door-root-eMRzu"};
+module.exports = {"root":"door-root-eMRzu","door":"door-door-1S3Lu","open":"door-open-wp-Iz"};
 
 /***/ },
 
@@ -2147,6 +2201,7 @@ module.exports = {"root":"viewport-root-goyag"};
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react__ = __webpack_require__(4);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_react__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__constants_constants__ = __webpack_require__(9);
+/* harmony export (immutable) */ exports["a"] = Plain;
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
 
@@ -2154,89 +2209,83 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 
 
 
-/* harmony default export */ exports["a"] = ({
+function Plain({
     className = '',
     pos,
     parentPos,
     playerPos,
-    isVisible = true,
     size,
     angle = [0, 0, 0],
     parentAngle,
     background,
     simpleLight = false,
     getTransformRule
-}) => {
+}) {
     let backgroundStyle = {
         background: 'none'
         // background,
         // opacity: 0
     };
-    // if (false && isVisible) {
-    if (isVisible) {
-        const relativePos = parentPos ? [pos].concat(parentPos).reduce(vectorsAdd3D) : pos;
-        const relativeAngle = parentAngle ? [angle].concat(parentAngle).reduce(vectorsAdd3D) : angle;
-        if (simpleLight) {
-            backgroundStyle = getPlayerSpotLightBackground({
-                distance: vectorLength3D([playerPos[0] - relativePos[0], playerPos[1] + relativePos[1], playerPos[2] - relativePos[2]]),
-                background,
-                simpleLight
-            });
-        } else {
-            // front
-            if (relativeAngle[0] === 0 && relativeAngle[1] % 360 === 0 && relativeAngle[2] === 0) {
-                if (playerPos[2] > relativePos[2]) {
-                    backgroundStyle = getPlayerSpotLightBackground({
-                        pos: [playerPos[0] - (relativePos[0] - size[0] / 2), -relativePos[1] + size[1] / 2 - playerPos[1]],
-                        distance: playerPos[2] - relativePos[2],
-                        background
-                    });
-                }
-                // back
-            } else if (relativeAngle[0] === 0 && Math.abs(relativeAngle[1] % 360) === 180 && relativeAngle[2] === 0) {
-                if (playerPos[2] < relativePos[2]) {
-                    backgroundStyle = getPlayerSpotLightBackground({
-                        pos: [relativePos[0] + size[0] / 2 - playerPos[0], -relativePos[1] + size[1] / 2 - playerPos[1]],
-                        distance: relativePos[2] - playerPos[2],
-                        background
-                    });
-                }
-                // left
-            } else if (relativeAngle[0] === 0 && (relativeAngle[1] % 360 === -90 || relativeAngle[1] % 360 === 270) && relativeAngle[2] === 0) {
-                if (playerPos[0] < relativePos[0]) {
-                    backgroundStyle = getPlayerSpotLightBackground({
-                        pos: [playerPos[2] - (relativePos[2] - size[0] / 2), -relativePos[1] + size[1] / 2 - playerPos[1]],
-                        distance: relativePos[0] - playerPos[0],
-                        background
-                    });
-                }
-                // right
-            } else if (relativeAngle[0] === 0 && (relativeAngle[1] % 360 === 90 || relativeAngle[1] % 360 === -270) && relativeAngle[2] === 0) {
-                if (playerPos[0] > relativePos[0]) {
-                    backgroundStyle = getPlayerSpotLightBackground({
-                        pos: [relativePos[2] + size[0] / 2 - playerPos[2], -relativePos[1] + size[1] / 2 - playerPos[1]],
-                        distance: playerPos[0] - relativePos[0],
-                        background
-                    });
-                }
-                // top
-            } else if ((relativeAngle[0] % 360 === 90 || relativeAngle[0] % 360 === -270) && relativeAngle[1] === 0 && relativeAngle[2] === 0) {
-                if (playerPos[1] > -relativePos[1]) {
-                    backgroundStyle = getPlayerSpotLightBackground({
-                        pos: [playerPos[0] - (relativePos[0] - size[0] / 2), playerPos[2] - (relativePos[2] - size[1] / 2)],
-                        distance: playerPos[1] + relativePos[1],
-                        background
-                    });
-                }
+    const relativePos = parentPos ? [pos].concat(parentPos).reduce(vectorsAdd3D) : pos;
+    const relativeAngle = parentAngle ? [angle].concat(parentAngle).reduce(vectorsAdd3D) : angle;
+    if (simpleLight) {
+        backgroundStyle = getPlayerSpotLightBackground({
+            distance: vectorLength3D([playerPos[0] - relativePos[0], playerPos[1] + relativePos[1], playerPos[2] - relativePos[2]]),
+            background,
+            simpleLight
+        });
+    } else {
+        // front
+        if (relativeAngle[0] === 0 && relativeAngle[1] % 360 === 0 && relativeAngle[2] === 0) {
+            if (playerPos[2] > relativePos[2]) {
+                backgroundStyle = getPlayerSpotLightBackground({
+                    pos: [playerPos[0] - (relativePos[0] - size[0] / 2), -relativePos[1] + size[1] / 2 - playerPos[1]],
+                    distance: playerPos[2] - relativePos[2],
+                    background
+                });
             }
-            // todo bottom
+            // back
+        } else if (relativeAngle[0] === 0 && Math.abs(relativeAngle[1] % 360) === 180 && relativeAngle[2] === 0) {
+            if (playerPos[2] < relativePos[2]) {
+                backgroundStyle = getPlayerSpotLightBackground({
+                    pos: [relativePos[0] + size[0] / 2 - playerPos[0], -relativePos[1] + size[1] / 2 - playerPos[1]],
+                    distance: relativePos[2] - playerPos[2],
+                    background
+                });
+            }
+            // left
+        } else if (relativeAngle[0] === 0 && (relativeAngle[1] % 360 === -90 || relativeAngle[1] % 360 === 270) && relativeAngle[2] === 0) {
+            if (playerPos[0] < relativePos[0]) {
+                backgroundStyle = getPlayerSpotLightBackground({
+                    pos: [playerPos[2] - (relativePos[2] - size[0] / 2), -relativePos[1] + size[1] / 2 - playerPos[1]],
+                    distance: relativePos[0] - playerPos[0],
+                    background
+                });
+            }
+            // right
+        } else if (relativeAngle[0] === 0 && (relativeAngle[1] % 360 === 90 || relativeAngle[1] % 360 === -270) && relativeAngle[2] === 0) {
+            if (playerPos[0] > relativePos[0]) {
+                backgroundStyle = getPlayerSpotLightBackground({
+                    pos: [relativePos[2] + size[0] / 2 - playerPos[2], -relativePos[1] + size[1] / 2 - playerPos[1]],
+                    distance: playerPos[0] - relativePos[0],
+                    background
+                });
+            }
+            // top
+        } else if ((relativeAngle[0] % 360 === 90 || relativeAngle[0] % 360 === -270) && relativeAngle[1] === 0 && relativeAngle[2] === 0) {
+            if (playerPos[1] > -relativePos[1]) {
+                backgroundStyle = getPlayerSpotLightBackground({
+                    pos: [playerPos[0] - (relativePos[0] - size[0] / 2), playerPos[2] - (relativePos[2] - size[1] / 2)],
+                    distance: playerPos[1] + relativePos[1],
+                    background
+                });
+            }
         }
+        // todo bottom
     }
     return __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
         'div',
-        { className: `obj ${ className }`, style: _extends({
-                display: isVisible ? 'block' : 'none'
-            }, getTransformRule({ pos, angle }), {
+        { className: `obj ${ className }`, style: _extends({}, getTransformRule({ pos, angle }), {
                 width: size[0],
                 height: size[1],
                 margin: `-${ size[1] / 2 }px 0 0 -${ size[0] / 2 }px`,
@@ -2246,7 +2295,7 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
                 opacity: 'opacity' in backgroundStyle ? backgroundStyle.opacity : 1
             } })
     );
-};
+}
 
 function getPlayerSpotLightBackground(params) {
     return getSpotLightBackground(_extends({}, params, { radius: 1.1 * __WEBPACK_IMPORTED_MODULE_2__constants_constants__["d" /* BROAD_CELL_SIZE */] }));
@@ -2260,7 +2309,7 @@ function getSpotLightBackground({ pos, distance, background, simpleLight, radius
         };
         if (!simpleLight) {
             const size = (2 + ratio) * radius / 2 * 10;
-            result.background = `url(src/components/plain/mask.svg) ${ pos[0] - size / 2 }px ${ pos[1] - size / 2 }px / ${ size }px no-repeat, ` + background;
+            result.background = 'url(src/components/plain/mask.svg) ' + (pos[0] - size / 2) + 'px ' + (pos[1] - size / 2) + 'px / ' + size + 'px no-repeat, ' + background;
         } else {
             result.background = background;
         }
@@ -2319,42 +2368,42 @@ const level = {
     },
     objects: [{
         name: 'wall_001',
-        type: __WEBPACK_IMPORTED_MODULE_2__constants_constants__["e" /* WALL_TYPE */],
+        type: __WEBPACK_IMPORTED_MODULE_2__constants_constants__["l" /* WALL_TYPE */],
         size: [50, 200, 500],
         pos: [2000, 100, 250]
     }, {
         name: 'wall_002',
-        type: __WEBPACK_IMPORTED_MODULE_2__constants_constants__["e" /* WALL_TYPE */],
+        type: __WEBPACK_IMPORTED_MODULE_2__constants_constants__["l" /* WALL_TYPE */],
         size: [500, 200, 50],
         pos: [250, 100, 500]
     }, {
         name: 'wall_003',
-        type: __WEBPACK_IMPORTED_MODULE_2__constants_constants__["e" /* WALL_TYPE */],
+        type: __WEBPACK_IMPORTED_MODULE_2__constants_constants__["l" /* WALL_TYPE */],
         size: [500, 200, 50],
         pos: [750, 100, 500]
     }, {
         name: 'wall_004',
-        type: __WEBPACK_IMPORTED_MODULE_2__constants_constants__["e" /* WALL_TYPE */],
+        type: __WEBPACK_IMPORTED_MODULE_2__constants_constants__["l" /* WALL_TYPE */],
         size: [500, 200, 50],
         pos: [1750, 100, 500]
     }, {
         name: 'wall_005',
-        type: __WEBPACK_IMPORTED_MODULE_2__constants_constants__["e" /* WALL_TYPE */],
+        type: __WEBPACK_IMPORTED_MODULE_2__constants_constants__["l" /* WALL_TYPE */],
         size: [50, 200, 500],
         pos: [500, 100, 750]
     }, {
         name: 'wall_006',
-        type: __WEBPACK_IMPORTED_MODULE_2__constants_constants__["e" /* WALL_TYPE */],
+        type: __WEBPACK_IMPORTED_MODULE_2__constants_constants__["l" /* WALL_TYPE */],
         size: [50, 200, 500],
         pos: [2000, 100, 750]
     }, {
         name: 'wall_007',
-        type: __WEBPACK_IMPORTED_MODULE_2__constants_constants__["e" /* WALL_TYPE */],
+        type: __WEBPACK_IMPORTED_MODULE_2__constants_constants__["l" /* WALL_TYPE */],
         size: [500, 200, 50],
         pos: [1250, 100, 1000]
     }, {
         name: 'wall_008',
-        type: __WEBPACK_IMPORTED_MODULE_2__constants_constants__["e" /* WALL_TYPE */],
+        type: __WEBPACK_IMPORTED_MODULE_2__constants_constants__["l" /* WALL_TYPE */],
         size: [50, 200, 500],
         pos: [1000, 100, 1250]
     },
@@ -2369,42 +2418,42 @@ const level = {
     // },
     {
         name: 'wall_009',
-        type: __WEBPACK_IMPORTED_MODULE_2__constants_constants__["e" /* WALL_TYPE */],
+        type: __WEBPACK_IMPORTED_MODULE_2__constants_constants__["l" /* WALL_TYPE */],
         size: [500, 200, 50],
         pos: [1250, 100, 1500]
     }, {
         name: 'wall_010',
-        type: __WEBPACK_IMPORTED_MODULE_2__constants_constants__["e" /* WALL_TYPE */],
+        type: __WEBPACK_IMPORTED_MODULE_2__constants_constants__["l" /* WALL_TYPE */],
         size: [500, 200, 50],
         pos: [2250, 100, 1500]
     }, {
         name: 'wall_011',
-        type: __WEBPACK_IMPORTED_MODULE_2__constants_constants__["e" /* WALL_TYPE */],
+        type: __WEBPACK_IMPORTED_MODULE_2__constants_constants__["l" /* WALL_TYPE */],
         size: [50, 200, 500],
         pos: [500, 100, 1750]
     }, {
         name: 'wall_012',
-        type: __WEBPACK_IMPORTED_MODULE_2__constants_constants__["e" /* WALL_TYPE */],
+        type: __WEBPACK_IMPORTED_MODULE_2__constants_constants__["l" /* WALL_TYPE */],
         size: [50, 200, 500],
         pos: [2000, 100, 1750]
     }, {
         name: 'wall_013',
-        type: __WEBPACK_IMPORTED_MODULE_2__constants_constants__["e" /* WALL_TYPE */],
+        type: __WEBPACK_IMPORTED_MODULE_2__constants_constants__["l" /* WALL_TYPE */],
         size: [500, 200, 50],
         pos: [750, 100, 2000]
     }, {
         name: 'wall_014',
-        type: __WEBPACK_IMPORTED_MODULE_2__constants_constants__["e" /* WALL_TYPE */],
+        type: __WEBPACK_IMPORTED_MODULE_2__constants_constants__["l" /* WALL_TYPE */],
         size: [500, 200, 50],
         pos: [1750, 100, 2000]
     }, {
         name: 'wall_015',
-        type: __WEBPACK_IMPORTED_MODULE_2__constants_constants__["e" /* WALL_TYPE */],
+        type: __WEBPACK_IMPORTED_MODULE_2__constants_constants__["l" /* WALL_TYPE */],
         size: [50, 200, 500],
         pos: [500, 100, 2250]
     }, {
         name: 'box_001',
-        type: __WEBPACK_IMPORTED_MODULE_2__constants_constants__["f" /* BOX_TYPE */],
+        type: __WEBPACK_IMPORTED_MODULE_2__constants_constants__["m" /* BOX_TYPE */],
         size: [150, 150, 150],
         pos: [200, 75, 200],
         props: {
@@ -2412,7 +2461,7 @@ const level = {
         }
     }, {
         name: 'box_002',
-        type: __WEBPACK_IMPORTED_MODULE_2__constants_constants__["f" /* BOX_TYPE */],
+        type: __WEBPACK_IMPORTED_MODULE_2__constants_constants__["m" /* BOX_TYPE */],
         size: [50, 50, 50],
         pos: [175, 175, 175],
         props: {
@@ -2420,7 +2469,7 @@ const level = {
         }
     }, {
         name: 'box_003',
-        type: __WEBPACK_IMPORTED_MODULE_2__constants_constants__["f" /* BOX_TYPE */],
+        type: __WEBPACK_IMPORTED_MODULE_2__constants_constants__["m" /* BOX_TYPE */],
         size: [150, 150, 150],
         pos: [2425, 75, 75],
         props: {
@@ -2428,7 +2477,7 @@ const level = {
         }
     }, {
         name: 'box_004',
-        type: __WEBPACK_IMPORTED_MODULE_2__constants_constants__["f" /* BOX_TYPE */],
+        type: __WEBPACK_IMPORTED_MODULE_2__constants_constants__["m" /* BOX_TYPE */],
         size: [150, 150, 150],
         pos: [1300, 75, 900],
         props: {
@@ -2436,7 +2485,7 @@ const level = {
         }
     }, {
         name: 'box_005',
-        type: __WEBPACK_IMPORTED_MODULE_2__constants_constants__["f" /* BOX_TYPE */],
+        type: __WEBPACK_IMPORTED_MODULE_2__constants_constants__["m" /* BOX_TYPE */],
         size: [150, 150, 150],
         pos: [2110, 75, 1975],
         props: {
@@ -2444,7 +2493,7 @@ const level = {
         }
     }, {
         name: 'box_006',
-        type: __WEBPACK_IMPORTED_MODULE_2__constants_constants__["f" /* BOX_TYPE */],
+        type: __WEBPACK_IMPORTED_MODULE_2__constants_constants__["m" /* BOX_TYPE */],
         size: [100, 150, 100],
         pos: [900, 75, 2400],
         props: {
@@ -2452,7 +2501,7 @@ const level = {
         }
     }, {
         name: 'box_007',
-        type: __WEBPACK_IMPORTED_MODULE_2__constants_constants__["f" /* BOX_TYPE */],
+        type: __WEBPACK_IMPORTED_MODULE_2__constants_constants__["m" /* BOX_TYPE */],
         size: [90, 70, 90],
         pos: [900, 185, 2390],
         props: {
@@ -2460,7 +2509,7 @@ const level = {
         }
     }, {
         name: 'switcher_01',
-        type: __WEBPACK_IMPORTED_MODULE_2__constants_constants__["g" /* SWITCHER_TYPE */],
+        type: __WEBPACK_IMPORTED_MODULE_2__constants_constants__["n" /* SWITCHER_TYPE */],
         pos: [1027, 100, 1250],
         size: [40, 60, 100],
         angle: [0, 90, 0],
@@ -2470,7 +2519,7 @@ const level = {
         isInteractive: true
     }, {
         name: 'door_01',
-        type: __WEBPACK_IMPORTED_MODULE_2__constants_constants__["h" /* DOOR_TYPE */],
+        type: __WEBPACK_IMPORTED_MODULE_2__constants_constants__["o" /* DOOR_TYPE */],
         size: [500, 200, 20],
         pos: [250, 100, 1000],
         props: {
@@ -2479,7 +2528,7 @@ const level = {
         }
     }, {
         name: 'switcher_02',
-        type: __WEBPACK_IMPORTED_MODULE_2__constants_constants__["g" /* SWITCHER_TYPE */],
+        type: __WEBPACK_IMPORTED_MODULE_2__constants_constants__["n" /* SWITCHER_TYPE */],
         pos: [250, 100, 526],
         size: [40, 60, 100],
         angle: [0, 0, 0],
@@ -2489,7 +2538,7 @@ const level = {
         isInteractive: true
     }, {
         name: 'door_02',
-        type: __WEBPACK_IMPORTED_MODULE_2__constants_constants__["h" /* DOOR_TYPE */],
+        type: __WEBPACK_IMPORTED_MODULE_2__constants_constants__["o" /* DOOR_TYPE */],
         size: [500, 200, 20],
         pos: [2250, 100, 1000],
         props: {
@@ -2498,7 +2547,7 @@ const level = {
         }
     }, {
         name: 'switcher_03',
-        type: __WEBPACK_IMPORTED_MODULE_2__constants_constants__["g" /* SWITCHER_TYPE */],
+        type: __WEBPACK_IMPORTED_MODULE_2__constants_constants__["n" /* SWITCHER_TYPE */],
         pos: [2026, 100, 250],
         size: [40, 60, 100],
         angle: [0, 90, 0],
@@ -2508,7 +2557,7 @@ const level = {
         isInteractive: true
     }, {
         name: 'door_03',
-        type: __WEBPACK_IMPORTED_MODULE_2__constants_constants__["h" /* DOOR_TYPE */],
+        type: __WEBPACK_IMPORTED_MODULE_2__constants_constants__["o" /* DOOR_TYPE */],
         size: [500, 200, 20],
         pos: [250, 100, 1500],
         props: {
@@ -2517,7 +2566,7 @@ const level = {
         }
     }, {
         name: 'switcher_04',
-        type: __WEBPACK_IMPORTED_MODULE_2__constants_constants__["g" /* SWITCHER_TYPE */],
+        type: __WEBPACK_IMPORTED_MODULE_2__constants_constants__["n" /* SWITCHER_TYPE */],
         pos: [250, 100, 2474],
         size: [40, 60, 100],
         angle: [0, 180, 0],
@@ -2527,7 +2576,7 @@ const level = {
         isInteractive: true
     }, {
         name: 'door_04',
-        type: __WEBPACK_IMPORTED_MODULE_2__constants_constants__["h" /* DOOR_TYPE */],
+        type: __WEBPACK_IMPORTED_MODULE_2__constants_constants__["o" /* DOOR_TYPE */],
         size: [20, 200, 500],
         pos: [1500, 100, 2250],
         props: {
@@ -2536,7 +2585,7 @@ const level = {
         }
     }, {
         name: 'switcher_05',
-        type: __WEBPACK_IMPORTED_MODULE_2__constants_constants__["g" /* SWITCHER_TYPE */],
+        type: __WEBPACK_IMPORTED_MODULE_2__constants_constants__["n" /* SWITCHER_TYPE */],
         pos: [2250, 100, 1526],
         size: [40, 60, 100],
         angle: [0, 0, 0],
@@ -2544,9 +2593,21 @@ const level = {
             id: 5
         },
         isInteractive: true
-    }, {
+    },
+    // {
+    //     name: 'switcher_05_t',
+    //     type: SWITCHER_TYPE,
+    //     pos: [1027, 100, 500],
+    //     size: [40, 60, 100],
+    //     angle: [0, 90, 0],
+    //     props: {
+    //         id: 5
+    //     },
+    //     isInteractive: true
+    // },
+    {
         name: 'door_05',
-        type: __WEBPACK_IMPORTED_MODULE_2__constants_constants__["h" /* DOOR_TYPE */],
+        type: __WEBPACK_IMPORTED_MODULE_2__constants_constants__["o" /* DOOR_TYPE */],
         size: [500, 200, 20],
         pos: [1250, 100, 0],
         props: {
@@ -2565,7 +2626,7 @@ for (let x = 250; x < level.boundaries[0]; x += 500) {
         }
         level.objects.push({
             name: 'border wall ' + x + '_' + z,
-            type: __WEBPACK_IMPORTED_MODULE_2__constants_constants__["e" /* WALL_TYPE */],
+            type: __WEBPACK_IMPORTED_MODULE_2__constants_constants__["l" /* WALL_TYPE */],
             size: [500, 200, 50],
             pos: [x, 100, z]
         });
@@ -2575,7 +2636,7 @@ for (let z = 250; z < level.boundaries[2]; z += 500) {
     for (let x = 0; x <= level.boundaries[0]; x += level.boundaries[0]) {
         level.objects.push({
             name: 'border wall ' + x + '_' + z,
-            type: __WEBPACK_IMPORTED_MODULE_2__constants_constants__["e" /* WALL_TYPE */],
+            type: __WEBPACK_IMPORTED_MODULE_2__constants_constants__["l" /* WALL_TYPE */],
             size: [50, 200, 500],
             pos: [x, 100, z]
         });
@@ -2587,7 +2648,7 @@ for (let z = 0; z < level.boundaries[2]; z += 500) {
     for (let x = 0; x < level.boundaries[0]; x += 500) {
         level.objects.push({
             name: 'floor tile ' + z + '_' + x,
-            type: __WEBPACK_IMPORTED_MODULE_2__constants_constants__["j" /* FLOOR_TYPE */],
+            type: __WEBPACK_IMPORTED_MODULE_2__constants_constants__["k" /* FLOOR_TYPE */],
             size: [500, 0, 500],
             pos: [x + 250, 0, z + 250],
             collides: false
@@ -2596,6 +2657,7 @@ for (let z = 0; z < level.boundaries[2]; z += 500) {
 }
 
 // calculate 2d points coordinates for objects hitboxes
+const playerCell = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__lib_utils__["b" /* getPlayerCell */])(level.player.pos);
 for (let i = 0; i < level.objects.length; i++) {
     const obj = level.objects[i];
     let sizeXHalf = 0;
@@ -2627,13 +2689,12 @@ for (let i = 0; i < level.objects.length; i++) {
         }
     }
 
-    const visibleObjects = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__lib_utils__["a" /* getVisibleObjects */])(level.player.pos, [obj]);
-    obj.isVisible = visibleObjects.length === 1;
+    obj.isVisible = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__lib_utils__["c" /* isObjectVisible */])(playerCell, obj);
 
     obj.isReachable = false;
 }
 
-const collisionView = __WEBPACK_IMPORTED_MODULE_0__lib_collision__["a" /* default */].getCollisionView([level.player.pos, __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__lib_utils__["b" /* getPointPosition */])({ pos: level.player.pos, distance: __WEBPACK_IMPORTED_MODULE_2__constants_constants__["k" /* HAND_LENGTH */], angle: level.player.angle })], level.objects, __WEBPACK_IMPORTED_MODULE_2__constants_constants__["d" /* BROAD_CELL_SIZE */]);
+const collisionView = __WEBPACK_IMPORTED_MODULE_0__lib_collision__["a" /* default */].getCollisionView([level.player.pos, __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__lib_utils__["d" /* getPointPosition */])({ pos: level.player.pos, distance: __WEBPACK_IMPORTED_MODULE_2__constants_constants__["r" /* HAND_LENGTH */], angle: level.player.angle })], level.objects, __WEBPACK_IMPORTED_MODULE_2__constants_constants__["d" /* BROAD_CELL_SIZE */]);
 if (collisionView) {
     collisionView.obj.isReachable = true;
 }
@@ -2654,7 +2715,7 @@ level.objects = JSON.stringify(level.objects);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_react__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_react_dom__ = __webpack_require__(40);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_react_dom___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_react_dom__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_redux__ = __webpack_require__(18);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_redux__ = __webpack_require__(17);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_react_redux__ = __webpack_require__(16);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_react_redux___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_react_redux__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_redux_batched_actions__ = __webpack_require__(32);
@@ -2688,29 +2749,30 @@ __WEBPACK_IMPORTED_MODULE_2_react_dom___default.a.render(__WEBPACK_IMPORTED_MODU
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__constants_constants__ = __webpack_require__(9);
-/* harmony export (immutable) */ exports["c"] = getTransformRule;
-/* harmony export (immutable) */ exports["a"] = getVisibleObjects;
-/* harmony export (immutable) */ exports["b"] = getPointPosition;
+/* harmony export (immutable) */ exports["a"] = getTransformRule;
+/* harmony export (immutable) */ exports["f"] = getVisibleObjects;
+/* harmony export (immutable) */ exports["b"] = getPlayerCell;
+/* harmony export (immutable) */ exports["c"] = isObjectVisible;
+/* harmony export (immutable) */ exports["d"] = getPointPosition;
 
 const AXIS = ['X', 'Y', 'Z'];
 
 /**
  * Returns css transform rule for given position and angle
- * @param {Array} pos
- * @param {Array} angle
+ * @param {Object} data
  * @returns {{transform: string}}
  */
-function getTransformRule({ pos, angle }) {
+function getTransformRule(data) {
     let transform = '';
-    if (pos) {
-        transform = `translate3d(${ pos[0] }px,${ pos[1] }px,${ pos[2] }px)`;
+    if (data.pos) {
+        transform = 'translate3d(' + data.pos[0] + 'px,' + data.pos[1] + 'px,' + data.pos[2] + 'px)';
     }
-    if (angle) {
-        for (let axis = 0; axis < angle.length; axis++) {
-            transform = `${ transform } rotate${ AXIS[axis] }(${ angle[axis] }deg)`;
+    if (data.angle) {
+        for (let axis = 0; axis < data.angle.length; axis++) {
+            transform = transform + ' rotate' + AXIS[axis] + '(' + data.angle[axis] + 'deg)';
         }
     }
-    return { transform };
+    return { transform: transform };
 }
 
 /**
@@ -2720,18 +2782,32 @@ function getTransformRule({ pos, angle }) {
  * @returns {Array}
  */
 function getVisibleObjects(playerPos, objects) {
-    const playerCell = [Math.floor(playerPos[0] / __WEBPACK_IMPORTED_MODULE_0__constants_constants__["d" /* BROAD_CELL_SIZE */]), Math.floor(playerPos[2] / __WEBPACK_IMPORTED_MODULE_0__constants_constants__["d" /* BROAD_CELL_SIZE */])];
-    const visibleObjects = [];
-    for (let i = 0; i < objects.length; i++) {
+    const playerCell = getPlayerCell(playerPos);
+    const addVisibleObjects = {};
+    const removeVisibleObjects = {};
+    for (let i = 0; i < objects.length; i = i + 1) {
         const object = objects[i];
-        for (let k = 0; k < object.broadCells.length; k++) {
-            if (Math.abs(playerCell[0] - object.broadCells[k][0]) < 2 && Math.abs(playerCell[1] - object.broadCells[k][1]) < 2) {
-                visibleObjects.push(object);
-                break;
-            }
+        const isVisible = isObjectVisible(playerCell, object);
+        if (object.isVisible !== isVisible) {
+            (isVisible ? addVisibleObjects : removeVisibleObjects)[object.name] = true;
         }
     }
-    return visibleObjects;
+    return { addVisibleObjects, removeVisibleObjects };
+}
+
+function getPlayerCell(playerPos) {
+    return [Math.floor(playerPos[0] / __WEBPACK_IMPORTED_MODULE_0__constants_constants__["d" /* BROAD_CELL_SIZE */]), Math.floor(playerPos[2] / __WEBPACK_IMPORTED_MODULE_0__constants_constants__["d" /* BROAD_CELL_SIZE */])];
+}
+
+function isObjectVisible(playerCell, object) {
+    let isVisible = false;
+    for (let k = 0; k < object.broadCells.length; k = k + 1) {
+        if (Math.abs(playerCell[0] - object.broadCells[k][0]) < 2 && Math.abs(playerCell[1] - object.broadCells[k][1]) < 2) {
+            isVisible = true;
+            break;
+        }
+    }
+    return isVisible;
 }
 
 /**
@@ -2792,7 +2868,7 @@ class DelayedActions {
         this.delayedActions = [];
     }
 }
-/* harmony export (immutable) */ exports["d"] = DelayedActions;
+/* harmony export (immutable) */ exports["e"] = DelayedActions;
 
 
 /***/ },
@@ -2828,6 +2904,8 @@ class DelayedActions {
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
 class Collision {
     /**
      * Returns an array of collisions with objects
@@ -2843,7 +2921,9 @@ class Collision {
             const secondCollision = Collision.getCollisionPos([firstCollision.collisionPoint, firstCollision.newPos], objects, broadCellSize);
             // if it does, stop right there (no need to check further collisions)
             if (secondCollision.obj) {
-                return [firstCollision, Object.assign(secondCollision, { newPos: secondCollision.collisionPoint })];
+                return [firstCollision, _extends({}, secondCollision, {
+                    newPos: secondCollision.collisionPoint
+                })];
             }
         }
         return [firstCollision];
@@ -3240,45 +3320,45 @@ const BROAD_CELL_SIZE = 250;
 /* harmony export (immutable) */ exports["d"] = BROAD_CELL_SIZE;
 
 const HAND_LENGTH = 100;
-/* harmony export (immutable) */ exports["k"] = HAND_LENGTH;
+/* harmony export (immutable) */ exports["r"] = HAND_LENGTH;
 
-const HINT_SHOW_TIME = 7000;
+const HINT_SHOW_TIME = 5000;
 /* harmony export (immutable) */ exports["C"] = HINT_SHOW_TIME;
 
 
 const PAINTING_TYPE = 'painting';
-/* harmony export (immutable) */ exports["p"] = PAINTING_TYPE;
+/* harmony export (immutable) */ exports["j"] = PAINTING_TYPE;
 
 const FLOOR_TYPE = 'floor';
-/* harmony export (immutable) */ exports["j"] = FLOOR_TYPE;
+/* harmony export (immutable) */ exports["k"] = FLOOR_TYPE;
 
 const WALL_TYPE = 'wall';
-/* harmony export (immutable) */ exports["e"] = WALL_TYPE;
+/* harmony export (immutable) */ exports["l"] = WALL_TYPE;
 
 const BOX_TYPE = 'box';
-/* harmony export (immutable) */ exports["f"] = BOX_TYPE;
+/* harmony export (immutable) */ exports["m"] = BOX_TYPE;
 
 const SWITCHER_TYPE = 'switcher';
-/* harmony export (immutable) */ exports["g"] = SWITCHER_TYPE;
+/* harmony export (immutable) */ exports["n"] = SWITCHER_TYPE;
 
 const DOOR_TYPE = 'door';
-/* harmony export (immutable) */ exports["h"] = DOOR_TYPE;
+/* harmony export (immutable) */ exports["o"] = DOOR_TYPE;
 
 
 const DOOR_OPEN = 'open';
-/* harmony export (immutable) */ exports["n"] = DOOR_OPEN;
+/* harmony export (immutable) */ exports["h"] = DOOR_OPEN;
 
 const DOOR_OPENING = 'opening';
-/* harmony export (immutable) */ exports["m"] = DOOR_OPENING;
+/* harmony export (immutable) */ exports["g"] = DOOR_OPENING;
 
 const DOOR_CLOSE = 'close';
 /* harmony export (immutable) */ exports["i"] = DOOR_CLOSE;
 
 const DOOR_CLOSING = 'closing';
-/* harmony export (immutable) */ exports["l"] = DOOR_CLOSING;
+/* harmony export (immutable) */ exports["f"] = DOOR_CLOSING;
 
 const DOOR_OPEN_TIME = 1000;
-/* harmony export (immutable) */ exports["o"] = DOOR_OPEN_TIME;
+/* harmony export (immutable) */ exports["e"] = DOOR_OPEN_TIME;
 
 
 const LOADING = 'loading';
@@ -3295,10 +3375,10 @@ const END = 'end';
 
 
 const PLAYER_RUN = 'run';
-/* harmony export (immutable) */ exports["r"] = PLAYER_RUN;
+/* harmony export (immutable) */ exports["q"] = PLAYER_RUN;
 
 const PLAYER_WALK = 'walk';
-/* harmony export (immutable) */ exports["q"] = PLAYER_WALK;
+/* harmony export (immutable) */ exports["p"] = PLAYER_WALK;
 
 const PLAYER_STOP = 'stop';
 /* harmony export (immutable) */ exports["E"] = PLAYER_STOP;

@@ -6,6 +6,7 @@ import {
     DOOR_CLOSE,
     PAINTING_TYPE,
     FLOOR_TYPE,
+    CEILING_TYPE,
     WALL_TYPE,
     BOX_TYPE,
     SWITCHER_TYPE,
@@ -15,7 +16,7 @@ import {
 const level = {
     boundaries: [2500, null, 2500],
     player: {
-        pos: [1250, 100, 250],
+        pos: [1250, 150, 250],
         size: [50, 150, 50],
         angle: [0, 0, 0]
     },
@@ -23,56 +24,56 @@ const level = {
         {
             name: 'wall_001',
             type: WALL_TYPE,
-            size: [50, 200, 500],
-            pos: [2000, 100, 250]
+            size: [50, 250, 500],
+            pos: [2000, 125, 250]
         },
         {
             name: 'wall_002',
             type: WALL_TYPE,
-            size: [500, 200, 50],
-            pos: [250, 100, 500]
+            size: [500, 250, 50],
+            pos: [250, 125, 500]
         },
         {
             name: 'wall_003',
             type: WALL_TYPE,
-            size: [500, 200, 50],
-            pos: [750, 100, 500]
+            size: [500, 250, 50],
+            pos: [750, 125, 500]
         },
         {
             name: 'wall_004',
             type: WALL_TYPE,
-            size: [500, 200, 50],
-            pos: [1750, 100, 500]
+            size: [500, 250, 50],
+            pos: [1750, 125, 500]
         },
         {
             name: 'wall_005',
             type: WALL_TYPE,
-            size: [50, 200, 500],
-            pos: [500, 100, 750]
+            size: [50, 250, 500],
+            pos: [500, 125, 750]
         },
         {
             name: 'wall_006',
             type: WALL_TYPE,
-            size: [50, 200, 500],
-            pos: [2000, 100, 750]
+            size: [50, 250, 500],
+            pos: [2000, 125, 750]
         },
         {
             name: 'wall_007',
             type: WALL_TYPE,
-            size: [500, 200, 50],
-            pos: [1250, 100, 1000]
+            size: [550, 250, 50],
+            pos: [1250, 125, 1000]
         },
         {
             name: 'wall_008',
             type: WALL_TYPE,
-            size: [50, 200, 500],
-            pos: [1000, 100, 1250]
+            size: [50, 250, 450],
+            pos: [1000, 125, 1250]
         },
         // {
         //     name: 'dickbutt',
         //     type: PAINTING_TYPE,
         //     size: [50, 50, 0],
-        //     pos: [1026, 100, 1250],
+        //     pos: [1026, 125, 1250],
         //     angle: [0, 90, 0],
         //     background: 'url(assets/dickbutt.png) 50% 50% / contain',
         //     collides: false
@@ -80,44 +81,44 @@ const level = {
         {
             name: 'wall_009',
             type: WALL_TYPE,
-            size: [500, 200, 50],
-            pos: [1250, 100, 1500]
+            size: [550, 250, 50],
+            pos: [1250, 125, 1500]
         },
         {
             name: 'wall_010',
             type: WALL_TYPE,
-            size: [500, 200, 50],
-            pos: [2250, 100, 1500]
+            size: [500, 250, 50],
+            pos: [2225, 125, 1500]
         },
         {
             name: 'wall_011',
             type: WALL_TYPE,
-            size: [50, 200, 500],
-            pos: [500, 100, 1750]
+            size: [50, 250, 500],
+            pos: [500, 125, 1750]
         },
         {
             name: 'wall_012',
             type: WALL_TYPE,
-            size: [50, 200, 500],
-            pos: [2000, 100, 1750]
+            size: [50, 250, 450],
+            pos: [2000, 125, 1750]
         },
         {
             name: 'wall_013',
             type: WALL_TYPE,
-            size: [500, 200, 50],
-            pos: [750, 100, 2000]
+            size: [500, 250, 50],
+            pos: [750, 125, 2000]
         },
         {
             name: 'wall_014',
             type: WALL_TYPE,
-            size: [500, 200, 50],
-            pos: [1750, 100, 2000]
+            size: [550, 250, 50],
+            pos: [1750, 125, 2000]
         },
         {
             name: 'wall_015',
             type: WALL_TYPE,
-            size: [50, 200, 500],
-            pos: [500, 100, 2250]
+            size: [50, 250, 500],
+            pos: [500, 125, 2250]
         },
         {
             name: 'box_001',
@@ -185,7 +186,7 @@ const level = {
         {
             name: 'switcher_01',
             type: SWITCHER_TYPE,
-            pos: [1027, 100, 1250],
+            pos: [1027, 150, 1250],
             size: [40, 60, 100],
             angle: [0, 90, 0],
             props: {
@@ -196,8 +197,8 @@ const level = {
         {
             name: 'door_01',
             type: DOOR_TYPE,
-            size: [500, 200, 20],
-            pos: [250, 100, 1000],
+            size: [500, 250, 20],
+            pos: [250, 125, 975],
             props: {
                 id: 1,
                 state: DOOR_CLOSE
@@ -206,7 +207,7 @@ const level = {
         {
             name: 'switcher_02',
             type: SWITCHER_TYPE,
-            pos: [250, 100, 526],
+            pos: [250, 150, 526],
             size: [40, 60, 100],
             angle: [0, 0, 0],
             props: {
@@ -217,8 +218,8 @@ const level = {
         {
             name: 'door_02',
             type: DOOR_TYPE,
-            size: [500, 200, 20],
-            pos: [2250, 100, 1000],
+            size: [500, 250, 20],
+            pos: [2250, 125, 975],
             props: {
                 id: 2,
                 state: DOOR_CLOSE
@@ -227,7 +228,7 @@ const level = {
         {
             name: 'switcher_03',
             type: SWITCHER_TYPE,
-            pos: [2026, 100, 250],
+            pos: [2026, 150, 250],
             size: [40, 60, 100],
             angle: [0, 90, 0],
             props: {
@@ -238,8 +239,8 @@ const level = {
         {
             name: 'door_03',
             type: DOOR_TYPE,
-            size: [500, 200, 20],
-            pos: [250, 100, 1500],
+            size: [500, 250, 20],
+            pos: [250, 125, 1525],
             props: {
                 id: 3,
                 state: DOOR_CLOSE
@@ -248,7 +249,7 @@ const level = {
         {
             name: 'switcher_04',
             type: SWITCHER_TYPE,
-            pos: [250, 100, 2474],
+            pos: [250, 150, 2449],
             size: [40, 60, 100],
             angle: [0, 180, 0],
             props: {
@@ -259,8 +260,8 @@ const level = {
         {
             name: 'door_04',
             type: DOOR_TYPE,
-            size: [20, 200, 500],
-            pos: [1500, 100, 2250],
+            size: [20, 250, 500],
+            pos: [1500, 125, 2250],
             props: {
                 id: 4,
                 state: DOOR_CLOSE
@@ -269,7 +270,7 @@ const level = {
         {
             name: 'switcher_05',
             type: SWITCHER_TYPE,
-            pos: [2250, 100, 1526],
+            pos: [2250, 150, 1526],
             size: [40, 60, 100],
             angle: [0, 0, 0],
             props: {
@@ -278,9 +279,9 @@ const level = {
             isInteractive: true
         },
         // {
-        //     name: 'switcher_05_t',
+        //     name: 'switcher_05_test',
         //     type: SWITCHER_TYPE,
-        //     pos: [1027, 100, 500],
+        //     pos: [1027, 150, 500],
         //     size: [40, 60, 100],
         //     angle: [0, 90, 0],
         //     props: {
@@ -291,8 +292,8 @@ const level = {
         {
             name: 'door_05',
             type: DOOR_TYPE,
-            size: [500, 200, 20],
-            pos: [1250, 100, 0],
+            size: [500, 250, 20],
+            pos: [1250, 125, 25],
             props: {
                 id: 5,
                 state: DOOR_CLOSE
@@ -303,26 +304,26 @@ const level = {
 
 // generate border walls
 for (let x = 250; x < level.boundaries[0]; x += 500) {
-    for (let z = 0; z <= level.boundaries[2]; z += level.boundaries[2]) {
+    for (let z = 25; z <= level.boundaries[2] - 25; z += level.boundaries[2] - 50) {
         // leave gap for exit door
-        if (x === 1250 && z === 0) {
+        if (x === 1250 && z === 25) {
             continue;
         }
         level.objects.push({
             name: 'border wall ' + x + '_' + z,
             type: WALL_TYPE,
-            size: [500, 200, 50],
-            pos: [x, 100, z]
+            size: [500, 250, 50],
+            pos: [x, 125, z]
         });
     }
 }
 for (let z = 250; z < level.boundaries[2]; z += 500) {
-    for (let x = 0; x <= level.boundaries[0]; x += level.boundaries[0]) {
+    for (let x = 25; x <= level.boundaries[0] - 25; x += level.boundaries[0] - 50) {
         level.objects.push({
             name: 'border wall ' + x + '_' + z,
             type: WALL_TYPE,
-            size: [50, 200, 500],
-            pos: [x, 100, z]
+            size: [50, 250, 500],
+            pos: [x, 125, z]
         });
     }
 }
@@ -335,6 +336,19 @@ for (let z = 0; z < level.boundaries[2]; z += 500) {
             type: FLOOR_TYPE,
             size: [500, 0, 500],
             pos: [x + 250, 0, z + 250],
+            collides: false
+        });
+    }
+}
+
+// generate ceiling panels
+for (let z = 0; z < level.boundaries[2]; z += 500) {
+    for (let x = 0; x < level.boundaries[0]; x += 500) {
+        level.objects.push({
+            name: 'ceiling tile ' + z + '_' + x,
+            type: CEILING_TYPE,
+            size: [500, 0, 500],
+            pos: [x + 250, 250, z + 250],
             collides: false
         });
     }

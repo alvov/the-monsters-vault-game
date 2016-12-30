@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 
 import Painting from '../../components/painting/painting';
 import Floor from '../../components/floor/floor';
+import Ceiling from '../../components/ceiling/ceiling';
 import Wall from '../../components/wall/wall';
 import Box from '../../components/box/box';
 import Switcher from '../../components/switcher/switcher';
@@ -18,6 +19,7 @@ import {
     PLAYER_WALK,
     PAINTING_TYPE,
     FLOOR_TYPE,
+    CEILING_TYPE,
     WALL_TYPE,
     BOX_TYPE,
     SWITCHER_TYPE,
@@ -51,6 +53,14 @@ class Scene extends React.Component {
                         pos={object.pos}
                         playerPos={pos}
                         size={object.size}
+                        getTransformRule={getTransformRule}
+                    />);
+                    break;
+                case CEILING_TYPE:
+                    renderedObjects.push(<Ceiling
+                        key={object.name}
+                        pos={object.pos}
+                        size={[object.size[0], object.size[2]]}
                         getTransformRule={getTransformRule}
                     />);
                     break;
@@ -89,6 +99,7 @@ class Scene extends React.Component {
                 case DOOR_TYPE:
                     renderedObjects.push(<Door
                         key={object.name}
+                        isVisible={object.isVisible}
                         pos={object.pos}
                         playerPos={pos}
                         viewAngle={viewAngle}
@@ -124,7 +135,7 @@ function mapStateToProps(state) {
         pos: state.pos,
         viewAngle: state.viewAngle,
         playerState: state.playerState,
-        visibleObjects: state.objects.filter(obj => obj.isVisible),
+        visibleObjects: state.objects.filter(obj => obj.isVisible || obj.type === DOOR_TYPE),
         doorsState: state.doorsState
     }
 }

@@ -57,19 +57,26 @@ class Door extends React.Component {
         this.stopSound();
     }
 
+    shouldComponentUpdate(nextProps) {
+        return nextProps.playerPos !== this.props.playerPos ||
+            nextProps.viewAngle !== this.props.viewAngle ||
+            nextProps.state !== this.props.state ||
+            nextProps.isVisible !== this.props.isVisible;
+    }
+
     render() {
-        const { viewAngle, state, size } = this.props;
+        const { isVisible, viewAngle, state, size } = this.props;
         const isOpen = [DOOR_OPENING, DOOR_OPEN].includes(state);
         const doorStyleRules = {
             ...this.doorStyleRules,
-            transform: 'translateY(' + (isOpen ? -size[1] : 0) + 'px)'
+            transform: 'translateY(' + (isOpen ? -size[1] * 0.9 : 0) + 'px)'
         };
         const angle = [0, -viewAngle[0], 0];
 
         return <div className='obj' style={this.rootStyleRules}>
-            <div className={[styles.door].join(' ')}
+            <div className={[styles.root].join(' ')}
                 style={doorStyleRules}>
-                {this.renderBars({ parentPos: [this.posWithInvertedY], angle })}
+                {isVisible ? this.renderBars({ parentPos: [this.posWithInvertedY], angle }) : null}
             </div>
         </div>;
     }

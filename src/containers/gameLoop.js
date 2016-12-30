@@ -67,11 +67,7 @@ class GameLoop extends React.Component {
         const currentStore = this.context.store.getState();
 
         // show start hint
-        actions.push(this.showHints([
-            { hint: HINT_GOAL, once: true },
-            { hint: HINT_WASD, once: true },
-            { hint: HINT_SHIFT, once: true }
-        ]));
+        actions.push(this.showHints([HINT_GOAL, HINT_WASD, HINT_SHIFT], true));
 
         const pointerDelta = currentStore.pointerDelta;
         if (pointerDelta.x || pointerDelta.y) {
@@ -182,10 +178,8 @@ class GameLoop extends React.Component {
                 reachableObject = collisionView.obj;
                 if (!reachableObject.isReachable) {
                     actions.push(actionCreators.objects.setReachable({ ...reachableObject }));
-                    actions.push(this.showHints([
-                        { hint: HINT_E },
-                        { hint: HINT_FIRST_SWITCHER, once: true }
-                    ]));
+                    actions.push(this.showHints([HINT_E], false));
+                    actions.push(this.showHints([HINT_FIRST_SWITCHER], true));
                 }
             } else {
                 actions.push(actionCreators.objects.setReachable(null));
@@ -208,7 +202,7 @@ class GameLoop extends React.Component {
                     });
                     if (door === DOOR_CLOSE) {
                         this.delayedActions.pushAction({
-                            action: this.showHints([{ hint: HINT_DOOR }]),
+                            action: this.showHints([HINT_DOOR], false, DOOR_OPEN_TIME),
                             delay: DOOR_OPEN_TIME
                         });
                     }
@@ -259,20 +253,19 @@ class GameLoop extends React.Component {
         this.context.audioCtx.listener.upZ.value = upZ;
     }
 
-    showHints(hints) {
+    showHints(hints, once, delay = 0) {
         const rawHints = hints
-            .filter(({ hint, once = false }) => {
+            .filter(hint => {
                 if (once && this.shownHints[hint]) {
                     return false;
                 }
                 this.shownHints[hint] = true;
                 return true;
-            })
-            .map(({ hint }) => hint);
+            });
         if (rawHints.length) {
             this.delayedActions.pushAction({
                 action: actionCreators.hints.removeHints(rawHints),
-                delay: HINT_SHOW_TIME
+                delay: HINT_SHOW_TIME + delay
             });
         }
         return actionCreators.hints.addHints(rawHints);

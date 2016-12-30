@@ -1,8 +1,4 @@
-.root {}
-.door {
+.root {
     transition: transform ease-in;
     transform-style: preserve-3d;
-}
-.open {
-    transform: translateY(-100%);
 }

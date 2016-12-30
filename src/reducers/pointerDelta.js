@@ -1,6 +1,10 @@
-import { UPDATE_POINTER_DELTA, RESET_POINTER_DELTA } from '../constants/actionNames';
+import { UPDATE_POINTER_DELTA, RESET_POINTER_DELTA, SET_GAME_START } from '../constants/actionNames';
 
-export default function pointerDelta(state = { x: 0, y: 0 }, action) {
+function getInitialState() {
+    return { x: 0, y: 0 };
+}
+
+export default function pointerDelta(state = getInitialState(), action) {
     switch (action.type) {
         case UPDATE_POINTER_DELTA:
             return {
@@ -8,7 +12,9 @@ export default function pointerDelta(state = { x: 0, y: 0 }, action) {
                 y: state.y + action.y
             };
         case RESET_POINTER_DELTA:
-            return { x: 0, y: 0 };
+            return getInitialState();
+        case SET_GAME_START:
+            return getInitialState();
         default:
             return state;
     }

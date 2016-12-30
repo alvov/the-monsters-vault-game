@@ -95,7 +95,7 @@ export default function Plain({
 }
 
 function getPlayerSpotLightBackground(params) {
-    return getSpotLightBackground({ ...params, radius: 1.1 * BROAD_CELL_SIZE });
+    return getSpotLightBackground({ ...params, radius: 1.5 * BROAD_CELL_SIZE });
 }
 
 function getSpotLightBackground({ pos, distance, background, simpleLight, radius }) {

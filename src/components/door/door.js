@@ -21,14 +21,14 @@ class Door extends React.Component {
     constructor(props, context) {
         super(props, context);
 
-        const { pos, getTransformRule } = props;
+        const { pos, size, getTransformRule } = props;
 
         this.posWithInvertedY = [pos[0], -pos[1], pos[2]];
         this.rootStyleRules = getTransformRule({ pos: this.posWithInvertedY });
         this.doorStyleRules = { transitionDuration: DOOR_OPEN_TIME + 'ms' };
 
         this.audioSource = null;
-        this.decodedAudioBuffer = this.context.assets['src/components/door/mixdown.ogg'];
+        this.decodedAudioBuffer = this.context.assets['src/components/door/mixdown.m4a'];
 
         this.panner = this.context.audioCtx.createPanner();
         this.panner.panningModel = 'HRTF';
@@ -38,10 +38,13 @@ class Door extends React.Component {
         this.panner.coneInnerAngle = 360;
         this.panner.coneOuterAngle = 0;
         this.panner.coneOuterGain = 0;
-        this.panner.positionX.value = pos[0];
-        // 2x higher, because the opening mechanism is somewhere high
-        this.panner.positionY.value = 2 * pos[1];
-        this.panner.positionZ.value = pos[2];
+        if (this.panner.positionX) {
+            this.panner.positionX.value = pos[0];
+            this.panner.positionY.value = pos[1] + size[1];
+            this.panner.positionZ.value = pos[2];
+        } else {
+            this.panner.setPosition(pos[0], pos[1] + size[1], pos[2]);
+        }
         this.panner.connect(this.context.audioCtx.destination);
     }
 

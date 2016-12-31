@@ -2,6 +2,10 @@
 :global body {
     height: 100%;
     margin: 0;
+}
+:global body {
+    min-width: 640px;
+    min-height: 480px;
     font-family: Courier New, Courier, Lucida Sans Typewriter, Lucida Typewriter, monospace;
 }
 :global .app {

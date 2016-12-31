@@ -222,9 +222,13 @@ class GameLoop extends React.Component {
      * @param {Array} pos
      */
     updateListenerPosition(pos) {
-        this.context.audioCtx.listener.positionX.value = pos[0];
-        this.context.audioCtx.listener.positionY.value = pos[1];
-        this.context.audioCtx.listener.positionZ.value = pos[2];
+        if (this.context.audioCtx.listener.positionX) {
+            this.context.audioCtx.listener.positionX.value = pos[0];
+            this.context.audioCtx.listener.positionY.value = pos[1];
+            this.context.audioCtx.listener.positionZ.value = pos[2];
+        } else {
+            this.context.audioCtx.listener.setPosition(...pos);
+        }
     }
 
     /**
@@ -245,12 +249,16 @@ class GameLoop extends React.Component {
         }
         const [upX, upY, upZ] = GameLoop.getVectorFromAngles(upHorizontalAngle, upVerticalAngle);
 
-        this.context.audioCtx.listener.forwardX.value = forwardX;
-        this.context.audioCtx.listener.forwardY.value = forwardY;
-        this.context.audioCtx.listener.forwardZ.value = forwardZ;
-        this.context.audioCtx.listener.upX.value = upX;
-        this.context.audioCtx.listener.upY.value = upY;
-        this.context.audioCtx.listener.upZ.value = upZ;
+        if (this.context.audioCtx.listener.forwardX) {
+            this.context.audioCtx.listener.forwardX.value = forwardX;
+            this.context.audioCtx.listener.forwardY.value = forwardY;
+            this.context.audioCtx.listener.forwardZ.value = forwardZ;
+            this.context.audioCtx.listener.upX.value = upX;
+            this.context.audioCtx.listener.upY.value = upY;
+            this.context.audioCtx.listener.upZ.value = upZ;
+        } else {
+            this.context.audioCtx.listener.setOrientation(forwardX, forwardY, forwardZ, upX, upY, upZ);
+        }
     }
 
     showHints(hints, once, delay = 0) {

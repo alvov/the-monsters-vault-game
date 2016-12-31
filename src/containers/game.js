@@ -27,7 +27,11 @@ class Game extends React.Component {
     constructor(...args) {
         super(...args);
 
-        this.audioCtx = new window.AudioContext();
+        if (window.AudioContext) {
+            this.audioCtx = new window.AudioContext();
+        } else {
+            this.audioCtx = new window.webkitAudioContext();
+        }
         this.assets = {};
 
         this.setGameStateStart = this.setGameState.bind(this, START);

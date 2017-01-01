@@ -1,12 +1,11 @@
 import styles from 'components/door/door.css';
 
 import React, { PropTypes } from 'react';
-import Plain from '../plain/plain';
+import SimpleLight from '../light/simple';
+import { getTransformRule } from '../../lib/utils';
 import { DOOR_OPEN, DOOR_OPENING, DOOR_CLOSE, DOOR_CLOSING, DOOR_OPEN_TIME } from '../../constants/constants';
 
-const BAR_WIDTH = 5;
 const BARS_GAP = 25;
-const BAR_BACKGROUND = 'linear-gradient(to right, #000 0%, #e0e0e0 50%, #000 100%)';
 
 class Door extends React.Component {
     static contextTypes = {
@@ -21,11 +20,14 @@ class Door extends React.Component {
     constructor(props, context) {
         super(props, context);
 
-        const { pos, size, getTransformRule } = props;
+        const { pos, size } = props;
 
         this.posWithInvertedY = [pos[0], -pos[1], pos[2]];
         this.rootStyleRules = getTransformRule({ pos: this.posWithInvertedY });
-        this.doorStyleRules = { transitionDuration: DOOR_OPEN_TIME + 'ms' };
+        this.doorStyleRules = {
+            transitionDuration: DOOR_OPEN_TIME + 'ms',
+            height: size[1]
+        };
 
         this.audioSource = null;
         this.decodedAudioBuffer = this.context.assets['src/components/door/mixdown.m4a'];
@@ -76,8 +78,8 @@ class Door extends React.Component {
         };
         const angle = [0, -viewAngle[0], 0];
 
-        return <div className='obj' style={this.rootStyleRules}>
-            <div className={[styles.root].join(' ')}
+        return <div className='obj door-container' style={this.rootStyleRules}>
+            <div className={styles.root}
                 style={doorStyleRules}>
                 {isVisible ? this.renderBars({ parentPos: [this.posWithInvertedY], angle }) : null}
             </div>
@@ -85,23 +87,27 @@ class Door extends React.Component {
     }
 
     renderBars({ parentPos, angle }) {
-        const { size, playerPos, getTransformRule } = this.props;
+        const { size, playerPos } = this.props;
         const bars = [];
         const maxDimension = size[0] > size[2] ? 0 : 2;
         let key = 0;
         for (let i = Math.floor(BARS_GAP / 2); i < size[maxDimension]; i = i + BARS_GAP) {
-            bars.push(<Plain
-                key={key}
-                className="door-bar"
-                pos={maxDimension === 0 ? [-size[0] / 2 + i, 0, 0] : [0, 0, -size[2] / 2 + i]}
-                size={[BAR_WIDTH, size[1]]}
-                angle={angle}
-                parentPos={parentPos}
-                playerPos={playerPos}
-                simpleLight={true}
-                background={BAR_BACKGROUND}
-                getTransformRule={getTransformRule}
-            />);
+            const pos = maxDimension === 0 ? [-size[0] / 2 + i, -size[1] / 2, 0] : [0, -size[1] / 2, -size[2] / 2 + i];
+            bars.push(
+                <div key={key}
+                    className={styles.bar}
+                    style={{
+                        ...getTransformRule({ pos, angle }),
+                        height: size[1]
+                    }}
+                >
+                    <SimpleLight
+                        parentPos={parentPos}
+                        playerPos={playerPos}
+                        pos={pos}
+                    />
+                </div>
+            );
             key = key + 1;
         }
         return bars;

@@ -1,13 +1,14 @@
 import styles from './ceiling.css';
 
 import React  from 'react';
+import { getTransformRule } from '../../lib/utils';
 
 class Ceiling extends React.Component {
     constructor(props) {
         super(props);
 
         this.styleRules = {
-            ...props.getTransformRule({
+            ...getTransformRule({
                 pos: [props.pos[0], -props.pos[1], props.pos[2]],
                 angle: [-90, 0, 0]
             }),

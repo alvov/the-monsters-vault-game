@@ -7,14 +7,14 @@ class Painting extends React.Component {
     }
 
     render() {
-        const { pos, playerPos, size, angle, background, getTransformRule } = this.props;
+        // todo use background
+        const { pos, playerPos, size, angle, background } = this.props;
         return <Plain
             className="painting"
             pos={[pos[0], -pos[1], pos[2]]}
             playerPos={playerPos}
             size={size}
             angle={angle}
-            getTransformRule={getTransformRule}
             background={background}
         />;
     }

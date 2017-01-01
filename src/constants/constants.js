@@ -11,6 +11,7 @@ export const SENSITIVITY = 0.5;
 export const BROAD_CELL_SIZE = 250;
 export const HAND_LENGTH = 150;
 export const HINT_SHOW_TIME = 5000;
+export const SPOTLIGHT_RADIUS = 1.5 * BROAD_CELL_SIZE;
 
 export const PAINTING_TYPE = 'painting';
 export const FLOOR_TYPE = 'floor';

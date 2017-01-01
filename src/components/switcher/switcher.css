@@ -1,16 +1,20 @@
+.root :global(.plain){
+    background: url(./wood.jpg) 50% 50% / cover;
+}
+
 .handle {
     position: absolute;
     transition: transform .5s ease-in;
 }
 
-.switcherOff .handle {
+.off .handle {
     transform: rotateX(-45deg);
 }
 
-.switcherOn .handle {
+.on .handle {
     transform: rotateX(45deg);
 }
 
-.reachable div {
+.reachable :global(.plain) {
     box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .5), inset 0 0 0 2px rgba(255, 255, 255, .2);
 }

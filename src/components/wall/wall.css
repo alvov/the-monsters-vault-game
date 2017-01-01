@@ -1,0 +1,3 @@
+.root :global(.plain) {
+    background: url(./wall.jpg) 50% 50% / cover;
+}

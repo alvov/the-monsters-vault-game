@@ -1,0 +1,13 @@
+.root :global(.plain) {
+    background-position: 50% 50%;
+    background-size: cover;
+}
+.mode-1 :global(.plain) {
+    background-image: url(./box01.jpg);
+}
+.mode-2 :global(.plain) {
+    background-image: url(./box02.jpg);
+}
+.mode-3 :global(.plain) {
+    background-image: url(./box03.jpg);
+}

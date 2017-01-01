@@ -36,24 +36,23 @@ class Scene extends React.Component {
         for (let i = 0; i < visibleObjects.length; i++) {
             const object = visibleObjects[i];
             switch(object.type) {
-                case PAINTING_TYPE:
-                    renderedObjects.push(<Painting
-                        key={object.name}
-                        pos={object.pos}
-                        playerPos={pos}
-                        angle={object.angle}
-                        size={object.size.filter(value => value !== 0).slice(0, 2)}
-                        background={object.background}
-                        getTransformRule={getTransformRule}
-                    />);
-                    break;
+                // case PAINTING_TYPE:
+                //     renderedObjects.push(<Painting
+                //         key={object.name}
+                //         pos={object.pos}
+                //         playerPos={pos}
+                //         angle={object.angle}
+                //         size={object.size.filter(value => value !== 0).slice(0, 2)}
+                //         background={object.background}
+                //         getTransformRule={getTransformRule}
+                //     />);
+                //     break;
                 case FLOOR_TYPE:
                     renderedObjects.push(<Floor
                         key={object.name}
                         pos={object.pos}
                         playerPos={pos}
                         size={object.size}
-                        getTransformRule={getTransformRule}
                     />);
                     break;
                 case CEILING_TYPE:
@@ -61,7 +60,6 @@ class Scene extends React.Component {
                         key={object.name}
                         pos={object.pos}
                         size={[object.size[0], object.size[2]]}
-                        getTransformRule={getTransformRule}
                     />);
                     break;
                 case WALL_TYPE:
@@ -70,7 +68,6 @@ class Scene extends React.Component {
                         pos={object.pos}
                         playerPos={pos}
                         size={object.size}
-                        getTransformRule={getTransformRule}
                     />);
                     break;
                 case BOX_TYPE:
@@ -80,7 +77,6 @@ class Scene extends React.Component {
                         playerPos={pos}
                         size={object.size}
                         mode={object.props.mode}
-                        getTransformRule={getTransformRule}
                     />);
                     break;
                 case SWITCHER_TYPE:
@@ -93,7 +89,6 @@ class Scene extends React.Component {
                         isReachable={object.isReachable}
                         isInteractive={[DOOR_OPEN, DOOR_CLOSE].includes(doorsState[object.props.id])}
                         isOn={[DOOR_OPEN, DOOR_OPENING].includes(doorsState[object.props.id])}
-                        getTransformRule={getTransformRule}
                     />);
                     break;
                 case DOOR_TYPE:
@@ -105,18 +100,17 @@ class Scene extends React.Component {
                         viewAngle={viewAngle}
                         size={object.size}
                         state={doorsState[object.props.id]}
-                        getTransformRule={getTransformRule}
                     />);
                     break;
             }
         }
         const className = [
-            'obj',
+            'obj player-animation',
             playerState === PLAYER_WALK ? styles.playerAnimationWalking :
                 playerState === PLAYER_RUN ? styles.playerAnimationRunning : ''
         ].join(' ');
         return <div className={className}>
-            <div className="obj" style={transformRule}>
+            <div className="obj scene" style={transformRule}>
                 {renderedObjects}
             </div>
         </div>;

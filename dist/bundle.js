@@ -1,2456 +1,408 @@
-webpackJsonp([0],{
-
-/***/ 100:
+webpackJsonp([0],[
+/* 0 */,
+/* 1 */,
+/* 2 */,
+/* 3 */,
+/* 4 */,
+/* 5 */,
+/* 6 */,
+/* 7 */,
+/* 8 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(4);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_redux__ = __webpack_require__(18);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_react_redux__ = __webpack_require__(16);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_react_redux___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_react_redux__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__constants_constants__ = __webpack_require__(9);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__actionCreators__ = __webpack_require__(41);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__components_loadingScreen_loadingScreen__ = __webpack_require__(115);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__components_startScreen_startScreen__ = __webpack_require__(117);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__components_endScreen_endScreen__ = __webpack_require__(112);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__components_hints_hints__ = __webpack_require__(114);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__viewport_viewport__ = __webpack_require__(124);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__camera_camera__ = __webpack_require__(121);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__scene_scene__ = __webpack_require__(123);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__gameLoop__ = __webpack_require__(122);
+const SET_GAME_START = 'setGameStart';
+/* harmony export (immutable) */ exports["a"] = SET_GAME_START;
+
+const SET_GAME_PLAY = 'setGamePlay';
+/* harmony export (immutable) */ exports["b"] = SET_GAME_PLAY;
+
+const SET_GAME_END = 'setGameEnd';
+/* harmony export (immutable) */ exports["c"] = SET_GAME_END;
 
 
+const TOGGLE_KEY_PRESSED = 'toggleKeyPressed';
+/* harmony export (immutable) */ exports["d"] = TOGGLE_KEY_PRESSED;
+
+const UPDATE_POINTER_DELTA = 'updatePointerDelta';
+/* harmony export (immutable) */ exports["e"] = UPDATE_POINTER_DELTA;
+
+const RESET_POINTER_DELTA = 'resetPointerDelta';
+/* harmony export (immutable) */ exports["f"] = RESET_POINTER_DELTA;
 
 
+const VIEW_ANGLE_UPDATE = 'viewAngleUpdate';
+/* harmony export (immutable) */ exports["g"] = VIEW_ANGLE_UPDATE;
+
+const PLAYER_POSITION_UPDATE = 'playerPositionUpdate';
+/* harmony export (immutable) */ exports["h"] = PLAYER_POSITION_UPDATE;
+
+const PLAYER_STATE_RUN = 'playerStateRun';
+/* harmony export (immutable) */ exports["i"] = PLAYER_STATE_RUN;
+
+const PLAYER_STATE_WALK = 'playerStateWalk';
+/* harmony export (immutable) */ exports["j"] = PLAYER_STATE_WALK;
+
+const PLAYER_STATE_STOP = 'playerStateStop';
+/* harmony export (immutable) */ exports["k"] = PLAYER_STATE_STOP;
 
 
+const OBJECTS_SET_VISIBLE = 'objectsSetVisible';
+/* harmony export (immutable) */ exports["l"] = OBJECTS_SET_VISIBLE;
+
+const OBJECTS_SET_REACHABLE = 'objectsSetReachable';
+/* harmony export (immutable) */ exports["m"] = OBJECTS_SET_REACHABLE;
 
 
+const DOOR_SET_CLOSING = 'doorSetClosing';
+/* harmony export (immutable) */ exports["n"] = DOOR_SET_CLOSING;
+
+const DOOR_SET_CLOSE = 'doorSetClose';
+/* harmony export (immutable) */ exports["p"] = DOOR_SET_CLOSE;
+
+const DOOR_SET_OPENING = 'doorSetOpening';
+/* harmony export (immutable) */ exports["o"] = DOOR_SET_OPENING;
+
+const DOOR_SET_OPEN = 'doorSetOpen';
+/* harmony export (immutable) */ exports["q"] = DOOR_SET_OPEN;
 
 
+const HINTS_ADD = 'hintsAdd';
+/* harmony export (immutable) */ exports["r"] = HINTS_ADD;
 
+const HINTS_REMOVE = 'hintsRemove';
+/* harmony export (immutable) */ exports["s"] = HINTS_REMOVE;
 
-
-
-
-class Game extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
-
-    constructor(...args) {
-        super(...args);
-
-        if (window.AudioContext) {
-            this.audioCtx = new window.AudioContext();
-        } else {
-            this.audioCtx = new window.webkitAudioContext();
-        }
-        this.assets = {};
-
-        this.setGameStateStart = this.setGameState.bind(this, __WEBPACK_IMPORTED_MODULE_3__constants_constants__["a" /* START */]);
-        this.setGameStatePlay = this.setGameState.bind(this, __WEBPACK_IMPORTED_MODULE_3__constants_constants__["b" /* PLAY */]);
-        this.setGameStateEnd = this.setGameState.bind(this, __WEBPACK_IMPORTED_MODULE_3__constants_constants__["c" /* END */]);
-
-        this.cacheAssetData = this.cacheAssetData.bind(this);
-        this.viewportNode = null;
-    }
-
-    getChildContext() {
-        return {
-            audioCtx: this.audioCtx,
-            assets: this.assets
-        };
-    }
-
-    render() {
-        const { gameState, hints } = this.props;
-        if (gameState === __WEBPACK_IMPORTED_MODULE_3__constants_constants__["E" /* LOADING */]) {
-            return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_5__components_loadingScreen_loadingScreen__["a" /* default */], {
-                onLoaded: this.setGameStateStart,
-                cacheAssetData: this.cacheAssetData
-            });
-        } else if (gameState === __WEBPACK_IMPORTED_MODULE_3__constants_constants__["a" /* START */]) {
-            return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_6__components_startScreen_startScreen__["a" /* default */], { onStart: this.setGameStatePlay });
-        } else if (gameState === __WEBPACK_IMPORTED_MODULE_3__constants_constants__["b" /* PLAY */]) {
-            return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                __WEBPACK_IMPORTED_MODULE_9__viewport_viewport__["a" /* default */],
-                null,
-                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_8__components_hints_hints__["a" /* default */], { hints: hints }),
-                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                    __WEBPACK_IMPORTED_MODULE_12__gameLoop__["a" /* default */],
-                    { onWin: this.setGameStateEnd },
-                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                        __WEBPACK_IMPORTED_MODULE_10__camera_camera__["a" /* default */],
-                        null,
-                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_11__scene_scene__["a" /* default */], null)
-                    )
-                )
-            );
-        } else if (gameState === __WEBPACK_IMPORTED_MODULE_3__constants_constants__["c" /* END */]) {
-            return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_7__components_endScreen_endScreen__["a" /* default */], { onEnd: this.setGameStateStart });
-        }
-    }
-
-    setGameState(state) {
-        this.props.setGameState(state);
-    }
-
-    cacheAssetData(assetSrc, data) {
-        this.assets[assetSrc] = data;
-    }
-}
-
-Game.propTypes = {
-    gameState: __WEBPACK_IMPORTED_MODULE_0_react__["PropTypes"].string.isRequired,
-    hints: __WEBPACK_IMPORTED_MODULE_0_react__["PropTypes"].instanceOf(Map).isRequired,
-    setGameState: __WEBPACK_IMPORTED_MODULE_0_react__["PropTypes"].func.isRequired
-};
-Game.childContextTypes = {
-    audioCtx: __WEBPACK_IMPORTED_MODULE_0_react__["PropTypes"].object.isRequired,
-    assets: __WEBPACK_IMPORTED_MODULE_0_react__["PropTypes"].object.isRequired
-};
-function mapStateToProps(state) {
-    return {
-        gameState: state.gameState,
-        hints: state.hints
-    };
-}
-
-function mapDispatchToProps(dispatch) {
-    return __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1_redux__["bindActionCreators"])({
-        setGameState: __WEBPACK_IMPORTED_MODULE_4__actionCreators__["a" /* game */].setGameState
-    }, dispatch);
-}
-
-/* harmony default export */ exports["a"] = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2_react_redux__["connect"])(mapStateToProps, mapDispatchToProps)(Game);
 
 /***/ },
-
-/***/ 101:
+/* 9 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_redux__ = __webpack_require__(18);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__gameState_js__ = __webpack_require__(128);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__keyPressed_js__ = __webpack_require__(130);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__pointerDelta_js__ = __webpack_require__(134);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__viewAngle_js__ = __webpack_require__(135);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__playerPosition_js__ = __webpack_require__(132);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__playerState_js__ = __webpack_require__(133);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__objects_js__ = __webpack_require__(131);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__doorsState_js__ = __webpack_require__(127);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__hints_js__ = __webpack_require__(129);
+const FPS = 60;
+/* harmony export (immutable) */ exports["t"] = FPS;
+
+const KEY_W = 87;
+/* harmony export (immutable) */ exports["v"] = KEY_W;
+
+const KEY_S = 83;
+/* harmony export (immutable) */ exports["w"] = KEY_S;
+
+const KEY_A = 65;
+/* harmony export (immutable) */ exports["x"] = KEY_A;
+
+const KEY_D = 68;
+/* harmony export (immutable) */ exports["y"] = KEY_D;
+
+const KEY_E = 69;
+/* harmony export (immutable) */ exports["C"] = KEY_E;
+
+const KEY_SHIFT = 16;
+/* harmony export (immutable) */ exports["z"] = KEY_SHIFT;
+
+const STEP = 4;
+/* harmony export (immutable) */ exports["B"] = STEP;
+
+const RUNNING_COEFF = 1.5;
+/* harmony export (immutable) */ exports["A"] = RUNNING_COEFF;
+
+const SENSITIVITY = 0.5;
+/* harmony export (immutable) */ exports["u"] = SENSITIVITY;
+
+const BROAD_CELL_SIZE = 250;
+/* harmony export (immutable) */ exports["d"] = BROAD_CELL_SIZE;
+
+const HAND_LENGTH = 150;
+/* harmony export (immutable) */ exports["s"] = HAND_LENGTH;
+
+const HINT_SHOW_TIME = 5000;
+/* harmony export (immutable) */ exports["D"] = HINT_SHOW_TIME;
+
+const SPOTLIGHT_RADIUS = 1.5 * BROAD_CELL_SIZE;
+/* harmony export (immutable) */ exports["e"] = SPOTLIGHT_RADIUS;
 
 
+const PAINTING_TYPE = 'painting';
+/* unused harmony export PAINTING_TYPE */
+
+const FLOOR_TYPE = 'floor';
+/* harmony export (immutable) */ exports["k"] = FLOOR_TYPE;
+
+const CEILING_TYPE = 'ceiling';
+/* harmony export (immutable) */ exports["l"] = CEILING_TYPE;
+
+const WALL_TYPE = 'wall';
+/* harmony export (immutable) */ exports["m"] = WALL_TYPE;
+
+const BOX_TYPE = 'box';
+/* harmony export (immutable) */ exports["n"] = BOX_TYPE;
+
+const SWITCHER_TYPE = 'switcher';
+/* harmony export (immutable) */ exports["o"] = SWITCHER_TYPE;
+
+const DOOR_TYPE = 'door';
+/* harmony export (immutable) */ exports["p"] = DOOR_TYPE;
 
 
+const DOOR_OPEN = 'open';
+/* harmony export (immutable) */ exports["i"] = DOOR_OPEN;
+
+const DOOR_OPENING = 'opening';
+/* harmony export (immutable) */ exports["h"] = DOOR_OPENING;
+
+const DOOR_CLOSE = 'close';
+/* harmony export (immutable) */ exports["j"] = DOOR_CLOSE;
+
+const DOOR_CLOSING = 'closing';
+/* harmony export (immutable) */ exports["g"] = DOOR_CLOSING;
+
+const DOOR_OPEN_TIME = 3000;
+/* harmony export (immutable) */ exports["f"] = DOOR_OPEN_TIME;
 
 
+const LOADING = 'loading';
+/* harmony export (immutable) */ exports["E"] = LOADING;
+
+const START = 'start';
+/* harmony export (immutable) */ exports["a"] = START;
+
+const PLAY = 'play';
+/* harmony export (immutable) */ exports["b"] = PLAY;
+
+const END = 'end';
+/* harmony export (immutable) */ exports["c"] = END;
 
 
+const PLAYER_RUN = 'run';
+/* harmony export (immutable) */ exports["r"] = PLAYER_RUN;
 
+const PLAYER_WALK = 'walk';
+/* harmony export (immutable) */ exports["q"] = PLAYER_WALK;
 
+const PLAYER_STOP = 'stop';
+/* harmony export (immutable) */ exports["F"] = PLAYER_STOP;
 
-
-/* harmony default export */ exports["a"] = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0_redux__["combineReducers"])({
-    gameState: __WEBPACK_IMPORTED_MODULE_1__gameState_js__["a" /* default */],
-    keyPressed: __WEBPACK_IMPORTED_MODULE_2__keyPressed_js__["a" /* default */],
-    pointerDelta: __WEBPACK_IMPORTED_MODULE_3__pointerDelta_js__["a" /* default */],
-    viewAngle: __WEBPACK_IMPORTED_MODULE_4__viewAngle_js__["a" /* default */],
-    pos: __WEBPACK_IMPORTED_MODULE_5__playerPosition_js__["a" /* default */],
-    playerState: __WEBPACK_IMPORTED_MODULE_6__playerState_js__["a" /* default */],
-    objects: __WEBPACK_IMPORTED_MODULE_7__objects_js__["a" /* default */],
-    doorsState: __WEBPACK_IMPORTED_MODULE_8__doorsState_js__["a" /* default */],
-    hints: __WEBPACK_IMPORTED_MODULE_9__hints_js__["a" /* default */]
-});
 
 /***/ },
-
-/***/ 102:
-/***/ function(module, exports) {
-
-// removed by extract-text-webpack-plugin
-
-/***/ },
-
-/***/ 103:
-/***/ function(module, exports, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__constants_actionNames__ = __webpack_require__(8);
-/* harmony export (immutable) */ exports["setClosing"] = setClosing;
-/* harmony export (immutable) */ exports["setOpening"] = setOpening;
-/* harmony export (immutable) */ exports["setClose"] = setClose;
-/* harmony export (immutable) */ exports["setOpen"] = setOpen;
-
-
-function setClosing(id) {
-    return {
-        type: __WEBPACK_IMPORTED_MODULE_0__constants_actionNames__["n" /* DOOR_SET_CLOSING */],
-        id
-    };
-}
-
-function setOpening(id) {
-    return {
-        type: __WEBPACK_IMPORTED_MODULE_0__constants_actionNames__["o" /* DOOR_SET_OPENING */],
-        id
-    };
-}
-
-function setClose(id) {
-    return {
-        type: __WEBPACK_IMPORTED_MODULE_0__constants_actionNames__["p" /* DOOR_SET_CLOSE */],
-        id
-    };
-}
-
-function setOpen(id) {
-    return {
-        type: __WEBPACK_IMPORTED_MODULE_0__constants_actionNames__["q" /* DOOR_SET_OPEN */],
-        id
-    };
-}
-
-/***/ },
-
-/***/ 104:
+/* 10 */,
+/* 11 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__constants_constants__ = __webpack_require__(9);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__constants_actionNames__ = __webpack_require__(8);
-/* harmony export (immutable) */ exports["setGameState"] = setGameState;
-/* harmony export (immutable) */ exports["toggleKeyPressed"] = toggleKeyPressed;
-/* harmony export (immutable) */ exports["updatePointerDelta"] = updatePointerDelta;
-/* harmony export (immutable) */ exports["resetPointerDelta"] = resetPointerDelta;
+/* harmony export (immutable) */ exports["a"] = getTransformRule;
+/* harmony export (immutable) */ exports["g"] = getVisibleObjects;
+/* harmony export (immutable) */ exports["c"] = getPlayerCell;
+/* harmony export (immutable) */ exports["d"] = isObjectVisible;
+/* harmony export (immutable) */ exports["e"] = getPointPosition;
+/* harmony export (immutable) */ exports["b"] = vectorsAdd3D;
 
+const AXIS = ['X', 'Y', 'Z'];
 
-
-function setGameState(state) {
-    switch (state) {
-        case __WEBPACK_IMPORTED_MODULE_0__constants_constants__["a" /* START */]:
-            return {
-                type: __WEBPACK_IMPORTED_MODULE_1__constants_actionNames__["a" /* SET_GAME_START */]
-            };
-        case __WEBPACK_IMPORTED_MODULE_0__constants_constants__["b" /* PLAY */]:
-            return {
-                type: __WEBPACK_IMPORTED_MODULE_1__constants_actionNames__["b" /* SET_GAME_PLAY */]
-            };
-        case __WEBPACK_IMPORTED_MODULE_0__constants_constants__["c" /* END */]:
-            return {
-                type: __WEBPACK_IMPORTED_MODULE_1__constants_actionNames__["c" /* SET_GAME_END */]
-            };
+/**
+ * Returns css transform rule for given position and angle
+ * @param {Object} data
+ * @returns {{transform: string}}
+ */
+function getTransformRule(data) {
+    let transform = '';
+    if (data.pos) {
+        transform = 'translate3d(' + data.pos[0] + 'px,' + data.pos[1] + 'px,' + data.pos[2] + 'px)';
     }
-}
-
-function toggleKeyPressed(keyCode, on) {
-    return {
-        type: __WEBPACK_IMPORTED_MODULE_1__constants_actionNames__["d" /* TOGGLE_KEY_PRESSED */],
-        keyCode, on
-    };
-}
-
-function updatePointerDelta(x, y) {
-    return {
-        type: __WEBPACK_IMPORTED_MODULE_1__constants_actionNames__["e" /* UPDATE_POINTER_DELTA */],
-        x, y
-    };
-}
-
-function resetPointerDelta() {
-    return {
-        type: __WEBPACK_IMPORTED_MODULE_1__constants_actionNames__["f" /* RESET_POINTER_DELTA */]
-    };
-}
-
-/***/ },
-
-/***/ 105:
-/***/ function(module, exports, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__constants_actionNames__ = __webpack_require__(8);
-/* harmony export (immutable) */ exports["addHints"] = addHints;
-/* harmony export (immutable) */ exports["removeHints"] = removeHints;
-
-
-function addHints(hints) {
-    return {
-        type: __WEBPACK_IMPORTED_MODULE_0__constants_actionNames__["r" /* HINTS_ADD */],
-        hints
-    };
-}
-
-function removeHints(hints) {
-    return {
-        type: __WEBPACK_IMPORTED_MODULE_0__constants_actionNames__["s" /* HINTS_REMOVE */],
-        hints
-    };
-}
-
-/***/ },
-
-/***/ 106:
-/***/ function(module, exports, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__constants_actionNames__ = __webpack_require__(8);
-/* harmony export (immutable) */ exports["setVisible"] = setVisible;
-/* harmony export (immutable) */ exports["setReachable"] = setReachable;
-
-
-function setVisible({ addVisibleObjects, removeVisibleObjects }) {
-    return {
-        type: __WEBPACK_IMPORTED_MODULE_0__constants_actionNames__["l" /* OBJECTS_SET_VISIBLE */],
-        addVisibleObjects,
-        removeVisibleObjects
-    };
-}
-
-function setReachable(reachableObject) {
-    return {
-        type: __WEBPACK_IMPORTED_MODULE_0__constants_actionNames__["m" /* OBJECTS_SET_REACHABLE */],
-        reachableObject
-    };
-}
-
-/***/ },
-
-/***/ 107:
-/***/ function(module, exports, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__constants_actionNames__ = __webpack_require__(8);
-/* harmony export (immutable) */ exports["updateViewAngle"] = updateViewAngle;
-/* harmony export (immutable) */ exports["updatePosition"] = updatePosition;
-/* harmony export (immutable) */ exports["run"] = run;
-/* harmony export (immutable) */ exports["walk"] = walk;
-/* harmony export (immutable) */ exports["stop"] = stop;
-
-
-function updateViewAngle(viewAngle) {
-    return {
-        type: __WEBPACK_IMPORTED_MODULE_0__constants_actionNames__["g" /* VIEW_ANGLE_UPDATE */],
-        viewAngle
-    };
-}
-
-function updatePosition(pos) {
-    return {
-        type: __WEBPACK_IMPORTED_MODULE_0__constants_actionNames__["h" /* PLAYER_POSITION_UPDATE */],
-        pos
-    };
-}
-
-function run() {
-    return {
-        type: __WEBPACK_IMPORTED_MODULE_0__constants_actionNames__["i" /* PLAYER_STATE_RUN */]
-    };
-}
-
-function walk() {
-    return {
-        type: __WEBPACK_IMPORTED_MODULE_0__constants_actionNames__["j" /* PLAYER_STATE_WALK */]
-    };
-}
-
-function stop() {
-    return {
-        type: __WEBPACK_IMPORTED_MODULE_0__constants_actionNames__["k" /* PLAYER_STATE_STOP */]
-    };
-}
-
-/***/ },
-
-/***/ 108:
-/***/ function(module, exports, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__logo_css__ = __webpack_require__(136);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__logo_css___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__logo_css__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react__ = __webpack_require__(4);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_react__);
-
-
-
-function Logo() {
-    return __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
-        'div',
-        { className: __WEBPACK_IMPORTED_MODULE_0__logo_css___default.a.root },
-        'The deep dark dungeon'
-    );
-}
-
-/* harmony default export */ exports["a"] = Logo;
-
-/***/ },
-
-/***/ 109:
-/***/ function(module, exports, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(4);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__plain_plain__ = __webpack_require__(22);
-
-
-
-const backgrounds = ['src/components/box/box01.jpg', 'src/components/box/box02.jpg', 'src/components/box/box03.jpg'];
-
-class Box extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
-    constructor(props) {
-        super(props);
-
-        this.posWithInvertedY = [props.pos[0], -props.pos[1], props.pos[2]];
-        this.styleRules = props.getTransformRule({ pos: this.posWithInvertedY });
-        this.background = `url(${ backgrounds[props.mode - 1] }) 50% 50% / cover`;
-    }
-
-    shouldComponentUpdate(nextProps) {
-        return nextProps.playerPos !== this.props.playerPos;
-    }
-
-    render() {
-        const { pos, playerPos, size, getTransformRule } = this.props;
-
-        // Front-Back-Left-Right-Top
-        return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-            'div',
-            { className: 'box obj', style: this.styleRules },
-            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1__plain_plain__["a" /* default */], {
-                pos: [0, 0, size[2] / 2],
-                parentPos: [this.posWithInvertedY],
-                playerPos: playerPos,
-                size: size,
-                angle: [0, 0, 0],
-                getTransformRule: getTransformRule,
-                background: this.background
-            }),
-            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1__plain_plain__["a" /* default */], {
-                pos: [0, 0, -size[2] / 2],
-                parentPos: [this.posWithInvertedY],
-                playerPos: playerPos,
-                size: size,
-                angle: [0, 180, 0],
-                getTransformRule: getTransformRule,
-                background: this.background
-            }),
-            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1__plain_plain__["a" /* default */], {
-                pos: [-size[0] / 2, 0, 0],
-                parentPos: [this.posWithInvertedY],
-                playerPos: playerPos,
-                size: [size[2], size[1]],
-                angle: [0, -90, 0],
-                getTransformRule: getTransformRule,
-                background: this.background
-            }),
-            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1__plain_plain__["a" /* default */], {
-                pos: [size[0] / 2, 0, 0],
-                parentPos: [this.posWithInvertedY],
-                playerPos: playerPos,
-                size: [size[2], size[1]],
-                angle: [0, 90, 0],
-                getTransformRule: getTransformRule,
-                background: this.background
-            }),
-            playerPos[1] > pos[1] + size[1] / 2 ? __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1__plain_plain__["a" /* default */], {
-                pos: [0, -size[1] / 2, 0],
-                parentPos: [this.posWithInvertedY],
-                playerPos: playerPos,
-                size: [size[0], size[2]],
-                angle: [90, 0, 0],
-                getTransformRule: getTransformRule,
-                background: this.background
-            }) : ''
-        );
-    }
-}
-
-/* harmony default export */ exports["a"] = Box;
-
-/***/ },
-
-/***/ 110:
-/***/ function(module, exports, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__ceiling_css__ = __webpack_require__(137);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__ceiling_css___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__ceiling_css__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react__ = __webpack_require__(4);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_react__);
-var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-
-
-
-
-
-class Ceiling extends __WEBPACK_IMPORTED_MODULE_1_react___default.a.Component {
-    constructor(props) {
-        super(props);
-
-        this.styleRules = _extends({}, props.getTransformRule({
-            pos: [props.pos[0], -props.pos[1], props.pos[2]],
-            angle: [-90, 0, 0]
-        }), {
-            width: props.size[0],
-            height: props.size[1],
-            margin: `-${ props.size[1] / 2 }px 0 0 -${ props.size[0] / 2 }px`
-        });
-    }
-
-    shouldComponentUpdate() {
-        return false;
-    }
-
-    render() {
-        return __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement('div', { className: 'obj ' + __WEBPACK_IMPORTED_MODULE_0__ceiling_css___default.a.root,
-            style: this.styleRules
-        });
-    }
-}
-
-/* harmony default export */ exports["a"] = Ceiling;
-
-/***/ },
-
-/***/ 111:
-/***/ function(module, exports, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_components_door_door_css__ = __webpack_require__(138);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_components_door_door_css___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_components_door_door_css__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react__ = __webpack_require__(4);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_react__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__plain_plain__ = __webpack_require__(22);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__constants_constants__ = __webpack_require__(9);
-var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-
-
-
-
-
-
-
-const BAR_WIDTH = 5;
-const BARS_GAP = 25;
-const BAR_BACKGROUND = 'linear-gradient(to right, #000 0%, #e0e0e0 50%, #000 100%)';
-
-class Door extends __WEBPACK_IMPORTED_MODULE_1_react___default.a.Component {
-
-    constructor(props, context) {
-        super(props, context);
-
-        const { pos, size, getTransformRule } = props;
-
-        this.posWithInvertedY = [pos[0], -pos[1], pos[2]];
-        this.rootStyleRules = getTransformRule({ pos: this.posWithInvertedY });
-        this.doorStyleRules = { transitionDuration: __WEBPACK_IMPORTED_MODULE_3__constants_constants__["e" /* DOOR_OPEN_TIME */] + 'ms' };
-
-        this.audioSource = null;
-        this.decodedAudioBuffer = this.context.assets['src/components/door/mixdown.m4a'];
-
-        this.panner = this.context.audioCtx.createPanner();
-        this.panner.panningModel = 'HRTF';
-        this.panner.distanceModel = 'inverse';
-        this.panner.refDistance = 20;
-        this.panner.rolloffFactor = 0.1;
-        this.panner.coneInnerAngle = 360;
-        this.panner.coneOuterAngle = 0;
-        this.panner.coneOuterGain = 0;
-        if (this.panner.positionX) {
-            this.panner.positionX.value = pos[0];
-            this.panner.positionY.value = pos[1] + size[1];
-            this.panner.positionZ.value = pos[2];
-        } else {
-            this.panner.setPosition(pos[0], pos[1] + size[1], pos[2]);
-        }
-        this.panner.connect(this.context.audioCtx.destination);
-    }
-
-    componentWillUpdate(nextProps) {
-        if ([__WEBPACK_IMPORTED_MODULE_3__constants_constants__["f" /* DOOR_CLOSING */], __WEBPACK_IMPORTED_MODULE_3__constants_constants__["g" /* DOOR_OPENING */]].includes(nextProps.state) && nextProps.state !== this.props.state) {
-            this.startSound();
-        } else if ([__WEBPACK_IMPORTED_MODULE_3__constants_constants__["h" /* DOOR_OPEN */], __WEBPACK_IMPORTED_MODULE_3__constants_constants__["i" /* DOOR_CLOSE */]].includes(nextProps.state) && nextProps.state !== this.props.state) {
-            this.stopSound();
+    if (data.angle) {
+        for (let axis = 0; axis < data.angle.length; axis++) {
+            transform = transform + ' rotate' + AXIS[axis] + '(' + data.angle[axis] + 'deg)';
         }
     }
+    return { transform: transform };
+}
 
-    componentWillUnmount() {
-        this.stopSound();
-    }
-
-    shouldComponentUpdate(nextProps) {
-        return nextProps.playerPos !== this.props.playerPos || nextProps.viewAngle !== this.props.viewAngle || nextProps.state !== this.props.state || nextProps.isVisible !== this.props.isVisible;
-    }
-
-    render() {
-        const { isVisible, viewAngle, state, size } = this.props;
-        const isOpen = [__WEBPACK_IMPORTED_MODULE_3__constants_constants__["g" /* DOOR_OPENING */], __WEBPACK_IMPORTED_MODULE_3__constants_constants__["h" /* DOOR_OPEN */]].includes(state);
-        const doorStyleRules = _extends({}, this.doorStyleRules, {
-            transform: 'translateY(' + (isOpen ? -size[1] * 0.9 : 0) + 'px)'
-        });
-        const angle = [0, -viewAngle[0], 0];
-
-        return __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
-            'div',
-            { className: 'obj', style: this.rootStyleRules },
-            __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
-                'div',
-                { className: [__WEBPACK_IMPORTED_MODULE_0_components_door_door_css___default.a.root].join(' '),
-                    style: doorStyleRules },
-                isVisible ? this.renderBars({ parentPos: [this.posWithInvertedY], angle }) : null
-            )
-        );
-    }
-
-    renderBars({ parentPos, angle }) {
-        const { size, playerPos, getTransformRule } = this.props;
-        const bars = [];
-        const maxDimension = size[0] > size[2] ? 0 : 2;
-        let key = 0;
-        for (let i = Math.floor(BARS_GAP / 2); i < size[maxDimension]; i = i + BARS_GAP) {
-            bars.push(__WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2__plain_plain__["a" /* default */], {
-                key: key,
-                className: 'door-bar',
-                pos: maxDimension === 0 ? [-size[0] / 2 + i, 0, 0] : [0, 0, -size[2] / 2 + i],
-                size: [BAR_WIDTH, size[1]],
-                angle: angle,
-                parentPos: parentPos,
-                playerPos: playerPos,
-                simpleLight: true,
-                background: BAR_BACKGROUND,
-                getTransformRule: getTransformRule
-            }));
-            key = key + 1;
-        }
-        return bars;
-    }
-
-    startSound() {
-        this.audioSource = this.context.audioCtx.createBufferSource();
-        this.audioSource.connect(this.panner);
-        this.audioSource.buffer = this.decodedAudioBuffer;
-        this.audioSource.start(0);
-    }
-
-    stopSound() {
-        if (this.audioSource) {
-            this.audioSource.stop();
-            this.audioSource.disconnect(this.panner);
-            this.audioSource = null;
+/**
+ * Returns array of objects to be shown on map
+ * @param {Array} playerPos
+ * @param {Array} objects
+ * @returns {Array}
+ */
+function getVisibleObjects(playerPos, objects) {
+    const playerCell = getPlayerCell(playerPos);
+    const addVisibleObjects = {};
+    const removeVisibleObjects = {};
+    for (let i = 0; i < objects.length; i = i + 1) {
+        const object = objects[i];
+        const isVisible = isObjectVisible(playerCell, object);
+        if (object.isVisible !== isVisible) {
+            (isVisible ? addVisibleObjects : removeVisibleObjects)[object.name] = true;
         }
     }
+    return { addVisibleObjects, removeVisibleObjects };
 }
 
-Door.contextTypes = {
-    audioCtx: __WEBPACK_IMPORTED_MODULE_1_react__["PropTypes"].object.isRequired,
-    assets: __WEBPACK_IMPORTED_MODULE_1_react__["PropTypes"].object.isRequired
-};
-Door.defaultProps = {
-    isVisible: true,
-    isOpen: false
-};
-/* harmony default export */ exports["a"] = Door;
+function getPlayerCell(playerPos) {
+    return [Math.floor(playerPos[0] / __WEBPACK_IMPORTED_MODULE_0__constants_constants__["d" /* BROAD_CELL_SIZE */]), Math.floor(playerPos[2] / __WEBPACK_IMPORTED_MODULE_0__constants_constants__["d" /* BROAD_CELL_SIZE */])];
+}
 
-/***/ },
-
-/***/ 112:
-/***/ function(module, exports, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__endScreen_css__ = __webpack_require__(139);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__endScreen_css___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__endScreen_css__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react__ = __webpack_require__(4);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_react__);
-
-
-
-const ENDING_TIME = 3000;
-
-class EndScreen extends __WEBPACK_IMPORTED_MODULE_1_react___default.a.Component {
-
-    constructor(...args) {
-        super(...args);
-
-        this.handleKeyDown = this.handleKeyDown.bind(this);
-
-        this.state = {
-            showAnyKeyMessage: false
-        };
-        this.endingTimer = null;
-    }
-
-    componentDidMount() {
-        this.endingTimer = setTimeout(() => {
-            this.setState({
-                showAnyKeyMessage: true
-            });
-        }, ENDING_TIME);
-        document.addEventListener('keydown', this.handleKeyDown);
-    }
-
-    componentWillUnmount() {
-        clearTimeout(this.endingTimer);
-        this.endingTimer = null;
-        document.removeEventListener('keydown', this.handleKeyDown);
-    }
-
-    render() {
-        return __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
-            'div',
-            {
-                className: __WEBPACK_IMPORTED_MODULE_0__endScreen_css___default.a.root,
-                onClick: this.handleKeyDown
-            },
-            __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
-                'div',
-                { className: __WEBPACK_IMPORTED_MODULE_0__endScreen_css___default.a.message },
-                'You escaped'
-            ),
-            __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
-                'div',
-                { className: __WEBPACK_IMPORTED_MODULE_0__endScreen_css___default.a.anyKey },
-                'Press any key'
-            )
-        );
-    }
-
-    handleKeyDown() {
-        if (this.state.showAnyKeyMessage) {
-            this.props.onEnd();
+function isObjectVisible(playerCell, object) {
+    let isVisible = false;
+    for (let k = 0; k < object.broadCells.length; k = k + 1) {
+        if (Math.abs(playerCell[0] - object.broadCells[k][0]) < 2 && Math.abs(playerCell[1] - object.broadCells[k][1]) < 2) {
+            isVisible = true;
+            break;
         }
     }
+    return isVisible;
 }
 
-EndScreen.propTypes = {
-    onEnd: __WEBPACK_IMPORTED_MODULE_1_react__["PropTypes"].func.isRequired
-};
-/* harmony default export */ exports["a"] = EndScreen;
-
-/***/ },
-
-/***/ 113:
-/***/ function(module, exports, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(4);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__plain_plain__ = __webpack_require__(22);
-
-
-
-class Floor extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
-    shouldComponentUpdate(nextProps) {
-        return nextProps.playerPos !== this.props.playerPos;
-    }
-
-    render() {
-        const { pos, playerPos, size, getTransformRule } = this.props;
-        return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1__plain_plain__["a" /* default */], {
-            className: 'floor',
-            pos: pos,
-            playerPos: playerPos,
-            size: [size[0], size[2]],
-            angle: [90, 0, 0],
-            getTransformRule: getTransformRule,
-            background: 'url(src/components/floor/floor.jpg)'
-        });
-    }
+/**
+ * Returns coordinates of a point which is `distance` away from `pos` in the direction `angle`
+ * @param {Array} pos
+ * @param {number} distance
+ * @param {Array} angle
+ * @returns {Array}
+ */
+function getPointPosition({ pos, distance, angle }) {
+    const y = pos[1] + Math.round(distance * Math.sin(Math.PI / 180 * angle[1]));
+    const tempDistance = distance * Math.cos(Math.PI / 180 * angle[1]);
+    const x = pos[0] + Math.round(tempDistance * Math.sin(Math.PI / 180 * angle[0]));
+    const z = pos[2] - Math.round(tempDistance * Math.cos(Math.PI / 180 * angle[0]));
+    return [x, y, z];
 }
 
-/* harmony default export */ exports["a"] = Floor;
-
-/***/ },
-
-/***/ 114:
-/***/ function(module, exports, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__hints_css__ = __webpack_require__(140);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__hints_css___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__hints_css__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react__ = __webpack_require__(4);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_react__);
-
-
-
-class Hints extends __WEBPACK_IMPORTED_MODULE_1_react___default.a.Component {
-
-    render() {
-        const { hints } = this.props;
-        return __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
-            'div',
-            { className: __WEBPACK_IMPORTED_MODULE_0__hints_css___default.a.root },
-            Array.from(hints.keys()).map(hint => __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
-                'div',
-                { className: __WEBPACK_IMPORTED_MODULE_0__hints_css___default.a.hint, key: hint },
-                hint
-            ))
-        );
-    }
-}
-
-Hints.propTypes = {
-    hints: __WEBPACK_IMPORTED_MODULE_1_react__["PropTypes"].instanceOf(Map).isRequired
-};
-/* harmony default export */ exports["a"] = Hints;
-
-/***/ },
-
-/***/ 115:
-/***/ function(module, exports, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__loadingScreen_css__ = __webpack_require__(141);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__loadingScreen_css___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__loadingScreen_css__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react__ = __webpack_require__(4);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_react__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__preloadAssetsList__ = __webpack_require__(126);
-
-
-
-
-
-class LoadingScreen extends __WEBPACK_IMPORTED_MODULE_1_react___default.a.Component {
-
-    constructor(...args) {
-        super(...args);
-
-        this.totalAssets = __WEBPACK_IMPORTED_MODULE_2__preloadAssetsList__["a" /* default */].length;
-        this.state = {
-            assetsLoaded: 0,
-            loadingFailed: false
-        };
-
-        __WEBPACK_IMPORTED_MODULE_2__preloadAssetsList__["a" /* default */].forEach(([assetSrc, assetType]) => {
-            if (assetType === 'image') {
-                const image = new Image();
-                image.onload = () => {
-                    this.handleAssetLoaded();
-                };
-                image.onerror = () => {
-                    this.handleAssetError(`Couldn't load image ${ assetSrc }`);
-                };
-                image.src = assetSrc;
-            } else if (assetType === 'audio') {
-                fetch(assetSrc).then(response => response.arrayBuffer()).then(buffer => new Promise((resolve, reject) => {
-                    this.context.audioCtx.decodeAudioData(buffer, decodedData => {
-                        this.props.cacheAssetData(assetSrc, decodedData);
-                        resolve();
-                    }, reject);
-                })).then(() => {
-                    this.handleAssetLoaded();
-                }).catch(error => {
-                    this.handleAssetError(error);
-                });
-            }
-        });
+/**
+ * Stores an array of actions that should be dispatched at a certain time
+ */
+class DelayedActions {
+    constructor() {
+        this.delayedActions = [];
     }
 
-    componentDidUpdate() {
-        if (this.state.assetsLoaded === this.totalAssets) {
-            this.props.onLoaded();
-        }
-    }
-
-    render() {
-        const percent = Math.ceil(100 * this.state.assetsLoaded / this.totalAssets);
-        return __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
-            'div',
-            { className: __WEBPACK_IMPORTED_MODULE_0__loadingScreen_css___default.a.root },
-            this.state.loadingFailed ? 'Loading failed, sorry' : `Loading assets ${ percent } %`
-        );
-    }
-
-    handleAssetLoaded() {
-        this.setState({ assetsLoaded: this.state.assetsLoaded + 1 });
-    }
-
-    handleAssetError(error) {
-        this.setState({ loadingFailed: true });
-        console.error(error);
-    }
-}
-
-LoadingScreen.propTypes = {
-    onLoaded: __WEBPACK_IMPORTED_MODULE_1_react__["PropTypes"].func.isRequired,
-    cacheAssetData: __WEBPACK_IMPORTED_MODULE_1_react__["PropTypes"].func.isRequired
-};
-LoadingScreen.contextTypes = {
-    audioCtx: __WEBPACK_IMPORTED_MODULE_1_react__["PropTypes"].object.isRequired
-};
-/* harmony default export */ exports["a"] = LoadingScreen;
-
-/***/ },
-
-/***/ 116:
-/***/ function(module, exports, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(4);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__plain_plain__ = __webpack_require__(22);
-
-
-
-class Painting extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
-    shouldComponentUpdate(nextProps) {
-        return nextProps.playerPos !== this.props.playerPos;
-    }
-
-    render() {
-        const { pos, playerPos, size, angle, background, getTransformRule } = this.props;
-        return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1__plain_plain__["a" /* default */], {
-            className: 'painting',
-            pos: [pos[0], -pos[1], pos[2]],
-            playerPos: playerPos,
-            size: size,
-            angle: angle,
-            getTransformRule: getTransformRule,
-            background: background
-        });
-    }
-}
-
-/* harmony default export */ exports["a"] = Painting;
-
-/***/ },
-
-/***/ 117:
-/***/ function(module, exports, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__startScreen_css__ = __webpack_require__(143);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__startScreen_css___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__startScreen_css__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react__ = __webpack_require__(4);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_react__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__Logo_Logo__ = __webpack_require__(108);
-
-
-
-
-class StartScreen extends __WEBPACK_IMPORTED_MODULE_1_react___default.a.Component {
-
-    constructor(...args) {
-        super(...args);
-
-        this.handleStart = this.handleStart.bind(this);
-    }
-
-    render() {
-        return __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
-            'div',
-            { className: __WEBPACK_IMPORTED_MODULE_0__startScreen_css___default.a.root },
-            __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2__Logo_Logo__["a" /* default */], null),
-            __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
-                'div',
-                { className: __WEBPACK_IMPORTED_MODULE_0__startScreen_css___default.a.menuItem },
-                __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
-                    'button',
-                    { className: __WEBPACK_IMPORTED_MODULE_0__startScreen_css___default.a.menuItemButton, onClick: this.handleStart },
-                    'Start'
-                )
-            )
-        );
-    }
-
-    handleStart() {
-        this.props.onStart();
-    }
-}
-
-StartScreen.propTypes = {
-    onStart: __WEBPACK_IMPORTED_MODULE_1_react__["PropTypes"].func.isRequired
-};
-/* harmony default export */ exports["a"] = StartScreen;
-
-/***/ },
-
-/***/ 118:
-/***/ function(module, exports, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_components_switcher_switcher_css__ = __webpack_require__(144);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_components_switcher_switcher_css___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_components_switcher_switcher_css__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react__ = __webpack_require__(4);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_react__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__plain_plain__ = __webpack_require__(22);
-
-
-
-
-
-const HANDLE_SIZE = [6, 40];
-const BACKGROUND = 'url(src/components/switcher/wood.jpg) 50% 50% / cover';
-const meaningfulProps = ['playerPos', 'isReachable', 'isOn', 'isInteractive'];
-
-class Switcher extends __WEBPACK_IMPORTED_MODULE_1_react___default.a.Component {
-    constructor(props) {
-        super(props);
-
-        this.posWithInvertedY = [props.pos[0], -props.pos[1], props.pos[2]];
-        this.styleRules = props.getTransformRule({
-            pos: this.posWithInvertedY,
-            angle: props.angle
-        });
-    }
-
-    shouldComponentUpdate(nextProps) {
-        for (let i = 0; i < meaningfulProps.length; i++) {
-            if (nextProps[meaningfulProps[i]] !== this.props[meaningfulProps[i]]) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    render() {
-        const { playerPos, size, angle, isReachable = false,
-            isOn = false, isInteractive = true, getTransformRule } = this.props;
-        const classNames = ['obj', isOn ? __WEBPACK_IMPORTED_MODULE_0_components_switcher_switcher_css___default.a.switcherOn : __WEBPACK_IMPORTED_MODULE_0_components_switcher_switcher_css___default.a.switcherOff];
-        if (isInteractive && isReachable) {
-            classNames.push(__WEBPACK_IMPORTED_MODULE_0_components_switcher_switcher_css___default.a.reachable);
-        }
-        return __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
-            'div',
-            { className: classNames.join(' '), style: this.styleRules },
-            __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2__plain_plain__["a" /* default */], {
-                pos: [0, 0, 0],
-                parentAngle: [angle],
-                parentPos: [this.posWithInvertedY],
-                playerPos: playerPos,
-                size: [size[0], size[1]],
-                getTransformRule: getTransformRule,
-                background: BACKGROUND
-            }),
-            __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
-                'div',
-                { className: `${ __WEBPACK_IMPORTED_MODULE_0_components_switcher_switcher_css___default.a.handle } obj` },
-                __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2__plain_plain__["a" /* default */], {
-                    pos: [-HANDLE_SIZE[0] / 2, 0, HANDLE_SIZE[1] / 2],
-                    parentPos: [this.posWithInvertedY],
-                    playerPos: playerPos,
-                    size: [HANDLE_SIZE[1], HANDLE_SIZE[0]],
-                    angle: [0, -90, 0],
-                    parentAngle: [angle],
-                    background: BACKGROUND,
-                    simpleLight: true,
-                    getTransformRule: getTransformRule
-                }),
-                __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2__plain_plain__["a" /* default */], {
-                    pos: [HANDLE_SIZE[0] / 2, 0, HANDLE_SIZE[1] / 2],
-                    parentPos: [this.posWithInvertedY],
-                    playerPos: playerPos,
-                    size: [HANDLE_SIZE[1], HANDLE_SIZE[0]],
-                    angle: [0, 90, 0],
-                    parentAngle: [angle],
-                    background: BACKGROUND,
-                    simpleLight: true,
-                    getTransformRule: getTransformRule
-                }),
-                __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2__plain_plain__["a" /* default */], {
-                    pos: [0, -HANDLE_SIZE[0] / 2, HANDLE_SIZE[1] / 2],
-                    parentPos: [this.posWithInvertedY],
-                    playerPos: playerPos,
-                    size: [HANDLE_SIZE[0], HANDLE_SIZE[1]],
-                    angle: [90, 0, 0],
-                    parentAngle: [angle],
-                    background: BACKGROUND,
-                    simpleLight: true,
-                    getTransformRule: getTransformRule
-                }),
-                __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2__plain_plain__["a" /* default */], {
-                    pos: [0, HANDLE_SIZE[0] / 2, HANDLE_SIZE[1] / 2],
-                    parentPos: [this.posWithInvertedY],
-                    playerPos: playerPos,
-                    size: [HANDLE_SIZE[0], HANDLE_SIZE[1]],
-                    angle: [-90, 0, 0],
-                    parentAngle: [angle],
-                    background: BACKGROUND,
-                    simpleLight: true,
-                    getTransformRule: getTransformRule
-                }),
-                __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2__plain_plain__["a" /* default */], {
-                    pos: [0, 0, HANDLE_SIZE[1]],
-                    parentPos: [this.posWithInvertedY],
-                    playerPos: playerPos,
-                    size: [HANDLE_SIZE[0], HANDLE_SIZE[0]],
-                    angle: [0, 0, 0],
-                    parentAngle: [angle],
-                    background: BACKGROUND,
-                    simpleLight: true,
-                    getTransformRule: getTransformRule
-                })
-            )
-        );
-    }
-}
-/* harmony export (immutable) */ exports["a"] = Switcher;
-
-
-/***/ },
-
-/***/ 119:
-/***/ function(module, exports, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(4);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__plain_plain__ = __webpack_require__(22);
-
-
-
-// no support for rotated walls for now
-class Wall extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
-    constructor(props) {
-        super(props);
-
-        this.posWithInvertedY = [props.pos[0], -props.pos[1], props.pos[2]];
-        this.styleRules = props.getTransformRule({ pos: this.posWithInvertedY });
-        this.background = 'url(src/components/wall/wall.jpg) 50% 50% / cover';
-    }
-
-    shouldComponentUpdate(nextProps) {
-        return nextProps.playerPos !== this.props.playerPos;
-    }
-
-    render() {
-        const { size, playerPos, getTransformRule } = this.props;
-
-        // Front-Back-Left-Right
-        return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-            'div',
-            { className: 'wall obj', style: this.styleRules },
-            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1__plain_plain__["a" /* default */], {
-                pos: [0, 0, size[2] / 2],
-                parentPos: [this.posWithInvertedY],
-                playerPos: playerPos,
-                size: size,
-                angle: [0, 0, 0],
-                getTransformRule: getTransformRule,
-                background: this.background
-            }),
-            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1__plain_plain__["a" /* default */], {
-                pos: [0, 0, -size[2] / 2],
-                parentPos: [this.posWithInvertedY],
-                playerPos: playerPos,
-                size: size,
-                angle: [0, 180, 0],
-                getTransformRule: getTransformRule,
-                background: this.background
-            }),
-            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1__plain_plain__["a" /* default */], {
-                pos: [-size[0] / 2, 0, 0],
-                parentPos: [this.posWithInvertedY],
-                playerPos: playerPos,
-                size: [size[2], size[1]],
-                angle: [0, -90, 0],
-                getTransformRule: getTransformRule,
-                background: this.background
-            }),
-            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1__plain_plain__["a" /* default */], {
-                pos: [size[0] / 2, 0, 0],
-                parentPos: [this.posWithInvertedY],
-                playerPos: playerPos,
-                size: [size[2], size[1]],
-                angle: [0, 90, 0],
-                getTransformRule: getTransformRule,
-                background: this.background
-            })
-        );
-    }
-}
-
-/* harmony default export */ exports["a"] = Wall;
-
-/***/ },
-
-/***/ 120:
-/***/ function(module, exports, __webpack_require__) {
-
-"use strict";
-const HINT_GOAL = 'Where am I? It\'s so dark here. I have to find the way out';
-/* harmony export (immutable) */ exports["a"] = HINT_GOAL;
-
-const HINT_FIRST_SWITCHER = 'What if I push this lever?';
-/* harmony export (immutable) */ exports["e"] = HINT_FIRST_SWITCHER;
-
-const HINT_DOOR = 'Sounds like the door opened somewhere';
-/* harmony export (immutable) */ exports["f"] = HINT_DOOR;
-
-const HINT_WASD = 'Use `W`, `A`, `S`, `D` or arrows to move';
-/* harmony export (immutable) */ exports["b"] = HINT_WASD;
-
-const HINT_SHIFT = 'Hold `Shift` to run';
-/* harmony export (immutable) */ exports["c"] = HINT_SHIFT;
-
-const HINT_E = 'Press `E` to interact';
-/* harmony export (immutable) */ exports["d"] = HINT_E;
-
-
-/***/ },
-
-/***/ 121:
-/***/ function(module, exports, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__camera_css__ = __webpack_require__(145);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__camera_css___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__camera_css__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react__ = __webpack_require__(4);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_react__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_react_redux__ = __webpack_require__(16);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_react_redux___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_react_redux__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__lib_utils__ = __webpack_require__(33);
-
-
-
-
-
-
-
-function Camera({ viewAngle, children }) {
-    const transformRule = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_3__lib_utils__["a" /* getTransformRule */])({
-        pos: [0, 0, 600],
-        angle: [viewAngle[1], viewAngle[0], viewAngle[2]]
-    });
-    return __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
-        'div',
-        { className: __WEBPACK_IMPORTED_MODULE_0__camera_css___default.a.root, style: transformRule },
-        children
-    );
-}
-Camera.propTypes = {
-    viewAngle: __WEBPACK_IMPORTED_MODULE_1_react__["PropTypes"].arrayOf(__WEBPACK_IMPORTED_MODULE_1_react__["PropTypes"].number).isRequired
-};
-
-function mapStateToProps(state) {
-    return {
-        viewAngle: state.viewAngle
-    };
-}
-
-/* harmony default export */ exports["a"] = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2_react_redux__["connect"])(mapStateToProps)(Camera);
-
-/***/ },
-
-/***/ 122:
-/***/ function(module, exports, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(4);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react_redux__ = __webpack_require__(16);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react_redux___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_react_redux__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_redux_batched_actions__ = __webpack_require__(32);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_redux_batched_actions___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_redux_batched_actions__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_react_redux_src_utils_storeShape__ = __webpack_require__(256);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__constants_constants__ = __webpack_require__(9);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__constants_hints__ = __webpack_require__(120);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__lib_loop__ = __webpack_require__(125);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__level__ = __webpack_require__(26);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__lib_collision__ = __webpack_require__(64);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__lib_utils__ = __webpack_require__(33);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__actionCreators__ = __webpack_require__(41);
-var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-class GameLoop extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
-
-    constructor(...args) {
-        super(...args);
-
-        this.delayedActions = new __WEBPACK_IMPORTED_MODULE_9__lib_utils__["e" /* DelayedActions */]();
-
-        this.loop = new __WEBPACK_IMPORTED_MODULE_6__lib_loop__["a" /* default */](this.loopCallback.bind(this), __WEBPACK_IMPORTED_MODULE_4__constants_constants__["t" /* FPS */]);
-
-        this.prevKeysPressed = {};
-        this.shownHints = {};
-
-        const currentStore = this.context.store.getState();
-        this.updateListenerPosition(currentStore.pos);
-        this.updateListenerOrientation(currentStore.viewAngle);
-    }
-
-    componentDidMount() {
-        this.loop.start();
-    }
-
-    componentWillUnmount() {
-        this.loop.stop();
-        this.delayedActions.clear();
-        this.shownHints = {};
-    }
-
-    render() {
-        return __WEBPACK_IMPORTED_MODULE_0_react___default.a.Children.only(this.props.children);
-    }
-
-    loopCallback(frameRateCoefficient) {
-        const actions = this.delayedActions.getActualActions();
-
-        const newState = {};
-        const currentStore = this.context.store.getState();
-
-        // show start hint
-        actions.push(this.showHints([__WEBPACK_IMPORTED_MODULE_5__constants_hints__["a" /* HINT_GOAL */], __WEBPACK_IMPORTED_MODULE_5__constants_hints__["b" /* HINT_WASD */], __WEBPACK_IMPORTED_MODULE_5__constants_hints__["c" /* HINT_SHIFT */]], true));
-
-        const pointerDelta = currentStore.pointerDelta;
-        if (pointerDelta.x || pointerDelta.y) {
-            const currentViewAngle = currentStore.viewAngle;
-            const newViewAngle = [(currentViewAngle[0] - pointerDelta.x * __WEBPACK_IMPORTED_MODULE_4__constants_constants__["u" /* SENSITIVITY */]) % 360, Math.min(Math.max(currentViewAngle[1] + pointerDelta.y * __WEBPACK_IMPORTED_MODULE_4__constants_constants__["u" /* SENSITIVITY */], -90), 90), 0];
-            actions.push(__WEBPACK_IMPORTED_MODULE_10__actionCreators__["b" /* player */].updateViewAngle(newViewAngle));
-            actions.push(__WEBPACK_IMPORTED_MODULE_10__actionCreators__["a" /* game */].resetPointerDelta());
-            newState.viewAngle = newViewAngle;
-        }
-
-        let angleShift = [];
-        const keyPressed = currentStore.keyPressed;
-        if (keyPressed[__WEBPACK_IMPORTED_MODULE_4__constants_constants__["v" /* KEY_W */]]) {
-            angleShift.push(Math.PI);
-        }
-        if (keyPressed[__WEBPACK_IMPORTED_MODULE_4__constants_constants__["w" /* KEY_S */]]) {
-            angleShift.push(0);
-        }
-        if (keyPressed[__WEBPACK_IMPORTED_MODULE_4__constants_constants__["x" /* KEY_A */]]) {
-            angleShift.push(Math.PI / 2);
-        }
-        if (keyPressed[__WEBPACK_IMPORTED_MODULE_4__constants_constants__["y" /* KEY_D */]]) {
-            // hack for angles sum
-            if (keyPressed[__WEBPACK_IMPORTED_MODULE_4__constants_constants__["v" /* KEY_W */]]) {
-                angleShift.push(3 * Math.PI / 2);
+    /**
+     * Returns an array of actions, that are to be dispatched
+     * @returns {Array}
+     */
+    getActualActions() {
+        const now = Date.now();
+        let actualActions = [];
+        let delayedActions = [];
+        for (let i = 0; i < this.delayedActions.length; i++) {
+            if (this.delayedActions[i].timestamp <= now) {
+                actualActions.push(this.delayedActions[i].action);
             } else {
-                angleShift.push(-Math.PI / 2);
+                delayedActions.push(this.delayedActions[i]);
             }
         }
-
-        if (keyPressed[__WEBPACK_IMPORTED_MODULE_4__constants_constants__["v" /* KEY_W */]] || keyPressed[__WEBPACK_IMPORTED_MODULE_4__constants_constants__["w" /* KEY_S */]] || keyPressed[__WEBPACK_IMPORTED_MODULE_4__constants_constants__["x" /* KEY_A */]] || keyPressed[__WEBPACK_IMPORTED_MODULE_4__constants_constants__["y" /* KEY_D */]]) {
-            if (keyPressed[__WEBPACK_IMPORTED_MODULE_4__constants_constants__["z" /* KEY_SHIFT */]]) {
-                actions.push(__WEBPACK_IMPORTED_MODULE_10__actionCreators__["b" /* player */].run());
-            } else {
-                actions.push(__WEBPACK_IMPORTED_MODULE_10__actionCreators__["b" /* player */].walk());
-            }
-        } else {
-            actions.push(__WEBPACK_IMPORTED_MODULE_10__actionCreators__["b" /* player */].stop());
-        }
-
-        if (angleShift.length) {
-            let reducedAngleShift = 0;
-            for (let i = 0; i < angleShift.length; i++) {
-                reducedAngleShift = reducedAngleShift + angleShift[i];
-            }
-            reducedAngleShift = reducedAngleShift / angleShift.length;
-
-            reducedAngleShift = reducedAngleShift + GameLoop.convertDegreeToRad(currentStore.viewAngle[0]);
-
-            let step = frameRateCoefficient * (keyPressed[__WEBPACK_IMPORTED_MODULE_4__constants_constants__["z" /* KEY_SHIFT */]] ? __WEBPACK_IMPORTED_MODULE_4__constants_constants__["A" /* RUNNING_COEFF */] : 1) * __WEBPACK_IMPORTED_MODULE_4__constants_constants__["B" /* STEP */];
-            const shift = [-step * Math.sin(reducedAngleShift), 0, step * Math.cos(reducedAngleShift)];
-            const currentPos = currentStore.pos;
-            const newPos = [];
-            for (let i = 0; i < 3; i++) {
-                newPos.push(currentPos[i] + shift[i]);
-            }
-            const objects = currentStore.objects;
-            const collisions = __WEBPACK_IMPORTED_MODULE_8__lib_collision__["a" /* default */].getCollisions([currentPos, newPos], objects, __WEBPACK_IMPORTED_MODULE_4__constants_constants__["d" /* BROAD_CELL_SIZE */]);
-            // get last collision result as new player position
-            const newPosAfterCollisions = collisions[collisions.length - 1].newPos;
-            actions.push(__WEBPACK_IMPORTED_MODULE_10__actionCreators__["b" /* player */].updatePosition(newPosAfterCollisions));
-            newState.pos = newPosAfterCollisions;
-        }
-
-        if (newState.pos) {
-            // if out of bounds - win
-            for (let i = 0; i < 3; i++) {
-                if (__WEBPACK_IMPORTED_MODULE_7__level__["a" /* default */].boundaries[i]) {
-                    if (newState.pos[i] < 0 || newState.pos[i] > __WEBPACK_IMPORTED_MODULE_7__level__["a" /* default */].boundaries[i]) {
-                        this.props.onWin();
-                        return;
-                    }
-                }
-            }
-
-            // render only visible objects
-            const { addVisibleObjects, removeVisibleObjects } = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_9__lib_utils__["f" /* getVisibleObjects */])(newState.pos, currentStore.objects);
-            if (Object.keys(addVisibleObjects).length || Object.keys(removeVisibleObjects).length) {
-                actions.push(__WEBPACK_IMPORTED_MODULE_10__actionCreators__["c" /* objects */].setVisible({ addVisibleObjects, removeVisibleObjects }));
-            }
-
-            this.updateListenerPosition(newState.pos);
-        }
-
-        if (newState.viewAngle) {
-            this.updateListenerOrientation(newState.viewAngle);
-        }
-
-        // find interactive object which we can reach with a hand
-        let reachableObject;
-        if (newState.pos || newState.viewAngle) {
-            const playerPosition = newState.pos || currentStore.pos;
-            const viewAngle = newState.viewAngle || currentStore.viewAngle;
-            const collisionView = __WEBPACK_IMPORTED_MODULE_8__lib_collision__["a" /* default */].getCollisionView([playerPosition, __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_9__lib_utils__["d" /* getPointPosition */])({ pos: playerPosition, distance: __WEBPACK_IMPORTED_MODULE_4__constants_constants__["s" /* HAND_LENGTH */], angle: viewAngle })], currentStore.objects, __WEBPACK_IMPORTED_MODULE_4__constants_constants__["d" /* BROAD_CELL_SIZE */]);
-            if (collisionView && collisionView.obj.isInteractive) {
-                reachableObject = collisionView.obj;
-                if (!reachableObject.isReachable) {
-                    actions.push(__WEBPACK_IMPORTED_MODULE_10__actionCreators__["c" /* objects */].setReachable(_extends({}, reachableObject)));
-                    actions.push(this.showHints([__WEBPACK_IMPORTED_MODULE_5__constants_hints__["d" /* HINT_E */]], false));
-                    actions.push(this.showHints([__WEBPACK_IMPORTED_MODULE_5__constants_hints__["e" /* HINT_FIRST_SWITCHER */]], true));
-                }
-            } else {
-                actions.push(__WEBPACK_IMPORTED_MODULE_10__actionCreators__["c" /* objects */].setReachable(null));
-            }
-        } else {
-            reachableObject = currentStore.objects.find(obj => obj.isReachable);
-        }
-
-        // perform interaction if key E is pressed
-        if (keyPressed[__WEBPACK_IMPORTED_MODULE_4__constants_constants__["C" /* KEY_E */]] && !this.prevKeysPressed[__WEBPACK_IMPORTED_MODULE_4__constants_constants__["C" /* KEY_E */]] && reachableObject) {
-            if (reachableObject.type === __WEBPACK_IMPORTED_MODULE_4__constants_constants__["o" /* SWITCHER_TYPE */]) {
-                const door = currentStore.doorsState[reachableObject.props.id];
-                if (![__WEBPACK_IMPORTED_MODULE_4__constants_constants__["g" /* DOOR_OPENING */], __WEBPACK_IMPORTED_MODULE_4__constants_constants__["f" /* DOOR_CLOSING */]].includes(door)) {
-                    actions.push(__WEBPACK_IMPORTED_MODULE_10__actionCreators__["d" /* doorsState */][door === __WEBPACK_IMPORTED_MODULE_4__constants_constants__["h" /* DOOR_OPEN */] ? 'setClosing' : 'setOpening'](reachableObject.props.id));
-                    this.delayedActions.pushAction({
-                        action: __WEBPACK_IMPORTED_MODULE_10__actionCreators__["d" /* doorsState */][door === __WEBPACK_IMPORTED_MODULE_4__constants_constants__["h" /* DOOR_OPEN */] ? 'setClose' : 'setOpen'](reachableObject.props.id),
-                        delay: __WEBPACK_IMPORTED_MODULE_4__constants_constants__["e" /* DOOR_OPEN_TIME */]
-                    });
-                    if (door === __WEBPACK_IMPORTED_MODULE_4__constants_constants__["i" /* DOOR_CLOSE */]) {
-                        this.delayedActions.pushAction({
-                            action: this.showHints([__WEBPACK_IMPORTED_MODULE_5__constants_hints__["f" /* HINT_DOOR */]], false, __WEBPACK_IMPORTED_MODULE_4__constants_constants__["e" /* DOOR_OPEN_TIME */]),
-                            delay: __WEBPACK_IMPORTED_MODULE_4__constants_constants__["e" /* DOOR_OPEN_TIME */]
-                        });
-                    }
-                }
-            }
-        }
-
-        if (actions.length) {
-            this.props.dispatch(__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2_redux_batched_actions__["batchActions"])(actions));
-        }
-
-        this.prevKeysPressed = _extends({}, keyPressed);
+        this.delayedActions = delayedActions;
+        return actualActions;
     }
 
     /**
-     * Updates audio listener position values
-     * @param {Array} pos
+     * Adds a delayed action to the list
+     * @param {Object} action
+     * @param {number} delay
      */
-    updateListenerPosition(pos) {
-        if (this.context.audioCtx.listener.positionX) {
-            this.context.audioCtx.listener.positionX.value = pos[0];
-            this.context.audioCtx.listener.positionY.value = pos[1];
-            this.context.audioCtx.listener.positionZ.value = pos[2];
-        } else {
-            this.context.audioCtx.listener.setPosition(...pos);
-        }
-    }
-
-    /**
-     * Updates audio listener orientation values
-     * @param {Array} angle
-     */
-    updateListenerOrientation(angle) {
-        const [forwardX, forwardY, forwardZ] = GameLoop.getVectorFromAngles(...angle);
-
-        let upVerticalAngle;
-        let upHorizontalAngle;
-        if (angle[1] > 0) {
-            upVerticalAngle = 90 - angle[1];
-            upHorizontalAngle = (angle[0] - 180) % 360;
-        } else {
-            upVerticalAngle = 90 + angle[1];
-            upHorizontalAngle = angle[0];
-        }
-        const [upX, upY, upZ] = GameLoop.getVectorFromAngles(upHorizontalAngle, upVerticalAngle);
-
-        if (this.context.audioCtx.listener.forwardX) {
-            this.context.audioCtx.listener.forwardX.value = forwardX;
-            this.context.audioCtx.listener.forwardY.value = forwardY;
-            this.context.audioCtx.listener.forwardZ.value = forwardZ;
-            this.context.audioCtx.listener.upX.value = upX;
-            this.context.audioCtx.listener.upY.value = upY;
-            this.context.audioCtx.listener.upZ.value = upZ;
-        } else {
-            this.context.audioCtx.listener.setOrientation(forwardX, forwardY, forwardZ, upX, upY, upZ);
-        }
-    }
-
-    showHints(hints, once, delay = 0) {
-        const rawHints = hints.filter(hint => {
-            if (once && this.shownHints[hint]) {
-                return false;
-            }
-            this.shownHints[hint] = true;
-            return true;
+    pushAction({ action, delay }) {
+        this.delayedActions.push({
+            action,
+            timestamp: Date.now() + delay
         });
-        if (rawHints.length) {
-            this.delayedActions.pushAction({
-                action: __WEBPACK_IMPORTED_MODULE_10__actionCreators__["e" /* hints */].removeHints(rawHints),
-                delay: __WEBPACK_IMPORTED_MODULE_4__constants_constants__["D" /* HINT_SHOW_TIME */] + delay
-            });
-        }
-        return __WEBPACK_IMPORTED_MODULE_10__actionCreators__["e" /* hints */].addHints(rawHints);
     }
 
-    /**
-     * Returns radians for given degrees
-     * @param {number} angle
-     * @returns {number}
-     */
-    static convertDegreeToRad(angle) {
-        return angle / 180 * Math.PI;
-    }
-
-    /**
-     * Returns vector coordinates for given angles
-     * @param {number} horizontalAngle (rad)
-     * @param {number} verticalAngle (rad)
-     * @returns {number[]}
-     */
-    static getVectorFromAngles(horizontalAngle, verticalAngle) {
-        const y = Math.sin(GameLoop.convertDegreeToRad(verticalAngle));
-        const xzProjectionDist = Math.sqrt(1 - y * y);
-        const x = Math.sin(GameLoop.convertDegreeToRad(horizontalAngle)) * xzProjectionDist;
-        let z = Math.sqrt(xzProjectionDist * xzProjectionDist - x * x);
-        if (Math.abs(horizontalAngle) < 90 || Math.abs(horizontalAngle) > 270) {
-            z = -z;
-        }
-        return [x, y, z];
+    clear() {
+        this.delayedActions = [];
     }
 }
+/* harmony export (immutable) */ exports["f"] = DelayedActions;
 
-GameLoop.contextTypes = {
-    store: __WEBPACK_IMPORTED_MODULE_3_react_redux_src_utils_storeShape__["a" /* default */].isRequired,
-    audioCtx: __WEBPACK_IMPORTED_MODULE_0_react__["PropTypes"].object.isRequired
-};
-GameLoop.propTypes = {
-    onWin: __WEBPACK_IMPORTED_MODULE_0_react__["PropTypes"].func.isRequired
-};
-/* harmony default export */ exports["a"] = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1_react_redux__["connect"])()(GameLoop);
-
-/***/ },
-
-/***/ 123:
-/***/ function(module, exports, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__scene_css__ = __webpack_require__(146);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__scene_css___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__scene_css__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react__ = __webpack_require__(4);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_react__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_react_redux__ = __webpack_require__(16);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_react_redux___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_react_redux__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__components_painting_painting__ = __webpack_require__(116);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__components_floor_floor__ = __webpack_require__(113);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__components_ceiling_ceiling__ = __webpack_require__(110);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__components_wall_wall__ = __webpack_require__(119);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__components_box_box__ = __webpack_require__(109);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__components_switcher_switcher__ = __webpack_require__(118);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__components_door_door__ = __webpack_require__(111);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__lib_utils__ = __webpack_require__(33);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__constants_constants__ = __webpack_require__(9);
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-class Scene extends __WEBPACK_IMPORTED_MODULE_1_react___default.a.Component {
-    render() {
-        const { pos, viewAngle, playerState, doorsState, visibleObjects } = this.props;
-        const transformRule = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_10__lib_utils__["a" /* getTransformRule */])({
-            pos: [-pos[0], pos[1], -pos[2]]
-        });
-        const renderedObjects = [];
-        for (let i = 0; i < visibleObjects.length; i++) {
-            const object = visibleObjects[i];
-            switch (object.type) {
-                case __WEBPACK_IMPORTED_MODULE_11__constants_constants__["j" /* PAINTING_TYPE */]:
-                    renderedObjects.push(__WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3__components_painting_painting__["a" /* default */], {
-                        key: object.name,
-                        pos: object.pos,
-                        playerPos: pos,
-                        angle: object.angle,
-                        size: object.size.filter(value => value !== 0).slice(0, 2),
-                        background: object.background,
-                        getTransformRule: __WEBPACK_IMPORTED_MODULE_10__lib_utils__["a" /* getTransformRule */]
-                    }));
-                    break;
-                case __WEBPACK_IMPORTED_MODULE_11__constants_constants__["k" /* FLOOR_TYPE */]:
-                    renderedObjects.push(__WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_4__components_floor_floor__["a" /* default */], {
-                        key: object.name,
-                        pos: object.pos,
-                        playerPos: pos,
-                        size: object.size,
-                        getTransformRule: __WEBPACK_IMPORTED_MODULE_10__lib_utils__["a" /* getTransformRule */]
-                    }));
-                    break;
-                case __WEBPACK_IMPORTED_MODULE_11__constants_constants__["l" /* CEILING_TYPE */]:
-                    renderedObjects.push(__WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_5__components_ceiling_ceiling__["a" /* default */], {
-                        key: object.name,
-                        pos: object.pos,
-                        size: [object.size[0], object.size[2]],
-                        getTransformRule: __WEBPACK_IMPORTED_MODULE_10__lib_utils__["a" /* getTransformRule */]
-                    }));
-                    break;
-                case __WEBPACK_IMPORTED_MODULE_11__constants_constants__["m" /* WALL_TYPE */]:
-                    renderedObjects.push(__WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_6__components_wall_wall__["a" /* default */], {
-                        key: object.name,
-                        pos: object.pos,
-                        playerPos: pos,
-                        size: object.size,
-                        getTransformRule: __WEBPACK_IMPORTED_MODULE_10__lib_utils__["a" /* getTransformRule */]
-                    }));
-                    break;
-                case __WEBPACK_IMPORTED_MODULE_11__constants_constants__["n" /* BOX_TYPE */]:
-                    renderedObjects.push(__WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_7__components_box_box__["a" /* default */], {
-                        key: object.name,
-                        pos: object.pos,
-                        playerPos: pos,
-                        size: object.size,
-                        mode: object.props.mode,
-                        getTransformRule: __WEBPACK_IMPORTED_MODULE_10__lib_utils__["a" /* getTransformRule */]
-                    }));
-                    break;
-                case __WEBPACK_IMPORTED_MODULE_11__constants_constants__["o" /* SWITCHER_TYPE */]:
-                    renderedObjects.push(__WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_8__components_switcher_switcher__["a" /* default */], {
-                        key: object.name,
-                        pos: object.pos,
-                        size: object.size,
-                        angle: object.angle,
-                        playerPos: pos,
-                        isReachable: object.isReachable,
-                        isInteractive: [__WEBPACK_IMPORTED_MODULE_11__constants_constants__["h" /* DOOR_OPEN */], __WEBPACK_IMPORTED_MODULE_11__constants_constants__["i" /* DOOR_CLOSE */]].includes(doorsState[object.props.id]),
-                        isOn: [__WEBPACK_IMPORTED_MODULE_11__constants_constants__["h" /* DOOR_OPEN */], __WEBPACK_IMPORTED_MODULE_11__constants_constants__["g" /* DOOR_OPENING */]].includes(doorsState[object.props.id]),
-                        getTransformRule: __WEBPACK_IMPORTED_MODULE_10__lib_utils__["a" /* getTransformRule */]
-                    }));
-                    break;
-                case __WEBPACK_IMPORTED_MODULE_11__constants_constants__["p" /* DOOR_TYPE */]:
-                    renderedObjects.push(__WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_9__components_door_door__["a" /* default */], {
-                        key: object.name,
-                        isVisible: object.isVisible,
-                        pos: object.pos,
-                        playerPos: pos,
-                        viewAngle: viewAngle,
-                        size: object.size,
-                        state: doorsState[object.props.id],
-                        getTransformRule: __WEBPACK_IMPORTED_MODULE_10__lib_utils__["a" /* getTransformRule */]
-                    }));
-                    break;
-            }
-        }
-        const className = ['obj', playerState === __WEBPACK_IMPORTED_MODULE_11__constants_constants__["q" /* PLAYER_WALK */] ? __WEBPACK_IMPORTED_MODULE_0__scene_css___default.a.playerAnimationWalking : playerState === __WEBPACK_IMPORTED_MODULE_11__constants_constants__["r" /* PLAYER_RUN */] ? __WEBPACK_IMPORTED_MODULE_0__scene_css___default.a.playerAnimationRunning : ''].join(' ');
-        return __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
-            'div',
-            { className: className },
-            __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
-                'div',
-                { className: 'obj', style: transformRule },
-                renderedObjects
-            )
-        );
-    }
-}
-Scene.propTypes = {
-    pos: __WEBPACK_IMPORTED_MODULE_1_react__["PropTypes"].arrayOf(__WEBPACK_IMPORTED_MODULE_1_react__["PropTypes"].number).isRequired,
-    viewAngle: __WEBPACK_IMPORTED_MODULE_1_react__["PropTypes"].arrayOf(__WEBPACK_IMPORTED_MODULE_1_react__["PropTypes"].number).isRequired,
-    playerState: __WEBPACK_IMPORTED_MODULE_1_react__["PropTypes"].string.isRequired,
-    doorsState: __WEBPACK_IMPORTED_MODULE_1_react__["PropTypes"].object.isRequired,
-    visibleObjects: __WEBPACK_IMPORTED_MODULE_1_react__["PropTypes"].arrayOf(__WEBPACK_IMPORTED_MODULE_1_react__["PropTypes"].object).isRequired
-};
-
-function mapStateToProps(state) {
-    return {
-        pos: state.pos,
-        viewAngle: state.viewAngle,
-        playerState: state.playerState,
-        visibleObjects: state.objects.filter(obj => obj.isVisible || obj.type === __WEBPACK_IMPORTED_MODULE_11__constants_constants__["p" /* DOOR_TYPE */]),
-        doorsState: state.doorsState
-    };
-}
-
-/* harmony default export */ exports["a"] = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2_react_redux__["connect"])(mapStateToProps)(Scene);
-
-/***/ },
-
-/***/ 124:
-/***/ function(module, exports, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__viewport_css__ = __webpack_require__(147);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__viewport_css___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__viewport_css__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react__ = __webpack_require__(4);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_react__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_redux__ = __webpack_require__(18);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_react_redux__ = __webpack_require__(16);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_react_redux___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_react_redux__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__actionCreators__ = __webpack_require__(41);
-
-
-
-
-
-
-
-class Viewport extends __WEBPACK_IMPORTED_MODULE_1_react___default.a.Component {
-
-    constructor(...args) {
-        super(...args);
-
-        this.viewportNode = null;
-        this.pointerLocked = false;
-
-        this.onKeyDown = this.onKeyDown.bind(this);
-        this.onKeyUp = this.onKeyUp.bind(this);
-        this.onMouseMove = this.onMouseMove.bind(this);
-        this.requestPointerLock = this.requestPointerLock.bind(this);
-        this.onPointerLockChange = this.onPointerLockChange.bind(this);
-    }
-
-    componentDidMount() {
-        this.viewportNode.requestPointerLock();
-        document.addEventListener('pointerlockchange', this.onPointerLockChange);
-        document.addEventListener('keyup', this.onKeyUp);
-        document.addEventListener('keydown', this.onKeyDown);
-    }
-
-    componentWillUnmount() {
-        document.removeEventListener('pointerlockchange', this.onPointerLockChange);
-        document.exitPointerLock();
-        document.removeEventListener('keyup', this.onKeyUp);
-        document.removeEventListener('keydown', this.onKeyDown);
-    }
-
-    render() {
-        return __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
-            'div',
-            { className: __WEBPACK_IMPORTED_MODULE_0__viewport_css___default.a.root,
-                onMouseMove: this.onMouseMove,
-                onClick: this.requestPointerLock,
-                ref: viewportNode => {
-                    this.viewportNode = viewportNode;
-                }
-            },
-            this.props.children
-        );
-    }
-
-    onKeyDown(event) {
-        this.props.toggleKeyPressed(event.keyCode, true);
-    }
-
-    onKeyUp(event) {
-        this.props.toggleKeyPressed(event.keyCode, false);
-    }
-
-    onMouseMove(event) {
-        if (this.pointerLocked) {
-            this.props.updatePointerDelta(-event.nativeEvent.movementX, -event.nativeEvent.movementY);
-        }
-    }
-
-    requestPointerLock() {
-        this.viewportNode.requestPointerLock();
-    }
-
-    onPointerLockChange() {
-        this.pointerLocked = document.pointerLockElement === this.viewportNode;
-    }
-}
-
-Viewport.propTypes = {
-    toggleKeyPressed: __WEBPACK_IMPORTED_MODULE_1_react__["PropTypes"].func.isRequired,
-    updatePointerDelta: __WEBPACK_IMPORTED_MODULE_1_react__["PropTypes"].func.isRequired
-};
-function mapDispatchToProps(dispatch) {
-    return __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2_redux__["bindActionCreators"])({
-        updatePointerDelta: __WEBPACK_IMPORTED_MODULE_4__actionCreators__["a" /* game */].updatePointerDelta,
-        toggleKeyPressed: __WEBPACK_IMPORTED_MODULE_4__actionCreators__["a" /* game */].toggleKeyPressed
-    }, dispatch);
-}
-
-/* harmony default export */ exports["a"] = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_3_react_redux__["connect"])(null, mapDispatchToProps)(Viewport);
-
-/***/ },
-
-/***/ 125:
-/***/ function(module, exports, __webpack_require__) {
-
-"use strict";
-class Loop {
-    constructor(fn = () => {}, fps = 60, startImmediately = false) {
-        this.fn = fn;
-        this.fps = fps;
-        this.oldTimestamp = null;
-        this.rafId = null;
-        if (startImmediately) {
-            this.start();
-        }
-    }
-
-    start(timestamp) {
-        this.rafId = window.requestAnimationFrame(this.start.bind(this));
-        let frameRateCoefficient = 1;
-        if (timestamp) {
-            if (this.oldTimestamp) {
-                frameRateCoefficient = (timestamp - this.oldTimestamp) * this.fps / 1000;
-            }
-            this.oldTimestamp = timestamp;
-        }
-        this.fn(frameRateCoefficient);
-    }
-
-    stop() {
-        window.cancelAnimationFrame(this.rafId);
-        this.rafId = null;
-    }
-}
-/* harmony export (immutable) */ exports["a"] = Loop;
-
-
-/***/ },
-
-/***/ 126:
-/***/ function(module, exports, __webpack_require__) {
-
-"use strict";
-/* harmony default export */ exports["a"] = [
-// ['assets/dickbutt.png', 'image'],
-['src/components/box/box01.jpg', 'image'], ['src/components/box/box02.jpg', 'image'], ['src/components/box/box03.jpg', 'image'], ['src/components/floor/floor.jpg', 'image'], ['src/components/plain/mask.svg', 'image'], ['src/components/switcher/wood.jpg', 'image'], ['src/components/wall/wall.jpg', 'image'], ['src/components/door/mixdown.m4a', 'audio']];
-
-/***/ },
-
-/***/ 127:
-/***/ function(module, exports, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__level__ = __webpack_require__(26);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__constants_constants__ = __webpack_require__(9);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__constants_actionNames__ = __webpack_require__(8);
-/* harmony export (immutable) */ exports["a"] = doorsState;
-var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-
-
-
-
-
-function getInitialState() {
-    return JSON.parse(__WEBPACK_IMPORTED_MODULE_0__level__["a" /* default */].objects).filter(obj => obj.type === __WEBPACK_IMPORTED_MODULE_1__constants_constants__["p" /* DOOR_TYPE */]).reduce((result, obj) => {
-        result[obj.props.id] = obj.props.state;
-        return result;
-    }, {});
-}
-
-function doorsState(state = {}, action) {
-    switch (action.type) {
-        case __WEBPACK_IMPORTED_MODULE_2__constants_actionNames__["n" /* DOOR_SET_CLOSING */]:
-            return _extends({}, state, {
-                [action.id]: __WEBPACK_IMPORTED_MODULE_1__constants_constants__["f" /* DOOR_CLOSING */]
-            });
-        case __WEBPACK_IMPORTED_MODULE_2__constants_actionNames__["o" /* DOOR_SET_OPENING */]:
-            return _extends({}, state, {
-                [action.id]: __WEBPACK_IMPORTED_MODULE_1__constants_constants__["g" /* DOOR_OPENING */]
-            });
-        case __WEBPACK_IMPORTED_MODULE_2__constants_actionNames__["p" /* DOOR_SET_CLOSE */]:
-            return _extends({}, state, {
-                [action.id]: __WEBPACK_IMPORTED_MODULE_1__constants_constants__["i" /* DOOR_CLOSE */]
-            });
-        case __WEBPACK_IMPORTED_MODULE_2__constants_actionNames__["q" /* DOOR_SET_OPEN */]:
-            return _extends({}, state, {
-                [action.id]: __WEBPACK_IMPORTED_MODULE_1__constants_constants__["h" /* DOOR_OPEN */]
-            });
-        case __WEBPACK_IMPORTED_MODULE_2__constants_actionNames__["a" /* SET_GAME_START */]:
-            return getInitialState();
-        default:
-            return state;
-    }
-}
-
-/***/ },
-
-/***/ 128:
-/***/ function(module, exports, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__constants_actionNames__ = __webpack_require__(8);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__constants_constants__ = __webpack_require__(9);
-/* harmony export (immutable) */ exports["a"] = gameState;
-
-
-
-function gameState(state = __WEBPACK_IMPORTED_MODULE_1__constants_constants__["E" /* LOADING */], action) {
-    switch (action.type) {
-        case __WEBPACK_IMPORTED_MODULE_0__constants_actionNames__["a" /* SET_GAME_START */]:
-            return __WEBPACK_IMPORTED_MODULE_1__constants_constants__["a" /* START */];
-        case __WEBPACK_IMPORTED_MODULE_0__constants_actionNames__["b" /* SET_GAME_PLAY */]:
-            return __WEBPACK_IMPORTED_MODULE_1__constants_constants__["b" /* PLAY */];
-        case __WEBPACK_IMPORTED_MODULE_0__constants_actionNames__["c" /* SET_GAME_END */]:
-            return __WEBPACK_IMPORTED_MODULE_1__constants_constants__["c" /* END */];
-        default:
-            return state;
-    }
-}
-
-/***/ },
-
-/***/ 129:
-/***/ function(module, exports, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__constants_actionNames__ = __webpack_require__(8);
-/* harmony export (immutable) */ exports["a"] = hints;
-
-
-function hints(state = new Map(), action) {
-    switch (action.type) {
-        case __WEBPACK_IMPORTED_MODULE_0__constants_actionNames__["r" /* HINTS_ADD */]:
-            {
-                if (!action.hints.length) {
-                    return state;
-                }
-                const newState = new Map(state);
-                action.hints.forEach(hint => {
-                    const refCount = newState.get(hint) || 0;
-                    newState.delete(hint);
-                    newState.set(hint, refCount + 1);
-                });
-                return newState;
-            }
-        case __WEBPACK_IMPORTED_MODULE_0__constants_actionNames__["s" /* HINTS_REMOVE */]:
-            {
-                if (!action.hints.length) {
-                    return state;
-                }
-                const newState = new Map(state);
-                action.hints.forEach(hint => {
-                    const refCount = newState.get(hint);
-                    if (refCount === 1) {
-                        newState.delete(hint);
-                    } else if (refCount) {
-                        newState.set(hint, refCount - 1);
-                    }
-                });
-                return newState;
-            }
-        case __WEBPACK_IMPORTED_MODULE_0__constants_actionNames__["a" /* SET_GAME_START */]:
-            return new Map();
-        default:
-            return state;
-    }
-}
-
-/***/ },
-
-/***/ 130:
-/***/ function(module, exports, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__constants_constants__ = __webpack_require__(9);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__constants_actionNames__ = __webpack_require__(8);
-/* harmony export (immutable) */ exports["a"] = keyPressed;
-var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-
-
-
-
-function getInitialState() {
-    return {
-        [__WEBPACK_IMPORTED_MODULE_0__constants_constants__["v" /* KEY_W */]]: false,
-        [__WEBPACK_IMPORTED_MODULE_0__constants_constants__["w" /* KEY_S */]]: false,
-        [__WEBPACK_IMPORTED_MODULE_0__constants_constants__["x" /* KEY_A */]]: false,
-        [__WEBPACK_IMPORTED_MODULE_0__constants_constants__["y" /* KEY_D */]]: false,
-        [__WEBPACK_IMPORTED_MODULE_0__constants_constants__["C" /* KEY_E */]]: false,
-        [__WEBPACK_IMPORTED_MODULE_0__constants_constants__["z" /* KEY_SHIFT */]]: false
-    };
-}
-
-function keyPressed(state = getInitialState(), action) {
-    switch (action.type) {
-        case __WEBPACK_IMPORTED_MODULE_1__constants_actionNames__["d" /* TOGGLE_KEY_PRESSED */]:
-            if (action.keyCode in state) {
-                return _extends({}, state, {
-                    [action.keyCode]: action.on
-                });
-            }
-            return state;
-        case __WEBPACK_IMPORTED_MODULE_1__constants_actionNames__["a" /* SET_GAME_START */]:
-            return getInitialState();
-        default:
-            return state;
-    }
-}
-
-/***/ },
-
-/***/ 131:
-/***/ function(module, exports, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__constants_constants__ = __webpack_require__(9);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__constants_actionNames__ = __webpack_require__(8);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__level__ = __webpack_require__(26);
-/* harmony export (immutable) */ exports["a"] = objects;
-var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-
-
-
-
-
-function getInitialState() {
-    return JSON.parse(__WEBPACK_IMPORTED_MODULE_2__level__["a" /* default */].objects);
-}
-
-function setDoorCollidable({ state, id, on }) {
-    const objects = new Array(state.length);
-    for (let i = 0; i < state.length; i++) {
-        let object = state[i];
-        if (object.type === __WEBPACK_IMPORTED_MODULE_0__constants_constants__["p" /* DOOR_TYPE */] && object.props.id === id) {
-            object.collides = on;
-        }
-        objects[i] = object;
-    }
-    return objects;
-}
-
-function objects(state = getInitialState(), action) {
-    switch (action.type) {
-        case __WEBPACK_IMPORTED_MODULE_1__constants_actionNames__["l" /* OBJECTS_SET_VISIBLE */]:
-            {
-                const objects = new Array(state.length);
-                for (let i = 0; i < state.length; i++) {
-                    const object = state[i];
-                    if (object.name in action.addVisibleObjects) {
-                        objects[i] = _extends({}, object, { isVisible: true });
-                    } else if (object.name in action.removeVisibleObjects) {
-                        objects[i] = _extends({}, object, { isVisible: false });
-                    } else {
-                        objects[i] = object;
-                    }
-                }
-                return objects;
-            }
-        case __WEBPACK_IMPORTED_MODULE_1__constants_actionNames__["m" /* OBJECTS_SET_REACHABLE */]:
-            {
-                const objects = new Array(state.length);
-                for (let i = 0; i < state.length; i++) {
-                    const object = state[i];
-                    let isReachable;
-                    if (action.reachableObject && object.name === action.reachableObject.name) {
-                        isReachable = true;
-                    }
-                    if (isReachable !== object.isReachable) {
-                        objects[i] = _extends({}, object, { isReachable });
-                    } else {
-                        objects[i] = object;
-                    }
-                }
-                return objects;
-            }
-        case __WEBPACK_IMPORTED_MODULE_1__constants_actionNames__["q" /* DOOR_SET_OPEN */]:
-            {
-                return setDoorCollidable({ state, id: action.id, on: false });
-            }
-        case __WEBPACK_IMPORTED_MODULE_1__constants_actionNames__["p" /* DOOR_SET_CLOSE */]:
-            {
-                return setDoorCollidable({ state, id: action.id, on: true });
-            }
-        case __WEBPACK_IMPORTED_MODULE_1__constants_actionNames__["a" /* SET_GAME_START */]:
-            {
-                return getInitialState();
-            }
-        default:
-            return state;
-    }
-}
-
-/***/ },
-
-/***/ 132:
-/***/ function(module, exports, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__constants_actionNames__ = __webpack_require__(8);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__level__ = __webpack_require__(26);
-/* harmony export (immutable) */ exports["a"] = playerPosition;
-
-
-
-function getInitialState() {
-    return [...__WEBPACK_IMPORTED_MODULE_1__level__["a" /* default */].player.pos];
-}
-
-function playerPosition(state = getInitialState(), action) {
-    switch (action.type) {
-        case __WEBPACK_IMPORTED_MODULE_0__constants_actionNames__["h" /* PLAYER_POSITION_UPDATE */]:
-            return action.pos;
-        case __WEBPACK_IMPORTED_MODULE_0__constants_actionNames__["a" /* SET_GAME_START */]:
-            return getInitialState();
-        default:
-            return state;
-    }
-}
-
-/***/ },
-
-/***/ 133:
-/***/ function(module, exports, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__constants_constants__ = __webpack_require__(9);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__constants_actionNames__ = __webpack_require__(8);
-/* harmony export (immutable) */ exports["a"] = playerState;
-
-
-
-function playerState(state = __WEBPACK_IMPORTED_MODULE_0__constants_constants__["F" /* PLAYER_STOP */], action) {
-    switch (action.type) {
-        case __WEBPACK_IMPORTED_MODULE_1__constants_actionNames__["k" /* PLAYER_STATE_STOP */]:
-        case __WEBPACK_IMPORTED_MODULE_1__constants_actionNames__["a" /* SET_GAME_START */]:
-            return __WEBPACK_IMPORTED_MODULE_0__constants_constants__["F" /* PLAYER_STOP */];
-        case __WEBPACK_IMPORTED_MODULE_1__constants_actionNames__["j" /* PLAYER_STATE_WALK */]:
-            return __WEBPACK_IMPORTED_MODULE_0__constants_constants__["q" /* PLAYER_WALK */];
-        case __WEBPACK_IMPORTED_MODULE_1__constants_actionNames__["i" /* PLAYER_STATE_RUN */]:
-            return __WEBPACK_IMPORTED_MODULE_0__constants_constants__["r" /* PLAYER_RUN */];
-        default:
-            return state;
-    }
-}
-
-/***/ },
-
-/***/ 134:
-/***/ function(module, exports, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__constants_actionNames__ = __webpack_require__(8);
-/* harmony export (immutable) */ exports["a"] = pointerDelta;
-
-
-function getInitialState() {
-    return { x: 0, y: 0 };
-}
-
-function pointerDelta(state = getInitialState(), action) {
-    switch (action.type) {
-        case __WEBPACK_IMPORTED_MODULE_0__constants_actionNames__["e" /* UPDATE_POINTER_DELTA */]:
-            return {
-                x: state.x + action.x,
-                y: state.y + action.y
-            };
-        case __WEBPACK_IMPORTED_MODULE_0__constants_actionNames__["f" /* RESET_POINTER_DELTA */]:
-            return getInitialState();
-        case __WEBPACK_IMPORTED_MODULE_0__constants_actionNames__["a" /* SET_GAME_START */]:
-            return getInitialState();
-        default:
-            return state;
-    }
-}
-
-/***/ },
-
-/***/ 135:
-/***/ function(module, exports, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__level__ = __webpack_require__(26);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__constants_actionNames__ = __webpack_require__(8);
-/* harmony export (immutable) */ exports["a"] = viewAngle;
-
-
-
-function getInitialState() {
-    return [...__WEBPACK_IMPORTED_MODULE_0__level__["a" /* default */].player.angle];
-}
-
-function viewAngle(state = getInitialState(), action) {
-    switch (action.type) {
-        case __WEBPACK_IMPORTED_MODULE_1__constants_actionNames__["g" /* VIEW_ANGLE_UPDATE */]:
-            return action.viewAngle;
-        case __WEBPACK_IMPORTED_MODULE_1__constants_actionNames__["a" /* SET_GAME_START */]:
-            return getInitialState();
-        default:
-            return state;
-    }
-}
-
-/***/ },
-
-/***/ 136:
-/***/ function(module, exports) {
-
-// removed by extract-text-webpack-plugin
-module.exports = {"root":"logo-root-1ptFe"};
-
-/***/ },
-
-/***/ 137:
-/***/ function(module, exports) {
-
-// removed by extract-text-webpack-plugin
-module.exports = {"root":"ceiling-root-oxGSS"};
-
-/***/ },
-
-/***/ 138:
-/***/ function(module, exports) {
-
-// removed by extract-text-webpack-plugin
-module.exports = {"root":"door-root-eMRzu"};
-
-/***/ },
-
-/***/ 139:
-/***/ function(module, exports) {
-
-// removed by extract-text-webpack-plugin
-module.exports = {"root":"endScreen-root-37ZFZ","message":"endScreen-message-2i6JW","anyKey":"endScreen-anyKey--krEO"};
-
-/***/ },
-
-/***/ 140:
-/***/ function(module, exports) {
-
-// removed by extract-text-webpack-plugin
-module.exports = {"root":"hints-root-3NehV","hint":"hints-hint-2sBxI"};
-
-/***/ },
-
-/***/ 141:
-/***/ function(module, exports) {
-
-// removed by extract-text-webpack-plugin
-module.exports = {"root":"loadingScreen-root-1mysW"};
-
-/***/ },
-
-/***/ 142:
-/***/ function(module, exports) {
-
-// removed by extract-text-webpack-plugin
-module.exports = {"plainOverlay":"plain-plainOverlay-RYH42"};
-
-/***/ },
-
-/***/ 143:
-/***/ function(module, exports) {
-
-// removed by extract-text-webpack-plugin
-module.exports = {"root":"startScreen-root-jM2W-","menuItem":"startScreen-menuItem-1ZrkU","menuItemButton":"startScreen-menuItemButton-3tYC1"};
-
-/***/ },
-
-/***/ 144:
-/***/ function(module, exports) {
-
-// removed by extract-text-webpack-plugin
-module.exports = {"handle":"switcher-handle-3j71N","switcherOff":"switcher-switcherOff-BRU4r","switcherOn":"switcher-switcherOn-2ZOdn","reachable":"switcher-reachable-24rEd"};
-
-/***/ },
-
-/***/ 145:
-/***/ function(module, exports) {
-
-// removed by extract-text-webpack-plugin
-module.exports = {"root":"camera-root-3QZty"};
-
-/***/ },
-
-/***/ 146:
-/***/ function(module, exports) {
-
-// removed by extract-text-webpack-plugin
-module.exports = {"playerAnimationWalking":"scene-playerAnimationWalking-P2K7v","playerAnimationRunning":"scene-playerAnimationRunning-JGR3l","playerAnimationWalkingY":"scene-playerAnimationWalkingY-IORpb","playerAnimationWalkingX":"scene-playerAnimationWalkingX-BJDEa"};
-
-/***/ },
-
-/***/ 147:
-/***/ function(module, exports) {
-
-// removed by extract-text-webpack-plugin
-module.exports = {"root":"viewport-root-goyag"};
-
-/***/ },
-
-/***/ 22:
-/***/ function(module, exports, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__plain_css__ = __webpack_require__(142);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__plain_css___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__plain_css__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react__ = __webpack_require__(4);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_react__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__constants_constants__ = __webpack_require__(9);
-/* harmony export (immutable) */ exports["a"] = Plain;
-var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-
-
-
-
-
-
-function Plain({
-    className = '',
-    pos,
-    parentPos,
-    playerPos,
-    size,
-    angle = [0, 0, 0],
-    parentAngle,
-    background,
-    simpleLight = false,
-    getTransformRule
-}) {
-    let backgroundStyle = {
-        background: 'none'
-        // background,
-        // opacity: 0
-    };
-    const relativePos = parentPos ? [pos].concat(parentPos).reduce(vectorsAdd3D) : pos;
-    const relativeAngle = parentAngle ? [angle].concat(parentAngle).reduce(vectorsAdd3D) : angle;
-    if (simpleLight) {
-        backgroundStyle = getPlayerSpotLightBackground({
-            distance: vectorLength3D([playerPos[0] - relativePos[0], playerPos[1] + relativePos[1], playerPos[2] - relativePos[2]]),
-            background,
-            simpleLight
-        });
-    } else {
-        // front
-        if (relativeAngle[0] === 0 && relativeAngle[1] % 360 === 0 && relativeAngle[2] === 0) {
-            if (playerPos[2] > relativePos[2]) {
-                backgroundStyle = getPlayerSpotLightBackground({
-                    pos: [playerPos[0] - (relativePos[0] - size[0] / 2), -relativePos[1] + size[1] / 2 - playerPos[1]],
-                    distance: playerPos[2] - relativePos[2],
-                    background
-                });
-            }
-            // back
-        } else if (relativeAngle[0] === 0 && Math.abs(relativeAngle[1] % 360) === 180 && relativeAngle[2] === 0) {
-            if (playerPos[2] < relativePos[2]) {
-                backgroundStyle = getPlayerSpotLightBackground({
-                    pos: [relativePos[0] + size[0] / 2 - playerPos[0], -relativePos[1] + size[1] / 2 - playerPos[1]],
-                    distance: relativePos[2] - playerPos[2],
-                    background
-                });
-            }
-            // left
-        } else if (relativeAngle[0] === 0 && (relativeAngle[1] % 360 === -90 || relativeAngle[1] % 360 === 270) && relativeAngle[2] === 0) {
-            if (playerPos[0] < relativePos[0]) {
-                backgroundStyle = getPlayerSpotLightBackground({
-                    pos: [playerPos[2] - (relativePos[2] - size[0] / 2), -relativePos[1] + size[1] / 2 - playerPos[1]],
-                    distance: relativePos[0] - playerPos[0],
-                    background
-                });
-            }
-            // right
-        } else if (relativeAngle[0] === 0 && (relativeAngle[1] % 360 === 90 || relativeAngle[1] % 360 === -270) && relativeAngle[2] === 0) {
-            if (playerPos[0] > relativePos[0]) {
-                backgroundStyle = getPlayerSpotLightBackground({
-                    pos: [relativePos[2] + size[0] / 2 - playerPos[2], -relativePos[1] + size[1] / 2 - playerPos[1]],
-                    distance: playerPos[0] - relativePos[0],
-                    background
-                });
-            }
-            // top
-        } else if ((relativeAngle[0] % 360 === 90 || relativeAngle[0] % 360 === -270) && relativeAngle[1] === 0 && relativeAngle[2] === 0) {
-            if (playerPos[1] > -relativePos[1]) {
-                backgroundStyle = getPlayerSpotLightBackground({
-                    pos: [playerPos[0] - (relativePos[0] - size[0] / 2), playerPos[2] - (relativePos[2] - size[1] / 2)],
-                    distance: playerPos[1] + relativePos[1],
-                    background
-                });
-            }
-        }
-        // todo bottom
-    }
-    return __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
-        'div',
-        { className: `obj ${ className }`, style: _extends({}, getTransformRule({ pos, angle }), {
-                width: size[0],
-                height: size[1],
-                margin: `-${ size[1] / 2 }px 0 0 -${ size[0] / 2 }px`,
-                background: backgroundStyle.background
-            }) },
-        __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement('div', { className: __WEBPACK_IMPORTED_MODULE_0__plain_css___default.a.plainOverlay, style: {
-                opacity: 'opacity' in backgroundStyle ? backgroundStyle.opacity : 1
-            } })
-    );
-}
-
-function getPlayerSpotLightBackground(params) {
-    return getSpotLightBackground(_extends({}, params, { radius: 1.5 * __WEBPACK_IMPORTED_MODULE_2__constants_constants__["d" /* BROAD_CELL_SIZE */] }));
-}
-
-function getSpotLightBackground({ pos, distance, background, simpleLight, radius }) {
-    const ratio = Math.max(0, radius - distance) / radius;
-    if (ratio) {
-        const result = {
-            opacity: 1 - ratio
-        };
-        if (!simpleLight) {
-            const size = (2 + ratio) * radius / 2 * 10;
-            result.background = 'url(src/components/plain/mask.svg) ' + (pos[0] - size / 2) + 'px ' + (pos[1] - size / 2) + 'px / ' + size + 'px no-repeat, ' + background;
-        } else {
-            result.background = background;
-        }
-        return result;
-    } else {
-        return {
-            background: '#000'
-        };
-    }
-}
-
-function vectorLength3D(v) {
-    return Math.sqrt(v[0] * v[0] + v[1] * v[1] + v[2] * v[2]);
-}
 
 function vectorsAdd3D(v1, v2) {
     return [v1[0] + v2[0], v1[1] + v2[1], v1[2] + v2[2]];
 }
 
 /***/ },
-
-/***/ 256:
+/* 12 */,
+/* 13 */,
+/* 14 */,
+/* 15 */,
+/* 16 */,
+/* 17 */,
+/* 18 */,
+/* 19 */,
+/* 20 */,
+/* 21 */,
+/* 22 */,
+/* 23 */,
+/* 24 */,
+/* 25 */,
+/* 26 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(4);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__light_light__ = __webpack_require__(117);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__light_simple__ = __webpack_require__(64);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__lib_utils__ = __webpack_require__(11);
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
 
-/* harmony default export */ exports["a"] = __WEBPACK_IMPORTED_MODULE_0_react__["PropTypes"].shape({
-  subscribe: __WEBPACK_IMPORTED_MODULE_0_react__["PropTypes"].func.isRequired,
-  dispatch: __WEBPACK_IMPORTED_MODULE_0_react__["PropTypes"].func.isRequired,
-  getState: __WEBPACK_IMPORTED_MODULE_0_react__["PropTypes"].func.isRequired
-});
 
+
+
+
+class Plain extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
+
+    constructor(props) {
+        super(props);
+
+        this.styleRules = _extends({}, __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_3__lib_utils__["a" /* getTransformRule */])({ pos: props.pos, angle: props.angle }), {
+            width: props.size[0],
+            height: props.size[1],
+            margin: -props.size[1] / 2 + 'px 0 0 ' + props.size[0] / -2 + 'px'
+        });
+        this.className = 'obj plain ' + props.className;
+    }
+
+    render() {
+        const {
+            parentPos,
+            parentAngle,
+            pos,
+            angle,
+            size,
+            playerPos,
+            light
+        } = this.props;
+        return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+            'div',
+            { className: this.className, style: this.styleRules },
+            light === 'simple' ? __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2__light_simple__["a" /* default */], {
+                parentPos: parentPos,
+                playerPos: playerPos,
+                pos: pos
+            }) : __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1__light_light__["a" /* default */], {
+                parentPos: parentPos,
+                parentAngle: parentAngle,
+                pos: pos,
+                angle: angle,
+                size: size,
+                playerPos: playerPos
+            })
+        );
+    }
+}
+
+Plain.defaultProps = {
+    angle: [0, 0, 0],
+    className: ''
+};
+/* harmony default export */ exports["a"] = Plain;
 
 /***/ },
-
-/***/ 26:
+/* 27 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__lib_collision__ = __webpack_require__(64);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__lib_utils__ = __webpack_require__(33);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__lib_collision__ = __webpack_require__(65);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__lib_utils__ = __webpack_require__(11);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__constants_constants__ = __webpack_require__(9);
 
 
@@ -2621,7 +573,7 @@ const level = {
         pos: [250, 125, 975],
         props: {
             id: 1,
-            state: __WEBPACK_IMPORTED_MODULE_2__constants_constants__["i" /* DOOR_CLOSE */]
+            state: __WEBPACK_IMPORTED_MODULE_2__constants_constants__["j" /* DOOR_CLOSE */]
         }
     }, {
         name: 'switcher_02',
@@ -2640,7 +592,7 @@ const level = {
         pos: [2250, 125, 975],
         props: {
             id: 2,
-            state: __WEBPACK_IMPORTED_MODULE_2__constants_constants__["i" /* DOOR_CLOSE */]
+            state: __WEBPACK_IMPORTED_MODULE_2__constants_constants__["j" /* DOOR_CLOSE */]
         }
     }, {
         name: 'switcher_03',
@@ -2659,7 +611,7 @@ const level = {
         pos: [250, 125, 1525],
         props: {
             id: 3,
-            state: __WEBPACK_IMPORTED_MODULE_2__constants_constants__["i" /* DOOR_CLOSE */]
+            state: __WEBPACK_IMPORTED_MODULE_2__constants_constants__["j" /* DOOR_CLOSE */]
         }
     }, {
         name: 'switcher_04',
@@ -2678,7 +630,7 @@ const level = {
         pos: [1500, 125, 2250],
         props: {
             id: 4,
-            state: __WEBPACK_IMPORTED_MODULE_2__constants_constants__["i" /* DOOR_CLOSE */]
+            state: __WEBPACK_IMPORTED_MODULE_2__constants_constants__["j" /* DOOR_CLOSE */]
         }
     }, {
         name: 'switcher_05',
@@ -2709,7 +661,7 @@ const level = {
         pos: [1250, 125, 25],
         props: {
             id: 5,
-            state: __WEBPACK_IMPORTED_MODULE_2__constants_constants__["i" /* DOOR_CLOSE */]
+            state: __WEBPACK_IMPORTED_MODULE_2__constants_constants__["j" /* DOOR_CLOSE */]
         }
     }]
 };
@@ -2767,7 +719,7 @@ for (let z = 0; z < level.boundaries[2]; z += 500) {
 }
 
 // calculate 2d points coordinates for objects hitboxes
-const playerCell = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__lib_utils__["b" /* getPlayerCell */])(level.player.pos);
+const playerCell = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__lib_utils__["c" /* getPlayerCell */])(level.player.pos);
 for (let i = 0; i < level.objects.length; i++) {
     const obj = level.objects[i];
     let sizeXHalf = 0;
@@ -2799,12 +751,12 @@ for (let i = 0; i < level.objects.length; i++) {
         }
     }
 
-    obj.isVisible = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__lib_utils__["c" /* isObjectVisible */])(playerCell, obj);
+    obj.isVisible = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__lib_utils__["d" /* isObjectVisible */])(playerCell, obj);
 
     obj.isReachable = false;
 }
 
-const collisionView = __WEBPACK_IMPORTED_MODULE_0__lib_collision__["a" /* default */].getCollisionView([level.player.pos, __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__lib_utils__["d" /* getPointPosition */])({ pos: level.player.pos, distance: __WEBPACK_IMPORTED_MODULE_2__constants_constants__["s" /* HAND_LENGTH */], angle: level.player.angle })], level.objects, __WEBPACK_IMPORTED_MODULE_2__constants_constants__["d" /* BROAD_CELL_SIZE */]);
+const collisionView = __WEBPACK_IMPORTED_MODULE_0__lib_collision__["a" /* default */].getCollisionView([level.player.pos, __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__lib_utils__["e" /* getPointPosition */])({ pos: level.player.pos, distance: __WEBPACK_IMPORTED_MODULE_2__constants_constants__["s" /* HAND_LENGTH */], angle: level.player.angle })], level.objects, __WEBPACK_IMPORTED_MODULE_2__constants_constants__["d" /* BROAD_CELL_SIZE */]);
 if (collisionView) {
     collisionView.obj.isReachable = true;
 }
@@ -2814,184 +766,28 @@ level.objects = JSON.stringify(level.objects);
 /* harmony default export */ exports["a"] = level;
 
 /***/ },
-
-/***/ 275:
+/* 28 */,
+/* 29 */,
+/* 30 */,
+/* 31 */,
+/* 32 */,
+/* 33 */,
+/* 34 */,
+/* 35 */,
+/* 36 */,
+/* 37 */,
+/* 38 */,
+/* 39 */,
+/* 40 */,
+/* 41 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__index_css__ = __webpack_require__(102);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__index_css___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__index_css__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react__ = __webpack_require__(4);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_react__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_react_dom__ = __webpack_require__(40);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_react_dom___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_react_dom__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_redux__ = __webpack_require__(18);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_react_redux__ = __webpack_require__(16);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_react_redux___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_react_redux__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_redux_batched_actions__ = __webpack_require__(32);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_redux_batched_actions___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5_redux_batched_actions__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__containers_game__ = __webpack_require__(100);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__reducers__ = __webpack_require__(101);
-
-
-
-
-
-
-
-
-
-
-
-
-const store = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_3_redux__["createStore"])(__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_5_redux_batched_actions__["enableBatching"])(__WEBPACK_IMPORTED_MODULE_7__reducers__["a" /* default */]));
-
-__WEBPACK_IMPORTED_MODULE_2_react_dom___default.a.render(__WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
-    __WEBPACK_IMPORTED_MODULE_4_react_redux__["Provider"],
-    { store: store },
-    __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_6__containers_game__["a" /* default */], null)
-), document.getElementById('app'));
-
-/***/ },
-
-/***/ 33:
-/***/ function(module, exports, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__constants_constants__ = __webpack_require__(9);
-/* harmony export (immutable) */ exports["a"] = getTransformRule;
-/* harmony export (immutable) */ exports["f"] = getVisibleObjects;
-/* harmony export (immutable) */ exports["b"] = getPlayerCell;
-/* harmony export (immutable) */ exports["c"] = isObjectVisible;
-/* harmony export (immutable) */ exports["d"] = getPointPosition;
-
-const AXIS = ['X', 'Y', 'Z'];
-
-/**
- * Returns css transform rule for given position and angle
- * @param {Object} data
- * @returns {{transform: string}}
- */
-function getTransformRule(data) {
-    let transform = '';
-    if (data.pos) {
-        transform = 'translate3d(' + data.pos[0] + 'px,' + data.pos[1] + 'px,' + data.pos[2] + 'px)';
-    }
-    if (data.angle) {
-        for (let axis = 0; axis < data.angle.length; axis++) {
-            transform = transform + ' rotate' + AXIS[axis] + '(' + data.angle[axis] + 'deg)';
-        }
-    }
-    return { transform: transform };
-}
-
-/**
- * Returns array of objects to be shown on map
- * @param {Array} playerPos
- * @param {Array} objects
- * @returns {Array}
- */
-function getVisibleObjects(playerPos, objects) {
-    const playerCell = getPlayerCell(playerPos);
-    const addVisibleObjects = {};
-    const removeVisibleObjects = {};
-    for (let i = 0; i < objects.length; i = i + 1) {
-        const object = objects[i];
-        const isVisible = isObjectVisible(playerCell, object);
-        if (object.isVisible !== isVisible) {
-            (isVisible ? addVisibleObjects : removeVisibleObjects)[object.name] = true;
-        }
-    }
-    return { addVisibleObjects, removeVisibleObjects };
-}
-
-function getPlayerCell(playerPos) {
-    return [Math.floor(playerPos[0] / __WEBPACK_IMPORTED_MODULE_0__constants_constants__["d" /* BROAD_CELL_SIZE */]), Math.floor(playerPos[2] / __WEBPACK_IMPORTED_MODULE_0__constants_constants__["d" /* BROAD_CELL_SIZE */])];
-}
-
-function isObjectVisible(playerCell, object) {
-    let isVisible = false;
-    for (let k = 0; k < object.broadCells.length; k = k + 1) {
-        if (Math.abs(playerCell[0] - object.broadCells[k][0]) < 2 && Math.abs(playerCell[1] - object.broadCells[k][1]) < 2) {
-            isVisible = true;
-            break;
-        }
-    }
-    return isVisible;
-}
-
-/**
- * Returns coordinates of a point which is `distance` away from `pos` in the direction `angle`
- * @param {Array} pos
- * @param {number} distance
- * @param {Array} angle
- * @returns {Array}
- */
-function getPointPosition({ pos, distance, angle }) {
-    const y = pos[1] + Math.round(distance * Math.sin(Math.PI / 180 * angle[1]));
-    const tempDistance = distance * Math.cos(Math.PI / 180 * angle[1]);
-    const x = pos[0] + Math.round(tempDistance * Math.sin(Math.PI / 180 * angle[0]));
-    const z = pos[2] - Math.round(tempDistance * Math.cos(Math.PI / 180 * angle[0]));
-    return [x, y, z];
-}
-
-/**
- * Stores an array of actions that should be dispatched at a certain time
- */
-class DelayedActions {
-    constructor() {
-        this.delayedActions = [];
-    }
-
-    /**
-     * Returns an array of actions, that are to be dispatched
-     * @returns {Array}
-     */
-    getActualActions() {
-        const now = Date.now();
-        let actualActions = [];
-        let delayedActions = [];
-        for (let i = 0; i < this.delayedActions.length; i++) {
-            if (this.delayedActions[i].timestamp <= now) {
-                actualActions.push(this.delayedActions[i].action);
-            } else {
-                delayedActions.push(this.delayedActions[i]);
-            }
-        }
-        this.delayedActions = delayedActions;
-        return actualActions;
-    }
-
-    /**
-     * Adds a delayed action to the list
-     * @param {Object} action
-     * @param {number} delay
-     */
-    pushAction({ action, delay }) {
-        this.delayedActions.push({
-            action,
-            timestamp: Date.now() + delay
-        });
-    }
-
-    clear() {
-        this.delayedActions = [];
-    }
-}
-/* harmony export (immutable) */ exports["e"] = DelayedActions;
-
-
-/***/ },
-
-/***/ 41:
-/***/ function(module, exports, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__game__ = __webpack_require__(104);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__player__ = __webpack_require__(107);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__objects__ = __webpack_require__(106);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__doorsState__ = __webpack_require__(103);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__hints__ = __webpack_require__(105);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__game__ = __webpack_require__(106);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__player__ = __webpack_require__(109);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__objects__ = __webpack_require__(108);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__doorsState__ = __webpack_require__(105);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__hints__ = __webpack_require__(107);
 
 /* harmony reexport (module object) */ __webpack_require__.d(exports, "a", function() { return __WEBPACK_IMPORTED_MODULE_0__game__; });
 
@@ -3009,8 +805,67 @@ class DelayedActions {
 
 
 /***/ },
+/* 42 */,
+/* 43 */,
+/* 44 */,
+/* 45 */,
+/* 46 */,
+/* 47 */,
+/* 48 */,
+/* 49 */,
+/* 50 */,
+/* 51 */,
+/* 52 */,
+/* 53 */,
+/* 54 */,
+/* 55 */,
+/* 56 */,
+/* 57 */,
+/* 58 */,
+/* 59 */,
+/* 60 */,
+/* 61 */,
+/* 62 */,
+/* 63 */,
+/* 64 */
+/***/ function(module, exports, __webpack_require__) {
 
-/***/ 64:
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__light_css__ = __webpack_require__(66);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__light_css___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__light_css__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react__ = __webpack_require__(4);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_react__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__lib_utils__ = __webpack_require__(11);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__constants_constants__ = __webpack_require__(9);
+
+
+
+
+
+class SimpleLight extends __WEBPACK_IMPORTED_MODULE_1_react___default.a.Component {
+    render() {
+        const { parentPos, playerPos, pos } = this.props;
+        const relativePos = parentPos ? [pos].concat(parentPos).reduce(__WEBPACK_IMPORTED_MODULE_2__lib_utils__["b" /* vectorsAdd3D */]) : pos;
+        const opacity = SimpleLight.getOpacity(SimpleLight.vectorLength3D([playerPos[0] - relativePos[0], playerPos[1] + relativePos[1], playerPos[2] - relativePos[2]]));
+        return __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement('div', { className: __WEBPACK_IMPORTED_MODULE_0__light_css___default.a.overlay,
+            style: { opacity }
+        });
+    }
+
+    static getOpacity(distance) {
+        const ratio = Math.max(0, __WEBPACK_IMPORTED_MODULE_3__constants_constants__["e" /* SPOTLIGHT_RADIUS */] - distance) / __WEBPACK_IMPORTED_MODULE_3__constants_constants__["e" /* SPOTLIGHT_RADIUS */];
+        return 1 - ratio;
+    }
+
+    static vectorLength3D(v) {
+        return Math.sqrt(v[0] * v[0] + v[1] * v[1] + v[2] * v[2]);
+    }
+}
+
+/* harmony default export */ exports["a"] = SimpleLight;
+
+/***/ },
+/* 65 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3322,181 +1177,2570 @@ class Collision {
 
 
 /***/ },
+/* 66 */
+/***/ function(module, exports) {
 
-/***/ 8:
+// removed by extract-text-webpack-plugin
+module.exports = {"root":"light-root-3ic0q","overlay":"light-overlay-1kisp"};
+
+/***/ },
+/* 67 */,
+/* 68 */,
+/* 69 */,
+/* 70 */,
+/* 71 */,
+/* 72 */,
+/* 73 */,
+/* 74 */,
+/* 75 */,
+/* 76 */,
+/* 77 */,
+/* 78 */,
+/* 79 */,
+/* 80 */,
+/* 81 */,
+/* 82 */,
+/* 83 */,
+/* 84 */,
+/* 85 */,
+/* 86 */,
+/* 87 */,
+/* 88 */,
+/* 89 */,
+/* 90 */,
+/* 91 */,
+/* 92 */,
+/* 93 */,
+/* 94 */,
+/* 95 */,
+/* 96 */,
+/* 97 */,
+/* 98 */,
+/* 99 */,
+/* 100 */,
+/* 101 */,
+/* 102 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
-const SET_GAME_START = 'setGameStart';
-/* harmony export (immutable) */ exports["a"] = SET_GAME_START;
-
-const SET_GAME_PLAY = 'setGamePlay';
-/* harmony export (immutable) */ exports["b"] = SET_GAME_PLAY;
-
-const SET_GAME_END = 'setGameEnd';
-/* harmony export (immutable) */ exports["c"] = SET_GAME_END;
-
-
-const TOGGLE_KEY_PRESSED = 'toggleKeyPressed';
-/* harmony export (immutable) */ exports["d"] = TOGGLE_KEY_PRESSED;
-
-const UPDATE_POINTER_DELTA = 'updatePointerDelta';
-/* harmony export (immutable) */ exports["e"] = UPDATE_POINTER_DELTA;
-
-const RESET_POINTER_DELTA = 'resetPointerDelta';
-/* harmony export (immutable) */ exports["f"] = RESET_POINTER_DELTA;
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(4);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_redux__ = __webpack_require__(19);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_react_redux__ = __webpack_require__(17);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_react_redux___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_react_redux__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__constants_constants__ = __webpack_require__(9);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__actionCreators__ = __webpack_require__(41);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__components_loadingScreen_loadingScreen__ = __webpack_require__(118);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__components_startScreen_startScreen__ = __webpack_require__(120);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__components_endScreen_endScreen__ = __webpack_require__(114);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__components_hints_hints__ = __webpack_require__(116);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__viewport_viewport__ = __webpack_require__(127);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__camera_camera__ = __webpack_require__(124);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__scene_scene__ = __webpack_require__(126);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__gameLoop__ = __webpack_require__(125);
 
 
-const VIEW_ANGLE_UPDATE = 'viewAngleUpdate';
-/* harmony export (immutable) */ exports["g"] = VIEW_ANGLE_UPDATE;
-
-const PLAYER_POSITION_UPDATE = 'playerPositionUpdate';
-/* harmony export (immutable) */ exports["h"] = PLAYER_POSITION_UPDATE;
-
-const PLAYER_STATE_RUN = 'playerStateRun';
-/* harmony export (immutable) */ exports["i"] = PLAYER_STATE_RUN;
-
-const PLAYER_STATE_WALK = 'playerStateWalk';
-/* harmony export (immutable) */ exports["j"] = PLAYER_STATE_WALK;
-
-const PLAYER_STATE_STOP = 'playerStateStop';
-/* harmony export (immutable) */ exports["k"] = PLAYER_STATE_STOP;
 
 
-const OBJECTS_SET_VISIBLE = 'objectsSetVisible';
-/* harmony export (immutable) */ exports["l"] = OBJECTS_SET_VISIBLE;
-
-const OBJECTS_SET_REACHABLE = 'objectsSetReachable';
-/* harmony export (immutable) */ exports["m"] = OBJECTS_SET_REACHABLE;
 
 
-const DOOR_SET_CLOSING = 'doorSetClosing';
-/* harmony export (immutable) */ exports["n"] = DOOR_SET_CLOSING;
-
-const DOOR_SET_CLOSE = 'doorSetClose';
-/* harmony export (immutable) */ exports["p"] = DOOR_SET_CLOSE;
-
-const DOOR_SET_OPENING = 'doorSetOpening';
-/* harmony export (immutable) */ exports["o"] = DOOR_SET_OPENING;
-
-const DOOR_SET_OPEN = 'doorSetOpen';
-/* harmony export (immutable) */ exports["q"] = DOOR_SET_OPEN;
 
 
-const HINTS_ADD = 'hintsAdd';
-/* harmony export (immutable) */ exports["r"] = HINTS_ADD;
 
-const HINTS_REMOVE = 'hintsRemove';
-/* harmony export (immutable) */ exports["s"] = HINTS_REMOVE;
+
+
+
+
+
+
+class Game extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
+
+    constructor(...args) {
+        super(...args);
+
+        if (window.AudioContext) {
+            this.audioCtx = new window.AudioContext();
+        } else {
+            this.audioCtx = new window.webkitAudioContext();
+        }
+        this.assets = {};
+
+        this.setGameStateStart = this.setGameState.bind(this, __WEBPACK_IMPORTED_MODULE_3__constants_constants__["a" /* START */]);
+        this.setGameStatePlay = this.setGameState.bind(this, __WEBPACK_IMPORTED_MODULE_3__constants_constants__["b" /* PLAY */]);
+        this.setGameStateEnd = this.setGameState.bind(this, __WEBPACK_IMPORTED_MODULE_3__constants_constants__["c" /* END */]);
+
+        this.cacheAssetData = this.cacheAssetData.bind(this);
+        this.viewportNode = null;
+    }
+
+    getChildContext() {
+        return {
+            audioCtx: this.audioCtx,
+            assets: this.assets
+        };
+    }
+
+    render() {
+        const { gameState, hints } = this.props;
+        if (gameState === __WEBPACK_IMPORTED_MODULE_3__constants_constants__["E" /* LOADING */]) {
+            return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_5__components_loadingScreen_loadingScreen__["a" /* default */], {
+                onLoaded: this.setGameStateStart,
+                cacheAssetData: this.cacheAssetData
+            });
+        } else if (gameState === __WEBPACK_IMPORTED_MODULE_3__constants_constants__["a" /* START */]) {
+            return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_6__components_startScreen_startScreen__["a" /* default */], { onStart: this.setGameStatePlay });
+        } else if (gameState === __WEBPACK_IMPORTED_MODULE_3__constants_constants__["b" /* PLAY */]) {
+            return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                __WEBPACK_IMPORTED_MODULE_9__viewport_viewport__["a" /* default */],
+                null,
+                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_8__components_hints_hints__["a" /* default */], { hints: hints }),
+                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                    __WEBPACK_IMPORTED_MODULE_12__gameLoop__["a" /* default */],
+                    { onWin: this.setGameStateEnd },
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                        __WEBPACK_IMPORTED_MODULE_10__camera_camera__["a" /* default */],
+                        null,
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_11__scene_scene__["a" /* default */], null)
+                    )
+                )
+            );
+        } else if (gameState === __WEBPACK_IMPORTED_MODULE_3__constants_constants__["c" /* END */]) {
+            return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_7__components_endScreen_endScreen__["a" /* default */], { onEnd: this.setGameStateStart });
+        }
+    }
+
+    setGameState(state) {
+        this.props.setGameState(state);
+    }
+
+    cacheAssetData(assetSrc, data) {
+        this.assets[assetSrc] = data;
+    }
+}
+
+Game.propTypes = {
+    gameState: __WEBPACK_IMPORTED_MODULE_0_react__["PropTypes"].string.isRequired,
+    hints: __WEBPACK_IMPORTED_MODULE_0_react__["PropTypes"].instanceOf(Map).isRequired,
+    setGameState: __WEBPACK_IMPORTED_MODULE_0_react__["PropTypes"].func.isRequired
+};
+Game.childContextTypes = {
+    audioCtx: __WEBPACK_IMPORTED_MODULE_0_react__["PropTypes"].object.isRequired,
+    assets: __WEBPACK_IMPORTED_MODULE_0_react__["PropTypes"].object.isRequired
+};
+function mapStateToProps(state) {
+    return {
+        gameState: state.gameState,
+        hints: state.hints
+    };
+}
+
+function mapDispatchToProps(dispatch) {
+    return __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1_redux__["bindActionCreators"])({
+        setGameState: __WEBPACK_IMPORTED_MODULE_4__actionCreators__["a" /* game */].setGameState
+    }, dispatch);
+}
+
+/* harmony default export */ exports["a"] = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2_react_redux__["connect"])(mapStateToProps, mapDispatchToProps)(Game);
+
+/***/ },
+/* 103 */
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_redux__ = __webpack_require__(19);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__gameState_js__ = __webpack_require__(131);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__keyPressed_js__ = __webpack_require__(133);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__pointerDelta_js__ = __webpack_require__(137);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__viewAngle_js__ = __webpack_require__(138);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__playerPosition_js__ = __webpack_require__(135);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__playerState_js__ = __webpack_require__(136);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__objects_js__ = __webpack_require__(134);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__doorsState_js__ = __webpack_require__(130);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__hints_js__ = __webpack_require__(132);
+
+
+
+
+
+
+
+
+
+
+
+
+/* harmony default export */ exports["a"] = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0_redux__["combineReducers"])({
+    gameState: __WEBPACK_IMPORTED_MODULE_1__gameState_js__["a" /* default */],
+    keyPressed: __WEBPACK_IMPORTED_MODULE_2__keyPressed_js__["a" /* default */],
+    pointerDelta: __WEBPACK_IMPORTED_MODULE_3__pointerDelta_js__["a" /* default */],
+    viewAngle: __WEBPACK_IMPORTED_MODULE_4__viewAngle_js__["a" /* default */],
+    pos: __WEBPACK_IMPORTED_MODULE_5__playerPosition_js__["a" /* default */],
+    playerState: __WEBPACK_IMPORTED_MODULE_6__playerState_js__["a" /* default */],
+    objects: __WEBPACK_IMPORTED_MODULE_7__objects_js__["a" /* default */],
+    doorsState: __WEBPACK_IMPORTED_MODULE_8__doorsState_js__["a" /* default */],
+    hints: __WEBPACK_IMPORTED_MODULE_9__hints_js__["a" /* default */]
+});
+
+/***/ },
+/* 104 */
+/***/ function(module, exports) {
+
+// removed by extract-text-webpack-plugin
+
+/***/ },
+/* 105 */
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__constants_actionNames__ = __webpack_require__(8);
+/* harmony export (immutable) */ exports["setClosing"] = setClosing;
+/* harmony export (immutable) */ exports["setOpening"] = setOpening;
+/* harmony export (immutable) */ exports["setClose"] = setClose;
+/* harmony export (immutable) */ exports["setOpen"] = setOpen;
+
+
+function setClosing(id) {
+    return {
+        type: __WEBPACK_IMPORTED_MODULE_0__constants_actionNames__["n" /* DOOR_SET_CLOSING */],
+        id
+    };
+}
+
+function setOpening(id) {
+    return {
+        type: __WEBPACK_IMPORTED_MODULE_0__constants_actionNames__["o" /* DOOR_SET_OPENING */],
+        id
+    };
+}
+
+function setClose(id) {
+    return {
+        type: __WEBPACK_IMPORTED_MODULE_0__constants_actionNames__["p" /* DOOR_SET_CLOSE */],
+        id
+    };
+}
+
+function setOpen(id) {
+    return {
+        type: __WEBPACK_IMPORTED_MODULE_0__constants_actionNames__["q" /* DOOR_SET_OPEN */],
+        id
+    };
+}
+
+/***/ },
+/* 106 */
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__constants_constants__ = __webpack_require__(9);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__constants_actionNames__ = __webpack_require__(8);
+/* harmony export (immutable) */ exports["setGameState"] = setGameState;
+/* harmony export (immutable) */ exports["toggleKeyPressed"] = toggleKeyPressed;
+/* harmony export (immutable) */ exports["updatePointerDelta"] = updatePointerDelta;
+/* harmony export (immutable) */ exports["resetPointerDelta"] = resetPointerDelta;
+
+
+
+function setGameState(state) {
+    switch (state) {
+        case __WEBPACK_IMPORTED_MODULE_0__constants_constants__["a" /* START */]:
+            return {
+                type: __WEBPACK_IMPORTED_MODULE_1__constants_actionNames__["a" /* SET_GAME_START */]
+            };
+        case __WEBPACK_IMPORTED_MODULE_0__constants_constants__["b" /* PLAY */]:
+            return {
+                type: __WEBPACK_IMPORTED_MODULE_1__constants_actionNames__["b" /* SET_GAME_PLAY */]
+            };
+        case __WEBPACK_IMPORTED_MODULE_0__constants_constants__["c" /* END */]:
+            return {
+                type: __WEBPACK_IMPORTED_MODULE_1__constants_actionNames__["c" /* SET_GAME_END */]
+            };
+    }
+}
+
+function toggleKeyPressed(keyCode, on) {
+    return {
+        type: __WEBPACK_IMPORTED_MODULE_1__constants_actionNames__["d" /* TOGGLE_KEY_PRESSED */],
+        keyCode, on
+    };
+}
+
+function updatePointerDelta(x, y) {
+    return {
+        type: __WEBPACK_IMPORTED_MODULE_1__constants_actionNames__["e" /* UPDATE_POINTER_DELTA */],
+        x, y
+    };
+}
+
+function resetPointerDelta() {
+    return {
+        type: __WEBPACK_IMPORTED_MODULE_1__constants_actionNames__["f" /* RESET_POINTER_DELTA */]
+    };
+}
+
+/***/ },
+/* 107 */
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__constants_actionNames__ = __webpack_require__(8);
+/* harmony export (immutable) */ exports["addHints"] = addHints;
+/* harmony export (immutable) */ exports["removeHints"] = removeHints;
+
+
+function addHints(hints) {
+    return {
+        type: __WEBPACK_IMPORTED_MODULE_0__constants_actionNames__["r" /* HINTS_ADD */],
+        hints
+    };
+}
+
+function removeHints(hints) {
+    return {
+        type: __WEBPACK_IMPORTED_MODULE_0__constants_actionNames__["s" /* HINTS_REMOVE */],
+        hints
+    };
+}
+
+/***/ },
+/* 108 */
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__constants_actionNames__ = __webpack_require__(8);
+/* harmony export (immutable) */ exports["setVisible"] = setVisible;
+/* harmony export (immutable) */ exports["setReachable"] = setReachable;
+
+
+function setVisible({ addVisibleObjects, removeVisibleObjects }) {
+    return {
+        type: __WEBPACK_IMPORTED_MODULE_0__constants_actionNames__["l" /* OBJECTS_SET_VISIBLE */],
+        addVisibleObjects,
+        removeVisibleObjects
+    };
+}
+
+function setReachable(reachableObject) {
+    return {
+        type: __WEBPACK_IMPORTED_MODULE_0__constants_actionNames__["m" /* OBJECTS_SET_REACHABLE */],
+        reachableObject
+    };
+}
+
+/***/ },
+/* 109 */
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__constants_actionNames__ = __webpack_require__(8);
+/* harmony export (immutable) */ exports["updateViewAngle"] = updateViewAngle;
+/* harmony export (immutable) */ exports["updatePosition"] = updatePosition;
+/* harmony export (immutable) */ exports["run"] = run;
+/* harmony export (immutable) */ exports["walk"] = walk;
+/* harmony export (immutable) */ exports["stop"] = stop;
+
+
+function updateViewAngle(viewAngle) {
+    return {
+        type: __WEBPACK_IMPORTED_MODULE_0__constants_actionNames__["g" /* VIEW_ANGLE_UPDATE */],
+        viewAngle
+    };
+}
+
+function updatePosition(pos) {
+    return {
+        type: __WEBPACK_IMPORTED_MODULE_0__constants_actionNames__["h" /* PLAYER_POSITION_UPDATE */],
+        pos
+    };
+}
+
+function run() {
+    return {
+        type: __WEBPACK_IMPORTED_MODULE_0__constants_actionNames__["i" /* PLAYER_STATE_RUN */]
+    };
+}
+
+function walk() {
+    return {
+        type: __WEBPACK_IMPORTED_MODULE_0__constants_actionNames__["j" /* PLAYER_STATE_WALK */]
+    };
+}
+
+function stop() {
+    return {
+        type: __WEBPACK_IMPORTED_MODULE_0__constants_actionNames__["k" /* PLAYER_STATE_STOP */]
+    };
+}
+
+/***/ },
+/* 110 */
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__logo_css__ = __webpack_require__(139);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__logo_css___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__logo_css__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react__ = __webpack_require__(4);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_react__);
+
+
+
+function Logo() {
+    return __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
+        'div',
+        { className: __WEBPACK_IMPORTED_MODULE_0__logo_css___default.a.root },
+        'The deep dark dungeon'
+    );
+}
+
+/* harmony default export */ exports["a"] = Logo;
+
+/***/ },
+/* 111 */
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__box_css__ = __webpack_require__(140);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__box_css___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__box_css__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react__ = __webpack_require__(4);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_react__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__plain_plain__ = __webpack_require__(26);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__lib_utils__ = __webpack_require__(11);
+
+
+
+
+
+class Box extends __WEBPACK_IMPORTED_MODULE_1_react___default.a.Component {
+    constructor(props) {
+        super(props);
+
+        this.posWithInvertedY = [props.pos[0], -props.pos[1], props.pos[2]];
+        this.styleRules = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_3__lib_utils__["a" /* getTransformRule */])({ pos: this.posWithInvertedY });
+        this.className = ['obj', __WEBPACK_IMPORTED_MODULE_0__box_css___default.a.root, __WEBPACK_IMPORTED_MODULE_0__box_css___default.a['mode-' + props.mode]].join(' ');
+    }
+
+    shouldComponentUpdate(nextProps) {
+        return nextProps.playerPos !== this.props.playerPos;
+    }
+
+    render() {
+        const { pos, playerPos, size } = this.props;
+
+        // Front-Back-Left-Right-Top
+        return __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
+            'div',
+            { className: this.className, style: this.styleRules },
+            __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2__plain_plain__["a" /* default */], {
+                pos: [0, 0, size[2] / 2],
+                parentPos: [this.posWithInvertedY],
+                playerPos: playerPos,
+                size: size,
+                angle: [0, 0, 0]
+            }),
+            __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2__plain_plain__["a" /* default */], {
+                pos: [0, 0, -size[2] / 2],
+                parentPos: [this.posWithInvertedY],
+                playerPos: playerPos,
+                size: size,
+                angle: [0, 180, 0]
+            }),
+            __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2__plain_plain__["a" /* default */], {
+                pos: [-size[0] / 2, 0, 0],
+                parentPos: [this.posWithInvertedY],
+                playerPos: playerPos,
+                size: [size[2], size[1]],
+                angle: [0, -90, 0]
+            }),
+            __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2__plain_plain__["a" /* default */], {
+                pos: [size[0] / 2, 0, 0],
+                parentPos: [this.posWithInvertedY],
+                playerPos: playerPos,
+                size: [size[2], size[1]],
+                angle: [0, 90, 0]
+            }),
+            playerPos[1] > pos[1] + size[1] / 2 ? __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2__plain_plain__["a" /* default */], {
+                pos: [0, -size[1] / 2, 0],
+                parentPos: [this.posWithInvertedY],
+                playerPos: playerPos,
+                size: [size[0], size[2]],
+                angle: [90, 0, 0]
+            }) : ''
+        );
+    }
+}
+
+/* harmony default export */ exports["a"] = Box;
+
+/***/ },
+/* 112 */
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__ceiling_css__ = __webpack_require__(141);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__ceiling_css___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__ceiling_css__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react__ = __webpack_require__(4);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_react__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__lib_utils__ = __webpack_require__(11);
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+
+
+
+
+
+class Ceiling extends __WEBPACK_IMPORTED_MODULE_1_react___default.a.Component {
+    constructor(props) {
+        super(props);
+
+        this.styleRules = _extends({}, __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2__lib_utils__["a" /* getTransformRule */])({
+            pos: [props.pos[0], -props.pos[1], props.pos[2]],
+            angle: [-90, 0, 0]
+        }), {
+            width: props.size[0],
+            height: props.size[1],
+            margin: `-${ props.size[1] / 2 }px 0 0 -${ props.size[0] / 2 }px`
+        });
+    }
+
+    shouldComponentUpdate() {
+        return false;
+    }
+
+    render() {
+        return __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement('div', { className: 'obj ' + __WEBPACK_IMPORTED_MODULE_0__ceiling_css___default.a.root,
+            style: this.styleRules
+        });
+    }
+}
+
+/* harmony default export */ exports["a"] = Ceiling;
+
+/***/ },
+/* 113 */
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_components_door_door_css__ = __webpack_require__(142);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_components_door_door_css___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_components_door_door_css__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react__ = __webpack_require__(4);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_react__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__light_simple__ = __webpack_require__(64);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__lib_utils__ = __webpack_require__(11);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__constants_constants__ = __webpack_require__(9);
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+
+
+
+
+
+
+
+const BARS_GAP = 25;
+
+class Door extends __WEBPACK_IMPORTED_MODULE_1_react___default.a.Component {
+
+    constructor(props, context) {
+        super(props, context);
+
+        const { pos, size } = props;
+
+        this.posWithInvertedY = [pos[0], -pos[1], pos[2]];
+        this.rootStyleRules = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_3__lib_utils__["a" /* getTransformRule */])({ pos: this.posWithInvertedY });
+        this.doorStyleRules = {
+            transitionDuration: __WEBPACK_IMPORTED_MODULE_4__constants_constants__["f" /* DOOR_OPEN_TIME */] + 'ms',
+            height: size[1]
+        };
+
+        this.audioSource = null;
+        this.decodedAudioBuffer = this.context.assets['src/components/door/mixdown.m4a'];
+
+        this.panner = this.context.audioCtx.createPanner();
+        this.panner.panningModel = 'HRTF';
+        this.panner.distanceModel = 'inverse';
+        this.panner.refDistance = 20;
+        this.panner.rolloffFactor = 0.1;
+        this.panner.coneInnerAngle = 360;
+        this.panner.coneOuterAngle = 0;
+        this.panner.coneOuterGain = 0;
+        if (this.panner.positionX) {
+            this.panner.positionX.value = pos[0];
+            this.panner.positionY.value = pos[1] + size[1];
+            this.panner.positionZ.value = pos[2];
+        } else {
+            this.panner.setPosition(pos[0], pos[1] + size[1], pos[2]);
+        }
+        this.panner.connect(this.context.audioCtx.destination);
+    }
+
+    componentWillUpdate(nextProps) {
+        if ([__WEBPACK_IMPORTED_MODULE_4__constants_constants__["g" /* DOOR_CLOSING */], __WEBPACK_IMPORTED_MODULE_4__constants_constants__["h" /* DOOR_OPENING */]].includes(nextProps.state) && nextProps.state !== this.props.state) {
+            this.startSound();
+        } else if ([__WEBPACK_IMPORTED_MODULE_4__constants_constants__["i" /* DOOR_OPEN */], __WEBPACK_IMPORTED_MODULE_4__constants_constants__["j" /* DOOR_CLOSE */]].includes(nextProps.state) && nextProps.state !== this.props.state) {
+            this.stopSound();
+        }
+    }
+
+    componentWillUnmount() {
+        this.stopSound();
+    }
+
+    shouldComponentUpdate(nextProps) {
+        return nextProps.playerPos !== this.props.playerPos || nextProps.viewAngle !== this.props.viewAngle || nextProps.state !== this.props.state || nextProps.isVisible !== this.props.isVisible;
+    }
+
+    render() {
+        const { isVisible, viewAngle, state, size } = this.props;
+        const isOpen = [__WEBPACK_IMPORTED_MODULE_4__constants_constants__["h" /* DOOR_OPENING */], __WEBPACK_IMPORTED_MODULE_4__constants_constants__["i" /* DOOR_OPEN */]].includes(state);
+        const doorStyleRules = _extends({}, this.doorStyleRules, {
+            transform: 'translateY(' + (isOpen ? -size[1] * 0.9 : 0) + 'px)'
+        });
+        const angle = [0, -viewAngle[0], 0];
+
+        return __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
+            'div',
+            { className: 'obj door-container', style: this.rootStyleRules },
+            __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
+                'div',
+                { className: __WEBPACK_IMPORTED_MODULE_0_components_door_door_css___default.a.root,
+                    style: doorStyleRules },
+                isVisible ? this.renderBars({ parentPos: [this.posWithInvertedY], angle }) : null
+            )
+        );
+    }
+
+    renderBars({ parentPos, angle }) {
+        const { size, playerPos } = this.props;
+        const bars = [];
+        const maxDimension = size[0] > size[2] ? 0 : 2;
+        let key = 0;
+        for (let i = Math.floor(BARS_GAP / 2); i < size[maxDimension]; i = i + BARS_GAP) {
+            const pos = maxDimension === 0 ? [-size[0] / 2 + i, -size[1] / 2, 0] : [0, -size[1] / 2, -size[2] / 2 + i];
+            bars.push(__WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
+                'div',
+                { key: key,
+                    className: __WEBPACK_IMPORTED_MODULE_0_components_door_door_css___default.a.bar,
+                    style: _extends({}, __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_3__lib_utils__["a" /* getTransformRule */])({ pos, angle }), {
+                        height: size[1]
+                    })
+                },
+                __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2__light_simple__["a" /* default */], {
+                    parentPos: parentPos,
+                    playerPos: playerPos,
+                    pos: pos
+                })
+            ));
+            key = key + 1;
+        }
+        return bars;
+    }
+
+    startSound() {
+        this.audioSource = this.context.audioCtx.createBufferSource();
+        this.audioSource.connect(this.panner);
+        this.audioSource.buffer = this.decodedAudioBuffer;
+        this.audioSource.start(0);
+    }
+
+    stopSound() {
+        if (this.audioSource) {
+            this.audioSource.stop();
+            this.audioSource.disconnect(this.panner);
+            this.audioSource = null;
+        }
+    }
+}
+
+Door.contextTypes = {
+    audioCtx: __WEBPACK_IMPORTED_MODULE_1_react__["PropTypes"].object.isRequired,
+    assets: __WEBPACK_IMPORTED_MODULE_1_react__["PropTypes"].object.isRequired
+};
+Door.defaultProps = {
+    isVisible: true,
+    isOpen: false
+};
+/* harmony default export */ exports["a"] = Door;
+
+/***/ },
+/* 114 */
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__endScreen_css__ = __webpack_require__(143);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__endScreen_css___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__endScreen_css__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react__ = __webpack_require__(4);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_react__);
+
+
+
+const ENDING_TIME = 3000;
+
+class EndScreen extends __WEBPACK_IMPORTED_MODULE_1_react___default.a.Component {
+
+    constructor(...args) {
+        super(...args);
+
+        this.handleKeyDown = this.handleKeyDown.bind(this);
+
+        this.state = {
+            showAnyKeyMessage: false
+        };
+        this.endingTimer = null;
+    }
+
+    componentDidMount() {
+        this.endingTimer = setTimeout(() => {
+            this.setState({
+                showAnyKeyMessage: true
+            });
+        }, ENDING_TIME);
+        document.addEventListener('keydown', this.handleKeyDown);
+    }
+
+    componentWillUnmount() {
+        clearTimeout(this.endingTimer);
+        this.endingTimer = null;
+        document.removeEventListener('keydown', this.handleKeyDown);
+    }
+
+    render() {
+        return __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
+            'div',
+            {
+                className: __WEBPACK_IMPORTED_MODULE_0__endScreen_css___default.a.root,
+                onClick: this.handleKeyDown
+            },
+            __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
+                'div',
+                { className: __WEBPACK_IMPORTED_MODULE_0__endScreen_css___default.a.message },
+                'You escaped'
+            ),
+            __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
+                'div',
+                { className: __WEBPACK_IMPORTED_MODULE_0__endScreen_css___default.a.anyKey },
+                'Press any key'
+            )
+        );
+    }
+
+    handleKeyDown() {
+        if (this.state.showAnyKeyMessage) {
+            this.props.onEnd();
+        }
+    }
+}
+
+EndScreen.propTypes = {
+    onEnd: __WEBPACK_IMPORTED_MODULE_1_react__["PropTypes"].func.isRequired
+};
+/* harmony default export */ exports["a"] = EndScreen;
+
+/***/ },
+/* 115 */
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__floor_css__ = __webpack_require__(144);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__floor_css___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__floor_css__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react__ = __webpack_require__(4);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_react__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__plain_plain__ = __webpack_require__(26);
+
+
+
+
+
+class Floor extends __WEBPACK_IMPORTED_MODULE_1_react___default.a.Component {
+    shouldComponentUpdate(nextProps) {
+        return nextProps.playerPos !== this.props.playerPos;
+    }
+
+    render() {
+        const { pos, playerPos, size } = this.props;
+        return __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2__plain_plain__["a" /* default */], {
+            className: __WEBPACK_IMPORTED_MODULE_0__floor_css___default.a.root,
+            pos: pos,
+            size: [size[0], size[2]],
+            angle: [90, 0, 0],
+            playerPos: playerPos
+        });
+    }
+}
+
+/* harmony default export */ exports["a"] = Floor;
+
+/***/ },
+/* 116 */
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__hints_css__ = __webpack_require__(145);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__hints_css___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__hints_css__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react__ = __webpack_require__(4);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_react__);
+
+
+
+class Hints extends __WEBPACK_IMPORTED_MODULE_1_react___default.a.Component {
+
+    render() {
+        const { hints } = this.props;
+        return __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
+            'div',
+            { className: __WEBPACK_IMPORTED_MODULE_0__hints_css___default.a.root },
+            Array.from(hints.keys()).map(hint => __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
+                'div',
+                { className: __WEBPACK_IMPORTED_MODULE_0__hints_css___default.a.hint, key: hint },
+                hint
+            ))
+        );
+    }
+}
+
+Hints.propTypes = {
+    hints: __WEBPACK_IMPORTED_MODULE_1_react__["PropTypes"].instanceOf(Map).isRequired
+};
+/* harmony default export */ exports["a"] = Hints;
+
+/***/ },
+/* 117 */
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__light_css__ = __webpack_require__(66);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__light_css___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__light_css__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react__ = __webpack_require__(4);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_react__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__lib_utils__ = __webpack_require__(11);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__constants_constants__ = __webpack_require__(9);
+
+
+
+
+
+
+const DEFAULT_STYLE_RULES = {
+    // backgroundColor: 'none',
+    backgroundImage: 'none',
+    backgroundColor: '#000'
+};
+
+class Light extends __WEBPACK_IMPORTED_MODULE_1_react___default.a.Component {
+    shouldComponentUpdate(nextProps) {
+        return nextProps.playerPos !== this.props.playerPos;
+    }
+
+    render() {
+        const {
+            parentPos,
+            parentAngle,
+            pos,
+            angle,
+            size,
+            playerPos
+        } = this.props;
+        let styleRules = DEFAULT_STYLE_RULES;
+        const relativePos = parentPos ? [pos].concat(parentPos).reduce(__WEBPACK_IMPORTED_MODULE_2__lib_utils__["b" /* vectorsAdd3D */]) : pos;
+        const relativeAngle = parentAngle ? [angle].concat(parentAngle).reduce(__WEBPACK_IMPORTED_MODULE_2__lib_utils__["b" /* vectorsAdd3D */]) : angle;
+
+        // front
+        if (relativeAngle[0] === 0 && relativeAngle[1] % 360 === 0 && relativeAngle[2] === 0) {
+            if (playerPos[2] > relativePos[2]) {
+                styleRules = Light.getPlayerSpotLightBackground({
+                    pos: [playerPos[0] - (relativePos[0] - size[0] / 2), -relativePos[1] + size[1] / 2 - playerPos[1]],
+                    distance: playerPos[2] - relativePos[2]
+                });
+            }
+            // back
+        } else if (relativeAngle[0] === 0 && Math.abs(relativeAngle[1] % 360) === 180 && relativeAngle[2] === 0) {
+            if (playerPos[2] < relativePos[2]) {
+                styleRules = Light.getPlayerSpotLightBackground({
+                    pos: [relativePos[0] + size[0] / 2 - playerPos[0], -relativePos[1] + size[1] / 2 - playerPos[1]],
+                    distance: relativePos[2] - playerPos[2]
+                });
+            }
+            // left
+        } else if (relativeAngle[0] === 0 && (relativeAngle[1] % 360 === -90 || relativeAngle[1] % 360 === 270) && relativeAngle[2] === 0) {
+            if (playerPos[0] < relativePos[0]) {
+                styleRules = Light.getPlayerSpotLightBackground({
+                    pos: [playerPos[2] - (relativePos[2] - size[0] / 2), -relativePos[1] + size[1] / 2 - playerPos[1]],
+                    distance: relativePos[0] - playerPos[0]
+                });
+            }
+            // right
+        } else if (relativeAngle[0] === 0 && (relativeAngle[1] % 360 === 90 || relativeAngle[1] % 360 === -270) && relativeAngle[2] === 0) {
+            if (playerPos[0] > relativePos[0]) {
+                styleRules = Light.getPlayerSpotLightBackground({
+                    pos: [relativePos[2] + size[0] / 2 - playerPos[2], -relativePos[1] + size[1] / 2 - playerPos[1]],
+                    distance: playerPos[0] - relativePos[0]
+                });
+            }
+            // top
+        } else if ((relativeAngle[0] % 360 === 90 || relativeAngle[0] % 360 === -270) && relativeAngle[1] === 0 && relativeAngle[2] === 0) {
+            if (playerPos[1] > -relativePos[1]) {
+                styleRules = Light.getPlayerSpotLightBackground({
+                    pos: [playerPos[0] - (relativePos[0] - size[0] / 2), playerPos[2] - (relativePos[2] - size[1] / 2)],
+                    distance: playerPos[1] + relativePos[1]
+                });
+            }
+        }
+
+        return __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement('div', { className: __WEBPACK_IMPORTED_MODULE_0__light_css___default.a.root,
+            style: styleRules
+        });
+    }
+
+    static getPlayerSpotLightBackground({ pos, distance }) {
+        const ratio = Math.max(0, __WEBPACK_IMPORTED_MODULE_3__constants_constants__["e" /* SPOTLIGHT_RADIUS */] - distance) / __WEBPACK_IMPORTED_MODULE_3__constants_constants__["e" /* SPOTLIGHT_RADIUS */];
+        if (ratio) {
+            const size = (2 + ratio) * __WEBPACK_IMPORTED_MODULE_3__constants_constants__["e" /* SPOTLIGHT_RADIUS */] / 2 * 10;
+            return {
+                backgroundPosition: pos[0] - size / 2 + 'px ' + (pos[1] - size / 2) + 'px',
+                backgroundSize: size,
+                backgroundColor: 'rgba(0, 0, 0, ' + (1 - ratio) + ')'
+            };
+        } else {
+            return DEFAULT_STYLE_RULES;
+        }
+    }
+}
+
+/* harmony default export */ exports["a"] = Light;
+
+/***/ },
+/* 118 */
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__loadingScreen_css__ = __webpack_require__(146);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__loadingScreen_css___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__loadingScreen_css__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react__ = __webpack_require__(4);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_react__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__preloadAssetsList__ = __webpack_require__(129);
+
+
+
+
+
+class LoadingScreen extends __WEBPACK_IMPORTED_MODULE_1_react___default.a.Component {
+
+    constructor(...args) {
+        super(...args);
+
+        this.totalAssets = __WEBPACK_IMPORTED_MODULE_2__preloadAssetsList__["a" /* default */].length;
+        this.state = {
+            assetsLoaded: 0,
+            loadingFailed: false
+        };
+
+        __WEBPACK_IMPORTED_MODULE_2__preloadAssetsList__["a" /* default */].forEach(([assetSrc, assetType]) => {
+            if (assetType === 'image') {
+                const image = new Image();
+                image.onload = () => {
+                    this.handleAssetLoaded();
+                };
+                image.onerror = () => {
+                    this.handleAssetError(`Couldn't load image ${ assetSrc }`);
+                };
+                image.src = assetSrc;
+            } else if (assetType === 'audio') {
+                fetch(assetSrc).then(response => response.arrayBuffer()).then(buffer => new Promise((resolve, reject) => {
+                    this.context.audioCtx.decodeAudioData(buffer, decodedData => {
+                        this.props.cacheAssetData(assetSrc, decodedData);
+                        resolve();
+                    }, reject);
+                })).then(() => {
+                    this.handleAssetLoaded();
+                }).catch(error => {
+                    this.handleAssetError(error);
+                });
+            }
+        });
+    }
+
+    componentDidUpdate() {
+        if (this.state.assetsLoaded === this.totalAssets) {
+            this.props.onLoaded();
+        }
+    }
+
+    render() {
+        const percent = Math.ceil(100 * this.state.assetsLoaded / this.totalAssets);
+        return __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
+            'div',
+            { className: __WEBPACK_IMPORTED_MODULE_0__loadingScreen_css___default.a.root },
+            this.state.loadingFailed ? 'Loading failed, sorry' : `Loading assets ${ percent } %`
+        );
+    }
+
+    handleAssetLoaded() {
+        this.setState({ assetsLoaded: this.state.assetsLoaded + 1 });
+    }
+
+    handleAssetError(error) {
+        this.setState({ loadingFailed: true });
+        console.error(error);
+    }
+}
+
+LoadingScreen.propTypes = {
+    onLoaded: __WEBPACK_IMPORTED_MODULE_1_react__["PropTypes"].func.isRequired,
+    cacheAssetData: __WEBPACK_IMPORTED_MODULE_1_react__["PropTypes"].func.isRequired
+};
+LoadingScreen.contextTypes = {
+    audioCtx: __WEBPACK_IMPORTED_MODULE_1_react__["PropTypes"].object.isRequired
+};
+/* harmony default export */ exports["a"] = LoadingScreen;
+
+/***/ },
+/* 119 */
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(4);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__plain_plain__ = __webpack_require__(26);
+
+
+
+class Painting extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
+    shouldComponentUpdate(nextProps) {
+        return nextProps.playerPos !== this.props.playerPos;
+    }
+
+    render() {
+        // todo use background
+        const { pos, playerPos, size, angle, background } = this.props;
+        return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1__plain_plain__["a" /* default */], {
+            className: 'painting',
+            pos: [pos[0], -pos[1], pos[2]],
+            playerPos: playerPos,
+            size: size,
+            angle: angle,
+            background: background
+        });
+    }
+}
+
+/* unused harmony default export */ var _unused_webpack_default_export = Painting;
+
+/***/ },
+/* 120 */
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__startScreen_css__ = __webpack_require__(147);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__startScreen_css___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__startScreen_css__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react__ = __webpack_require__(4);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_react__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__Logo_Logo__ = __webpack_require__(110);
+
+
+
+
+class StartScreen extends __WEBPACK_IMPORTED_MODULE_1_react___default.a.Component {
+
+    constructor(...args) {
+        super(...args);
+
+        this.handleStart = this.handleStart.bind(this);
+    }
+
+    render() {
+        return __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
+            'div',
+            { className: __WEBPACK_IMPORTED_MODULE_0__startScreen_css___default.a.root },
+            __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2__Logo_Logo__["a" /* default */], null),
+            __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
+                'div',
+                { className: __WEBPACK_IMPORTED_MODULE_0__startScreen_css___default.a.menuItem },
+                __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
+                    'button',
+                    { className: __WEBPACK_IMPORTED_MODULE_0__startScreen_css___default.a.menuItemButton, onClick: this.handleStart },
+                    'Start'
+                )
+            )
+        );
+    }
+
+    handleStart() {
+        this.props.onStart();
+    }
+}
+
+StartScreen.propTypes = {
+    onStart: __WEBPACK_IMPORTED_MODULE_1_react__["PropTypes"].func.isRequired
+};
+/* harmony default export */ exports["a"] = StartScreen;
+
+/***/ },
+/* 121 */
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_components_switcher_switcher_css__ = __webpack_require__(148);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_components_switcher_switcher_css___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_components_switcher_switcher_css__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react__ = __webpack_require__(4);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_react__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__plain_plain__ = __webpack_require__(26);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__lib_utils__ = __webpack_require__(11);
+
+
+
+
+
+
+const HANDLE_SIZE = [6, 40];
+const meaningfulProps = ['playerPos', 'isReachable', 'isOn', 'isInteractive'];
+
+class Switcher extends __WEBPACK_IMPORTED_MODULE_1_react___default.a.Component {
+    constructor(props) {
+        super(props);
+
+        this.posWithInvertedY = [props.pos[0], -props.pos[1], props.pos[2]];
+        this.styleRules = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_3__lib_utils__["a" /* getTransformRule */])({
+            pos: this.posWithInvertedY,
+            angle: props.angle
+        });
+    }
+
+    shouldComponentUpdate(nextProps) {
+        for (let i = 0; i < meaningfulProps.length; i++) {
+            if (nextProps[meaningfulProps[i]] !== this.props[meaningfulProps[i]]) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    render() {
+        const { playerPos, size, angle, isReachable = false,
+            isOn = false, isInteractive = true } = this.props;
+        const classNames = ['obj', __WEBPACK_IMPORTED_MODULE_0_components_switcher_switcher_css___default.a.root, isOn ? __WEBPACK_IMPORTED_MODULE_0_components_switcher_switcher_css___default.a.on : __WEBPACK_IMPORTED_MODULE_0_components_switcher_switcher_css___default.a.off];
+        if (isInteractive && isReachable) {
+            classNames.push(__WEBPACK_IMPORTED_MODULE_0_components_switcher_switcher_css___default.a.reachable);
+        }
+        return __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
+            'div',
+            { className: classNames.join(' '), style: this.styleRules },
+            __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2__plain_plain__["a" /* default */], {
+                className: __WEBPACK_IMPORTED_MODULE_0_components_switcher_switcher_css___default.a.wood,
+                size: [size[0], size[1]],
+                pos: [0, 0, 0],
+                playerPos: playerPos,
+                parentPos: [this.posWithInvertedY],
+                parentAngle: [angle]
+            }),
+            __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
+                'div',
+                { className: `${ __WEBPACK_IMPORTED_MODULE_0_components_switcher_switcher_css___default.a.handle } obj` },
+                __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2__plain_plain__["a" /* default */], {
+                    light: 'simple',
+                    size: [HANDLE_SIZE[1], HANDLE_SIZE[0]],
+                    pos: [-HANDLE_SIZE[0] / 2, 0, HANDLE_SIZE[1] / 2],
+                    angle: [0, -90, 0],
+                    playerPos: playerPos,
+                    parentPos: [this.posWithInvertedY],
+                    parentAngle: [angle]
+                }),
+                __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2__plain_plain__["a" /* default */], {
+                    light: 'simple',
+                    size: [HANDLE_SIZE[1], HANDLE_SIZE[0]],
+                    pos: [HANDLE_SIZE[0] / 2, 0, HANDLE_SIZE[1] / 2],
+                    angle: [0, 90, 0],
+                    playerPos: playerPos,
+                    parentPos: [this.posWithInvertedY],
+                    parentAngle: [angle]
+                }),
+                __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2__plain_plain__["a" /* default */], {
+                    light: 'simple',
+                    size: [HANDLE_SIZE[0], HANDLE_SIZE[1]],
+                    pos: [0, -HANDLE_SIZE[0] / 2, HANDLE_SIZE[1] / 2],
+                    angle: [90, 0, 0],
+                    playerPos: playerPos,
+                    parentPos: [this.posWithInvertedY],
+                    parentAngle: [angle]
+                }),
+                __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2__plain_plain__["a" /* default */], {
+                    light: 'simple',
+                    size: [HANDLE_SIZE[0], HANDLE_SIZE[1]],
+                    pos: [0, HANDLE_SIZE[0] / 2, HANDLE_SIZE[1] / 2],
+                    angle: [-90, 0, 0],
+                    playerPos: playerPos,
+                    parentPos: [this.posWithInvertedY],
+                    parentAngle: [angle]
+                }),
+                __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2__plain_plain__["a" /* default */], {
+                    light: 'simple',
+                    size: [HANDLE_SIZE[0], HANDLE_SIZE[0]],
+                    pos: [0, 0, HANDLE_SIZE[1]],
+                    angle: [0, 0, 0],
+                    playerPos: playerPos,
+                    parentPos: [this.posWithInvertedY],
+                    parentAngle: [angle]
+                })
+            )
+        );
+    }
+}
+/* harmony export (immutable) */ exports["a"] = Switcher;
 
 
 /***/ },
-
-/***/ 9:
+/* 122 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
-const FPS = 60;
-/* harmony export (immutable) */ exports["t"] = FPS;
-
-const KEY_W = 87;
-/* harmony export (immutable) */ exports["v"] = KEY_W;
-
-const KEY_S = 83;
-/* harmony export (immutable) */ exports["w"] = KEY_S;
-
-const KEY_A = 65;
-/* harmony export (immutable) */ exports["x"] = KEY_A;
-
-const KEY_D = 68;
-/* harmony export (immutable) */ exports["y"] = KEY_D;
-
-const KEY_E = 69;
-/* harmony export (immutable) */ exports["C"] = KEY_E;
-
-const KEY_SHIFT = 16;
-/* harmony export (immutable) */ exports["z"] = KEY_SHIFT;
-
-const STEP = 4;
-/* harmony export (immutable) */ exports["B"] = STEP;
-
-const RUNNING_COEFF = 1.5;
-/* harmony export (immutable) */ exports["A"] = RUNNING_COEFF;
-
-const SENSITIVITY = 0.5;
-/* harmony export (immutable) */ exports["u"] = SENSITIVITY;
-
-const BROAD_CELL_SIZE = 250;
-/* harmony export (immutable) */ exports["d"] = BROAD_CELL_SIZE;
-
-const HAND_LENGTH = 150;
-/* harmony export (immutable) */ exports["s"] = HAND_LENGTH;
-
-const HINT_SHOW_TIME = 5000;
-/* harmony export (immutable) */ exports["D"] = HINT_SHOW_TIME;
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__wall_css__ = __webpack_require__(149);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__wall_css___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__wall_css__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react__ = __webpack_require__(4);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_react__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__plain_plain__ = __webpack_require__(26);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__lib_utils__ = __webpack_require__(11);
 
 
-const PAINTING_TYPE = 'painting';
-/* harmony export (immutable) */ exports["j"] = PAINTING_TYPE;
-
-const FLOOR_TYPE = 'floor';
-/* harmony export (immutable) */ exports["k"] = FLOOR_TYPE;
-
-const CEILING_TYPE = 'ceiling';
-/* harmony export (immutable) */ exports["l"] = CEILING_TYPE;
-
-const WALL_TYPE = 'wall';
-/* harmony export (immutable) */ exports["m"] = WALL_TYPE;
-
-const BOX_TYPE = 'box';
-/* harmony export (immutable) */ exports["n"] = BOX_TYPE;
-
-const SWITCHER_TYPE = 'switcher';
-/* harmony export (immutable) */ exports["o"] = SWITCHER_TYPE;
-
-const DOOR_TYPE = 'door';
-/* harmony export (immutable) */ exports["p"] = DOOR_TYPE;
 
 
-const DOOR_OPEN = 'open';
-/* harmony export (immutable) */ exports["h"] = DOOR_OPEN;
-
-const DOOR_OPENING = 'opening';
-/* harmony export (immutable) */ exports["g"] = DOOR_OPENING;
-
-const DOOR_CLOSE = 'close';
-/* harmony export (immutable) */ exports["i"] = DOOR_CLOSE;
-
-const DOOR_CLOSING = 'closing';
-/* harmony export (immutable) */ exports["f"] = DOOR_CLOSING;
-
-const DOOR_OPEN_TIME = 3000;
-/* harmony export (immutable) */ exports["e"] = DOOR_OPEN_TIME;
 
 
-const LOADING = 'loading';
-/* harmony export (immutable) */ exports["E"] = LOADING;
+// no support for rotated walls for now
+class Wall extends __WEBPACK_IMPORTED_MODULE_1_react___default.a.Component {
+    constructor(props) {
+        super(props);
 
-const START = 'start';
-/* harmony export (immutable) */ exports["a"] = START;
+        this.posWithInvertedY = [props.pos[0], -props.pos[1], props.pos[2]];
+        this.styleRules = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_3__lib_utils__["a" /* getTransformRule */])({ pos: this.posWithInvertedY });
+    }
 
-const PLAY = 'play';
-/* harmony export (immutable) */ exports["b"] = PLAY;
+    shouldComponentUpdate(nextProps) {
+        return nextProps.playerPos !== this.props.playerPos;
+    }
 
-const END = 'end';
-/* harmony export (immutable) */ exports["c"] = END;
+    render() {
+        const { size, playerPos } = this.props;
+
+        // Front-Back-Left-Right
+        return __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
+            'div',
+            { className: 'obj ' + __WEBPACK_IMPORTED_MODULE_0__wall_css___default.a.root, style: this.styleRules },
+            __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2__plain_plain__["a" /* default */], {
+                pos: [0, 0, size[2] / 2],
+                parentPos: [this.posWithInvertedY],
+                playerPos: playerPos,
+                size: size,
+                angle: [0, 0, 0]
+            }),
+            __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2__plain_plain__["a" /* default */], {
+                pos: [0, 0, -size[2] / 2],
+                parentPos: [this.posWithInvertedY],
+                playerPos: playerPos,
+                size: size,
+                angle: [0, 180, 0]
+            }),
+            __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2__plain_plain__["a" /* default */], {
+                pos: [-size[0] / 2, 0, 0],
+                parentPos: [this.posWithInvertedY],
+                playerPos: playerPos,
+                size: [size[2], size[1]],
+                angle: [0, -90, 0]
+            }),
+            __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2__plain_plain__["a" /* default */], {
+                pos: [size[0] / 2, 0, 0],
+                parentPos: [this.posWithInvertedY],
+                playerPos: playerPos,
+                size: [size[2], size[1]],
+                angle: [0, 90, 0]
+            })
+        );
+    }
+}
+
+/* harmony default export */ exports["a"] = Wall;
+
+/***/ },
+/* 123 */
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+const HINT_GOAL = 'Where am I? It\'s so dark here. I have to find the way out';
+/* harmony export (immutable) */ exports["a"] = HINT_GOAL;
+
+const HINT_FIRST_SWITCHER = 'What if I push this lever?';
+/* harmony export (immutable) */ exports["e"] = HINT_FIRST_SWITCHER;
+
+const HINT_DOOR = 'Sounds like the door opened somewhere';
+/* harmony export (immutable) */ exports["f"] = HINT_DOOR;
+
+const HINT_WASD = 'Use `W`, `A`, `S`, `D` or arrows to move';
+/* harmony export (immutable) */ exports["b"] = HINT_WASD;
+
+const HINT_SHIFT = 'Hold `Shift` to run';
+/* harmony export (immutable) */ exports["c"] = HINT_SHIFT;
+
+const HINT_E = 'Press `E` to interact';
+/* harmony export (immutable) */ exports["d"] = HINT_E;
 
 
-const PLAYER_RUN = 'run';
-/* harmony export (immutable) */ exports["r"] = PLAYER_RUN;
+/***/ },
+/* 124 */
+/***/ function(module, exports, __webpack_require__) {
 
-const PLAYER_WALK = 'walk';
-/* harmony export (immutable) */ exports["q"] = PLAYER_WALK;
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__camera_css__ = __webpack_require__(150);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__camera_css___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__camera_css__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react__ = __webpack_require__(4);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_react__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_react_redux__ = __webpack_require__(17);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_react_redux___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_react_redux__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__lib_utils__ = __webpack_require__(11);
 
-const PLAYER_STOP = 'stop';
-/* harmony export (immutable) */ exports["F"] = PLAYER_STOP;
 
+
+
+
+
+
+function Camera({ viewAngle, children }) {
+    const transformRule = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_3__lib_utils__["a" /* getTransformRule */])({
+        pos: [0, 0, 600],
+        angle: [viewAngle[1], viewAngle[0], viewAngle[2]]
+    });
+    return __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
+        'div',
+        { className: __WEBPACK_IMPORTED_MODULE_0__camera_css___default.a.root, style: transformRule },
+        children
+    );
+}
+Camera.propTypes = {
+    viewAngle: __WEBPACK_IMPORTED_MODULE_1_react__["PropTypes"].arrayOf(__WEBPACK_IMPORTED_MODULE_1_react__["PropTypes"].number).isRequired
+};
+
+function mapStateToProps(state) {
+    return {
+        viewAngle: state.viewAngle
+    };
+}
+
+/* harmony default export */ exports["a"] = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2_react_redux__["connect"])(mapStateToProps)(Camera);
+
+/***/ },
+/* 125 */
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(4);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react_redux__ = __webpack_require__(17);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react_redux___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_react_redux__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_redux_batched_actions__ = __webpack_require__(33);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_redux_batched_actions___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_redux_batched_actions__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_react_redux_src_utils_storeShape__ = __webpack_require__(261);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__constants_constants__ = __webpack_require__(9);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__constants_hints__ = __webpack_require__(123);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__lib_loop__ = __webpack_require__(128);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__level__ = __webpack_require__(27);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__lib_collision__ = __webpack_require__(65);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__lib_utils__ = __webpack_require__(11);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__actionCreators__ = __webpack_require__(41);
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+class GameLoop extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
+
+    constructor(...args) {
+        super(...args);
+
+        this.delayedActions = new __WEBPACK_IMPORTED_MODULE_9__lib_utils__["f" /* DelayedActions */]();
+
+        this.loop = new __WEBPACK_IMPORTED_MODULE_6__lib_loop__["a" /* default */](this.loopCallback.bind(this), __WEBPACK_IMPORTED_MODULE_4__constants_constants__["t" /* FPS */]);
+
+        this.prevKeysPressed = {};
+        this.shownHints = {};
+
+        const currentStore = this.context.store.getState();
+        this.updateListenerPosition(currentStore.pos);
+        this.updateListenerOrientation(currentStore.viewAngle);
+    }
+
+    componentDidMount() {
+        this.loop.start();
+    }
+
+    componentWillUnmount() {
+        this.loop.stop();
+        this.delayedActions.clear();
+        this.shownHints = {};
+    }
+
+    render() {
+        return __WEBPACK_IMPORTED_MODULE_0_react___default.a.Children.only(this.props.children);
+    }
+
+    loopCallback(frameRateCoefficient) {
+        const actions = this.delayedActions.getActualActions();
+
+        const newState = {};
+        const currentStore = this.context.store.getState();
+
+        // show start hint
+        actions.push(this.showHints([__WEBPACK_IMPORTED_MODULE_5__constants_hints__["a" /* HINT_GOAL */], __WEBPACK_IMPORTED_MODULE_5__constants_hints__["b" /* HINT_WASD */], __WEBPACK_IMPORTED_MODULE_5__constants_hints__["c" /* HINT_SHIFT */]], true));
+
+        const pointerDelta = currentStore.pointerDelta;
+        if (pointerDelta.x || pointerDelta.y) {
+            const currentViewAngle = currentStore.viewAngle;
+            const newViewAngle = [(currentViewAngle[0] - pointerDelta.x * __WEBPACK_IMPORTED_MODULE_4__constants_constants__["u" /* SENSITIVITY */]) % 360, Math.min(Math.max(currentViewAngle[1] + pointerDelta.y * __WEBPACK_IMPORTED_MODULE_4__constants_constants__["u" /* SENSITIVITY */], -90), 90), 0];
+            actions.push(__WEBPACK_IMPORTED_MODULE_10__actionCreators__["b" /* player */].updateViewAngle(newViewAngle));
+            actions.push(__WEBPACK_IMPORTED_MODULE_10__actionCreators__["a" /* game */].resetPointerDelta());
+            newState.viewAngle = newViewAngle;
+        }
+
+        let angleShift = [];
+        const keyPressed = currentStore.keyPressed;
+        if (keyPressed[__WEBPACK_IMPORTED_MODULE_4__constants_constants__["v" /* KEY_W */]]) {
+            angleShift.push(Math.PI);
+        }
+        if (keyPressed[__WEBPACK_IMPORTED_MODULE_4__constants_constants__["w" /* KEY_S */]]) {
+            angleShift.push(0);
+        }
+        if (keyPressed[__WEBPACK_IMPORTED_MODULE_4__constants_constants__["x" /* KEY_A */]]) {
+            angleShift.push(Math.PI / 2);
+        }
+        if (keyPressed[__WEBPACK_IMPORTED_MODULE_4__constants_constants__["y" /* KEY_D */]]) {
+            // hack for angles sum
+            if (keyPressed[__WEBPACK_IMPORTED_MODULE_4__constants_constants__["v" /* KEY_W */]]) {
+                angleShift.push(3 * Math.PI / 2);
+            } else {
+                angleShift.push(-Math.PI / 2);
+            }
+        }
+
+        if (keyPressed[__WEBPACK_IMPORTED_MODULE_4__constants_constants__["v" /* KEY_W */]] || keyPressed[__WEBPACK_IMPORTED_MODULE_4__constants_constants__["w" /* KEY_S */]] || keyPressed[__WEBPACK_IMPORTED_MODULE_4__constants_constants__["x" /* KEY_A */]] || keyPressed[__WEBPACK_IMPORTED_MODULE_4__constants_constants__["y" /* KEY_D */]]) {
+            if (keyPressed[__WEBPACK_IMPORTED_MODULE_4__constants_constants__["z" /* KEY_SHIFT */]]) {
+                actions.push(__WEBPACK_IMPORTED_MODULE_10__actionCreators__["b" /* player */].run());
+            } else {
+                actions.push(__WEBPACK_IMPORTED_MODULE_10__actionCreators__["b" /* player */].walk());
+            }
+        } else {
+            actions.push(__WEBPACK_IMPORTED_MODULE_10__actionCreators__["b" /* player */].stop());
+        }
+
+        if (angleShift.length) {
+            let reducedAngleShift = 0;
+            for (let i = 0; i < angleShift.length; i++) {
+                reducedAngleShift = reducedAngleShift + angleShift[i];
+            }
+            reducedAngleShift = reducedAngleShift / angleShift.length;
+
+            reducedAngleShift = reducedAngleShift + GameLoop.convertDegreeToRad(currentStore.viewAngle[0]);
+
+            let step = frameRateCoefficient * (keyPressed[__WEBPACK_IMPORTED_MODULE_4__constants_constants__["z" /* KEY_SHIFT */]] ? __WEBPACK_IMPORTED_MODULE_4__constants_constants__["A" /* RUNNING_COEFF */] : 1) * __WEBPACK_IMPORTED_MODULE_4__constants_constants__["B" /* STEP */];
+            const shift = [-step * Math.sin(reducedAngleShift), 0, step * Math.cos(reducedAngleShift)];
+            const currentPos = currentStore.pos;
+            const newPos = [];
+            for (let i = 0; i < 3; i++) {
+                newPos.push(currentPos[i] + shift[i]);
+            }
+            const objects = currentStore.objects;
+            const collisions = __WEBPACK_IMPORTED_MODULE_8__lib_collision__["a" /* default */].getCollisions([currentPos, newPos], objects, __WEBPACK_IMPORTED_MODULE_4__constants_constants__["d" /* BROAD_CELL_SIZE */]);
+            // get last collision result as new player position
+            const newPosAfterCollisions = collisions[collisions.length - 1].newPos;
+            actions.push(__WEBPACK_IMPORTED_MODULE_10__actionCreators__["b" /* player */].updatePosition(newPosAfterCollisions));
+            newState.pos = newPosAfterCollisions;
+        }
+
+        if (newState.pos) {
+            // if out of bounds - win
+            for (let i = 0; i < 3; i++) {
+                if (__WEBPACK_IMPORTED_MODULE_7__level__["a" /* default */].boundaries[i]) {
+                    if (newState.pos[i] < 0 || newState.pos[i] > __WEBPACK_IMPORTED_MODULE_7__level__["a" /* default */].boundaries[i]) {
+                        this.props.onWin();
+                        return;
+                    }
+                }
+            }
+
+            // render only visible objects
+            const { addVisibleObjects, removeVisibleObjects } = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_9__lib_utils__["g" /* getVisibleObjects */])(newState.pos, currentStore.objects);
+            if (Object.keys(addVisibleObjects).length || Object.keys(removeVisibleObjects).length) {
+                actions.push(__WEBPACK_IMPORTED_MODULE_10__actionCreators__["c" /* objects */].setVisible({ addVisibleObjects, removeVisibleObjects }));
+            }
+
+            this.updateListenerPosition(newState.pos);
+        }
+
+        if (newState.viewAngle) {
+            this.updateListenerOrientation(newState.viewAngle);
+        }
+
+        // find interactive object which we can reach with a hand
+        let reachableObject;
+        if (newState.pos || newState.viewAngle) {
+            const playerPosition = newState.pos || currentStore.pos;
+            const viewAngle = newState.viewAngle || currentStore.viewAngle;
+            const collisionView = __WEBPACK_IMPORTED_MODULE_8__lib_collision__["a" /* default */].getCollisionView([playerPosition, __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_9__lib_utils__["e" /* getPointPosition */])({ pos: playerPosition, distance: __WEBPACK_IMPORTED_MODULE_4__constants_constants__["s" /* HAND_LENGTH */], angle: viewAngle })], currentStore.objects, __WEBPACK_IMPORTED_MODULE_4__constants_constants__["d" /* BROAD_CELL_SIZE */]);
+            if (collisionView && collisionView.obj.isInteractive) {
+                reachableObject = collisionView.obj;
+                if (!reachableObject.isReachable) {
+                    actions.push(__WEBPACK_IMPORTED_MODULE_10__actionCreators__["c" /* objects */].setReachable(_extends({}, reachableObject)));
+                    actions.push(this.showHints([__WEBPACK_IMPORTED_MODULE_5__constants_hints__["d" /* HINT_E */]], false));
+                    actions.push(this.showHints([__WEBPACK_IMPORTED_MODULE_5__constants_hints__["e" /* HINT_FIRST_SWITCHER */]], true));
+                }
+            } else {
+                actions.push(__WEBPACK_IMPORTED_MODULE_10__actionCreators__["c" /* objects */].setReachable(null));
+            }
+        } else {
+            reachableObject = currentStore.objects.find(obj => obj.isReachable);
+        }
+
+        // perform interaction if key E is pressed
+        if (keyPressed[__WEBPACK_IMPORTED_MODULE_4__constants_constants__["C" /* KEY_E */]] && !this.prevKeysPressed[__WEBPACK_IMPORTED_MODULE_4__constants_constants__["C" /* KEY_E */]] && reachableObject) {
+            if (reachableObject.type === __WEBPACK_IMPORTED_MODULE_4__constants_constants__["o" /* SWITCHER_TYPE */]) {
+                const door = currentStore.doorsState[reachableObject.props.id];
+                if (![__WEBPACK_IMPORTED_MODULE_4__constants_constants__["h" /* DOOR_OPENING */], __WEBPACK_IMPORTED_MODULE_4__constants_constants__["g" /* DOOR_CLOSING */]].includes(door)) {
+                    actions.push(__WEBPACK_IMPORTED_MODULE_10__actionCreators__["d" /* doorsState */][door === __WEBPACK_IMPORTED_MODULE_4__constants_constants__["i" /* DOOR_OPEN */] ? 'setClosing' : 'setOpening'](reachableObject.props.id));
+                    this.delayedActions.pushAction({
+                        action: __WEBPACK_IMPORTED_MODULE_10__actionCreators__["d" /* doorsState */][door === __WEBPACK_IMPORTED_MODULE_4__constants_constants__["i" /* DOOR_OPEN */] ? 'setClose' : 'setOpen'](reachableObject.props.id),
+                        delay: __WEBPACK_IMPORTED_MODULE_4__constants_constants__["f" /* DOOR_OPEN_TIME */]
+                    });
+                    if (door === __WEBPACK_IMPORTED_MODULE_4__constants_constants__["j" /* DOOR_CLOSE */]) {
+                        this.delayedActions.pushAction({
+                            action: this.showHints([__WEBPACK_IMPORTED_MODULE_5__constants_hints__["f" /* HINT_DOOR */]], false, __WEBPACK_IMPORTED_MODULE_4__constants_constants__["f" /* DOOR_OPEN_TIME */]),
+                            delay: __WEBPACK_IMPORTED_MODULE_4__constants_constants__["f" /* DOOR_OPEN_TIME */]
+                        });
+                    }
+                }
+            }
+        }
+
+        if (actions.length) {
+            this.props.dispatch(__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2_redux_batched_actions__["batchActions"])(actions));
+        }
+
+        this.prevKeysPressed = _extends({}, keyPressed);
+    }
+
+    /**
+     * Updates audio listener position values
+     * @param {Array} pos
+     */
+    updateListenerPosition(pos) {
+        if (this.context.audioCtx.listener.positionX) {
+            this.context.audioCtx.listener.positionX.value = pos[0];
+            this.context.audioCtx.listener.positionY.value = pos[1];
+            this.context.audioCtx.listener.positionZ.value = pos[2];
+        } else {
+            this.context.audioCtx.listener.setPosition(...pos);
+        }
+    }
+
+    /**
+     * Updates audio listener orientation values
+     * @param {Array} angle
+     */
+    updateListenerOrientation(angle) {
+        const [forwardX, forwardY, forwardZ] = GameLoop.getVectorFromAngles(...angle);
+
+        let upVerticalAngle;
+        let upHorizontalAngle;
+        if (angle[1] > 0) {
+            upVerticalAngle = 90 - angle[1];
+            upHorizontalAngle = (angle[0] - 180) % 360;
+        } else {
+            upVerticalAngle = 90 + angle[1];
+            upHorizontalAngle = angle[0];
+        }
+        const [upX, upY, upZ] = GameLoop.getVectorFromAngles(upHorizontalAngle, upVerticalAngle);
+
+        if (this.context.audioCtx.listener.forwardX) {
+            this.context.audioCtx.listener.forwardX.value = forwardX;
+            this.context.audioCtx.listener.forwardY.value = forwardY;
+            this.context.audioCtx.listener.forwardZ.value = forwardZ;
+            this.context.audioCtx.listener.upX.value = upX;
+            this.context.audioCtx.listener.upY.value = upY;
+            this.context.audioCtx.listener.upZ.value = upZ;
+        } else {
+            this.context.audioCtx.listener.setOrientation(forwardX, forwardY, forwardZ, upX, upY, upZ);
+        }
+    }
+
+    showHints(hints, once, delay = 0) {
+        const rawHints = hints.filter(hint => {
+            if (once && this.shownHints[hint]) {
+                return false;
+            }
+            this.shownHints[hint] = true;
+            return true;
+        });
+        if (rawHints.length) {
+            this.delayedActions.pushAction({
+                action: __WEBPACK_IMPORTED_MODULE_10__actionCreators__["e" /* hints */].removeHints(rawHints),
+                delay: __WEBPACK_IMPORTED_MODULE_4__constants_constants__["D" /* HINT_SHOW_TIME */] + delay
+            });
+        }
+        return __WEBPACK_IMPORTED_MODULE_10__actionCreators__["e" /* hints */].addHints(rawHints);
+    }
+
+    /**
+     * Returns radians for given degrees
+     * @param {number} angle
+     * @returns {number}
+     */
+    static convertDegreeToRad(angle) {
+        return angle / 180 * Math.PI;
+    }
+
+    /**
+     * Returns vector coordinates for given angles
+     * @param {number} horizontalAngle (rad)
+     * @param {number} verticalAngle (rad)
+     * @returns {number[]}
+     */
+    static getVectorFromAngles(horizontalAngle, verticalAngle) {
+        const y = Math.sin(GameLoop.convertDegreeToRad(verticalAngle));
+        const xzProjectionDist = Math.sqrt(1 - y * y);
+        const x = Math.sin(GameLoop.convertDegreeToRad(horizontalAngle)) * xzProjectionDist;
+        let z = Math.sqrt(xzProjectionDist * xzProjectionDist - x * x);
+        if (Math.abs(horizontalAngle) < 90 || Math.abs(horizontalAngle) > 270) {
+            z = -z;
+        }
+        return [x, y, z];
+    }
+}
+
+GameLoop.contextTypes = {
+    store: __WEBPACK_IMPORTED_MODULE_3_react_redux_src_utils_storeShape__["a" /* default */].isRequired,
+    audioCtx: __WEBPACK_IMPORTED_MODULE_0_react__["PropTypes"].object.isRequired
+};
+GameLoop.propTypes = {
+    onWin: __WEBPACK_IMPORTED_MODULE_0_react__["PropTypes"].func.isRequired
+};
+/* harmony default export */ exports["a"] = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1_react_redux__["connect"])()(GameLoop);
+
+/***/ },
+/* 126 */
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__scene_css__ = __webpack_require__(151);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__scene_css___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__scene_css__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react__ = __webpack_require__(4);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_react__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_react_redux__ = __webpack_require__(17);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_react_redux___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_react_redux__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__components_painting_painting__ = __webpack_require__(119);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__components_floor_floor__ = __webpack_require__(115);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__components_ceiling_ceiling__ = __webpack_require__(112);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__components_wall_wall__ = __webpack_require__(122);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__components_box_box__ = __webpack_require__(111);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__components_switcher_switcher__ = __webpack_require__(121);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__components_door_door__ = __webpack_require__(113);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__lib_utils__ = __webpack_require__(11);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__constants_constants__ = __webpack_require__(9);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+class Scene extends __WEBPACK_IMPORTED_MODULE_1_react___default.a.Component {
+    render() {
+        const { pos, viewAngle, playerState, doorsState, visibleObjects } = this.props;
+        const transformRule = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_10__lib_utils__["a" /* getTransformRule */])({
+            pos: [-pos[0], pos[1], -pos[2]]
+        });
+        const renderedObjects = [];
+        for (let i = 0; i < visibleObjects.length; i++) {
+            const object = visibleObjects[i];
+            switch (object.type) {
+                // case PAINTING_TYPE:
+                //     renderedObjects.push(<Painting
+                //         key={object.name}
+                //         pos={object.pos}
+                //         playerPos={pos}
+                //         angle={object.angle}
+                //         size={object.size.filter(value => value !== 0).slice(0, 2)}
+                //         background={object.background}
+                //         getTransformRule={getTransformRule}
+                //     />);
+                //     break;
+                case __WEBPACK_IMPORTED_MODULE_11__constants_constants__["k" /* FLOOR_TYPE */]:
+                    renderedObjects.push(__WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_4__components_floor_floor__["a" /* default */], {
+                        key: object.name,
+                        pos: object.pos,
+                        playerPos: pos,
+                        size: object.size
+                    }));
+                    break;
+                case __WEBPACK_IMPORTED_MODULE_11__constants_constants__["l" /* CEILING_TYPE */]:
+                    renderedObjects.push(__WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_5__components_ceiling_ceiling__["a" /* default */], {
+                        key: object.name,
+                        pos: object.pos,
+                        size: [object.size[0], object.size[2]]
+                    }));
+                    break;
+                case __WEBPACK_IMPORTED_MODULE_11__constants_constants__["m" /* WALL_TYPE */]:
+                    renderedObjects.push(__WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_6__components_wall_wall__["a" /* default */], {
+                        key: object.name,
+                        pos: object.pos,
+                        playerPos: pos,
+                        size: object.size
+                    }));
+                    break;
+                case __WEBPACK_IMPORTED_MODULE_11__constants_constants__["n" /* BOX_TYPE */]:
+                    renderedObjects.push(__WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_7__components_box_box__["a" /* default */], {
+                        key: object.name,
+                        pos: object.pos,
+                        playerPos: pos,
+                        size: object.size,
+                        mode: object.props.mode
+                    }));
+                    break;
+                case __WEBPACK_IMPORTED_MODULE_11__constants_constants__["o" /* SWITCHER_TYPE */]:
+                    renderedObjects.push(__WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_8__components_switcher_switcher__["a" /* default */], {
+                        key: object.name,
+                        pos: object.pos,
+                        size: object.size,
+                        angle: object.angle,
+                        playerPos: pos,
+                        isReachable: object.isReachable,
+                        isInteractive: [__WEBPACK_IMPORTED_MODULE_11__constants_constants__["i" /* DOOR_OPEN */], __WEBPACK_IMPORTED_MODULE_11__constants_constants__["j" /* DOOR_CLOSE */]].includes(doorsState[object.props.id]),
+                        isOn: [__WEBPACK_IMPORTED_MODULE_11__constants_constants__["i" /* DOOR_OPEN */], __WEBPACK_IMPORTED_MODULE_11__constants_constants__["h" /* DOOR_OPENING */]].includes(doorsState[object.props.id])
+                    }));
+                    break;
+                case __WEBPACK_IMPORTED_MODULE_11__constants_constants__["p" /* DOOR_TYPE */]:
+                    renderedObjects.push(__WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_9__components_door_door__["a" /* default */], {
+                        key: object.name,
+                        isVisible: object.isVisible,
+                        pos: object.pos,
+                        playerPos: pos,
+                        viewAngle: viewAngle,
+                        size: object.size,
+                        state: doorsState[object.props.id]
+                    }));
+                    break;
+            }
+        }
+        const className = ['obj player-animation', playerState === __WEBPACK_IMPORTED_MODULE_11__constants_constants__["q" /* PLAYER_WALK */] ? __WEBPACK_IMPORTED_MODULE_0__scene_css___default.a.playerAnimationWalking : playerState === __WEBPACK_IMPORTED_MODULE_11__constants_constants__["r" /* PLAYER_RUN */] ? __WEBPACK_IMPORTED_MODULE_0__scene_css___default.a.playerAnimationRunning : ''].join(' ');
+        return __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
+            'div',
+            { className: className },
+            __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
+                'div',
+                { className: 'obj scene', style: transformRule },
+                renderedObjects
+            )
+        );
+    }
+}
+Scene.propTypes = {
+    pos: __WEBPACK_IMPORTED_MODULE_1_react__["PropTypes"].arrayOf(__WEBPACK_IMPORTED_MODULE_1_react__["PropTypes"].number).isRequired,
+    viewAngle: __WEBPACK_IMPORTED_MODULE_1_react__["PropTypes"].arrayOf(__WEBPACK_IMPORTED_MODULE_1_react__["PropTypes"].number).isRequired,
+    playerState: __WEBPACK_IMPORTED_MODULE_1_react__["PropTypes"].string.isRequired,
+    doorsState: __WEBPACK_IMPORTED_MODULE_1_react__["PropTypes"].object.isRequired,
+    visibleObjects: __WEBPACK_IMPORTED_MODULE_1_react__["PropTypes"].arrayOf(__WEBPACK_IMPORTED_MODULE_1_react__["PropTypes"].object).isRequired
+};
+
+function mapStateToProps(state) {
+    return {
+        pos: state.pos,
+        viewAngle: state.viewAngle,
+        playerState: state.playerState,
+        visibleObjects: state.objects.filter(obj => obj.isVisible || obj.type === __WEBPACK_IMPORTED_MODULE_11__constants_constants__["p" /* DOOR_TYPE */]),
+        doorsState: state.doorsState
+    };
+}
+
+/* harmony default export */ exports["a"] = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2_react_redux__["connect"])(mapStateToProps)(Scene);
+
+/***/ },
+/* 127 */
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__viewport_css__ = __webpack_require__(152);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__viewport_css___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__viewport_css__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react__ = __webpack_require__(4);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_react__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_redux__ = __webpack_require__(19);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_react_redux__ = __webpack_require__(17);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_react_redux___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_react_redux__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__actionCreators__ = __webpack_require__(41);
+
+
+
+
+
+
+
+class Viewport extends __WEBPACK_IMPORTED_MODULE_1_react___default.a.Component {
+
+    constructor(...args) {
+        super(...args);
+
+        this.viewportNode = null;
+        this.pointerLocked = false;
+
+        this.onKeyDown = this.onKeyDown.bind(this);
+        this.onKeyUp = this.onKeyUp.bind(this);
+        this.onMouseMove = this.onMouseMove.bind(this);
+        this.requestPointerLock = this.requestPointerLock.bind(this);
+        this.onPointerLockChange = this.onPointerLockChange.bind(this);
+    }
+
+    componentDidMount() {
+        this.viewportNode.requestPointerLock();
+        document.addEventListener('pointerlockchange', this.onPointerLockChange);
+        document.addEventListener('keyup', this.onKeyUp);
+        document.addEventListener('keydown', this.onKeyDown);
+    }
+
+    componentWillUnmount() {
+        document.removeEventListener('pointerlockchange', this.onPointerLockChange);
+        document.exitPointerLock();
+        document.removeEventListener('keyup', this.onKeyUp);
+        document.removeEventListener('keydown', this.onKeyDown);
+    }
+
+    render() {
+        return __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
+            'div',
+            { className: __WEBPACK_IMPORTED_MODULE_0__viewport_css___default.a.root,
+                onMouseMove: this.onMouseMove,
+                onClick: this.requestPointerLock,
+                ref: viewportNode => {
+                    this.viewportNode = viewportNode;
+                }
+            },
+            this.props.children
+        );
+    }
+
+    onKeyDown(event) {
+        this.props.toggleKeyPressed(event.keyCode, true);
+    }
+
+    onKeyUp(event) {
+        this.props.toggleKeyPressed(event.keyCode, false);
+    }
+
+    onMouseMove(event) {
+        if (this.pointerLocked) {
+            this.props.updatePointerDelta(-event.nativeEvent.movementX, -event.nativeEvent.movementY);
+        }
+    }
+
+    requestPointerLock() {
+        this.viewportNode.requestPointerLock();
+    }
+
+    onPointerLockChange() {
+        this.pointerLocked = document.pointerLockElement === this.viewportNode;
+    }
+}
+
+Viewport.propTypes = {
+    toggleKeyPressed: __WEBPACK_IMPORTED_MODULE_1_react__["PropTypes"].func.isRequired,
+    updatePointerDelta: __WEBPACK_IMPORTED_MODULE_1_react__["PropTypes"].func.isRequired
+};
+function mapDispatchToProps(dispatch) {
+    return __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2_redux__["bindActionCreators"])({
+        updatePointerDelta: __WEBPACK_IMPORTED_MODULE_4__actionCreators__["a" /* game */].updatePointerDelta,
+        toggleKeyPressed: __WEBPACK_IMPORTED_MODULE_4__actionCreators__["a" /* game */].toggleKeyPressed
+    }, dispatch);
+}
+
+/* harmony default export */ exports["a"] = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_3_react_redux__["connect"])(null, mapDispatchToProps)(Viewport);
+
+/***/ },
+/* 128 */
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+class Loop {
+    constructor(fn = () => {}, fps = 60, startImmediately = false) {
+        this.fn = fn;
+        this.fps = fps;
+        this.oldTimestamp = null;
+        this.rafId = null;
+        if (startImmediately) {
+            this.start();
+        }
+    }
+
+    start(timestamp) {
+        this.rafId = window.requestAnimationFrame(this.start.bind(this));
+        let frameRateCoefficient = 1;
+        if (timestamp) {
+            if (this.oldTimestamp) {
+                frameRateCoefficient = (timestamp - this.oldTimestamp) * this.fps / 1000;
+            }
+            this.oldTimestamp = timestamp;
+        }
+        this.fn(frameRateCoefficient);
+    }
+
+    stop() {
+        window.cancelAnimationFrame(this.rafId);
+        this.rafId = null;
+    }
+}
+/* harmony export (immutable) */ exports["a"] = Loop;
+
+
+/***/ },
+/* 129 */
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+/* harmony default export */ exports["a"] = [
+// ['assets/dickbutt.png', 'image'],
+['src/components/box/box01.jpg', 'image'], ['src/components/box/box02.jpg', 'image'], ['src/components/box/box03.jpg', 'image'], ['src/components/floor/floor.jpg', 'image'], ['src/components/plain/mask.svg', 'image'], ['src/components/switcher/wood.jpg', 'image'], ['src/components/wall/wall.jpg', 'image'], ['src/components/door/mixdown.m4a', 'audio']];
+
+/***/ },
+/* 130 */
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__level__ = __webpack_require__(27);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__constants_constants__ = __webpack_require__(9);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__constants_actionNames__ = __webpack_require__(8);
+/* harmony export (immutable) */ exports["a"] = doorsState;
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+
+
+
+
+function getInitialState() {
+    return JSON.parse(__WEBPACK_IMPORTED_MODULE_0__level__["a" /* default */].objects).filter(obj => obj.type === __WEBPACK_IMPORTED_MODULE_1__constants_constants__["p" /* DOOR_TYPE */]).reduce((result, obj) => {
+        result[obj.props.id] = obj.props.state;
+        return result;
+    }, {});
+}
+
+function doorsState(state = {}, action) {
+    switch (action.type) {
+        case __WEBPACK_IMPORTED_MODULE_2__constants_actionNames__["n" /* DOOR_SET_CLOSING */]:
+            return _extends({}, state, {
+                [action.id]: __WEBPACK_IMPORTED_MODULE_1__constants_constants__["g" /* DOOR_CLOSING */]
+            });
+        case __WEBPACK_IMPORTED_MODULE_2__constants_actionNames__["o" /* DOOR_SET_OPENING */]:
+            return _extends({}, state, {
+                [action.id]: __WEBPACK_IMPORTED_MODULE_1__constants_constants__["h" /* DOOR_OPENING */]
+            });
+        case __WEBPACK_IMPORTED_MODULE_2__constants_actionNames__["p" /* DOOR_SET_CLOSE */]:
+            return _extends({}, state, {
+                [action.id]: __WEBPACK_IMPORTED_MODULE_1__constants_constants__["j" /* DOOR_CLOSE */]
+            });
+        case __WEBPACK_IMPORTED_MODULE_2__constants_actionNames__["q" /* DOOR_SET_OPEN */]:
+            return _extends({}, state, {
+                [action.id]: __WEBPACK_IMPORTED_MODULE_1__constants_constants__["i" /* DOOR_OPEN */]
+            });
+        case __WEBPACK_IMPORTED_MODULE_2__constants_actionNames__["a" /* SET_GAME_START */]:
+            return getInitialState();
+        default:
+            return state;
+    }
+}
+
+/***/ },
+/* 131 */
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__constants_actionNames__ = __webpack_require__(8);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__constants_constants__ = __webpack_require__(9);
+/* harmony export (immutable) */ exports["a"] = gameState;
+
+
+
+function gameState(state = __WEBPACK_IMPORTED_MODULE_1__constants_constants__["E" /* LOADING */], action) {
+    switch (action.type) {
+        case __WEBPACK_IMPORTED_MODULE_0__constants_actionNames__["a" /* SET_GAME_START */]:
+            return __WEBPACK_IMPORTED_MODULE_1__constants_constants__["a" /* START */];
+        case __WEBPACK_IMPORTED_MODULE_0__constants_actionNames__["b" /* SET_GAME_PLAY */]:
+            return __WEBPACK_IMPORTED_MODULE_1__constants_constants__["b" /* PLAY */];
+        case __WEBPACK_IMPORTED_MODULE_0__constants_actionNames__["c" /* SET_GAME_END */]:
+            return __WEBPACK_IMPORTED_MODULE_1__constants_constants__["c" /* END */];
+        default:
+            return state;
+    }
+}
+
+/***/ },
+/* 132 */
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__constants_actionNames__ = __webpack_require__(8);
+/* harmony export (immutable) */ exports["a"] = hints;
+
+
+function hints(state = new Map(), action) {
+    switch (action.type) {
+        case __WEBPACK_IMPORTED_MODULE_0__constants_actionNames__["r" /* HINTS_ADD */]:
+            {
+                if (!action.hints.length) {
+                    return state;
+                }
+                const newState = new Map(state);
+                action.hints.forEach(hint => {
+                    const refCount = newState.get(hint) || 0;
+                    newState.delete(hint);
+                    newState.set(hint, refCount + 1);
+                });
+                return newState;
+            }
+        case __WEBPACK_IMPORTED_MODULE_0__constants_actionNames__["s" /* HINTS_REMOVE */]:
+            {
+                if (!action.hints.length) {
+                    return state;
+                }
+                const newState = new Map(state);
+                action.hints.forEach(hint => {
+                    const refCount = newState.get(hint);
+                    if (refCount === 1) {
+                        newState.delete(hint);
+                    } else if (refCount) {
+                        newState.set(hint, refCount - 1);
+                    }
+                });
+                return newState;
+            }
+        case __WEBPACK_IMPORTED_MODULE_0__constants_actionNames__["a" /* SET_GAME_START */]:
+            return new Map();
+        default:
+            return state;
+    }
+}
+
+/***/ },
+/* 133 */
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__constants_constants__ = __webpack_require__(9);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__constants_actionNames__ = __webpack_require__(8);
+/* harmony export (immutable) */ exports["a"] = keyPressed;
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+
+
+
+function getInitialState() {
+    return {
+        [__WEBPACK_IMPORTED_MODULE_0__constants_constants__["v" /* KEY_W */]]: false,
+        [__WEBPACK_IMPORTED_MODULE_0__constants_constants__["w" /* KEY_S */]]: false,
+        [__WEBPACK_IMPORTED_MODULE_0__constants_constants__["x" /* KEY_A */]]: false,
+        [__WEBPACK_IMPORTED_MODULE_0__constants_constants__["y" /* KEY_D */]]: false,
+        [__WEBPACK_IMPORTED_MODULE_0__constants_constants__["C" /* KEY_E */]]: false,
+        [__WEBPACK_IMPORTED_MODULE_0__constants_constants__["z" /* KEY_SHIFT */]]: false
+    };
+}
+
+function keyPressed(state = getInitialState(), action) {
+    switch (action.type) {
+        case __WEBPACK_IMPORTED_MODULE_1__constants_actionNames__["d" /* TOGGLE_KEY_PRESSED */]:
+            if (action.keyCode in state) {
+                return _extends({}, state, {
+                    [action.keyCode]: action.on
+                });
+            }
+            return state;
+        case __WEBPACK_IMPORTED_MODULE_1__constants_actionNames__["a" /* SET_GAME_START */]:
+            return getInitialState();
+        default:
+            return state;
+    }
+}
+
+/***/ },
+/* 134 */
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__constants_constants__ = __webpack_require__(9);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__constants_actionNames__ = __webpack_require__(8);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__level__ = __webpack_require__(27);
+/* harmony export (immutable) */ exports["a"] = objects;
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+
+
+
+
+function getInitialState() {
+    return JSON.parse(__WEBPACK_IMPORTED_MODULE_2__level__["a" /* default */].objects);
+}
+
+function setDoorCollidable({ state, id, on }) {
+    const objects = new Array(state.length);
+    for (let i = 0; i < state.length; i++) {
+        let object = state[i];
+        if (object.type === __WEBPACK_IMPORTED_MODULE_0__constants_constants__["p" /* DOOR_TYPE */] && object.props.id === id) {
+            object.collides = on;
+        }
+        objects[i] = object;
+    }
+    return objects;
+}
+
+function objects(state = getInitialState(), action) {
+    switch (action.type) {
+        case __WEBPACK_IMPORTED_MODULE_1__constants_actionNames__["l" /* OBJECTS_SET_VISIBLE */]:
+            {
+                const objects = new Array(state.length);
+                for (let i = 0; i < state.length; i++) {
+                    const object = state[i];
+                    if (object.name in action.addVisibleObjects) {
+                        objects[i] = _extends({}, object, { isVisible: true });
+                    } else if (object.name in action.removeVisibleObjects) {
+                        objects[i] = _extends({}, object, { isVisible: false });
+                    } else {
+                        objects[i] = object;
+                    }
+                }
+                return objects;
+            }
+        case __WEBPACK_IMPORTED_MODULE_1__constants_actionNames__["m" /* OBJECTS_SET_REACHABLE */]:
+            {
+                const objects = new Array(state.length);
+                for (let i = 0; i < state.length; i++) {
+                    const object = state[i];
+                    let isReachable;
+                    if (action.reachableObject && object.name === action.reachableObject.name) {
+                        isReachable = true;
+                    }
+                    if (isReachable !== object.isReachable) {
+                        objects[i] = _extends({}, object, { isReachable });
+                    } else {
+                        objects[i] = object;
+                    }
+                }
+                return objects;
+            }
+        case __WEBPACK_IMPORTED_MODULE_1__constants_actionNames__["q" /* DOOR_SET_OPEN */]:
+            {
+                return setDoorCollidable({ state, id: action.id, on: false });
+            }
+        case __WEBPACK_IMPORTED_MODULE_1__constants_actionNames__["p" /* DOOR_SET_CLOSE */]:
+            {
+                return setDoorCollidable({ state, id: action.id, on: true });
+            }
+        case __WEBPACK_IMPORTED_MODULE_1__constants_actionNames__["a" /* SET_GAME_START */]:
+            {
+                return getInitialState();
+            }
+        default:
+            return state;
+    }
+}
+
+/***/ },
+/* 135 */
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__constants_actionNames__ = __webpack_require__(8);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__level__ = __webpack_require__(27);
+/* harmony export (immutable) */ exports["a"] = playerPosition;
+
+
+
+function getInitialState() {
+    return [...__WEBPACK_IMPORTED_MODULE_1__level__["a" /* default */].player.pos];
+}
+
+function playerPosition(state = getInitialState(), action) {
+    switch (action.type) {
+        case __WEBPACK_IMPORTED_MODULE_0__constants_actionNames__["h" /* PLAYER_POSITION_UPDATE */]:
+            return action.pos;
+        case __WEBPACK_IMPORTED_MODULE_0__constants_actionNames__["a" /* SET_GAME_START */]:
+            return getInitialState();
+        default:
+            return state;
+    }
+}
+
+/***/ },
+/* 136 */
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__constants_constants__ = __webpack_require__(9);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__constants_actionNames__ = __webpack_require__(8);
+/* harmony export (immutable) */ exports["a"] = playerState;
+
+
+
+function playerState(state = __WEBPACK_IMPORTED_MODULE_0__constants_constants__["F" /* PLAYER_STOP */], action) {
+    switch (action.type) {
+        case __WEBPACK_IMPORTED_MODULE_1__constants_actionNames__["k" /* PLAYER_STATE_STOP */]:
+        case __WEBPACK_IMPORTED_MODULE_1__constants_actionNames__["a" /* SET_GAME_START */]:
+            return __WEBPACK_IMPORTED_MODULE_0__constants_constants__["F" /* PLAYER_STOP */];
+        case __WEBPACK_IMPORTED_MODULE_1__constants_actionNames__["j" /* PLAYER_STATE_WALK */]:
+            return __WEBPACK_IMPORTED_MODULE_0__constants_constants__["q" /* PLAYER_WALK */];
+        case __WEBPACK_IMPORTED_MODULE_1__constants_actionNames__["i" /* PLAYER_STATE_RUN */]:
+            return __WEBPACK_IMPORTED_MODULE_0__constants_constants__["r" /* PLAYER_RUN */];
+        default:
+            return state;
+    }
+}
+
+/***/ },
+/* 137 */
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__constants_actionNames__ = __webpack_require__(8);
+/* harmony export (immutable) */ exports["a"] = pointerDelta;
+
+
+function getInitialState() {
+    return { x: 0, y: 0 };
+}
+
+function pointerDelta(state = getInitialState(), action) {
+    switch (action.type) {
+        case __WEBPACK_IMPORTED_MODULE_0__constants_actionNames__["e" /* UPDATE_POINTER_DELTA */]:
+            return {
+                x: state.x + action.x,
+                y: state.y + action.y
+            };
+        case __WEBPACK_IMPORTED_MODULE_0__constants_actionNames__["f" /* RESET_POINTER_DELTA */]:
+            return getInitialState();
+        case __WEBPACK_IMPORTED_MODULE_0__constants_actionNames__["a" /* SET_GAME_START */]:
+            return getInitialState();
+        default:
+            return state;
+    }
+}
+
+/***/ },
+/* 138 */
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__level__ = __webpack_require__(27);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__constants_actionNames__ = __webpack_require__(8);
+/* harmony export (immutable) */ exports["a"] = viewAngle;
+
+
+
+function getInitialState() {
+    return [...__WEBPACK_IMPORTED_MODULE_0__level__["a" /* default */].player.angle];
+}
+
+function viewAngle(state = getInitialState(), action) {
+    switch (action.type) {
+        case __WEBPACK_IMPORTED_MODULE_1__constants_actionNames__["g" /* VIEW_ANGLE_UPDATE */]:
+            return action.viewAngle;
+        case __WEBPACK_IMPORTED_MODULE_1__constants_actionNames__["a" /* SET_GAME_START */]:
+            return getInitialState();
+        default:
+            return state;
+    }
+}
+
+/***/ },
+/* 139 */
+/***/ function(module, exports) {
+
+// removed by extract-text-webpack-plugin
+module.exports = {"root":"logo-root-1ptFe"};
+
+/***/ },
+/* 140 */
+/***/ function(module, exports) {
+
+// removed by extract-text-webpack-plugin
+module.exports = {"root":"box-root-1bYIs","mode-1":"box-mode-1-2_ljJ","mode-2":"box-mode-2-3XTO6","mode-3":"box-mode-3-ZvQ5H"};
+
+/***/ },
+/* 141 */
+/***/ function(module, exports) {
+
+// removed by extract-text-webpack-plugin
+module.exports = {"root":"ceiling-root-oxGSS"};
+
+/***/ },
+/* 142 */
+/***/ function(module, exports) {
+
+// removed by extract-text-webpack-plugin
+module.exports = {"root":"door-root-eMRzu","bar":"door-bar-eZp6B"};
+
+/***/ },
+/* 143 */
+/***/ function(module, exports) {
+
+// removed by extract-text-webpack-plugin
+module.exports = {"root":"endScreen-root-37ZFZ","message":"endScreen-message-2i6JW","anyKey":"endScreen-anyKey--krEO"};
+
+/***/ },
+/* 144 */
+/***/ function(module, exports) {
+
+// removed by extract-text-webpack-plugin
+module.exports = {"root":"floor-root-3F8ag"};
+
+/***/ },
+/* 145 */
+/***/ function(module, exports) {
+
+// removed by extract-text-webpack-plugin
+module.exports = {"root":"hints-root-3NehV","hint":"hints-hint-2sBxI"};
+
+/***/ },
+/* 146 */
+/***/ function(module, exports) {
+
+// removed by extract-text-webpack-plugin
+module.exports = {"root":"loadingScreen-root-1mysW"};
+
+/***/ },
+/* 147 */
+/***/ function(module, exports) {
+
+// removed by extract-text-webpack-plugin
+module.exports = {"root":"startScreen-root-jM2W-","menuItem":"startScreen-menuItem-1ZrkU","menuItemButton":"startScreen-menuItemButton-3tYC1"};
+
+/***/ },
+/* 148 */
+/***/ function(module, exports) {
+
+// removed by extract-text-webpack-plugin
+module.exports = {"root":"switcher-root-2DxPU","handle":"switcher-handle-3j71N","off":"switcher-off-yQoql","on":"switcher-on-H20ki","reachable":"switcher-reachable-24rEd"};
+
+/***/ },
+/* 149 */
+/***/ function(module, exports) {
+
+// removed by extract-text-webpack-plugin
+module.exports = {"root":"wall-root-1TWW_"};
+
+/***/ },
+/* 150 */
+/***/ function(module, exports) {
+
+// removed by extract-text-webpack-plugin
+module.exports = {"root":"camera-root-3QZty"};
+
+/***/ },
+/* 151 */
+/***/ function(module, exports) {
+
+// removed by extract-text-webpack-plugin
+module.exports = {"playerAnimationWalking":"scene-playerAnimationWalking-P2K7v","playerAnimationRunning":"scene-playerAnimationRunning-JGR3l","playerAnimationWalkingY":"scene-playerAnimationWalkingY-IORpb","playerAnimationWalkingX":"scene-playerAnimationWalkingX-BJDEa"};
+
+/***/ },
+/* 152 */
+/***/ function(module, exports) {
+
+// removed by extract-text-webpack-plugin
+module.exports = {"root":"viewport-root-goyag"};
+
+/***/ },
+/* 153 */,
+/* 154 */,
+/* 155 */,
+/* 156 */,
+/* 157 */,
+/* 158 */,
+/* 159 */,
+/* 160 */,
+/* 161 */,
+/* 162 */,
+/* 163 */,
+/* 164 */,
+/* 165 */,
+/* 166 */,
+/* 167 */,
+/* 168 */,
+/* 169 */,
+/* 170 */,
+/* 171 */,
+/* 172 */,
+/* 173 */,
+/* 174 */,
+/* 175 */,
+/* 176 */,
+/* 177 */,
+/* 178 */,
+/* 179 */,
+/* 180 */,
+/* 181 */,
+/* 182 */,
+/* 183 */,
+/* 184 */,
+/* 185 */,
+/* 186 */,
+/* 187 */,
+/* 188 */,
+/* 189 */,
+/* 190 */,
+/* 191 */,
+/* 192 */,
+/* 193 */,
+/* 194 */,
+/* 195 */,
+/* 196 */,
+/* 197 */,
+/* 198 */,
+/* 199 */,
+/* 200 */,
+/* 201 */,
+/* 202 */,
+/* 203 */,
+/* 204 */,
+/* 205 */,
+/* 206 */,
+/* 207 */,
+/* 208 */,
+/* 209 */,
+/* 210 */,
+/* 211 */,
+/* 212 */,
+/* 213 */,
+/* 214 */,
+/* 215 */,
+/* 216 */,
+/* 217 */,
+/* 218 */,
+/* 219 */,
+/* 220 */,
+/* 221 */,
+/* 222 */,
+/* 223 */,
+/* 224 */,
+/* 225 */,
+/* 226 */,
+/* 227 */,
+/* 228 */,
+/* 229 */,
+/* 230 */,
+/* 231 */,
+/* 232 */,
+/* 233 */,
+/* 234 */,
+/* 235 */,
+/* 236 */,
+/* 237 */,
+/* 238 */,
+/* 239 */,
+/* 240 */,
+/* 241 */,
+/* 242 */,
+/* 243 */,
+/* 244 */,
+/* 245 */,
+/* 246 */,
+/* 247 */,
+/* 248 */,
+/* 249 */,
+/* 250 */,
+/* 251 */,
+/* 252 */,
+/* 253 */,
+/* 254 */,
+/* 255 */,
+/* 256 */,
+/* 257 */,
+/* 258 */,
+/* 259 */,
+/* 260 */,
+/* 261 */
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(4);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
+
+
+/* harmony default export */ exports["a"] = __WEBPACK_IMPORTED_MODULE_0_react__["PropTypes"].shape({
+  subscribe: __WEBPACK_IMPORTED_MODULE_0_react__["PropTypes"].func.isRequired,
+  dispatch: __WEBPACK_IMPORTED_MODULE_0_react__["PropTypes"].func.isRequired,
+  getState: __WEBPACK_IMPORTED_MODULE_0_react__["PropTypes"].func.isRequired
+});
+
+
+/***/ },
+/* 262 */,
+/* 263 */,
+/* 264 */,
+/* 265 */,
+/* 266 */,
+/* 267 */,
+/* 268 */,
+/* 269 */,
+/* 270 */,
+/* 271 */,
+/* 272 */,
+/* 273 */,
+/* 274 */,
+/* 275 */,
+/* 276 */,
+/* 277 */,
+/* 278 */,
+/* 279 */,
+/* 280 */
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__index_css__ = __webpack_require__(104);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__index_css___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__index_css__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react__ = __webpack_require__(4);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_react__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_react_dom__ = __webpack_require__(40);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_react_dom___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_react_dom__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_redux__ = __webpack_require__(19);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_react_redux__ = __webpack_require__(17);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_react_redux___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_react_redux__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_redux_batched_actions__ = __webpack_require__(33);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_redux_batched_actions___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5_redux_batched_actions__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__containers_game__ = __webpack_require__(102);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__reducers__ = __webpack_require__(103);
+
+
+
+
+
+
+
+
+
+
+
+
+const store = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_3_redux__["createStore"])(__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_5_redux_batched_actions__["enableBatching"])(__WEBPACK_IMPORTED_MODULE_7__reducers__["a" /* default */]));
+
+__WEBPACK_IMPORTED_MODULE_2_react_dom___default.a.render(__WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
+    __WEBPACK_IMPORTED_MODULE_4_react_redux__["Provider"],
+    { store: store },
+    __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_6__containers_game__["a" /* default */], null)
+), document.getElementById('app'));
 
 /***/ }
-
-},[275]);
+],[280]);

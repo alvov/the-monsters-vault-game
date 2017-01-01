@@ -1,0 +1,9 @@
+.root {
+    height: 100%;
+    background-image: url(./mask.svg);
+    background-repeat: no-repeat;
+}
+.overlay {
+    height: 100%;
+    background: #000;
+}

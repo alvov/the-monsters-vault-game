@@ -10,7 +10,8 @@ import EndScreen from '../components/endScreen/endScreen';
 import Hints from '../components/hints/hints';
 import Viewport from './viewport/viewport';
 import Camera from './camera/camera';
-import Scene from './scene/scene';
+import Player from './player/player';
+import Scene from './scene';
 import GameLoop from './gameLoop';
 
 class Game extends React.Component {
@@ -63,7 +64,9 @@ class Game extends React.Component {
                 <Hints hints={hints} />
                 <GameLoop onWin={this.setGameStateEnd}>
                     <Camera>
-                        <Scene />
+                        <Player>
+                            <Scene />
+                        </Player>
                     </Camera>
                 </GameLoop>
             </Viewport>;

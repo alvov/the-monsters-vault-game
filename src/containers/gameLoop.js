@@ -15,17 +15,16 @@ import {
     HINT_FIRST_SWITCHER,
     HINT_DOOR
 } from '../constants/hints';
+import { getVisibleObjects, getPointPosition, DelayedActions, convertDegreeToRad } from '../lib/utils';
 
 import Loop from '../lib/loop';
 import level from '../level';
 import Collision from '../lib/collision';
-import { getVisibleObjects, getPointPosition, DelayedActions } from '../lib/utils';
 import * as actionCreators from '../actionCreators';
 
 class GameLoop extends React.Component {
     static contextTypes = {
-        store: storeShape.isRequired,
-        audioCtx: PropTypes.object.isRequired
+        store: storeShape.isRequired
     };
     static propTypes = {
         onWin: PropTypes.func.isRequired
@@ -40,10 +39,6 @@ class GameLoop extends React.Component {
 
         this.prevKeysPressed = {};
         this.shownHints = {};
-
-        const currentStore = this.context.store.getState();
-        this.updateListenerPosition(currentStore.pos);
-        this.updateListenerOrientation(currentStore.viewAngle);
     }
 
     componentDidMount() {
@@ -124,7 +119,7 @@ class GameLoop extends React.Component {
             }
             reducedAngleShift = reducedAngleShift / angleShift.length;
 
-            reducedAngleShift = reducedAngleShift + GameLoop.convertDegreeToRad(currentStore.viewAngle[0]);
+            reducedAngleShift = reducedAngleShift + convertDegreeToRad(currentStore.viewAngle[0]);
 
             let step = frameRateCoefficient * (keyPressed[KEY_SHIFT] ? RUNNING_COEFF : 1) * STEP;
             const shift = [-step * Math.sin(reducedAngleShift), 0, step * Math.cos(reducedAngleShift)];
@@ -157,12 +152,6 @@ class GameLoop extends React.Component {
             if (Object.keys(addVisibleObjects).length || Object.keys(removeVisibleObjects).length) {
                 actions.push(actionCreators.objects.setVisible({ addVisibleObjects, removeVisibleObjects }));
             }
-
-            this.updateListenerPosition(newState.pos);
-        }
-
-        if (newState.viewAngle) {
-            this.updateListenerOrientation(newState.viewAngle);
         }
 
         // find interactive object which we can reach with a hand
@@ -217,50 +206,6 @@ class GameLoop extends React.Component {
         this.prevKeysPressed = { ...keyPressed };
     }
 
-    /**
-     * Updates audio listener position values
-     * @param {Array} pos
-     */
-    updateListenerPosition(pos) {
-        if (this.context.audioCtx.listener.positionX) {
-            this.context.audioCtx.listener.positionX.value = pos[0];
-            this.context.audioCtx.listener.positionY.value = pos[1];
-            this.context.audioCtx.listener.positionZ.value = pos[2];
-        } else {
-            this.context.audioCtx.listener.setPosition(...pos);
-        }
-    }
-
-    /**
-     * Updates audio listener orientation values
-     * @param {Array} angle
-     */
-    updateListenerOrientation(angle) {
-        const [forwardX, forwardY, forwardZ] = GameLoop.getVectorFromAngles(...angle);
-
-        let upVerticalAngle;
-        let upHorizontalAngle;
-        if (angle[1] > 0) {
-            upVerticalAngle = 90 - angle[1];
-            upHorizontalAngle = (angle[0] - 180) % 360;
-        } else {
-            upVerticalAngle = 90 + angle[1];
-            upHorizontalAngle = angle[0];
-        }
-        const [upX, upY, upZ] = GameLoop.getVectorFromAngles(upHorizontalAngle, upVerticalAngle);
-
-        if (this.context.audioCtx.listener.forwardX) {
-            this.context.audioCtx.listener.forwardX.value = forwardX;
-            this.context.audioCtx.listener.forwardY.value = forwardY;
-            this.context.audioCtx.listener.forwardZ.value = forwardZ;
-            this.context.audioCtx.listener.upX.value = upX;
-            this.context.audioCtx.listener.upY.value = upY;
-            this.context.audioCtx.listener.upZ.value = upZ;
-        } else {
-            this.context.audioCtx.listener.setOrientation(forwardX, forwardY, forwardZ, upX, upY, upZ);
-        }
-    }
-
     showHints(hints, once, delay = 0) {
         const rawHints = hints
             .filter(hint => {
@@ -277,32 +222,6 @@ class GameLoop extends React.Component {
             });
         }
         return actionCreators.hints.addHints(rawHints);
-    }
-
-    /**
-     * Returns radians for given degrees
-     * @param {number} angle
-     * @returns {number}
-     */
-    static convertDegreeToRad(angle) {
-        return angle / 180 * Math.PI;
-    }
-
-    /**
-     * Returns vector coordinates for given angles
-     * @param {number} horizontalAngle (rad)
-     * @param {number} verticalAngle (rad)
-     * @returns {number[]}
-     */
-    static getVectorFromAngles(horizontalAngle, verticalAngle) {
-        const y = Math.sin(GameLoop.convertDegreeToRad(verticalAngle));
-        const xzProjectionDist = Math.sqrt(1 - y * y);
-        const x = Math.sin(GameLoop.convertDegreeToRad(horizontalAngle)) * xzProjectionDist;
-        let z = Math.sqrt(xzProjectionDist * xzProjectionDist - x * x);
-        if (Math.abs(horizontalAngle) < 90 || Math.abs(horizontalAngle) > 270) {
-            z = -z;
-        }
-        return [x, y, z];
     }
 }
 

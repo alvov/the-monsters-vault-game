@@ -5,7 +5,6 @@ import { vectorsAdd3D } from '../../lib/utils';
 import { SPOTLIGHT_RADIUS } from '../../constants/constants';
 
 const DEFAULT_STYLE_RULES = {
-    // backgroundColor: 'none',
     backgroundImage: 'none',
     backgroundColor: '#000'
 };
@@ -70,6 +69,10 @@ class Light extends React.Component {
             }
         }
 
+        // return <div className={styles.root} style={{
+        //     backgroundImage: 'none',
+        //     backgroundColor: 'none'
+        // }} />;
         return <div className={styles.root}
             style={styleRules}
         />;

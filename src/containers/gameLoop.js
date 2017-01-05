@@ -4,17 +4,24 @@ import { batchActions } from 'redux-batched-actions';
 import storeShape from 'react-redux/src/utils/storeShape';
 
 import {
-    FPS, KEY_W, KEY_S, KEY_A, KEY_D, KEY_E, KEY_SHIFT, STEP, RUNNING_COEFF, BROAD_CELL_SIZE, SENSITIVITY, HAND_LENGTH,
-    DOOR_OPEN, DOOR_CLOSE, DOOR_OPENING, DOOR_CLOSING, DOOR_OPEN_TIME, SWITCHER_TYPE, HINT_SHOW_TIME
+    FPS, KEY_W, KEY_S, KEY_A, KEY_D, KEY_E, KEY_SHIFT, BUTTON_XBOX_A, BUTTON_XBOX_X,
+    PLAYER_SPEED, RUNNING_COEFF, BROAD_CELL_SIZE,
+    MOUSE_SENSITIVITY, STICK_SENSITIVITY, STICK_VALUE_THRESHOLD,
+    HAND_LENGTH, DOOR_OPEN, DOOR_CLOSE, DOOR_OPENING, DOOR_CLOSING, DOOR_OPEN_TIME, SWITCHER_TYPE, HINT_SHOW_TIME
 } from '../constants/constants';
+
 import {
     HINT_GOAL,
-    HINT_WASD,
-    HINT_SHIFT,
-    HINT_E,
+    HINT_MOVE_KEYBOARD,
+    HINT_RUN_KEYBOARD,
+    HINT_INTERACT_KEYBOAD,
+    HINT_MOVE_GAMEPAD,
+    HINT_RUN_GAMEPAD,
+    HINT_INTERACT_GAMEPAD,
     HINT_FIRST_SWITCHER,
     HINT_DOOR
 } from '../constants/hints';
+
 import { getVisibleObjects, getPointPosition, DelayedActions, convertDegreeToRad } from '../lib/utils';
 
 import Loop from '../lib/loop';
@@ -37,11 +44,26 @@ class GameLoop extends React.Component {
 
         this.loop = new Loop(this.loopCallback.bind(this), FPS);
 
-        this.prevKeysPressed = {};
         this.shownHints = {};
     }
 
     componentDidMount() {
+        const gamepadIndex = this.context.store.getState().gamepadState;
+        let gamepadSnapshot;
+        if (gamepadIndex !== -1) {
+            gamepadSnapshot = navigator.getGamepads()[gamepadIndex];
+        }
+        if (gamepadSnapshot) {
+            this.delayedActions.pushAction({
+                action: this.showHints([HINT_GOAL, HINT_MOVE_GAMEPAD, HINT_RUN_GAMEPAD], true),
+                delay: 0
+            });
+        } else {
+            this.delayedActions.pushAction({
+                action: this.showHints([HINT_GOAL, HINT_MOVE_KEYBOARD, HINT_RUN_KEYBOARD], true),
+                delay: 0
+            });
+        }
         this.loop.start();
     }
 
@@ -61,15 +83,35 @@ class GameLoop extends React.Component {
         const newState = {};
         const currentStore = this.context.store.getState();
 
-        // show start hint
-        actions.push(this.showHints([HINT_GOAL, HINT_WASD, HINT_SHIFT], true));
+        let gamepadSnapshot;
+        if (currentStore.gamepadState !== -1) {
+            gamepadSnapshot = navigator.getGamepads()[currentStore.gamepadState];
+        }
 
+        // get new view angle
+        // try gamepad
+        if (gamepadSnapshot) {
+            const currentViewAngle = currentStore.viewAngle;
+            const x = GameLoop.filterStickValue(gamepadSnapshot.axes[3]);
+            const y = GameLoop.filterStickValue(gamepadSnapshot.axes[4]);
+            if (x || y) {
+                const newViewAngle = [
+                    (currentViewAngle[0] + x * STICK_SENSITIVITY) % 360,
+                    Math.min(Math.max(currentViewAngle[1] - y * STICK_SENSITIVITY, -90), 90),
+                    0
+                ];
+                actions.push(actionCreators.player.updateViewAngle(newViewAngle));
+                newState.viewAngle = newViewAngle;
+            }
+        }
+
+        // try mouse
         const pointerDelta = currentStore.pointerDelta;
         if (pointerDelta.x || pointerDelta.y) {
-            const currentViewAngle = currentStore.viewAngle;
+            const currentViewAngle = newState.viewAngle || currentStore.viewAngle;
             const newViewAngle = [
-                (currentViewAngle[0] - pointerDelta.x * SENSITIVITY) % 360,
-                Math.min(Math.max(currentViewAngle[1] + pointerDelta.y * SENSITIVITY, -90), 90),
+                (currentViewAngle[0] - pointerDelta.x * MOUSE_SENSITIVITY) % 360,
+                Math.min(Math.max(currentViewAngle[1] + pointerDelta.y * MOUSE_SENSITIVITY, -90), 90),
                 0
             ];
             actions.push(actionCreators.player.updateViewAngle(newViewAngle));
@@ -77,24 +119,55 @@ class GameLoop extends React.Component {
             newState.viewAngle = newViewAngle;
         }
 
+        // get player position shift
         let angleShift = [];
+        let step = 0;
+        let isRunning = false;
+
+        // try gamepad
+        if (gamepadSnapshot) {
+            // console.log(gamepadSnapshot.buttons.reduce((r, b, i) => {
+            //     if (b.pressed) {
+            //         r.push(i);
+            //     }
+            //     return r;
+            // }, []));
+
+            const x = GameLoop.filterStickValue(gamepadSnapshot.axes[0]);
+            const z = -GameLoop.filterStickValue(gamepadSnapshot.axes[1]) + 0;  // convert -0 to 0 by adding 0
+            if (x || z) {
+                if (gamepadSnapshot.buttons[BUTTON_XBOX_A].pressed) {
+                    isRunning = true;
+                }
+                step = Math.sqrt(x ** 2 + z ** 2);
+                if (z >= 0) {
+                    angleShift.push(Math.atan(x / z));
+                } else {
+                    angleShift.push(Math.atan(x / z) + Math.PI);
+                }
+            }
+        }
+
         const keyPressed = currentStore.keyPressed;
         if (keyPressed[KEY_W]) {
-            angleShift.push(Math.PI);
-        }
-        if (keyPressed[KEY_S]) {
             angleShift.push(0);
         }
-        if (keyPressed[KEY_A]) {
-            angleShift.push(Math.PI / 2);
+        if (keyPressed[KEY_S]) {
+            angleShift.push(Math.PI);
         }
         if (keyPressed[KEY_D]) {
+            angleShift.push(Math.PI / 2);
+        }
+        if (keyPressed[KEY_A]) {
             // hack for angles sum
             if (keyPressed[KEY_W]) {
                 angleShift.push(3 * Math.PI / 2);
             } else {
                 angleShift.push(-Math.PI / 2);
             }
+        }
+        if (keyPressed[KEY_SHIFT]) {
+            isRunning = true;
         }
 
         if (
@@ -103,7 +176,12 @@ class GameLoop extends React.Component {
             keyPressed[KEY_A] ||
             keyPressed[KEY_D]
         ) {
-            if (keyPressed[KEY_SHIFT]) {
+            step = Math.max(step, 1);
+        }
+
+        // get new player state
+        if (angleShift.length) {
+            if (isRunning) {
                 actions.push(actionCreators.player.run());
             } else {
                 actions.push(actionCreators.player.walk());
@@ -112,24 +190,24 @@ class GameLoop extends React.Component {
             actions.push(actionCreators.player.stop());
         }
 
+        // get new player position
         if (angleShift.length) {
-            let reducedAngleShift = 0;
+            let angleShiftSum = 0;
             for (let i = 0; i < angleShift.length; i++) {
-                reducedAngleShift = reducedAngleShift + angleShift[i];
+                angleShiftSum = angleShiftSum + angleShift[i];
             }
-            reducedAngleShift = reducedAngleShift / angleShift.length;
+            angleShiftSum = angleShiftSum / angleShift.length;
 
-            reducedAngleShift = reducedAngleShift + convertDegreeToRad(currentStore.viewAngle[0]);
+            angleShiftSum = angleShiftSum + convertDegreeToRad(currentStore.viewAngle[0]);
 
-            let step = frameRateCoefficient * (keyPressed[KEY_SHIFT] ? RUNNING_COEFF : 1) * STEP;
-            const shift = [-step * Math.sin(reducedAngleShift), 0, step * Math.cos(reducedAngleShift)];
-            const currentPos = currentStore.pos;
+            step = step * frameRateCoefficient * (isRunning ? RUNNING_COEFF : 1) * PLAYER_SPEED;
+            const shift = [step * Math.sin(angleShiftSum), 0, -step * Math.cos(angleShiftSum)];
             const newPos = [];
             for (let i = 0; i < 3; i++) {
-                newPos.push(currentPos[i] + shift[i]);
+                newPos.push(currentStore.pos[i] + shift[i]);
             }
             const objects = currentStore.objects;
-            const collisions = Collision.getCollisions([currentPos, newPos], objects, BROAD_CELL_SIZE);
+            const collisions = Collision.getCollisions([currentStore.pos, newPos], objects, BROAD_CELL_SIZE);
             // get last collision result as new player position
             const newPosAfterCollisions = collisions[collisions.length - 1].newPos;
             actions.push(actionCreators.player.updatePosition(newPosAfterCollisions));
@@ -167,7 +245,9 @@ class GameLoop extends React.Component {
                 reachableObject = collisionView.obj;
                 if (!reachableObject.isReachable) {
                     actions.push(actionCreators.objects.setReachable({ ...reachableObject }));
-                    actions.push(this.showHints([HINT_E], false));
+                    actions.push(this.showHints([
+                        gamepadSnapshot ? HINT_INTERACT_GAMEPAD : HINT_INTERACT_KEYBOAD
+                    ], false));
                     actions.push(this.showHints([HINT_FIRST_SWITCHER], true));
                 }
             } else {
@@ -178,7 +258,10 @@ class GameLoop extends React.Component {
         }
 
         // perform interaction if key E is pressed
-        if (keyPressed[KEY_E] && !this.prevKeysPressed[KEY_E] && reachableObject) {
+        if (
+            reachableObject &&
+            (keyPressed[KEY_E] || gamepadSnapshot && gamepadSnapshot.buttons[BUTTON_XBOX_X].pressed)
+        ) {
             if (reachableObject.type === SWITCHER_TYPE) {
                 const door = currentStore.doorsState[reachableObject.props.id];
                 if (![DOOR_OPENING, DOOR_CLOSING].includes(door)) {
@@ -202,8 +285,6 @@ class GameLoop extends React.Component {
         if (actions.length) {
             this.props.dispatch(batchActions(actions));
         }
-
-        this.prevKeysPressed = { ...keyPressed };
     }
 
     showHints(hints, once, delay = 0) {
@@ -222,6 +303,10 @@ class GameLoop extends React.Component {
             });
         }
         return actionCreators.hints.addHints(rawHints);
+    }
+
+    static filterStickValue(value) {
+        return Math.abs(value) >= STICK_VALUE_THRESHOLD ? value : 0;
     }
 }
 

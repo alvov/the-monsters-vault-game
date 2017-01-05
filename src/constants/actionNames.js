@@ -22,3 +22,5 @@ export const DOOR_SET_OPEN = 'doorSetOpen';
 
 export const HINTS_ADD = 'hintsAdd';
 export const HINTS_REMOVE = 'hintsRemove';
+
+export const SET_GAMEPAD_STATE = 'setGamepadState';

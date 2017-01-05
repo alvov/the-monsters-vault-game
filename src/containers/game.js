@@ -18,7 +18,8 @@ class Game extends React.Component {
     static propTypes = {
         gameState: PropTypes.string.isRequired,
         hints: PropTypes.instanceOf(Map).isRequired,
-        setGameState: PropTypes.func.isRequired
+        setGameState: PropTypes.func.isRequired,
+        setGamepadState: PropTypes.func.isRequired
     };
     static childContextTypes = {
         audioCtx: PropTypes.object.isRequired,
@@ -35,12 +36,30 @@ class Game extends React.Component {
         }
         this.assets = {};
 
+        this.gamepad = {
+            index: -1,
+            id: 'unknown'
+        };
+
+        this.handleGamepadConnected = this.handleGamepadConnected.bind(this);
+        this.handleGamepadDisconnected = this.handleGamepadDisconnected.bind(this);
+
         this.setGameStateStart = this.setGameState.bind(this, START);
         this.setGameStatePlay = this.setGameState.bind(this, PLAY);
         this.setGameStateEnd = this.setGameState.bind(this, END);
 
         this.cacheAssetData = this.cacheAssetData.bind(this);
-        this.viewportNode = null;
+
+        this.gamepadPolling = setInterval(() => {
+            const gamepads = navigator.getGamepads();
+            if (gamepads[0]) {
+                this.handleGamepadConnected({ gamepad: gamepads[0] });
+            } else {
+                this.handleGamepadDisconnected({ gamepad: { index: 0 } });
+            }
+        }, 1000);
+        window.addEventListener('gamepadconnected', this.handleGamepadConnected);
+        window.addEventListener('gamepaddisconnected', this.handleGamepadDisconnected);
     }
 
     getChildContext() {
@@ -48,6 +67,12 @@ class Game extends React.Component {
             audioCtx: this.audioCtx,
             assets: this.assets
         };
+    }
+
+    componentWillUnmount() {
+        window.removeEventListener('gamepadconnected', this.handleGamepadConnected);
+        window.removeEventListener('gamepaddisconnected', this.handleGamepadDisconnected);
+        clearInterval(this.gamepadPolling);
     }
 
     render() {
@@ -75,6 +100,28 @@ class Game extends React.Component {
         }
     }
 
+    handleGamepadConnected(event) {
+        if (this.gamepad.index === -1) {
+            if (navigator.getGamepads()[event.gamepad.index] === null) {
+                console.log('No gamepad found');
+            } else {
+                this.gamepad.index = event.gamepad.index;
+                this.gamepad.id = event.gamepad.id;
+                this.props.setGamepadState(this.gamepad.index);
+                console.log('Gamepad %s connected', event.gamepad.id);
+            }
+        }
+    }
+
+    handleGamepadDisconnected(event) {
+        if (this.gamepad.index === event.gamepad.index) {
+            console.log('Gamepad %s disconnected', this.gamepad.id);
+            this.gamepad.index = -1;
+            this.gamepad.id = 'unknown';
+            this.props.setGamepadState(-1);
+        }
+    }
+
     setGameState(state) {
         this.props.setGameState(state);
     }
@@ -93,7 +140,8 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
     return bindActionCreators({
-        setGameState: actionCreators.game.setGameState
+        setGameState: actionCreators.game.setGameState,
+        setGamepadState: actionCreators.gamepadState.setGamepadState
     }, dispatch);
 }
 

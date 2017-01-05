@@ -35,10 +35,10 @@
     "webpack": "2.1.0-beta.27"
   },
   "scripts": {
-    "start": "node node_modules/http-server/bin/http-server -a 127.0.0.1",
-    "watch": "node_modules/webpack/bin/webpack.js --watch",
+    "start": "http-server -a 127.0.0.1",
+    "watch": "webpack --watch",
+    "build-assets-list": "node tools/buildAssetsList.js",
     "test:debug": "BABEL_DISABLE_CACHE=1 node debug tests/collision.js",
-    "test": "BABEL_DISABLE_CACHE=1 node tests/collision.js | node_modules/faucet/bin/cmd.js",
-    "push": "git push origin master master:gh-pages"
+    "test": "BABEL_DISABLE_CACHE=1 node tests/collision.js | node_modules/faucet/bin/cmd.js"
   }
 }

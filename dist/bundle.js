@@ -338,7 +338,7 @@ function vectorsAdd3D(v1, v2) {
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(4);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__light_light__ = __webpack_require__(117);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__light_light__ = __webpack_require__(118);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__light_simple__ = __webpack_require__(64);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__lib_utils__ = __webpack_require__(11);
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
@@ -783,11 +783,11 @@ level.objects = JSON.stringify(level.objects);
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__game__ = __webpack_require__(106);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__player__ = __webpack_require__(109);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__objects__ = __webpack_require__(108);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__doorsState__ = __webpack_require__(105);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__hints__ = __webpack_require__(107);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__game__ = __webpack_require__(107);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__player__ = __webpack_require__(110);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__objects__ = __webpack_require__(109);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__doorsState__ = __webpack_require__(106);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__hints__ = __webpack_require__(108);
 
 /* harmony reexport (module object) */ __webpack_require__.d(exports, "a", function() { return __WEBPACK_IMPORTED_MODULE_0__game__; });
 
@@ -1230,14 +1230,14 @@ module.exports = {"root":"light-root-3ic0q","overlay":"light-overlay-1kisp"};
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_react_redux___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_react_redux__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__constants_constants__ = __webpack_require__(9);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__actionCreators__ = __webpack_require__(41);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__components_loadingScreen_loadingScreen__ = __webpack_require__(118);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__components_startScreen_startScreen__ = __webpack_require__(120);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__components_endScreen_endScreen__ = __webpack_require__(114);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__components_hints_hints__ = __webpack_require__(116);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__viewport_viewport__ = __webpack_require__(127);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__camera_camera__ = __webpack_require__(124);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__scene_scene__ = __webpack_require__(126);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__gameLoop__ = __webpack_require__(125);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__components_loadingScreen_loadingScreen__ = __webpack_require__(119);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__components_startScreen_startScreen__ = __webpack_require__(121);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__components_endScreen_endScreen__ = __webpack_require__(115);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__components_hints_hints__ = __webpack_require__(117);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__viewport_viewport__ = __webpack_require__(128);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__camera_camera__ = __webpack_require__(125);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__scene_scene__ = __webpack_require__(127);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__gameLoop__ = __webpack_require__(126);
 
 
 
@@ -1389,6 +1389,12 @@ function mapDispatchToProps(dispatch) {
 
 /***/ },
 /* 105 */
+/***/ function(module, exports) {
+
+module.exports = [["dist/3628ed55158b5a413097584e7fd8a725.jpg", "image"], ["dist/4419d2b2d3f0aa84d05e653afbce87a8.jpg", "image"], ["dist/83f558afad0f8b176e361b3f574ccb42.jpg", "image"], ["dist/8b3a4e276e0a424265cc0c55fa95360d.svg", "image"], ["dist/abcc39d175e2f5f6ad0df4cc14457193.jpg", "image"], ["dist/c161dc30a1bcbfb0ea16c3740f6189c3.jpg", "image"], ["dist/cc88c5d09dfc94f5daa77e65b2233782.jpg", "image"], ["src/components/door/mixdown.m4a", "audio"], ["src/components/startScreen/theme.m4a", "audio"]];
+
+/***/ },
+/* 106 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1428,7 +1434,7 @@ function setOpen(id) {
 }
 
 /***/ },
-/* 106 */
+/* 107 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1479,7 +1485,7 @@ function resetPointerDelta() {
 }
 
 /***/ },
-/* 107 */
+/* 108 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1503,7 +1509,7 @@ function removeHints(hints) {
 }
 
 /***/ },
-/* 108 */
+/* 109 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1528,7 +1534,7 @@ function setReachable(reachableObject) {
 }
 
 /***/ },
-/* 109 */
+/* 110 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1573,7 +1579,7 @@ function stop() {
 }
 
 /***/ },
-/* 110 */
+/* 111 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1595,7 +1601,7 @@ function Logo() {
 /* harmony default export */ exports["a"] = Logo;
 
 /***/ },
-/* 111 */
+/* 112 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1672,7 +1678,7 @@ class Box extends __WEBPACK_IMPORTED_MODULE_1_react___default.a.Component {
 /* harmony default export */ exports["a"] = Box;
 
 /***/ },
-/* 112 */
+/* 113 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1716,7 +1722,7 @@ class Ceiling extends __WEBPACK_IMPORTED_MODULE_1_react___default.a.Component {
 /* harmony default export */ exports["a"] = Ceiling;
 
 /***/ },
-/* 113 */
+/* 114 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1862,7 +1868,7 @@ Door.defaultProps = {
 /* harmony default export */ exports["a"] = Door;
 
 /***/ },
-/* 114 */
+/* 115 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1936,7 +1942,7 @@ EndScreen.propTypes = {
 /* harmony default export */ exports["a"] = EndScreen;
 
 /***/ },
-/* 115 */
+/* 116 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1970,7 +1976,7 @@ class Floor extends __WEBPACK_IMPORTED_MODULE_1_react___default.a.Component {
 /* harmony default export */ exports["a"] = Floor;
 
 /***/ },
-/* 116 */
+/* 117 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2003,7 +2009,7 @@ Hints.propTypes = {
 /* harmony default export */ exports["a"] = Hints;
 
 /***/ },
-/* 117 */
+/* 118 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2108,7 +2114,7 @@ class Light extends __WEBPACK_IMPORTED_MODULE_1_react___default.a.Component {
 /* harmony default export */ exports["a"] = Light;
 
 /***/ },
-/* 118 */
+/* 119 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2116,7 +2122,8 @@ class Light extends __WEBPACK_IMPORTED_MODULE_1_react___default.a.Component {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__loadingScreen_css___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__loadingScreen_css__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react__ = __webpack_require__(4);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_react__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__preloadAssetsList__ = __webpack_require__(129);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__preloadAssetsList__ = __webpack_require__(105);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__preloadAssetsList___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__preloadAssetsList__);
 
 
 
@@ -2127,13 +2134,13 @@ class LoadingScreen extends __WEBPACK_IMPORTED_MODULE_1_react___default.a.Compon
     constructor(...args) {
         super(...args);
 
-        this.totalAssets = __WEBPACK_IMPORTED_MODULE_2__preloadAssetsList__["a" /* default */].length;
+        this.totalAssets = __WEBPACK_IMPORTED_MODULE_2__preloadAssetsList___default.a.length;
         this.state = {
             assetsLoaded: 0,
             loadingFailed: false
         };
 
-        __WEBPACK_IMPORTED_MODULE_2__preloadAssetsList__["a" /* default */].forEach(([assetSrc, assetType]) => {
+        __WEBPACK_IMPORTED_MODULE_2__preloadAssetsList___default.a.forEach(([assetSrc, assetType]) => {
             if (assetType === 'image') {
                 const image = new Image();
                 image.onload = () => {
@@ -2193,7 +2200,7 @@ LoadingScreen.contextTypes = {
 /* harmony default export */ exports["a"] = LoadingScreen;
 
 /***/ },
-/* 119 */
+/* 120 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2225,7 +2232,7 @@ class Painting extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
 /* unused harmony default export */ var _unused_webpack_default_export = Painting;
 
 /***/ },
-/* 120 */
+/* 121 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2233,17 +2240,32 @@ class Painting extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__startScreen_css___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__startScreen_css__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react__ = __webpack_require__(4);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_react__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__Logo_Logo__ = __webpack_require__(110);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__Logo_Logo__ = __webpack_require__(111);
 
 
 
+
+const MUSIC_VOLUME = 0.2;
 
 class StartScreen extends __WEBPACK_IMPORTED_MODULE_1_react___default.a.Component {
 
     constructor(...args) {
         super(...args);
 
+        this.decodedAudioBuffer = this.context.assets['src/components/startScreen/theme.m4a'];
+        this.gainNode = this.context.audioCtx.createGain();
+        this.gainNode.gain.value = MUSIC_VOLUME;
+        this.gainNode.connect(this.context.audioCtx.destination);
+
         this.handleStart = this.handleStart.bind(this);
+    }
+
+    componentDidMount() {
+        this.startMusic();
+    }
+
+    componentWillUnmount() {
+        this.stopMusic();
     }
 
     render() {
@@ -2266,15 +2288,35 @@ class StartScreen extends __WEBPACK_IMPORTED_MODULE_1_react___default.a.Componen
     handleStart() {
         this.props.onStart();
     }
+
+    startMusic() {
+        this.audioSource = this.context.audioCtx.createBufferSource();
+        this.audioSource.connect(this.gainNode);
+        this.audioSource.buffer = this.decodedAudioBuffer;
+        this.audioSource.loop = true;
+        this.audioSource.start(0);
+    }
+
+    stopMusic() {
+        if (this.audioSource) {
+            this.audioSource.stop();
+            this.audioSource.disconnect(this.gainNode);
+            this.audioSource = null;
+        }
+    }
 }
 
+StartScreen.contextTypes = {
+    audioCtx: __WEBPACK_IMPORTED_MODULE_1_react__["PropTypes"].object.isRequired,
+    assets: __WEBPACK_IMPORTED_MODULE_1_react__["PropTypes"].object.isRequired
+};
 StartScreen.propTypes = {
     onStart: __WEBPACK_IMPORTED_MODULE_1_react__["PropTypes"].func.isRequired
 };
 /* harmony default export */ exports["a"] = StartScreen;
 
 /***/ },
-/* 121 */
+/* 122 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2387,7 +2429,7 @@ class Switcher extends __WEBPACK_IMPORTED_MODULE_1_react___default.a.Component {
 
 
 /***/ },
-/* 122 */
+/* 123 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2458,7 +2500,7 @@ class Wall extends __WEBPACK_IMPORTED_MODULE_1_react___default.a.Component {
 /* harmony default export */ exports["a"] = Wall;
 
 /***/ },
-/* 123 */
+/* 124 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2482,7 +2524,7 @@ const HINT_E = 'Press `E` to interact';
 
 
 /***/ },
-/* 124 */
+/* 125 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2524,7 +2566,7 @@ function mapStateToProps(state) {
 /* harmony default export */ exports["a"] = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2_react_redux__["connect"])(mapStateToProps)(Camera);
 
 /***/ },
-/* 125 */
+/* 126 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2536,8 +2578,8 @@ function mapStateToProps(state) {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_redux_batched_actions___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_redux_batched_actions__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_react_redux_src_utils_storeShape__ = __webpack_require__(261);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__constants_constants__ = __webpack_require__(9);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__constants_hints__ = __webpack_require__(123);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__lib_loop__ = __webpack_require__(128);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__constants_hints__ = __webpack_require__(124);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__lib_loop__ = __webpack_require__(129);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__level__ = __webpack_require__(27);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__lib_collision__ = __webpack_require__(65);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__lib_utils__ = __webpack_require__(11);
@@ -2830,7 +2872,7 @@ GameLoop.propTypes = {
 /* harmony default export */ exports["a"] = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1_react_redux__["connect"])()(GameLoop);
 
 /***/ },
-/* 126 */
+/* 127 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2840,13 +2882,13 @@ GameLoop.propTypes = {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_react__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_react_redux__ = __webpack_require__(17);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_react_redux___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_react_redux__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__components_painting_painting__ = __webpack_require__(119);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__components_floor_floor__ = __webpack_require__(115);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__components_ceiling_ceiling__ = __webpack_require__(112);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__components_wall_wall__ = __webpack_require__(122);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__components_box_box__ = __webpack_require__(111);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__components_switcher_switcher__ = __webpack_require__(121);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__components_door_door__ = __webpack_require__(113);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__components_painting_painting__ = __webpack_require__(120);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__components_floor_floor__ = __webpack_require__(116);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__components_ceiling_ceiling__ = __webpack_require__(113);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__components_wall_wall__ = __webpack_require__(123);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__components_box_box__ = __webpack_require__(112);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__components_switcher_switcher__ = __webpack_require__(122);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__components_door_door__ = __webpack_require__(114);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__lib_utils__ = __webpack_require__(11);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__constants_constants__ = __webpack_require__(9);
 
@@ -2975,7 +3017,7 @@ function mapStateToProps(state) {
 /* harmony default export */ exports["a"] = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2_react_redux__["connect"])(mapStateToProps)(Scene);
 
 /***/ },
-/* 127 */
+/* 128 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3074,7 +3116,7 @@ function mapDispatchToProps(dispatch) {
 /* harmony default export */ exports["a"] = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_3_react_redux__["connect"])(null, mapDispatchToProps)(Viewport);
 
 /***/ },
-/* 128 */
+/* 129 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3108,15 +3150,6 @@ class Loop {
 }
 /* harmony export (immutable) */ exports["a"] = Loop;
 
-
-/***/ },
-/* 129 */
-/***/ function(module, exports, __webpack_require__) {
-
-"use strict";
-/* harmony default export */ exports["a"] = [
-// ['assets/dickbutt.png', 'image'],
-['src/components/box/box01.jpg', 'image'], ['src/components/box/box02.jpg', 'image'], ['src/components/box/box03.jpg', 'image'], ['src/components/floor/floor.jpg', 'image'], ['src/components/light/mask.svg', 'image'], ['src/components/switcher/wood.jpg', 'image'], ['src/components/wall/wall.jpg', 'image'], ['src/components/door/mixdown.m4a', 'audio']];
 
 /***/ },
 /* 130 */

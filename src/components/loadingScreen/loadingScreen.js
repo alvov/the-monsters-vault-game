@@ -1,7 +1,7 @@
 import styles from './loadingScreen.css';
 
 import React, { PropTypes } from 'react';
-import preloadAssetsList from '../../preloadAssetsList';
+import preloadAssetsList from '../../../preloadAssetsList';
 
 class LoadingScreen extends React.Component {
     static propTypes = {

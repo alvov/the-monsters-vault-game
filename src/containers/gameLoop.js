@@ -4,13 +4,14 @@ import { batchActions } from 'redux-batched-actions';
 import storeShape from 'react-redux/src/utils/storeShape';
 
 import {
-    FPS, KEY_W, KEY_S, KEY_A, KEY_D, KEY_E, KEY_SHIFT,
-    XBOX_BUTTON_X,
+    FPS, KEY_W, KEY_S, KEY_A, KEY_D, KEY_E, KEY_SHIFT, KEY_Q,
+    XBOX_BUTTON_X, XBOX_BUTTON_BACK,
     XBOX_STICK_LEFT_AXIS_X, XBOX_STICK_LEFT_AXIS_Y, XBOX_STICK_RIGHT_AXIS_X, XBOX_STICK_RIGHT_AXIS_Y, XBOX_TRIGGER_RIGHT_AXIS,
     CONTROL_STATE,
     PLAYER_SPEED, RUNNING_COEFF, BROAD_CELL_SIZE,
     STICK_VALUE_THRESHOLD,
-    HAND_LENGTH, DOOR_OPEN, DOOR_CLOSE, DOOR_OPENING, DOOR_CLOSING, DOOR_OPEN_TIME, SWITCHER_TYPE, HINT_SHOW_TIME
+    HAND_LENGTH, DOOR_OPEN, DOOR_CLOSE, DOOR_OPENING, DOOR_CLOSING, DOOR_OPEN_TIME, SWITCHER_TYPE, HINT_SHOW_TIME,
+    START
 } from '../constants/constants';
 
 import {
@@ -86,6 +87,14 @@ class GameLoop extends React.Component {
 
         const newState = {};
         const currentStore = this.context.store.getState();
+
+        // check exit
+        if (
+            this.context.controls.keyPressed[KEY_Q][0] === CONTROL_STATE.FIRST_TIME_DOWN ||
+            this.context.controls.gamepadButtons[XBOX_BUTTON_BACK][0] === CONTROL_STATE.FIRST_TIME_DOWN
+        ) {
+            actions.push(actionCreators.game.setGameState(START));
+        }
 
         let gamepadSnapshot;
         if (currentStore.gamepad.state !== -1) {

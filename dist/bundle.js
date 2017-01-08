@@ -6,8 +6,7 @@ webpackJsonp([0],[
 /* 4 */,
 /* 5 */,
 /* 6 */,
-/* 7 */,
-/* 8 */
+/* 7 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -16,22 +15,25 @@ const FPS = 60;
 
 
 const KEY_W = 87;
-/* harmony export (immutable) */ exports["H"] = KEY_W;
+/* harmony export (immutable) */ exports["J"] = KEY_W;
 
 const KEY_S = 83;
-/* harmony export (immutable) */ exports["I"] = KEY_S;
+/* harmony export (immutable) */ exports["K"] = KEY_S;
 
 const KEY_A = 65;
-/* harmony export (immutable) */ exports["K"] = KEY_A;
+/* harmony export (immutable) */ exports["M"] = KEY_A;
 
 const KEY_D = 68;
-/* harmony export (immutable) */ exports["J"] = KEY_D;
+/* harmony export (immutable) */ exports["L"] = KEY_D;
 
 const KEY_E = 69;
-/* harmony export (immutable) */ exports["O"] = KEY_E;
+/* harmony export (immutable) */ exports["Q"] = KEY_E;
+
+const KEY_Q = 81;
+/* harmony export (immutable) */ exports["E"] = KEY_Q;
 
 const KEY_SHIFT = 16;
-/* harmony export (immutable) */ exports["L"] = KEY_SHIFT;
+/* harmony export (immutable) */ exports["N"] = KEY_SHIFT;
 
 const KEY_ESCAPE = 27;
 /* harmony export (immutable) */ exports["f"] = KEY_ESCAPE;
@@ -54,8 +56,11 @@ const XBOX_BUTTON_CROSS_UP = 11;
 const XBOX_BUTTON_CROSS_DOWN = 12;
 /* harmony export (immutable) */ exports["k"] = XBOX_BUTTON_CROSS_DOWN;
 
+const XBOX_BUTTON_BACK = 9;
+/* harmony export (immutable) */ exports["F"] = XBOX_BUTTON_BACK;
+
 const XBOX_STICK_LEFT_AXIS_X = 0;
-/* harmony export (immutable) */ exports["F"] = XBOX_STICK_LEFT_AXIS_X;
+/* harmony export (immutable) */ exports["H"] = XBOX_STICK_LEFT_AXIS_X;
 
 const XBOX_STICK_LEFT_AXIS_Y = 1;
 /* harmony export (immutable) */ exports["d"] = XBOX_STICK_LEFT_AXIS_Y;
@@ -64,10 +69,10 @@ const XBOX_STICK_RIGHT_AXIS_X = 3;
 /* harmony export (immutable) */ exports["e"] = XBOX_STICK_RIGHT_AXIS_X;
 
 const XBOX_STICK_RIGHT_AXIS_Y = 4;
-/* harmony export (immutable) */ exports["E"] = XBOX_STICK_RIGHT_AXIS_Y;
+/* harmony export (immutable) */ exports["G"] = XBOX_STICK_RIGHT_AXIS_Y;
 
 const XBOX_TRIGGER_RIGHT_AXIS = 5;
-/* harmony export (immutable) */ exports["G"] = XBOX_TRIGGER_RIGHT_AXIS;
+/* harmony export (immutable) */ exports["I"] = XBOX_TRIGGER_RIGHT_AXIS;
 
 const CONTROL_STATE = {
     UNUSED: 0,
@@ -78,13 +83,13 @@ const CONTROL_STATE = {
 
 
 const PLAYER_SPEED = 4;
-/* harmony export (immutable) */ exports["N"] = PLAYER_SPEED;
+/* harmony export (immutable) */ exports["P"] = PLAYER_SPEED;
 
 const RUNNING_COEFF = 1.5;
-/* harmony export (immutable) */ exports["M"] = RUNNING_COEFF;
+/* harmony export (immutable) */ exports["O"] = RUNNING_COEFF;
 
 const STICK_VALUE_THRESHOLD = 0.3;
-/* harmony export (immutable) */ exports["Q"] = STICK_VALUE_THRESHOLD;
+/* harmony export (immutable) */ exports["S"] = STICK_VALUE_THRESHOLD;
 
 const BROAD_CELL_SIZE = 250;
 /* harmony export (immutable) */ exports["n"] = BROAD_CELL_SIZE;
@@ -93,7 +98,7 @@ const HAND_LENGTH = 150;
 /* harmony export (immutable) */ exports["C"] = HAND_LENGTH;
 
 const HINT_SHOW_TIME = 5000;
-/* harmony export (immutable) */ exports["P"] = HINT_SHOW_TIME;
+/* harmony export (immutable) */ exports["R"] = HINT_SHOW_TIME;
 
 const DOOR_OPEN_TIME = 3000;
 /* harmony export (immutable) */ exports["r"] = DOOR_OPEN_TIME;
@@ -138,7 +143,7 @@ const DOOR_CLOSING = 'closing';
 
 
 const LOADING = 'loading';
-/* harmony export (immutable) */ exports["R"] = LOADING;
+/* harmony export (immutable) */ exports["T"] = LOADING;
 
 const START = 'start';
 /* harmony export (immutable) */ exports["a"] = START;
@@ -157,11 +162,11 @@ const PLAYER_WALK = 'walk';
 /* harmony export (immutable) */ exports["o"] = PLAYER_WALK;
 
 const PLAYER_STOP = 'stop';
-/* harmony export (immutable) */ exports["S"] = PLAYER_STOP;
+/* harmony export (immutable) */ exports["U"] = PLAYER_STOP;
 
 
 /***/ },
-/* 9 */
+/* 8 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -240,11 +245,12 @@ const SET_SETTINGS_STICK_SENSITIVITY = 'setSettingsStickSensitivity';
 
 
 /***/ },
+/* 9 */,
 /* 10 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__constants_constants__ = __webpack_require__(8);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__constants_constants__ = __webpack_require__(7);
 /* harmony export (immutable) */ exports["a"] = getTransformRule;
 /* harmony export (immutable) */ exports["h"] = getVisibleObjects;
 /* harmony export (immutable) */ exports["d"] = getPlayerCell;
@@ -395,17 +401,53 @@ function convertDegreeToRad(angle) {
 /* 20 */,
 /* 21 */,
 /* 22 */,
-/* 23 */,
-/* 24 */,
-/* 25 */,
-/* 26 */
+/* 23 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(4);
+class Loop {
+    constructor(fn = () => {}, fps = 60, startImmediately = false) {
+        this.fn = fn;
+        this.fps = fps;
+        this.oldTimestamp = null;
+        this.rafId = null;
+        if (startImmediately) {
+            this.start();
+        }
+    }
+
+    start(timestamp) {
+        this.rafId = window.requestAnimationFrame(this.start.bind(this));
+        let frameRateCoefficient = 1;
+        if (timestamp) {
+            if (this.oldTimestamp) {
+                frameRateCoefficient = (timestamp - this.oldTimestamp) * this.fps / 1000;
+            }
+            this.oldTimestamp = timestamp;
+        }
+        this.fn(frameRateCoefficient);
+    }
+
+    stop() {
+        window.cancelAnimationFrame(this.rafId);
+        this.rafId = null;
+    }
+}
+/* harmony export (immutable) */ exports["a"] = Loop;
+
+
+/***/ },
+/* 24 */,
+/* 25 */,
+/* 26 */,
+/* 27 */
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(3);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__light_light__ = __webpack_require__(118);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__light_simple__ = __webpack_require__(64);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__light_light__ = __webpack_require__(121);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__light_simple__ = __webpack_require__(65);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__lib_utils__ = __webpack_require__(10);
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
@@ -463,13 +505,13 @@ Plain.defaultProps = {
 /* harmony default export */ exports["a"] = Plain;
 
 /***/ },
-/* 27 */
+/* 28 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__lib_collision__ = __webpack_require__(65);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__lib_collision__ = __webpack_require__(68);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__lib_utils__ = __webpack_require__(10);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__constants_constants__ = __webpack_require__(8);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__constants_constants__ = __webpack_require__(7);
 
 
 
@@ -832,30 +874,23 @@ level.objects = JSON.stringify(level.objects);
 /* harmony default export */ exports["a"] = level;
 
 /***/ },
-/* 28 */,
 /* 29 */,
 /* 30 */,
 /* 31 */,
 /* 32 */,
 /* 33 */,
 /* 34 */,
-/* 35 */,
-/* 36 */,
-/* 37 */,
-/* 38 */,
-/* 39 */,
-/* 40 */,
-/* 41 */
+/* 35 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__game__ = __webpack_require__(107);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__player__ = __webpack_require__(110);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__objects__ = __webpack_require__(109);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__doorsState__ = __webpack_require__(106);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__hints__ = __webpack_require__(108);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__gamepad__ = __webpack_require__(308);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__settings__ = __webpack_require__(313);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__game__ = __webpack_require__(110);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__player__ = __webpack_require__(114);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__objects__ = __webpack_require__(113);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__doorsState__ = __webpack_require__(109);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__hints__ = __webpack_require__(112);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__gamepad__ = __webpack_require__(111);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__settings__ = __webpack_require__(115);
 
 /* harmony reexport (module object) */ __webpack_require__.d(exports, "b", function() { return __WEBPACK_IMPORTED_MODULE_0__game__; });
 
@@ -879,6 +914,12 @@ level.objects = JSON.stringify(level.objects);
 
 
 /***/ },
+/* 36 */,
+/* 37 */,
+/* 38 */,
+/* 39 */,
+/* 40 */,
+/* 41 */,
 /* 42 */,
 /* 43 */,
 /* 44 */,
@@ -901,16 +942,17 @@ level.objects = JSON.stringify(level.objects);
 /* 61 */,
 /* 62 */,
 /* 63 */,
-/* 64 */
+/* 64 */,
+/* 65 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__light_css__ = __webpack_require__(66);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__light_css__ = __webpack_require__(69);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__light_css___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__light_css__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react__ = __webpack_require__(4);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react__ = __webpack_require__(3);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_react__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__lib_utils__ = __webpack_require__(10);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__constants_constants__ = __webpack_require__(8);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__constants_constants__ = __webpack_require__(7);
 
 
 
@@ -939,7 +981,228 @@ class SimpleLight extends __WEBPACK_IMPORTED_MODULE_1_react___default.a.Componen
 /* harmony default export */ exports["a"] = SimpleLight;
 
 /***/ },
-/* 65 */
+/* 66 */
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__logo_css__ = __webpack_require__(152);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__logo_css___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__logo_css__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react__ = __webpack_require__(3);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_react__);
+
+
+
+function Logo() {
+    return __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
+        'h1',
+        { className: __WEBPACK_IMPORTED_MODULE_0__logo_css___default.a.root },
+        'The deep dark dungeon'
+    );
+}
+
+/* harmony default export */ exports["a"] = Logo;
+
+/***/ },
+/* 67 */
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__settings_css__ = __webpack_require__(163);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__settings_css___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__settings_css__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react__ = __webpack_require__(3);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_react__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_redux__ = __webpack_require__(17);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_react_redux__ = __webpack_require__(13);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_react_redux___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_react_redux__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__actionCreators__ = __webpack_require__(35);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__lib_loop__ = __webpack_require__(23);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__constants_constants__ = __webpack_require__(7);
+
+
+
+
+
+
+
+
+
+class Settings extends __WEBPACK_IMPORTED_MODULE_1_react___default.a.Component {
+
+    constructor(...args) {
+        super(...args);
+
+        // raf loop for capturing player actions
+        this.loop = new __WEBPACK_IMPORTED_MODULE_5__lib_loop__["a" /* default */](this.loopCallback.bind(this));
+
+        this.onVolumeChange = this.onVolumeChange.bind(this);
+        this.onMouseSensChange = this.onMouseSensChange.bind(this);
+        this.onStickSensChange = this.onStickSensChange.bind(this);
+
+        this.state = {
+            itemActive: 0,
+            items: [{
+                id: 'soundVolume',
+                index: 0,
+                label: 'Sound volume',
+                min: 0,
+                max: 1,
+                step: 0.2,
+                onChange: this.onVolumeChange,
+                action: this.props.setVolume
+            }, {
+                id: 'mouseSensitivity',
+                index: 1,
+                label: 'Mouse sensitivity',
+                min: 0,
+                max: 2,
+                step: 0.5,
+                onChange: this.onMouseSensChange,
+                action: this.props.setMouseSensitivity
+            }, {
+                id: 'stickSensitivity',
+                index: 2,
+                label: 'Stick sensitivity',
+                min: 0,
+                max: 4,
+                step: 0.5,
+                onChange: this.onStickSensChange,
+                action: this.props.setStickSensitivity
+            }]
+        };
+    }
+
+    componentDidMount() {
+        this.loop.start();
+    }
+
+    componentWillUnmount() {
+        this.loop.stop();
+    }
+
+    render() {
+        const { items } = this.state;
+        const { gamepadState } = this.props;
+        return __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
+            'div',
+            { className: __WEBPACK_IMPORTED_MODULE_0__settings_css___default.a.root },
+            this.renderItem(items[0]),
+            this.renderItem(items[1]),
+            gamepadState !== -1 ? this.renderItem(items[2]) : ''
+        );
+    }
+
+    renderItem(item) {
+        const { itemActive } = this.state;
+        const { settings } = this.props;
+        return __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
+            'div',
+            { className: __WEBPACK_IMPORTED_MODULE_0__settings_css___default.a.item + (itemActive === item.index ? ' ' + __WEBPACK_IMPORTED_MODULE_0__settings_css___default.a.itemActive : '') },
+            __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
+                'label',
+                { className: __WEBPACK_IMPORTED_MODULE_0__settings_css___default.a.label, htmlFor: item.id },
+                item.label
+            ),
+            __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement('input', {
+                className: [__WEBPACK_IMPORTED_MODULE_0__settings_css___default.a.range, __WEBPACK_IMPORTED_MODULE_0__settings_css___default.a.input].join(' '),
+                type: 'range',
+                min: item.min,
+                max: item.max,
+                step: item.step,
+                id: item.id,
+                value: settings[item.id],
+                onChange: item.onChange,
+                onFocus: this.setActiveItem.bind(this, item.index)
+            }),
+            __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
+                'output',
+                { className: __WEBPACK_IMPORTED_MODULE_0__settings_css___default.a.output },
+                settings[item.id]
+            )
+        );
+    }
+
+    loopCallback() {
+        // gamepad
+        const gamepadStickLeftMoved = this.getGamepadLeftStickMove();
+        const gamepadStickRightMoved = this.getGamepadRightStickMove();
+        if (gamepadStickLeftMoved === -1) {
+            this.setState({ itemActive: Math.max(0, this.state.itemActive - 1) });
+        } else if (gamepadStickLeftMoved === 1) {
+            this.setState({ itemActive: Math.min(this.state.items.length - 1, this.state.itemActive + 1) });
+        }
+        const curItem = this.state.items[this.state.itemActive];
+        if (gamepadStickRightMoved === 1) {
+            curItem.action(Settings.round(Math.min(curItem.max, Math.max(curItem.min, this.props.settings[curItem.id] + curItem.step))));
+        }
+        if (gamepadStickRightMoved === -1) {
+            curItem.action(Settings.round(Math.min(curItem.max, Math.max(curItem.min, this.props.settings[curItem.id] - curItem.step))));
+        }
+    }
+
+    onVolumeChange(event) {
+        this.props.setVolume(event.target.value);
+    }
+
+    onMouseSensChange(event) {
+        this.props.setMouseSensitivity(event.target.value);
+    }
+
+    onStickSensChange(event) {
+        this.props.setStickSensitivity(event.target.value);
+    }
+
+    setActiveItem(id) {
+        this.setState({ itemActive: id });
+    }
+
+    getGamepadLeftStickMove() {
+        if (this.context.controls.gamepadAxesUnit[__WEBPACK_IMPORTED_MODULE_6__constants_constants__["d" /* XBOX_STICK_LEFT_AXIS_Y */]][0] === 1) {
+            return this.context.controls.gamepadAxesUnit[__WEBPACK_IMPORTED_MODULE_6__constants_constants__["d" /* XBOX_STICK_LEFT_AXIS_Y */]][2];
+        }
+        return 0;
+    }
+
+    getGamepadRightStickMove() {
+        if (this.context.controls.gamepadAxesUnit[__WEBPACK_IMPORTED_MODULE_6__constants_constants__["e" /* XBOX_STICK_RIGHT_AXIS_X */]][0] === 1) {
+            return this.context.controls.gamepadAxesUnit[__WEBPACK_IMPORTED_MODULE_6__constants_constants__["e" /* XBOX_STICK_RIGHT_AXIS_X */]][2];
+        }
+        return 0;
+    }
+
+    static round(value) {
+        return Math.round(value * 10) / 10;
+    }
+}
+
+Settings.contextTypes = {
+    controls: __WEBPACK_IMPORTED_MODULE_1_react__["PropTypes"].object.isRequired
+};
+Settings.propTypes = {
+    settings: __WEBPACK_IMPORTED_MODULE_1_react__["PropTypes"].object.isRequired,
+    gamepadState: __WEBPACK_IMPORTED_MODULE_1_react__["PropTypes"].number.isRequired,
+    setVolume: __WEBPACK_IMPORTED_MODULE_1_react__["PropTypes"].func.isRequired,
+    setMouseSensitivity: __WEBPACK_IMPORTED_MODULE_1_react__["PropTypes"].func.isRequired,
+    setStickSensitivity: __WEBPACK_IMPORTED_MODULE_1_react__["PropTypes"].func.isRequired
+};
+function mapStateToProps(state) {
+    return {
+        settings: state.settings,
+        gamepadState: state.gamepad.state
+    };
+}
+
+function mapDispatchToProps(dispatch) {
+    return __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2_redux__["bindActionCreators"])({
+        setVolume: __WEBPACK_IMPORTED_MODULE_4__actionCreators__["a" /* settings */].setVolume,
+        setMouseSensitivity: __WEBPACK_IMPORTED_MODULE_4__actionCreators__["a" /* settings */].setMouseSensitivity,
+        setStickSensitivity: __WEBPACK_IMPORTED_MODULE_4__actionCreators__["a" /* settings */].setStickSensitivity
+    }, dispatch);
+}
+
+/* harmony default export */ exports["a"] = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_3_react_redux__["connect"])(mapStateToProps, mapDispatchToProps)(Settings);
+
+/***/ },
+/* 68 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1251,16 +1514,13 @@ class Collision {
 
 
 /***/ },
-/* 66 */
+/* 69 */
 /***/ function(module, exports) {
 
 // removed by extract-text-webpack-plugin
 module.exports = {"root":"light-root-3ic0q","overlay":"light-overlay-1kisp"};
 
 /***/ },
-/* 67 */,
-/* 68 */,
-/* 69 */,
 /* 70 */,
 /* 71 */,
 /* 72 */,
@@ -1293,27 +1553,30 @@ module.exports = {"root":"light-root-3ic0q","overlay":"light-overlay-1kisp"};
 /* 99 */,
 /* 100 */,
 /* 101 */,
-/* 102 */
+/* 102 */,
+/* 103 */,
+/* 104 */,
+/* 105 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(4);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(3);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_redux__ = __webpack_require__(19);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_react_redux__ = __webpack_require__(16);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_redux__ = __webpack_require__(17);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_react_redux__ = __webpack_require__(13);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_react_redux___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_react_redux__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__constants_constants__ = __webpack_require__(8);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__actionCreators__ = __webpack_require__(41);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__components_screens_loading_loadingScreen__ = __webpack_require__(310);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__components_screens_start_startScreen__ = __webpack_require__(297);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__components_screens_end_endScreen__ = __webpack_require__(309);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__components_hints_hints__ = __webpack_require__(117);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__viewport_viewport__ = __webpack_require__(129);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__camera_camera__ = __webpack_require__(125);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__player_player__ = __webpack_require__(127);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__scene__ = __webpack_require__(128);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__gameLoop__ = __webpack_require__(126);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_14__lib_loop__ = __webpack_require__(130);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__constants_constants__ = __webpack_require__(7);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__actionCreators__ = __webpack_require__(35);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__components_screens_loading_loadingScreen__ = __webpack_require__(124);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__components_screens_start_startScreen__ = __webpack_require__(128);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__components_screens_end_endScreen__ = __webpack_require__(123);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__components_hints_hints__ = __webpack_require__(120);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__viewport_viewport__ = __webpack_require__(136);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__camera_camera__ = __webpack_require__(132);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__player_player__ = __webpack_require__(134);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__scene__ = __webpack_require__(135);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__gameLoop__ = __webpack_require__(133);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_14__lib_loop__ = __webpack_require__(23);
 
 
 
@@ -1337,6 +1600,7 @@ const DEFAULT_GAMEPAD_BUTTONS = {
     [__WEBPACK_IMPORTED_MODULE_3__constants_constants__["i" /* XBOX_BUTTON_A */]]: [__WEBPACK_IMPORTED_MODULE_3__constants_constants__["l" /* CONTROL_STATE */].UNUSED, 0],
     [__WEBPACK_IMPORTED_MODULE_3__constants_constants__["h" /* XBOX_BUTTON_B */]]: [__WEBPACK_IMPORTED_MODULE_3__constants_constants__["l" /* CONTROL_STATE */].UNUSED, 0],
     [__WEBPACK_IMPORTED_MODULE_3__constants_constants__["m" /* XBOX_BUTTON_X */]]: [__WEBPACK_IMPORTED_MODULE_3__constants_constants__["l" /* CONTROL_STATE */].UNUSED, 0],
+    [__WEBPACK_IMPORTED_MODULE_3__constants_constants__["F" /* XBOX_BUTTON_BACK */]]: [__WEBPACK_IMPORTED_MODULE_3__constants_constants__["l" /* CONTROL_STATE */].UNUSED, 0],
     [__WEBPACK_IMPORTED_MODULE_3__constants_constants__["j" /* XBOX_BUTTON_CROSS_UP */]]: [__WEBPACK_IMPORTED_MODULE_3__constants_constants__["l" /* CONTROL_STATE */].UNUSED, 0],
     [__WEBPACK_IMPORTED_MODULE_3__constants_constants__["k" /* XBOX_BUTTON_CROSS_DOWN */]]: [__WEBPACK_IMPORTED_MODULE_3__constants_constants__["l" /* CONTROL_STATE */].UNUSED, 0]
 };
@@ -1368,12 +1632,13 @@ class Game extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
 
         this.controls = {
             keyPressed: {
-                [__WEBPACK_IMPORTED_MODULE_3__constants_constants__["H" /* KEY_W */]]: [__WEBPACK_IMPORTED_MODULE_3__constants_constants__["l" /* CONTROL_STATE */].UNUSED, 0],
-                [__WEBPACK_IMPORTED_MODULE_3__constants_constants__["I" /* KEY_S */]]: [__WEBPACK_IMPORTED_MODULE_3__constants_constants__["l" /* CONTROL_STATE */].UNUSED, 0],
-                [__WEBPACK_IMPORTED_MODULE_3__constants_constants__["K" /* KEY_A */]]: [__WEBPACK_IMPORTED_MODULE_3__constants_constants__["l" /* CONTROL_STATE */].UNUSED, 0],
-                [__WEBPACK_IMPORTED_MODULE_3__constants_constants__["J" /* KEY_D */]]: [__WEBPACK_IMPORTED_MODULE_3__constants_constants__["l" /* CONTROL_STATE */].UNUSED, 0],
-                [__WEBPACK_IMPORTED_MODULE_3__constants_constants__["O" /* KEY_E */]]: [__WEBPACK_IMPORTED_MODULE_3__constants_constants__["l" /* CONTROL_STATE */].UNUSED, 0],
-                [__WEBPACK_IMPORTED_MODULE_3__constants_constants__["L" /* KEY_SHIFT */]]: [__WEBPACK_IMPORTED_MODULE_3__constants_constants__["l" /* CONTROL_STATE */].UNUSED, 0],
+                [__WEBPACK_IMPORTED_MODULE_3__constants_constants__["J" /* KEY_W */]]: [__WEBPACK_IMPORTED_MODULE_3__constants_constants__["l" /* CONTROL_STATE */].UNUSED, 0],
+                [__WEBPACK_IMPORTED_MODULE_3__constants_constants__["K" /* KEY_S */]]: [__WEBPACK_IMPORTED_MODULE_3__constants_constants__["l" /* CONTROL_STATE */].UNUSED, 0],
+                [__WEBPACK_IMPORTED_MODULE_3__constants_constants__["M" /* KEY_A */]]: [__WEBPACK_IMPORTED_MODULE_3__constants_constants__["l" /* CONTROL_STATE */].UNUSED, 0],
+                [__WEBPACK_IMPORTED_MODULE_3__constants_constants__["L" /* KEY_D */]]: [__WEBPACK_IMPORTED_MODULE_3__constants_constants__["l" /* CONTROL_STATE */].UNUSED, 0],
+                [__WEBPACK_IMPORTED_MODULE_3__constants_constants__["Q" /* KEY_E */]]: [__WEBPACK_IMPORTED_MODULE_3__constants_constants__["l" /* CONTROL_STATE */].UNUSED, 0],
+                [__WEBPACK_IMPORTED_MODULE_3__constants_constants__["E" /* KEY_Q */]]: [__WEBPACK_IMPORTED_MODULE_3__constants_constants__["l" /* CONTROL_STATE */].UNUSED, 0],
+                [__WEBPACK_IMPORTED_MODULE_3__constants_constants__["N" /* KEY_SHIFT */]]: [__WEBPACK_IMPORTED_MODULE_3__constants_constants__["l" /* CONTROL_STATE */].UNUSED, 0],
                 [__WEBPACK_IMPORTED_MODULE_3__constants_constants__["g" /* KEY_ENTER */]]: [__WEBPACK_IMPORTED_MODULE_3__constants_constants__["l" /* CONTROL_STATE */].UNUSED, 0],
                 [__WEBPACK_IMPORTED_MODULE_3__constants_constants__["f" /* KEY_ESCAPE */]]: [__WEBPACK_IMPORTED_MODULE_3__constants_constants__["l" /* CONTROL_STATE */].UNUSED, 0]
             },
@@ -1436,7 +1701,7 @@ class Game extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
 
     render() {
         const { gameState, hints, gamepadState, settings } = this.props;
-        if (gameState === __WEBPACK_IMPORTED_MODULE_3__constants_constants__["R" /* LOADING */]) {
+        if (gameState === __WEBPACK_IMPORTED_MODULE_3__constants_constants__["T" /* LOADING */]) {
             return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_5__components_screens_loading_loadingScreen__["a" /* default */], {
                 onLoaded: this.setGameStateStart,
                 cacheAssetData: this.cacheAssetData
@@ -1538,6 +1803,14 @@ class Game extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
         if (!gamepadSnapshot) {
             return;
         }
+
+        // console.log(gamepadSnapshot.buttons.reduce((r, b, i) => {
+        //     if (b.pressed) {
+        //         r.push(i);
+        //     }
+        //     return r;
+        // }, []));
+
         // gamepad buttons
         Object.keys(this.controls.gamepadButtons).forEach(button => {
             const [state, timestamp] = this.controls.gamepadButtons[button];
@@ -1603,21 +1876,21 @@ function mapDispatchToProps(dispatch) {
 /* harmony default export */ exports["a"] = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2_react_redux__["connect"])(mapStateToProps, mapDispatchToProps)(Game);
 
 /***/ },
-/* 103 */
+/* 106 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_redux__ = __webpack_require__(19);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__gameState__ = __webpack_require__(132);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__pointerDelta__ = __webpack_require__(138);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__viewAngle__ = __webpack_require__(139);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__playerPosition__ = __webpack_require__(136);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__playerState__ = __webpack_require__(137);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__objects__ = __webpack_require__(135);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__doorsState__ = __webpack_require__(131);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__hints__ = __webpack_require__(133);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__gamepad__ = __webpack_require__(307);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__settings__ = __webpack_require__(315);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_redux__ = __webpack_require__(17);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__gameState__ = __webpack_require__(138);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__pointerDelta__ = __webpack_require__(144);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__viewAngle__ = __webpack_require__(146);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__playerPosition__ = __webpack_require__(142);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__playerState__ = __webpack_require__(143);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__objects__ = __webpack_require__(141);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__doorsState__ = __webpack_require__(137);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__hints__ = __webpack_require__(140);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__gamepad__ = __webpack_require__(139);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__settings__ = __webpack_require__(145);
 
 
 
@@ -1645,23 +1918,23 @@ function mapDispatchToProps(dispatch) {
 });
 
 /***/ },
-/* 104 */
+/* 107 */
 /***/ function(module, exports) {
 
 // removed by extract-text-webpack-plugin
 
 /***/ },
-/* 105 */
+/* 108 */
 /***/ function(module, exports) {
 
 module.exports = [["dist/3628ed55158b5a413097584e7fd8a725.jpg", "image"], ["dist/4419d2b2d3f0aa84d05e653afbce87a8.jpg", "image"], ["dist/83f558afad0f8b176e361b3f574ccb42.jpg", "image"], ["dist/8b3a4e276e0a424265cc0c55fa95360d.svg", "image"], ["dist/abcc39d175e2f5f6ad0df4cc14457193.jpg", "image"], ["dist/c161dc30a1bcbfb0ea16c3740f6189c3.jpg", "image"], ["dist/cc88c5d09dfc94f5daa77e65b2233782.jpg", "image"], ["src/components/door/mixdown.m4a", "audio"], ["src/components/screens/start/theme.m4a", "audio"], ["src/containers/player/steps-running.m4a", "audio"], ["src/containers/player/steps-walking.m4a", "audio"]];
 
 /***/ },
-/* 106 */
+/* 109 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__constants_actionNames__ = __webpack_require__(9);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__constants_actionNames__ = __webpack_require__(8);
 /* harmony export (immutable) */ exports["setClosing"] = setClosing;
 /* harmony export (immutable) */ exports["setOpening"] = setOpening;
 /* harmony export (immutable) */ exports["setClose"] = setClose;
@@ -1697,12 +1970,12 @@ function setOpen(id) {
 }
 
 /***/ },
-/* 107 */
+/* 110 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__constants_constants__ = __webpack_require__(8);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__constants_actionNames__ = __webpack_require__(9);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__constants_constants__ = __webpack_require__(7);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__constants_actionNames__ = __webpack_require__(8);
 /* harmony export (immutable) */ exports["setGameState"] = setGameState;
 /* harmony export (immutable) */ exports["updatePointerDelta"] = updatePointerDelta;
 /* harmony export (immutable) */ exports["resetPointerDelta"] = resetPointerDelta;
@@ -1740,11 +2013,27 @@ function resetPointerDelta() {
 }
 
 /***/ },
-/* 108 */
+/* 111 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__constants_actionNames__ = __webpack_require__(9);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__constants_actionNames__ = __webpack_require__(8);
+/* harmony export (immutable) */ exports["setGamepadState"] = setGamepadState;
+
+
+function setGamepadState(index) {
+    return {
+        type: __WEBPACK_IMPORTED_MODULE_0__constants_actionNames__["s" /* SET_GAMEPAD_STATE */],
+        index
+    };
+}
+
+/***/ },
+/* 112 */
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__constants_actionNames__ = __webpack_require__(8);
 /* harmony export (immutable) */ exports["addHints"] = addHints;
 /* harmony export (immutable) */ exports["removeHints"] = removeHints;
 
@@ -1764,11 +2053,11 @@ function removeHints(hints) {
 }
 
 /***/ },
-/* 109 */
+/* 113 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__constants_actionNames__ = __webpack_require__(9);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__constants_actionNames__ = __webpack_require__(8);
 /* harmony export (immutable) */ exports["setVisible"] = setVisible;
 /* harmony export (immutable) */ exports["setReachable"] = setReachable;
 
@@ -1789,11 +2078,11 @@ function setReachable(reachableObject) {
 }
 
 /***/ },
-/* 110 */
+/* 114 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__constants_actionNames__ = __webpack_require__(9);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__constants_actionNames__ = __webpack_require__(8);
 /* harmony export (immutable) */ exports["updateViewAngle"] = updateViewAngle;
 /* harmony export (immutable) */ exports["updatePosition"] = updatePosition;
 /* harmony export (immutable) */ exports["run"] = run;
@@ -1834,16 +2123,47 @@ function stop() {
 }
 
 /***/ },
-/* 111 */,
-/* 112 */
+/* 115 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__box_css__ = __webpack_require__(141);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__constants_actionNames__ = __webpack_require__(8);
+/* harmony export (immutable) */ exports["setVolume"] = setVolume;
+/* harmony export (immutable) */ exports["setMouseSensitivity"] = setMouseSensitivity;
+/* harmony export (immutable) */ exports["setStickSensitivity"] = setStickSensitivity;
+
+
+function setVolume(value) {
+    return {
+        type: __WEBPACK_IMPORTED_MODULE_0__constants_actionNames__["t" /* SET_SETTINGS_VOLUME */],
+        value
+    };
+}
+
+function setMouseSensitivity(value) {
+    return {
+        type: __WEBPACK_IMPORTED_MODULE_0__constants_actionNames__["u" /* SET_SETTINGS_MOUSE_SENSITIVITY */],
+        value
+    };
+}
+
+function setStickSensitivity(value) {
+    return {
+        type: __WEBPACK_IMPORTED_MODULE_0__constants_actionNames__["v" /* SET_SETTINGS_STICK_SENSITIVITY */],
+        value
+    };
+}
+
+/***/ },
+/* 116 */
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__box_css__ = __webpack_require__(147);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__box_css___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__box_css__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react__ = __webpack_require__(4);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react__ = __webpack_require__(3);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_react__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__plain_plain__ = __webpack_require__(26);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__plain_plain__ = __webpack_require__(27);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__lib_utils__ = __webpack_require__(10);
 
 
@@ -1912,13 +2232,13 @@ class Box extends __WEBPACK_IMPORTED_MODULE_1_react___default.a.Component {
 /* harmony default export */ exports["a"] = Box;
 
 /***/ },
-/* 113 */
+/* 117 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__ceiling_css__ = __webpack_require__(142);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__ceiling_css__ = __webpack_require__(148);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__ceiling_css___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__ceiling_css__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react__ = __webpack_require__(4);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react__ = __webpack_require__(3);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_react__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__lib_utils__ = __webpack_require__(10);
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
@@ -1956,17 +2276,17 @@ class Ceiling extends __WEBPACK_IMPORTED_MODULE_1_react___default.a.Component {
 /* harmony default export */ exports["a"] = Ceiling;
 
 /***/ },
-/* 114 */
+/* 118 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_components_door_door_css__ = __webpack_require__(143);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_components_door_door_css__ = __webpack_require__(149);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_components_door_door_css___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_components_door_door_css__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react__ = __webpack_require__(4);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react__ = __webpack_require__(3);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_react__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__light_simple__ = __webpack_require__(64);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__light_simple__ = __webpack_require__(65);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__lib_utils__ = __webpack_require__(10);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__constants_constants__ = __webpack_require__(8);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__constants_constants__ = __webpack_require__(7);
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
 
@@ -2103,16 +2423,15 @@ Door.defaultProps = {
 /* harmony default export */ exports["a"] = Door;
 
 /***/ },
-/* 115 */,
-/* 116 */
+/* 119 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__floor_css__ = __webpack_require__(145);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__floor_css__ = __webpack_require__(150);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__floor_css___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__floor_css__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react__ = __webpack_require__(4);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react__ = __webpack_require__(3);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_react__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__plain_plain__ = __webpack_require__(26);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__plain_plain__ = __webpack_require__(27);
 
 
 
@@ -2138,13 +2457,13 @@ class Floor extends __WEBPACK_IMPORTED_MODULE_1_react___default.a.Component {
 /* harmony default export */ exports["a"] = Floor;
 
 /***/ },
-/* 117 */
+/* 120 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__hints_css__ = __webpack_require__(146);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__hints_css__ = __webpack_require__(151);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__hints_css___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__hints_css__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react__ = __webpack_require__(4);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react__ = __webpack_require__(3);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_react__);
 
 
@@ -2171,16 +2490,16 @@ Hints.propTypes = {
 /* harmony default export */ exports["a"] = Hints;
 
 /***/ },
-/* 118 */
+/* 121 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__light_css__ = __webpack_require__(66);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__light_css__ = __webpack_require__(69);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__light_css___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__light_css__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react__ = __webpack_require__(4);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react__ = __webpack_require__(3);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_react__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__lib_utils__ = __webpack_require__(10);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__constants_constants__ = __webpack_require__(8);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__constants_constants__ = __webpack_require__(7);
 
 
 
@@ -2279,14 +2598,13 @@ class Light extends __WEBPACK_IMPORTED_MODULE_1_react___default.a.Component {
 /* harmony default export */ exports["a"] = Light;
 
 /***/ },
-/* 119 */,
-/* 120 */
+/* 122 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(4);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(3);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__plain_plain__ = __webpack_require__(26);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__plain_plain__ = __webpack_require__(27);
 
 
 
@@ -2312,16 +2630,543 @@ class Painting extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
 /* unused harmony default export */ var _unused_webpack_default_export = Painting;
 
 /***/ },
-/* 121 */,
-/* 122 */
+/* 123 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_components_switcher_switcher_css__ = __webpack_require__(149);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_components_switcher_switcher_css___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_components_switcher_switcher_css__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react__ = __webpack_require__(4);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__endScreen_css__ = __webpack_require__(153);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__endScreen_css___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__endScreen_css__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react__ = __webpack_require__(3);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_react__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__plain_plain__ = __webpack_require__(26);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__lib_loop__ = __webpack_require__(23);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__constants_constants__ = __webpack_require__(7);
+
+
+
+
+
+const ENDING_TIME = 3000;
+
+class EndScreen extends __WEBPACK_IMPORTED_MODULE_1_react___default.a.Component {
+
+    constructor(...args) {
+        super(...args);
+
+        // raf loop for capturing gamepad buttons
+        this.loop = new __WEBPACK_IMPORTED_MODULE_2__lib_loop__["a" /* default */](this.loopCallback.bind(this));
+
+        this.state = {
+            showAnyKeyMessage: false
+        };
+        this.endingTimer = null;
+    }
+
+    componentDidMount() {
+        this.endingTimer = setTimeout(() => {
+            this.setState({
+                showAnyKeyMessage: true
+            });
+        }, ENDING_TIME);
+        this.loop.start();
+    }
+
+    componentWillUnmount() {
+        clearTimeout(this.endingTimer);
+        this.endingTimer = null;
+        this.loop.stop();
+    }
+
+    render() {
+        const { gamepadState } = this.props;
+        return __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
+            'div',
+            {
+                className: __WEBPACK_IMPORTED_MODULE_0__endScreen_css___default.a.root,
+                onClick: this.handleKeyDown
+            },
+            __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
+                'div',
+                { className: __WEBPACK_IMPORTED_MODULE_0__endScreen_css___default.a.message },
+                'You escaped'
+            ),
+            __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
+                'div',
+                { className: __WEBPACK_IMPORTED_MODULE_0__endScreen_css___default.a.anyKey },
+                gamepadState === -1 ? '[[ Press `Enter` ]]' : '[[ Press `X` button ]]'
+            )
+        );
+    }
+
+    loopCallback() {
+        if (!this.state.showAnyKeyMessage) {
+            return;
+        }
+        // keyboard
+        if (this.context.controls.keyPressed[__WEBPACK_IMPORTED_MODULE_3__constants_constants__["g" /* KEY_ENTER */]][0] === __WEBPACK_IMPORTED_MODULE_3__constants_constants__["l" /* CONTROL_STATE */].FIRST_TIME_DOWN) {
+            this.props.onEnd();
+        }
+
+        // gamepad
+        if (this.context.controls.gamepadButtons[__WEBPACK_IMPORTED_MODULE_3__constants_constants__["m" /* XBOX_BUTTON_X */]][0] === __WEBPACK_IMPORTED_MODULE_3__constants_constants__["l" /* CONTROL_STATE */].FIRST_TIME_DOWN) {
+            this.props.onEnd();
+        }
+    }
+}
+
+EndScreen.contextTypes = {
+    controls: __WEBPACK_IMPORTED_MODULE_1_react__["PropTypes"].object.isRequired
+};
+EndScreen.propTypes = {
+    onEnd: __WEBPACK_IMPORTED_MODULE_1_react__["PropTypes"].func.isRequired,
+    gamepadState: __WEBPACK_IMPORTED_MODULE_1_react__["PropTypes"].number.isRequired
+};
+/* harmony default export */ exports["a"] = EndScreen;
+
+/***/ },
+/* 124 */
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__loadingScreen_css__ = __webpack_require__(154);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__loadingScreen_css___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__loadingScreen_css__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react__ = __webpack_require__(3);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_react__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__preloadAssetsList__ = __webpack_require__(108);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__preloadAssetsList___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__preloadAssetsList__);
+
+
+
+
+
+class LoadingScreen extends __WEBPACK_IMPORTED_MODULE_1_react___default.a.Component {
+
+    constructor(...args) {
+        super(...args);
+
+        this.totalAssets = __WEBPACK_IMPORTED_MODULE_2__preloadAssetsList___default.a.length;
+        this.state = {
+            assetsLoaded: 0,
+            loadingFailed: false
+        };
+
+        __WEBPACK_IMPORTED_MODULE_2__preloadAssetsList___default.a.forEach(([assetSrc, assetType]) => {
+            if (assetType === 'image') {
+                const image = new Image();
+                image.onload = () => {
+                    this.handleAssetLoaded();
+                };
+                image.onerror = () => {
+                    this.handleAssetError(`Couldn't load image ${ assetSrc }`);
+                };
+                image.src = assetSrc;
+            } else if (assetType === 'audio') {
+                fetch(assetSrc).then(response => response.arrayBuffer()).then(buffer => new Promise((resolve, reject) => {
+                    this.context.audioCtx.decodeAudioData(buffer, decodedData => {
+                        this.props.cacheAssetData(assetSrc, decodedData);
+                        resolve();
+                    }, reject);
+                })).then(() => {
+                    this.handleAssetLoaded();
+                }).catch(error => {
+                    this.handleAssetError(error);
+                });
+            }
+        });
+    }
+
+    componentDidUpdate() {
+        if (this.state.assetsLoaded === this.totalAssets) {
+            this.props.onLoaded();
+        }
+    }
+
+    render() {
+        const percent = Math.ceil(100 * this.state.assetsLoaded / this.totalAssets);
+        return __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
+            'div',
+            { className: __WEBPACK_IMPORTED_MODULE_0__loadingScreen_css___default.a.root },
+            this.state.loadingFailed ? 'Loading failed, sorry' : `Loading assets ${ percent } %`
+        );
+    }
+
+    handleAssetLoaded() {
+        this.setState({ assetsLoaded: this.state.assetsLoaded + 1 });
+    }
+
+    handleAssetError(error) {
+        this.setState({ loadingFailed: true });
+        console.error(error);
+    }
+}
+
+LoadingScreen.propTypes = {
+    onLoaded: __WEBPACK_IMPORTED_MODULE_1_react__["PropTypes"].func.isRequired,
+    cacheAssetData: __WEBPACK_IMPORTED_MODULE_1_react__["PropTypes"].func.isRequired
+};
+LoadingScreen.contextTypes = {
+    audioCtx: __WEBPACK_IMPORTED_MODULE_1_react__["PropTypes"].object.isRequired
+};
+/* harmony default export */ exports["a"] = LoadingScreen;
+
+/***/ },
+/* 125 */,
+/* 126 */
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__credits_css__ = __webpack_require__(156);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__credits_css___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__credits_css__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react__ = __webpack_require__(3);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_react__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__externalLink_externalLink__ = __webpack_require__(127);
+/* harmony export (immutable) */ exports["a"] = Credits;
+
+
+
+
+function Credits() {
+    return __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
+        'dl',
+        { className: __WEBPACK_IMPORTED_MODULE_0__credits_css___default.a.creditsList },
+        __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
+            'dt',
+            null,
+            'Textures'
+        ),
+        __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
+            'dd',
+            { className: __WEBPACK_IMPORTED_MODULE_0__credits_css___default.a.creditsDescription },
+            __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2__externalLink_externalLink__["a" /* default */], { href: 'https://freestocktextures.com/' }),
+            __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement('br', null),
+            'by\xA0',
+            __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
+                __WEBPACK_IMPORTED_MODULE_2__externalLink_externalLink__["a" /* default */],
+                { href: 'https://twitter.com/pinkonhead' },
+                '@PinkOnHead'
+            ),
+            '\xA0and\xA0',
+            __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
+                __WEBPACK_IMPORTED_MODULE_2__externalLink_externalLink__["a" /* default */],
+                { href: 'https://twitter.com/PawelWoz' },
+                '@PawelWoz'
+            )
+        ),
+        __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
+            'dt',
+            null,
+            'Sounds'
+        ),
+        __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
+            'dd',
+            { className: __WEBPACK_IMPORTED_MODULE_0__credits_css___default.a.creditsDescription },
+            __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2__externalLink_externalLink__["a" /* default */], { href: 'http://www.bigsoundbank.com/' }),
+            __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement('br', null),
+            'by\xA0',
+            __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
+                __WEBPACK_IMPORTED_MODULE_2__externalLink_externalLink__["a" /* default */],
+                { href: 'https://twitter.com/josephsardin' },
+                '@josephsardin'
+            )
+        ),
+        __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
+            'dt',
+            null,
+            'Xbox controller driver for MacOs'
+        ),
+        __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
+            'dd',
+            { className: __WEBPACK_IMPORTED_MODULE_0__credits_css___default.a.creditsDescription },
+            __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
+                __WEBPACK_IMPORTED_MODULE_2__externalLink_externalLink__["a" /* default */],
+                { href: 'https://github.com/360Controller/360Controller' },
+                '360Controller on GitHub'
+            )
+        )
+    );
+}
+
+/***/ },
+/* 127 */
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__externalLink_css__ = __webpack_require__(157);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__externalLink_css___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__externalLink_css__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react__ = __webpack_require__(3);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_react__);
+/* harmony export (immutable) */ exports["a"] = ExternalLink;
+
+
+
+function ExternalLink({ href, children }) {
+    return __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
+        'a',
+        { href: href, target: '_blank', rel: 'noreferer noopener', className: __WEBPACK_IMPORTED_MODULE_0__externalLink_css___default.a.root },
+        children ? children : href
+    );
+}
+ExternalLink.propTypes = {
+    href: __WEBPACK_IMPORTED_MODULE_1_react__["PropTypes"].string.isRequired
+};
+
+/***/ },
+/* 128 */
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__startScreen_css__ = __webpack_require__(158);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__startScreen_css___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__startScreen_css__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react__ = __webpack_require__(3);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_react__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__logo_logo__ = __webpack_require__(66);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__credits_credits__ = __webpack_require__(126);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__lib_loop__ = __webpack_require__(23);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__containers_settings_settings__ = __webpack_require__(67);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__constants_constants__ = __webpack_require__(7);
+
+
+
+
+
+
+
+
+
+const MUSIC_VOLUME = 0.2;
+
+const SCREEN_DEFAULT = 'default';
+const SCREEN_SETTINGS = 'settings';
+const SCREEN_CREDITS = 'credits';
+
+class StartScreen extends __WEBPACK_IMPORTED_MODULE_1_react___default.a.Component {
+
+    constructor(...args) {
+        super(...args);
+
+        // raf loop for capturing player actions
+        this.loop = new __WEBPACK_IMPORTED_MODULE_4__lib_loop__["a" /* default */](this.loopCallback.bind(this));
+
+        this.decodedAudioBuffer = this.context.assets['src/components/screens/start/theme.m4a'];
+        this.gainNode = this.context.audioCtx.createGain();
+        this.gainNode.gain.value = MUSIC_VOLUME;
+        this.gainNode.connect(this.context.masterGain);
+
+        this.handleStart = this.handleStart.bind(this);
+        this.setScreenSettings = this.setScreen.bind(this, SCREEN_SETTINGS);
+        this.setScreenCredits = this.setScreen.bind(this, SCREEN_CREDITS);
+        this.setScreenDefault = function () {
+            this.setActiveButton(0);
+            this.setScreen(SCREEN_DEFAULT);
+        }.bind(this);
+
+        this.state = {
+            screen: SCREEN_DEFAULT,
+            menuItemActive: 0,
+            menu: [{
+                text: 'Start',
+                action: this.handleStart
+            }, {
+                text: 'Settings',
+                action: this.setScreenSettings
+            }, {
+                text: 'Credits',
+                action: this.setScreenCredits
+            }]
+        };
+    }
+
+    componentDidMount() {
+        this.startMusic();
+        this.loop.start();
+    }
+
+    componentWillUnmount() {
+        this.stopMusic();
+        this.loop.stop();
+    }
+
+    render() {
+        return __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
+            'div',
+            { className: __WEBPACK_IMPORTED_MODULE_0__startScreen_css___default.a.root },
+            this.renderDefaultScreen(),
+            this.renderSettingsScreen(),
+            this.renderCreditsScreen()
+        );
+    }
+
+    renderDefaultScreen() {
+        const { menu, menuItemActive } = this.state;
+        if (this.state.screen === SCREEN_DEFAULT) {
+            return __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
+                'div',
+                null,
+                __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2__logo_logo__["a" /* default */], null),
+                __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
+                    'div',
+                    { className: __WEBPACK_IMPORTED_MODULE_0__startScreen_css___default.a.menu },
+                    menu.map((item, index) => __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
+                        'button',
+                        { key: item.text,
+                            className: __WEBPACK_IMPORTED_MODULE_0__startScreen_css___default.a.menuButton + (menuItemActive === index ? ` ${ __WEBPACK_IMPORTED_MODULE_0__startScreen_css___default.a.menuButtonActive }` : ''),
+                            onClick: item.action,
+                            onFocus: this.setActiveButton.bind(this, index),
+                            tabIndex: index + 1
+                        },
+                        item.text
+                    ))
+                )
+            );
+        }
+        return null;
+    }
+
+    renderSettingsScreen() {
+        if (this.state.screen === SCREEN_SETTINGS) {
+            return __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
+                'div',
+                null,
+                this.renderBackButton(),
+                __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
+                    'h2',
+                    { className: __WEBPACK_IMPORTED_MODULE_0__startScreen_css___default.a.title },
+                    'Settings'
+                ),
+                __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_5__containers_settings_settings__["a" /* default */], null)
+            );
+        }
+        return null;
+    }
+
+    renderCreditsScreen() {
+        if (this.state.screen === SCREEN_CREDITS) {
+            return __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
+                'div',
+                null,
+                this.renderBackButton(),
+                __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
+                    'h2',
+                    { className: __WEBPACK_IMPORTED_MODULE_0__startScreen_css___default.a.title },
+                    'Credits'
+                ),
+                __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3__credits_credits__["a" /* default */], null)
+            );
+        }
+        return null;
+    }
+
+    renderBackButton() {
+        const { gamepadState } = this.props;
+        return __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
+            'button',
+            { className: __WEBPACK_IMPORTED_MODULE_0__startScreen_css___default.a.backButton, onClick: this.setScreenDefault },
+            '\u2190 Back\xA0',
+            gamepadState === -1 ? '[Esc]' : '(B)'
+        );
+    }
+
+    loopCallback() {
+        // keyboard
+        if (this.state.screen !== SCREEN_DEFAULT && this.isKeyboardButtonPressed(__WEBPACK_IMPORTED_MODULE_6__constants_constants__["f" /* KEY_ESCAPE */])) {
+            this.setScreenDefault();
+        }
+        if (this.state.screen === SCREEN_DEFAULT && this.isKeyboardButtonPressed(__WEBPACK_IMPORTED_MODULE_6__constants_constants__["g" /* KEY_ENTER */])) {
+            this.launchActiveAction();
+        }
+
+        // gamepad
+        const gamepadStickLeftMoved = this.getGamepadLeftStickMove();
+        if (this.state.screen !== SCREEN_DEFAULT) {
+            if (this.isGamepadButtonPressed(__WEBPACK_IMPORTED_MODULE_6__constants_constants__["h" /* XBOX_BUTTON_B */])) {
+                this.setScreenDefault();
+            }
+        } else {
+            if (this.isGamepadButtonPressed(__WEBPACK_IMPORTED_MODULE_6__constants_constants__["i" /* XBOX_BUTTON_A */])) {
+                this.launchActiveAction();
+            }
+            if (this.isGamepadButtonPressed(__WEBPACK_IMPORTED_MODULE_6__constants_constants__["j" /* XBOX_BUTTON_CROSS_UP */]) || gamepadStickLeftMoved === -1) {
+                this.setState({ menuItemActive: Math.max(0, this.state.menuItemActive - 1) });
+            }
+            if (this.isGamepadButtonPressed(__WEBPACK_IMPORTED_MODULE_6__constants_constants__["k" /* XBOX_BUTTON_CROSS_DOWN */]) || gamepadStickLeftMoved === 1) {
+                this.setState({
+                    menuItemActive: Math.min(this.state.menu.length - 1, this.state.menuItemActive + 1)
+                });
+            }
+        }
+    }
+
+    handleStart() {
+        this.props.onStart();
+    }
+
+    launchActiveAction() {
+        const menuItemActive = this.state.menuItemActive;
+        this.setState({ menuItemActive: 0 });
+        this.state.menu[menuItemActive].action();
+    }
+
+    setActiveButton(index) {
+        this.setState({ menuItemActive: index });
+    }
+
+    setScreen(screen) {
+        this.setState({ screen });
+    }
+
+    startMusic() {
+        this.audioSource = this.context.audioCtx.createBufferSource();
+        this.audioSource.connect(this.gainNode);
+        this.audioSource.buffer = this.decodedAudioBuffer;
+        this.audioSource.loop = true;
+        this.audioSource.start(0);
+    }
+
+    stopMusic() {
+        if (this.audioSource) {
+            this.audioSource.stop();
+            this.audioSource.disconnect(this.gainNode);
+            this.audioSource = null;
+        }
+    }
+
+    isKeyboardButtonPressed(keyCode) {
+        return this.context.controls.keyPressed[keyCode][0] === __WEBPACK_IMPORTED_MODULE_6__constants_constants__["l" /* CONTROL_STATE */].FIRST_TIME_DOWN;
+    }
+
+    isGamepadButtonPressed(button) {
+        return this.context.controls.gamepadButtons[button][0] === __WEBPACK_IMPORTED_MODULE_6__constants_constants__["l" /* CONTROL_STATE */].FIRST_TIME_DOWN;
+    }
+
+    getGamepadLeftStickMove() {
+        if (this.context.controls.gamepadAxesUnit[__WEBPACK_IMPORTED_MODULE_6__constants_constants__["d" /* XBOX_STICK_LEFT_AXIS_Y */]][0] === 1) {
+            return this.context.controls.gamepadAxesUnit[__WEBPACK_IMPORTED_MODULE_6__constants_constants__["d" /* XBOX_STICK_LEFT_AXIS_Y */]][2];
+        }
+        return 0;
+    }
+}
+
+StartScreen.contextTypes = {
+    audioCtx: __WEBPACK_IMPORTED_MODULE_1_react__["PropTypes"].object.isRequired,
+    masterGain: __WEBPACK_IMPORTED_MODULE_1_react__["PropTypes"].object.isRequired,
+    assets: __WEBPACK_IMPORTED_MODULE_1_react__["PropTypes"].object.isRequired,
+    controls: __WEBPACK_IMPORTED_MODULE_1_react__["PropTypes"].object.isRequired
+};
+StartScreen.propTypes = {
+    onStart: __WEBPACK_IMPORTED_MODULE_1_react__["PropTypes"].func.isRequired,
+    gamepadState: __WEBPACK_IMPORTED_MODULE_1_react__["PropTypes"].number.isRequired
+};
+/* harmony default export */ exports["a"] = StartScreen;
+
+/***/ },
+/* 129 */
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_components_switcher_switcher_css__ = __webpack_require__(159);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_components_switcher_switcher_css___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_components_switcher_switcher_css__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react__ = __webpack_require__(3);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_react__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__plain_plain__ = __webpack_require__(27);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__lib_utils__ = __webpack_require__(10);
 
 
@@ -2426,15 +3271,15 @@ class Switcher extends __WEBPACK_IMPORTED_MODULE_1_react___default.a.Component {
 
 
 /***/ },
-/* 123 */
+/* 130 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__wall_css__ = __webpack_require__(150);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__wall_css__ = __webpack_require__(160);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__wall_css___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__wall_css__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react__ = __webpack_require__(4);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react__ = __webpack_require__(3);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_react__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__plain_plain__ = __webpack_require__(26);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__plain_plain__ = __webpack_require__(27);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__lib_utils__ = __webpack_require__(10);
 
 
@@ -2497,7 +3342,7 @@ class Wall extends __WEBPACK_IMPORTED_MODULE_1_react___default.a.Component {
 /* harmony default export */ exports["a"] = Wall;
 
 /***/ },
-/* 124 */
+/* 131 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2532,15 +3377,15 @@ const HINT_INTERACT_GAMEPAD = '[[ Press `X` on your gamepad to interact ]]';
 
 
 /***/ },
-/* 125 */
+/* 132 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__camera_css__ = __webpack_require__(151);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__camera_css__ = __webpack_require__(161);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__camera_css___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__camera_css__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react__ = __webpack_require__(4);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react__ = __webpack_require__(3);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_react__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_react_redux__ = __webpack_require__(16);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_react_redux__ = __webpack_require__(13);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_react_redux___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_react_redux__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__lib_utils__ = __webpack_require__(10);
 
@@ -2574,24 +3419,24 @@ function mapStateToProps(state) {
 /* harmony default export */ exports["a"] = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2_react_redux__["connect"])(mapStateToProps)(Camera);
 
 /***/ },
-/* 126 */
+/* 133 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(4);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(3);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react_redux__ = __webpack_require__(16);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react_redux__ = __webpack_require__(13);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react_redux___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_react_redux__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_redux_batched_actions__ = __webpack_require__(33);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_redux_batched_actions__ = __webpack_require__(34);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_redux_batched_actions___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_redux_batched_actions__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_react_redux_src_utils_storeShape__ = __webpack_require__(262);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__constants_constants__ = __webpack_require__(8);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__constants_hints__ = __webpack_require__(124);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_react_redux_src_utils_storeShape__ = __webpack_require__(273);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__constants_constants__ = __webpack_require__(7);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__constants_hints__ = __webpack_require__(131);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__lib_utils__ = __webpack_require__(10);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__lib_loop__ = __webpack_require__(130);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__level__ = __webpack_require__(27);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__lib_collision__ = __webpack_require__(65);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__actionCreators__ = __webpack_require__(41);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__lib_loop__ = __webpack_require__(23);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__level__ = __webpack_require__(28);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__lib_collision__ = __webpack_require__(68);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__actionCreators__ = __webpack_require__(35);
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
 
@@ -2658,6 +3503,11 @@ class GameLoop extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
         const newState = {};
         const currentStore = this.context.store.getState();
 
+        // check exit
+        if (this.context.controls.keyPressed[__WEBPACK_IMPORTED_MODULE_4__constants_constants__["E" /* KEY_Q */]][0] === __WEBPACK_IMPORTED_MODULE_4__constants_constants__["l" /* CONTROL_STATE */].FIRST_TIME_DOWN || this.context.controls.gamepadButtons[__WEBPACK_IMPORTED_MODULE_4__constants_constants__["F" /* XBOX_BUTTON_BACK */]][0] === __WEBPACK_IMPORTED_MODULE_4__constants_constants__["l" /* CONTROL_STATE */].FIRST_TIME_DOWN) {
+            actions.push(__WEBPACK_IMPORTED_MODULE_10__actionCreators__["b" /* game */].setGameState(__WEBPACK_IMPORTED_MODULE_4__constants_constants__["a" /* START */]));
+        }
+
         let gamepadSnapshot;
         if (currentStore.gamepad.state !== -1) {
             gamepadSnapshot = navigator.getGamepads()[currentStore.gamepad.state];
@@ -2668,7 +3518,7 @@ class GameLoop extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
         if (gamepadSnapshot) {
             const currentViewAngle = currentStore.viewAngle;
             const x = GameLoop.filterStickValue(gamepadSnapshot.axes[__WEBPACK_IMPORTED_MODULE_4__constants_constants__["e" /* XBOX_STICK_RIGHT_AXIS_X */]]);
-            const y = GameLoop.filterStickValue(gamepadSnapshot.axes[__WEBPACK_IMPORTED_MODULE_4__constants_constants__["E" /* XBOX_STICK_RIGHT_AXIS_Y */]]);
+            const y = GameLoop.filterStickValue(gamepadSnapshot.axes[__WEBPACK_IMPORTED_MODULE_4__constants_constants__["G" /* XBOX_STICK_RIGHT_AXIS_Y */]]);
             if (x || y) {
                 const newViewAngle = [(currentViewAngle[0] + x * currentStore.settings.stickSensitivity) % 360, Math.min(Math.max(currentViewAngle[1] - y * currentStore.settings.stickSensitivity, -90), 90), 0];
                 actions.push(__WEBPACK_IMPORTED_MODULE_10__actionCreators__["c" /* player */].updateViewAngle(newViewAngle));
@@ -2693,10 +3543,10 @@ class GameLoop extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
 
         // try gamepad
         if (gamepadSnapshot) {
-            const x = GameLoop.filterStickValue(gamepadSnapshot.axes[__WEBPACK_IMPORTED_MODULE_4__constants_constants__["F" /* XBOX_STICK_LEFT_AXIS_X */]]);
+            const x = GameLoop.filterStickValue(gamepadSnapshot.axes[__WEBPACK_IMPORTED_MODULE_4__constants_constants__["H" /* XBOX_STICK_LEFT_AXIS_X */]]);
             const z = -GameLoop.filterStickValue(gamepadSnapshot.axes[__WEBPACK_IMPORTED_MODULE_4__constants_constants__["d" /* XBOX_STICK_LEFT_AXIS_Y */]]) + 0; // convert -0 to 0 by adding 0
             if (x || z) {
-                if (gamepadSnapshot.axes[__WEBPACK_IMPORTED_MODULE_4__constants_constants__["G" /* XBOX_TRIGGER_RIGHT_AXIS */]] >= 0.5) {
+                if (gamepadSnapshot.axes[__WEBPACK_IMPORTED_MODULE_4__constants_constants__["I" /* XBOX_TRIGGER_RIGHT_AXIS */]] >= 0.5) {
                     isRunning = true;
                 }
                 step = Math.sqrt(x ** 2 + z ** 2);
@@ -2709,28 +3559,28 @@ class GameLoop extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
         }
 
         const keyPressed = this.context.controls.keyPressed;
-        if (keyPressed[__WEBPACK_IMPORTED_MODULE_4__constants_constants__["H" /* KEY_W */]][0] !== __WEBPACK_IMPORTED_MODULE_4__constants_constants__["l" /* CONTROL_STATE */].UNUSED) {
+        if (keyPressed[__WEBPACK_IMPORTED_MODULE_4__constants_constants__["J" /* KEY_W */]][0] !== __WEBPACK_IMPORTED_MODULE_4__constants_constants__["l" /* CONTROL_STATE */].UNUSED) {
             angleShift.push(0);
             step = Math.max(step, 1);
         }
-        if (keyPressed[__WEBPACK_IMPORTED_MODULE_4__constants_constants__["I" /* KEY_S */]][0] !== __WEBPACK_IMPORTED_MODULE_4__constants_constants__["l" /* CONTROL_STATE */].UNUSED) {
+        if (keyPressed[__WEBPACK_IMPORTED_MODULE_4__constants_constants__["K" /* KEY_S */]][0] !== __WEBPACK_IMPORTED_MODULE_4__constants_constants__["l" /* CONTROL_STATE */].UNUSED) {
             angleShift.push(Math.PI);
             step = Math.max(step, 1);
         }
-        if (keyPressed[__WEBPACK_IMPORTED_MODULE_4__constants_constants__["J" /* KEY_D */]][0] !== __WEBPACK_IMPORTED_MODULE_4__constants_constants__["l" /* CONTROL_STATE */].UNUSED) {
+        if (keyPressed[__WEBPACK_IMPORTED_MODULE_4__constants_constants__["L" /* KEY_D */]][0] !== __WEBPACK_IMPORTED_MODULE_4__constants_constants__["l" /* CONTROL_STATE */].UNUSED) {
             angleShift.push(Math.PI / 2);
             step = Math.max(step, 1);
         }
-        if (keyPressed[__WEBPACK_IMPORTED_MODULE_4__constants_constants__["K" /* KEY_A */]][0] !== __WEBPACK_IMPORTED_MODULE_4__constants_constants__["l" /* CONTROL_STATE */].UNUSED) {
+        if (keyPressed[__WEBPACK_IMPORTED_MODULE_4__constants_constants__["M" /* KEY_A */]][0] !== __WEBPACK_IMPORTED_MODULE_4__constants_constants__["l" /* CONTROL_STATE */].UNUSED) {
             // hack for angles sum
-            if (keyPressed[__WEBPACK_IMPORTED_MODULE_4__constants_constants__["H" /* KEY_W */]][0] !== __WEBPACK_IMPORTED_MODULE_4__constants_constants__["l" /* CONTROL_STATE */].UNUSED) {
+            if (keyPressed[__WEBPACK_IMPORTED_MODULE_4__constants_constants__["J" /* KEY_W */]][0] !== __WEBPACK_IMPORTED_MODULE_4__constants_constants__["l" /* CONTROL_STATE */].UNUSED) {
                 angleShift.push(-Math.PI / 2);
             } else {
                 angleShift.push(3 * Math.PI / 2);
             }
             step = Math.max(step, 1);
         }
-        if (keyPressed[__WEBPACK_IMPORTED_MODULE_4__constants_constants__["L" /* KEY_SHIFT */]][0] !== __WEBPACK_IMPORTED_MODULE_4__constants_constants__["l" /* CONTROL_STATE */].UNUSED) {
+        if (keyPressed[__WEBPACK_IMPORTED_MODULE_4__constants_constants__["N" /* KEY_SHIFT */]][0] !== __WEBPACK_IMPORTED_MODULE_4__constants_constants__["l" /* CONTROL_STATE */].UNUSED) {
             isRunning = true;
         }
 
@@ -2755,7 +3605,7 @@ class GameLoop extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
 
             angleShiftSum = angleShiftSum + __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_6__lib_utils__["b" /* convertDegreeToRad */])(currentStore.viewAngle[0]);
 
-            step = step * frameRateCoefficient * (isRunning ? __WEBPACK_IMPORTED_MODULE_4__constants_constants__["M" /* RUNNING_COEFF */] : 1) * __WEBPACK_IMPORTED_MODULE_4__constants_constants__["N" /* PLAYER_SPEED */];
+            step = step * frameRateCoefficient * (isRunning ? __WEBPACK_IMPORTED_MODULE_4__constants_constants__["O" /* RUNNING_COEFF */] : 1) * __WEBPACK_IMPORTED_MODULE_4__constants_constants__["P" /* PLAYER_SPEED */];
             const shift = [step * Math.sin(angleShiftSum), 0, -step * Math.cos(angleShiftSum)];
             const newPos = [];
             for (let i = 0; i < 3; i++) {
@@ -2808,7 +3658,7 @@ class GameLoop extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
         }
 
         // perform interaction if key is pressed
-        if (reachableObject && (keyPressed[__WEBPACK_IMPORTED_MODULE_4__constants_constants__["O" /* KEY_E */]][0] === __WEBPACK_IMPORTED_MODULE_4__constants_constants__["l" /* CONTROL_STATE */].FIRST_TIME_DOWN || this.context.controls.gamepadButtons[__WEBPACK_IMPORTED_MODULE_4__constants_constants__["m" /* XBOX_BUTTON_X */]][0] === __WEBPACK_IMPORTED_MODULE_4__constants_constants__["l" /* CONTROL_STATE */].FIRST_TIME_DOWN)) {
+        if (reachableObject && (keyPressed[__WEBPACK_IMPORTED_MODULE_4__constants_constants__["Q" /* KEY_E */]][0] === __WEBPACK_IMPORTED_MODULE_4__constants_constants__["l" /* CONTROL_STATE */].FIRST_TIME_DOWN || this.context.controls.gamepadButtons[__WEBPACK_IMPORTED_MODULE_4__constants_constants__["m" /* XBOX_BUTTON_X */]][0] === __WEBPACK_IMPORTED_MODULE_4__constants_constants__["l" /* CONTROL_STATE */].FIRST_TIME_DOWN)) {
             if (reachableObject.type === __WEBPACK_IMPORTED_MODULE_4__constants_constants__["A" /* SWITCHER_TYPE */]) {
                 const door = currentStore.doorsState[reachableObject.props.id];
                 if (![__WEBPACK_IMPORTED_MODULE_4__constants_constants__["t" /* DOOR_OPENING */], __WEBPACK_IMPORTED_MODULE_4__constants_constants__["s" /* DOOR_CLOSING */]].includes(door)) {
@@ -2843,14 +3693,14 @@ class GameLoop extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
         if (rawHints.length) {
             this.delayedActions.pushAction({
                 action: __WEBPACK_IMPORTED_MODULE_10__actionCreators__["f" /* hints */].removeHints(rawHints),
-                delay: __WEBPACK_IMPORTED_MODULE_4__constants_constants__["P" /* HINT_SHOW_TIME */] + delay
+                delay: __WEBPACK_IMPORTED_MODULE_4__constants_constants__["R" /* HINT_SHOW_TIME */] + delay
             });
         }
         return __WEBPACK_IMPORTED_MODULE_10__actionCreators__["f" /* hints */].addHints(rawHints);
     }
 
     static filterStickValue(value) {
-        return Math.abs(value) >= __WEBPACK_IMPORTED_MODULE_4__constants_constants__["Q" /* STICK_VALUE_THRESHOLD */] ? value : 0;
+        return Math.abs(value) >= __WEBPACK_IMPORTED_MODULE_4__constants_constants__["S" /* STICK_VALUE_THRESHOLD */] ? value : 0;
     }
 }
 
@@ -2864,17 +3714,17 @@ GameLoop.propTypes = {
 /* harmony default export */ exports["a"] = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1_react_redux__["connect"])()(GameLoop);
 
 /***/ },
-/* 127 */
+/* 134 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__player_css__ = __webpack_require__(152);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__player_css__ = __webpack_require__(162);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__player_css___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__player_css__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react__ = __webpack_require__(4);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react__ = __webpack_require__(3);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_react__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_react_redux__ = __webpack_require__(16);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_react_redux__ = __webpack_require__(13);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_react_redux___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_react_redux__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__constants_constants__ = __webpack_require__(8);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__constants_constants__ = __webpack_require__(7);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__lib_utils__ = __webpack_require__(10);
 
 
@@ -3059,23 +3909,23 @@ function mapStateToProps(state) {
 /* harmony default export */ exports["a"] = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2_react_redux__["connect"])(mapStateToProps)(Player);
 
 /***/ },
-/* 128 */
+/* 135 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(4);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(3);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react_redux__ = __webpack_require__(16);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react_redux__ = __webpack_require__(13);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react_redux___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_react_redux__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__components_painting_painting__ = __webpack_require__(120);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__components_floor_floor__ = __webpack_require__(116);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__components_ceiling_ceiling__ = __webpack_require__(113);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__components_wall_wall__ = __webpack_require__(123);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__components_box_box__ = __webpack_require__(112);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__components_switcher_switcher__ = __webpack_require__(122);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__components_door_door__ = __webpack_require__(114);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__components_painting_painting__ = __webpack_require__(122);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__components_floor_floor__ = __webpack_require__(119);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__components_ceiling_ceiling__ = __webpack_require__(117);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__components_wall_wall__ = __webpack_require__(130);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__components_box_box__ = __webpack_require__(116);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__components_switcher_switcher__ = __webpack_require__(129);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__components_door_door__ = __webpack_require__(118);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__lib_utils__ = __webpack_require__(10);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__constants_constants__ = __webpack_require__(8);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__constants_constants__ = __webpack_require__(7);
 
 
 
@@ -3190,18 +4040,18 @@ function mapStateToProps(state) {
 /* harmony default export */ exports["a"] = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1_react_redux__["connect"])(mapStateToProps)(Scene);
 
 /***/ },
-/* 129 */
+/* 136 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__viewport_css__ = __webpack_require__(153);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__viewport_css__ = __webpack_require__(164);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__viewport_css___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__viewport_css__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react__ = __webpack_require__(4);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react__ = __webpack_require__(3);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_react__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_redux__ = __webpack_require__(19);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_react_redux__ = __webpack_require__(16);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_redux__ = __webpack_require__(17);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_react_redux__ = __webpack_require__(13);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_react_redux___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_react_redux__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__actionCreators__ = __webpack_require__(41);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__actionCreators__ = __webpack_require__(35);
 
 
 
@@ -3273,49 +4123,13 @@ function mapDispatchToProps(dispatch) {
 /* harmony default export */ exports["a"] = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_3_react_redux__["connect"])(null, mapDispatchToProps)(Viewport);
 
 /***/ },
-/* 130 */
+/* 137 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
-class Loop {
-    constructor(fn = () => {}, fps = 60, startImmediately = false) {
-        this.fn = fn;
-        this.fps = fps;
-        this.oldTimestamp = null;
-        this.rafId = null;
-        if (startImmediately) {
-            this.start();
-        }
-    }
-
-    start(timestamp) {
-        this.rafId = window.requestAnimationFrame(this.start.bind(this));
-        let frameRateCoefficient = 1;
-        if (timestamp) {
-            if (this.oldTimestamp) {
-                frameRateCoefficient = (timestamp - this.oldTimestamp) * this.fps / 1000;
-            }
-            this.oldTimestamp = timestamp;
-        }
-        this.fn(frameRateCoefficient);
-    }
-
-    stop() {
-        window.cancelAnimationFrame(this.rafId);
-        this.rafId = null;
-    }
-}
-/* harmony export (immutable) */ exports["a"] = Loop;
-
-
-/***/ },
-/* 131 */
-/***/ function(module, exports, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__level__ = __webpack_require__(27);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__constants_constants__ = __webpack_require__(8);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__constants_actionNames__ = __webpack_require__(9);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__level__ = __webpack_require__(28);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__constants_constants__ = __webpack_require__(7);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__constants_actionNames__ = __webpack_require__(8);
 /* harmony export (immutable) */ exports["a"] = doorsState;
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
@@ -3356,17 +4170,17 @@ function doorsState(state = {}, action) {
 }
 
 /***/ },
-/* 132 */
+/* 138 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__constants_actionNames__ = __webpack_require__(9);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__constants_constants__ = __webpack_require__(8);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__constants_actionNames__ = __webpack_require__(8);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__constants_constants__ = __webpack_require__(7);
 /* harmony export (immutable) */ exports["a"] = gameState;
 
 
 
-function gameState(state = __WEBPACK_IMPORTED_MODULE_1__constants_constants__["R" /* LOADING */], action) {
+function gameState(state = __WEBPACK_IMPORTED_MODULE_1__constants_constants__["T" /* LOADING */], action) {
     switch (action.type) {
         case __WEBPACK_IMPORTED_MODULE_0__constants_actionNames__["a" /* SET_GAME_START */]:
             return __WEBPACK_IMPORTED_MODULE_1__constants_constants__["a" /* START */];
@@ -3380,11 +4194,34 @@ function gameState(state = __WEBPACK_IMPORTED_MODULE_1__constants_constants__["R
 }
 
 /***/ },
-/* 133 */
+/* 139 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__constants_actionNames__ = __webpack_require__(9);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__constants_actionNames__ = __webpack_require__(8);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_redux__ = __webpack_require__(17);
+
+
+
+function gamepadState(state = -1, action) {
+    switch (action.type) {
+        case __WEBPACK_IMPORTED_MODULE_0__constants_actionNames__["s" /* SET_GAMEPAD_STATE */]:
+            return action.index;
+        default:
+            return state;
+    }
+}
+
+/* harmony default export */ exports["a"] = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1_redux__["combineReducers"])({
+    state: gamepadState
+});
+
+/***/ },
+/* 140 */
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__constants_actionNames__ = __webpack_require__(8);
 /* harmony export (immutable) */ exports["a"] = hints;
 
 
@@ -3427,14 +4264,13 @@ function hints(state = new Map(), action) {
 }
 
 /***/ },
-/* 134 */,
-/* 135 */
+/* 141 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__constants_constants__ = __webpack_require__(8);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__constants_actionNames__ = __webpack_require__(9);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__level__ = __webpack_require__(27);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__constants_constants__ = __webpack_require__(7);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__constants_actionNames__ = __webpack_require__(8);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__level__ = __webpack_require__(28);
 /* harmony export (immutable) */ exports["a"] = objects;
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
@@ -3510,12 +4346,12 @@ function objects(state = getInitialState(), action) {
 }
 
 /***/ },
-/* 136 */
+/* 142 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__constants_actionNames__ = __webpack_require__(9);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__level__ = __webpack_require__(27);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__constants_actionNames__ = __webpack_require__(8);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__level__ = __webpack_require__(28);
 /* harmony export (immutable) */ exports["a"] = playerPosition;
 
 
@@ -3536,21 +4372,21 @@ function playerPosition(state = getInitialState(), action) {
 }
 
 /***/ },
-/* 137 */
+/* 143 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__constants_constants__ = __webpack_require__(8);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__constants_actionNames__ = __webpack_require__(9);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__constants_constants__ = __webpack_require__(7);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__constants_actionNames__ = __webpack_require__(8);
 /* harmony export (immutable) */ exports["a"] = playerState;
 
 
 
-function playerState(state = __WEBPACK_IMPORTED_MODULE_0__constants_constants__["S" /* PLAYER_STOP */], action) {
+function playerState(state = __WEBPACK_IMPORTED_MODULE_0__constants_constants__["U" /* PLAYER_STOP */], action) {
     switch (action.type) {
         case __WEBPACK_IMPORTED_MODULE_1__constants_actionNames__["j" /* PLAYER_STATE_STOP */]:
         case __WEBPACK_IMPORTED_MODULE_1__constants_actionNames__["a" /* SET_GAME_START */]:
-            return __WEBPACK_IMPORTED_MODULE_0__constants_constants__["S" /* PLAYER_STOP */];
+            return __WEBPACK_IMPORTED_MODULE_0__constants_constants__["U" /* PLAYER_STOP */];
         case __WEBPACK_IMPORTED_MODULE_1__constants_actionNames__["i" /* PLAYER_STATE_WALK */]:
             return __WEBPACK_IMPORTED_MODULE_0__constants_constants__["o" /* PLAYER_WALK */];
         case __WEBPACK_IMPORTED_MODULE_1__constants_actionNames__["h" /* PLAYER_STATE_RUN */]:
@@ -3561,11 +4397,11 @@ function playerState(state = __WEBPACK_IMPORTED_MODULE_0__constants_constants__[
 }
 
 /***/ },
-/* 138 */
+/* 144 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__constants_actionNames__ = __webpack_require__(9);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__constants_actionNames__ = __webpack_require__(8);
 /* harmony export (immutable) */ exports["a"] = pointerDelta;
 
 
@@ -3590,12 +4426,46 @@ function pointerDelta(state = getInitialState(), action) {
 }
 
 /***/ },
-/* 139 */
+/* 145 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__level__ = __webpack_require__(27);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__constants_actionNames__ = __webpack_require__(9);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__constants_actionNames__ = __webpack_require__(8);
+/* harmony export (immutable) */ exports["a"] = settings;
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+
+
+function settings(state = {
+    soundVolume: 1,
+    mouseSensitivity: 0.5,
+    stickSensitivity: 2
+}, action) {
+    switch (action.type) {
+        case __WEBPACK_IMPORTED_MODULE_0__constants_actionNames__["t" /* SET_SETTINGS_VOLUME */]:
+            return _extends({}, state, {
+                soundVolume: action.value
+            });
+        case __WEBPACK_IMPORTED_MODULE_0__constants_actionNames__["u" /* SET_SETTINGS_MOUSE_SENSITIVITY */]:
+            return _extends({}, state, {
+                mouseSensitivity: action.value
+            });
+        case __WEBPACK_IMPORTED_MODULE_0__constants_actionNames__["v" /* SET_SETTINGS_STICK_SENSITIVITY */]:
+            return _extends({}, state, {
+                stickSensitivity: action.value
+            });
+        default:
+            return state;
+    }
+}
+
+/***/ },
+/* 146 */
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__level__ = __webpack_require__(28);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__constants_actionNames__ = __webpack_require__(8);
 /* harmony export (immutable) */ exports["a"] = viewAngle;
 
 
@@ -3616,91 +4486,126 @@ function viewAngle(state = getInitialState(), action) {
 }
 
 /***/ },
-/* 140 */,
-/* 141 */
+/* 147 */
 /***/ function(module, exports) {
 
 // removed by extract-text-webpack-plugin
 module.exports = {"root":"box-root-1bYIs","mode-1":"box-mode-1-2_ljJ","mode-2":"box-mode-2-3XTO6","mode-3":"box-mode-3-ZvQ5H"};
 
 /***/ },
-/* 142 */
+/* 148 */
 /***/ function(module, exports) {
 
 // removed by extract-text-webpack-plugin
 module.exports = {"root":"ceiling-root-oxGSS"};
 
 /***/ },
-/* 143 */
+/* 149 */
 /***/ function(module, exports) {
 
 // removed by extract-text-webpack-plugin
 module.exports = {"root":"door-root-eMRzu","bar":"door-bar-eZp6B"};
 
 /***/ },
-/* 144 */,
-/* 145 */
+/* 150 */
 /***/ function(module, exports) {
 
 // removed by extract-text-webpack-plugin
 module.exports = {"root":"floor-root-3F8ag"};
 
 /***/ },
-/* 146 */
+/* 151 */
 /***/ function(module, exports) {
 
 // removed by extract-text-webpack-plugin
 module.exports = {"root":"hints-root-3NehV","hint":"hints-hint-2sBxI"};
 
 /***/ },
-/* 147 */,
-/* 148 */,
-/* 149 */
-/***/ function(module, exports) {
-
-// removed by extract-text-webpack-plugin
-module.exports = {"root":"switcher-root-2DxPU","handle":"switcher-handle-3j71N","off":"switcher-off-yQoql","on":"switcher-on-H20ki","reachable":"switcher-reachable-24rEd"};
-
-/***/ },
-/* 150 */
-/***/ function(module, exports) {
-
-// removed by extract-text-webpack-plugin
-module.exports = {"root":"wall-root-1TWW_"};
-
-/***/ },
-/* 151 */
-/***/ function(module, exports) {
-
-// removed by extract-text-webpack-plugin
-module.exports = {"root":"camera-root-3QZty"};
-
-/***/ },
 /* 152 */
 /***/ function(module, exports) {
 
 // removed by extract-text-webpack-plugin
-module.exports = {"playerAnimationWalking":"player-playerAnimationWalking-v-Wqe","playerAnimationRunning":"player-playerAnimationRunning-2Ehsc","playerAnimationWalkingY":"player-playerAnimationWalkingY-XdwCr","playerAnimationWalkingX":"player-playerAnimationWalkingX-rfzrE"};
+module.exports = {"root":"logo-root-4wLX_"};
 
 /***/ },
 /* 153 */
 /***/ function(module, exports) {
 
 // removed by extract-text-webpack-plugin
+module.exports = {"root":"endScreen-root-HnQnd","message":"endScreen-message-2QthM","anyKey":"endScreen-anyKey-3nFhc"};
+
+/***/ },
+/* 154 */
+/***/ function(module, exports) {
+
+// removed by extract-text-webpack-plugin
+module.exports = {"root":"loadingScreen-root-3w6aQ"};
+
+/***/ },
+/* 155 */,
+/* 156 */
+/***/ function(module, exports) {
+
+// removed by extract-text-webpack-plugin
+module.exports = {"creditsList":"credits-creditsList-3MIgP","creditsDescription":"credits-creditsDescription-MWNxQ"};
+
+/***/ },
+/* 157 */
+/***/ function(module, exports) {
+
+// removed by extract-text-webpack-plugin
+module.exports = {"root":"externalLink-root-1gOTc"};
+
+/***/ },
+/* 158 */
+/***/ function(module, exports) {
+
+// removed by extract-text-webpack-plugin
+module.exports = {"root":"startScreen-root-2jYZG","menu":"startScreen-menu-wltxb","menuButton":"startScreen-menuButton-34XIz","menuButtonActive":"startScreen-menuButtonActive-2nMKx","title":"startScreen-title-12rPm","backButton":"startScreen-backButton-2uMuT"};
+
+/***/ },
+/* 159 */
+/***/ function(module, exports) {
+
+// removed by extract-text-webpack-plugin
+module.exports = {"root":"switcher-root-2DxPU","handle":"switcher-handle-3j71N","off":"switcher-off-yQoql","on":"switcher-on-H20ki","reachable":"switcher-reachable-24rEd"};
+
+/***/ },
+/* 160 */
+/***/ function(module, exports) {
+
+// removed by extract-text-webpack-plugin
+module.exports = {"root":"wall-root-1TWW_"};
+
+/***/ },
+/* 161 */
+/***/ function(module, exports) {
+
+// removed by extract-text-webpack-plugin
+module.exports = {"root":"camera-root-3QZty"};
+
+/***/ },
+/* 162 */
+/***/ function(module, exports) {
+
+// removed by extract-text-webpack-plugin
+module.exports = {"playerAnimationWalking":"player-playerAnimationWalking-v-Wqe","playerAnimationRunning":"player-playerAnimationRunning-2Ehsc","playerAnimationWalkingY":"player-playerAnimationWalkingY-XdwCr","playerAnimationWalkingX":"player-playerAnimationWalkingX-rfzrE"};
+
+/***/ },
+/* 163 */
+/***/ function(module, exports) {
+
+// removed by extract-text-webpack-plugin
+module.exports = {"root":"settings-root-1ReEm","item":"settings-item-2kxyx","label":"settings-label-2Xc-m","itemActive":"settings-itemActive-1t9I3","input":"settings-input-1wTW_","range":"settings-range-309Ga","output":"settings-output-4rxkN"};
+
+/***/ },
+/* 164 */
+/***/ function(module, exports) {
+
+// removed by extract-text-webpack-plugin
 module.exports = {"root":"viewport-root-goyag"};
 
 /***/ },
-/* 154 */,
-/* 155 */,
-/* 156 */,
-/* 157 */,
-/* 158 */,
-/* 159 */,
-/* 160 */,
-/* 161 */,
-/* 162 */,
-/* 163 */,
-/* 164 */,
 /* 165 */,
 /* 166 */,
 /* 167 */,
@@ -3798,11 +4703,22 @@ module.exports = {"root":"viewport-root-goyag"};
 /* 259 */,
 /* 260 */,
 /* 261 */,
-/* 262 */
+/* 262 */,
+/* 263 */,
+/* 264 */,
+/* 265 */,
+/* 266 */,
+/* 267 */,
+/* 268 */,
+/* 269 */,
+/* 270 */,
+/* 271 */,
+/* 272 */,
+/* 273 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(4);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(3);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
 
 
@@ -3814,17 +4730,6 @@ module.exports = {"root":"viewport-root-goyag"};
 
 
 /***/ },
-/* 263 */,
-/* 264 */,
-/* 265 */,
-/* 266 */,
-/* 267 */,
-/* 268 */,
-/* 269 */,
-/* 270 */,
-/* 271 */,
-/* 272 */,
-/* 273 */,
 /* 274 */,
 /* 275 */,
 /* 276 */,
@@ -3832,23 +4737,34 @@ module.exports = {"root":"viewport-root-goyag"};
 /* 278 */,
 /* 279 */,
 /* 280 */,
-/* 281 */
+/* 281 */,
+/* 282 */,
+/* 283 */,
+/* 284 */,
+/* 285 */,
+/* 286 */,
+/* 287 */,
+/* 288 */,
+/* 289 */,
+/* 290 */,
+/* 291 */,
+/* 292 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__index_css__ = __webpack_require__(104);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__index_css__ = __webpack_require__(107);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__index_css___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__index_css__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react__ = __webpack_require__(4);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react__ = __webpack_require__(3);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_react__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_react_dom__ = __webpack_require__(40);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_react_dom__ = __webpack_require__(42);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_react_dom___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_react_dom__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_redux__ = __webpack_require__(19);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_react_redux__ = __webpack_require__(16);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_redux__ = __webpack_require__(17);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_react_redux__ = __webpack_require__(13);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_react_redux___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_react_redux__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_redux_batched_actions__ = __webpack_require__(33);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_redux_batched_actions__ = __webpack_require__(34);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_redux_batched_actions___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5_redux_batched_actions__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__containers_game__ = __webpack_require__(102);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__reducers__ = __webpack_require__(103);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__containers_game__ = __webpack_require__(105);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__reducers__ = __webpack_require__(106);
 
 
 
@@ -3869,931 +4785,5 @@ __WEBPACK_IMPORTED_MODULE_2_react_dom___default.a.render(__WEBPACK_IMPORTED_MODU
     __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_6__containers_game__["a" /* default */], null)
 ), document.getElementById('app'));
 
-/***/ },
-/* 282 */,
-/* 283 */,
-/* 284 */,
-/* 285 */,
-/* 286 */,
-/* 287 */,
-/* 288 */,
-/* 289 */,
-/* 290 */,
-/* 291 */,
-/* 292 */,
-/* 293 */,
-/* 294 */
-/***/ function(module, exports, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__logo_css__ = __webpack_require__(296);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__logo_css___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__logo_css__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react__ = __webpack_require__(4);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_react__);
-
-
-
-function Logo() {
-    return __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
-        'h1',
-        { className: __WEBPACK_IMPORTED_MODULE_0__logo_css___default.a.root },
-        'The deep dark dungeon'
-    );
-}
-
-/* harmony default export */ exports["a"] = Logo;
-
-/***/ },
-/* 295 */,
-/* 296 */
-/***/ function(module, exports) {
-
-// removed by extract-text-webpack-plugin
-module.exports = {"root":"logo-root-4wLX_"};
-
-/***/ },
-/* 297 */
-/***/ function(module, exports, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__startScreen_css__ = __webpack_require__(298);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__startScreen_css___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__startScreen_css__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react__ = __webpack_require__(4);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_react__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__logo_logo__ = __webpack_require__(294);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__credits_credits__ = __webpack_require__(301);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__lib_loop__ = __webpack_require__(130);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__containers_settings_settings__ = __webpack_require__(314);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__constants_constants__ = __webpack_require__(8);
-
-
-
-
-
-
-
-
-
-const MUSIC_VOLUME = 0.2;
-
-const SCREEN_DEFAULT = 'default';
-const SCREEN_SETTINGS = 'settings';
-const SCREEN_CREDITS = 'credits';
-
-class StartScreen extends __WEBPACK_IMPORTED_MODULE_1_react___default.a.Component {
-
-    constructor(...args) {
-        super(...args);
-
-        // raf loop for capturing player actions
-        this.loop = new __WEBPACK_IMPORTED_MODULE_4__lib_loop__["a" /* default */](this.loopCallback.bind(this));
-
-        this.decodedAudioBuffer = this.context.assets['src/components/screens/start/theme.m4a'];
-        this.gainNode = this.context.audioCtx.createGain();
-        this.gainNode.gain.value = MUSIC_VOLUME;
-        this.gainNode.connect(this.context.masterGain);
-
-        this.handleStart = this.handleStart.bind(this);
-        this.setScreenSettings = this.setScreen.bind(this, SCREEN_SETTINGS);
-        this.setScreenCredits = this.setScreen.bind(this, SCREEN_CREDITS);
-        this.setScreenDefault = function () {
-            this.setActiveButton(0);
-            this.setScreen(SCREEN_DEFAULT);
-        }.bind(this);
-
-        this.state = {
-            screen: SCREEN_DEFAULT,
-            menuItemActive: 0,
-            menu: [{
-                text: 'Start',
-                action: this.handleStart
-            }, {
-                text: 'Settings',
-                action: this.setScreenSettings
-            }, {
-                text: 'Credits',
-                action: this.setScreenCredits
-            }]
-        };
-    }
-
-    componentDidMount() {
-        this.startMusic();
-        this.loop.start();
-    }
-
-    componentWillUnmount() {
-        this.stopMusic();
-        this.loop.stop();
-    }
-
-    render() {
-        return __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
-            'div',
-            { className: __WEBPACK_IMPORTED_MODULE_0__startScreen_css___default.a.root },
-            this.renderDefaultScreen(),
-            this.renderSettingsScreen(),
-            this.renderCreditsScreen()
-        );
-    }
-
-    renderDefaultScreen() {
-        const { menu, menuItemActive } = this.state;
-        if (this.state.screen === SCREEN_DEFAULT) {
-            return __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
-                'div',
-                null,
-                __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2__logo_logo__["a" /* default */], null),
-                __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
-                    'div',
-                    { className: __WEBPACK_IMPORTED_MODULE_0__startScreen_css___default.a.menu },
-                    menu.map((item, index) => __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
-                        'button',
-                        { key: item.text,
-                            className: __WEBPACK_IMPORTED_MODULE_0__startScreen_css___default.a.menuButton + (menuItemActive === index ? ` ${ __WEBPACK_IMPORTED_MODULE_0__startScreen_css___default.a.menuButtonActive }` : ''),
-                            onClick: item.action,
-                            onFocus: this.setActiveButton.bind(this, index),
-                            tabIndex: index + 1
-                        },
-                        item.text
-                    ))
-                )
-            );
-        }
-        return null;
-    }
-
-    renderSettingsScreen() {
-        if (this.state.screen === SCREEN_SETTINGS) {
-            return __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
-                'div',
-                null,
-                this.renderBackButton(),
-                __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
-                    'h2',
-                    { className: __WEBPACK_IMPORTED_MODULE_0__startScreen_css___default.a.title },
-                    'Settings'
-                ),
-                __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_5__containers_settings_settings__["a" /* default */], null)
-            );
-        }
-        return null;
-    }
-
-    renderCreditsScreen() {
-        if (this.state.screen === SCREEN_CREDITS) {
-            return __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
-                'div',
-                null,
-                this.renderBackButton(),
-                __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
-                    'h2',
-                    { className: __WEBPACK_IMPORTED_MODULE_0__startScreen_css___default.a.title },
-                    'Credits'
-                ),
-                __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3__credits_credits__["a" /* default */], null)
-            );
-        }
-        return null;
-    }
-
-    renderBackButton() {
-        const { gamepadState } = this.props;
-        return __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
-            'button',
-            { className: __WEBPACK_IMPORTED_MODULE_0__startScreen_css___default.a.backButton, onClick: this.setScreenDefault },
-            '\u2190 Back\xA0',
-            gamepadState === -1 ? '[Esc]' : '(B)'
-        );
-    }
-
-    loopCallback() {
-        // keyboard
-        if (this.state.screen !== SCREEN_DEFAULT && this.isKeyboardButtonPressed(__WEBPACK_IMPORTED_MODULE_6__constants_constants__["f" /* KEY_ESCAPE */])) {
-            this.setScreenDefault();
-        }
-        if (this.state.screen === SCREEN_DEFAULT && this.isKeyboardButtonPressed(__WEBPACK_IMPORTED_MODULE_6__constants_constants__["g" /* KEY_ENTER */])) {
-            this.launchActiveAction();
-        }
-
-        // gamepad
-        const gamepadStickLeftMoved = this.getGamepadLeftStickMove();
-        if (this.state.screen !== SCREEN_DEFAULT) {
-            if (this.isGamepadButtonPressed(__WEBPACK_IMPORTED_MODULE_6__constants_constants__["h" /* XBOX_BUTTON_B */])) {
-                this.setScreenDefault();
-            }
-        } else {
-            if (this.isGamepadButtonPressed(__WEBPACK_IMPORTED_MODULE_6__constants_constants__["i" /* XBOX_BUTTON_A */])) {
-                this.launchActiveAction();
-            }
-            if (this.isGamepadButtonPressed(__WEBPACK_IMPORTED_MODULE_6__constants_constants__["j" /* XBOX_BUTTON_CROSS_UP */]) || gamepadStickLeftMoved === -1) {
-                this.setState({ menuItemActive: Math.max(0, this.state.menuItemActive - 1) });
-            }
-            if (this.isGamepadButtonPressed(__WEBPACK_IMPORTED_MODULE_6__constants_constants__["k" /* XBOX_BUTTON_CROSS_DOWN */]) || gamepadStickLeftMoved === 1) {
-                this.setState({
-                    menuItemActive: Math.min(this.state.menu.length - 1, this.state.menuItemActive + 1)
-                });
-            }
-        }
-
-        // console.log(gamepadSnapshot.buttons.reduce((r, b, i) => {
-        //     if (b.pressed) {
-        //         r.push(i);
-        //     }
-        //     return r;
-        // }, []));
-    }
-
-    handleStart() {
-        this.props.onStart();
-    }
-
-    launchActiveAction() {
-        const menuItemActive = this.state.menuItemActive;
-        this.setState({ menuItemActive: 0 });
-        this.state.menu[menuItemActive].action();
-    }
-
-    setActiveButton(index) {
-        this.setState({ menuItemActive: index });
-    }
-
-    setScreen(screen) {
-        this.setState({ screen });
-    }
-
-    startMusic() {
-        this.audioSource = this.context.audioCtx.createBufferSource();
-        this.audioSource.connect(this.gainNode);
-        this.audioSource.buffer = this.decodedAudioBuffer;
-        this.audioSource.loop = true;
-        this.audioSource.start(0);
-    }
-
-    stopMusic() {
-        if (this.audioSource) {
-            this.audioSource.stop();
-            this.audioSource.disconnect(this.gainNode);
-            this.audioSource = null;
-        }
-    }
-
-    isKeyboardButtonPressed(keyCode) {
-        return this.context.controls.keyPressed[keyCode][0] === __WEBPACK_IMPORTED_MODULE_6__constants_constants__["l" /* CONTROL_STATE */].FIRST_TIME_DOWN;
-    }
-
-    isGamepadButtonPressed(button) {
-        return this.context.controls.gamepadButtons[button][0] === __WEBPACK_IMPORTED_MODULE_6__constants_constants__["l" /* CONTROL_STATE */].FIRST_TIME_DOWN;
-    }
-
-    getGamepadLeftStickMove() {
-        if (this.context.controls.gamepadAxesUnit[__WEBPACK_IMPORTED_MODULE_6__constants_constants__["d" /* XBOX_STICK_LEFT_AXIS_Y */]][0] === 1) {
-            return this.context.controls.gamepadAxesUnit[__WEBPACK_IMPORTED_MODULE_6__constants_constants__["d" /* XBOX_STICK_LEFT_AXIS_Y */]][2];
-        }
-        return 0;
-    }
-}
-
-StartScreen.contextTypes = {
-    audioCtx: __WEBPACK_IMPORTED_MODULE_1_react__["PropTypes"].object.isRequired,
-    masterGain: __WEBPACK_IMPORTED_MODULE_1_react__["PropTypes"].object.isRequired,
-    assets: __WEBPACK_IMPORTED_MODULE_1_react__["PropTypes"].object.isRequired,
-    controls: __WEBPACK_IMPORTED_MODULE_1_react__["PropTypes"].object.isRequired
-};
-StartScreen.propTypes = {
-    onStart: __WEBPACK_IMPORTED_MODULE_1_react__["PropTypes"].func.isRequired,
-    gamepadState: __WEBPACK_IMPORTED_MODULE_1_react__["PropTypes"].number.isRequired
-};
-/* harmony default export */ exports["a"] = StartScreen;
-
-/***/ },
-/* 298 */
-/***/ function(module, exports) {
-
-// removed by extract-text-webpack-plugin
-module.exports = {"root":"startScreen-root-2jYZG","menu":"startScreen-menu-wltxb","menuButton":"startScreen-menuButton-34XIz","menuButtonActive":"startScreen-menuButtonActive-2nMKx","title":"startScreen-title-12rPm","backButton":"startScreen-backButton-2uMuT"};
-
-/***/ },
-/* 299 */,
-/* 300 */,
-/* 301 */
-/***/ function(module, exports, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__credits_css__ = __webpack_require__(303);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__credits_css___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__credits_css__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react__ = __webpack_require__(4);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_react__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__externalLink_externalLink__ = __webpack_require__(302);
-/* harmony export (immutable) */ exports["a"] = Credits;
-
-
-
-
-function Credits() {
-    return __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
-        'dl',
-        { className: __WEBPACK_IMPORTED_MODULE_0__credits_css___default.a.creditsList },
-        __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
-            'dt',
-            null,
-            'Textures'
-        ),
-        __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
-            'dd',
-            { className: __WEBPACK_IMPORTED_MODULE_0__credits_css___default.a.creditsDescription },
-            __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2__externalLink_externalLink__["a" /* default */], { href: 'https://freestocktextures.com/' }),
-            __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement('br', null),
-            'by\xA0',
-            __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
-                __WEBPACK_IMPORTED_MODULE_2__externalLink_externalLink__["a" /* default */],
-                { href: 'https://twitter.com/pinkonhead' },
-                '@PinkOnHead'
-            ),
-            '\xA0and\xA0',
-            __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
-                __WEBPACK_IMPORTED_MODULE_2__externalLink_externalLink__["a" /* default */],
-                { href: 'https://twitter.com/PawelWoz' },
-                '@PawelWoz'
-            )
-        ),
-        __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
-            'dt',
-            null,
-            'Sounds'
-        ),
-        __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
-            'dd',
-            { className: __WEBPACK_IMPORTED_MODULE_0__credits_css___default.a.creditsDescription },
-            __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2__externalLink_externalLink__["a" /* default */], { href: 'http://www.bigsoundbank.com/' }),
-            __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement('br', null),
-            'by\xA0',
-            __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
-                __WEBPACK_IMPORTED_MODULE_2__externalLink_externalLink__["a" /* default */],
-                { href: 'https://twitter.com/josephsardin' },
-                '@josephsardin'
-            )
-        ),
-        __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
-            'dt',
-            null,
-            'Xbox controller driver for MacOs'
-        ),
-        __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
-            'dd',
-            { className: __WEBPACK_IMPORTED_MODULE_0__credits_css___default.a.creditsDescription },
-            __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
-                __WEBPACK_IMPORTED_MODULE_2__externalLink_externalLink__["a" /* default */],
-                { href: 'https://github.com/360Controller/360Controller' },
-                '360Controller on GitHub'
-            )
-        )
-    );
-}
-
-/***/ },
-/* 302 */
-/***/ function(module, exports, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__externalLink_css__ = __webpack_require__(304);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__externalLink_css___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__externalLink_css__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react__ = __webpack_require__(4);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_react__);
-/* harmony export (immutable) */ exports["a"] = ExternalLink;
-
-
-
-function ExternalLink({ href, children }) {
-    return __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
-        'a',
-        { href: href, target: '_blank', rel: 'noreferer noopener', className: __WEBPACK_IMPORTED_MODULE_0__externalLink_css___default.a.root },
-        children ? children : href
-    );
-}
-ExternalLink.propTypes = {
-    href: __WEBPACK_IMPORTED_MODULE_1_react__["PropTypes"].string.isRequired
-};
-
-/***/ },
-/* 303 */
-/***/ function(module, exports) {
-
-// removed by extract-text-webpack-plugin
-module.exports = {"creditsList":"credits-creditsList-3MIgP","creditsDescription":"credits-creditsDescription-MWNxQ"};
-
-/***/ },
-/* 304 */
-/***/ function(module, exports) {
-
-// removed by extract-text-webpack-plugin
-module.exports = {"root":"externalLink-root-1gOTc"};
-
-/***/ },
-/* 305 */,
-/* 306 */,
-/* 307 */
-/***/ function(module, exports, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__constants_actionNames__ = __webpack_require__(9);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_redux__ = __webpack_require__(19);
-
-
-
-function gamepadState(state = -1, action) {
-    switch (action.type) {
-        case __WEBPACK_IMPORTED_MODULE_0__constants_actionNames__["s" /* SET_GAMEPAD_STATE */]:
-            return action.index;
-        default:
-            return state;
-    }
-}
-
-/* harmony default export */ exports["a"] = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1_redux__["combineReducers"])({
-    state: gamepadState
-});
-
-/***/ },
-/* 308 */
-/***/ function(module, exports, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__constants_actionNames__ = __webpack_require__(9);
-/* harmony export (immutable) */ exports["setGamepadState"] = setGamepadState;
-
-
-function setGamepadState(index) {
-    return {
-        type: __WEBPACK_IMPORTED_MODULE_0__constants_actionNames__["s" /* SET_GAMEPAD_STATE */],
-        index
-    };
-}
-
-/***/ },
-/* 309 */
-/***/ function(module, exports, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__endScreen_css__ = __webpack_require__(311);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__endScreen_css___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__endScreen_css__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react__ = __webpack_require__(4);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_react__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__lib_loop__ = __webpack_require__(130);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__constants_constants__ = __webpack_require__(8);
-
-
-
-
-
-const ENDING_TIME = 3000;
-
-class EndScreen extends __WEBPACK_IMPORTED_MODULE_1_react___default.a.Component {
-
-    constructor(...args) {
-        super(...args);
-
-        // raf loop for capturing gamepad buttons
-        this.loop = new __WEBPACK_IMPORTED_MODULE_2__lib_loop__["a" /* default */](this.loopCallback.bind(this));
-
-        this.state = {
-            showAnyKeyMessage: false
-        };
-        this.endingTimer = null;
-    }
-
-    componentDidMount() {
-        this.endingTimer = setTimeout(() => {
-            this.setState({
-                showAnyKeyMessage: true
-            });
-        }, ENDING_TIME);
-        this.loop.start();
-    }
-
-    componentWillUnmount() {
-        clearTimeout(this.endingTimer);
-        this.endingTimer = null;
-        this.loop.stop();
-    }
-
-    render() {
-        const { gamepadState } = this.props;
-        return __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
-            'div',
-            {
-                className: __WEBPACK_IMPORTED_MODULE_0__endScreen_css___default.a.root,
-                onClick: this.handleKeyDown
-            },
-            __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
-                'div',
-                { className: __WEBPACK_IMPORTED_MODULE_0__endScreen_css___default.a.message },
-                'You escaped'
-            ),
-            __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
-                'div',
-                { className: __WEBPACK_IMPORTED_MODULE_0__endScreen_css___default.a.anyKey },
-                gamepadState === -1 ? '[[ Press `Enter` ]]' : '[[ Press `X` button ]]'
-            )
-        );
-    }
-
-    loopCallback() {
-        if (!this.state.showAnyKeyMessage) {
-            return;
-        }
-        // keyboard
-        if (this.context.controls.keyPressed[__WEBPACK_IMPORTED_MODULE_3__constants_constants__["g" /* KEY_ENTER */]][0] === __WEBPACK_IMPORTED_MODULE_3__constants_constants__["l" /* CONTROL_STATE */].FIRST_TIME_DOWN) {
-            this.props.onEnd();
-        }
-
-        // gamepad
-        if (this.context.controls.gamepadButtons[__WEBPACK_IMPORTED_MODULE_3__constants_constants__["m" /* XBOX_BUTTON_X */]][0] === __WEBPACK_IMPORTED_MODULE_3__constants_constants__["l" /* CONTROL_STATE */].FIRST_TIME_DOWN) {
-            this.props.onEnd();
-        }
-    }
-}
-
-EndScreen.contextTypes = {
-    controls: __WEBPACK_IMPORTED_MODULE_1_react__["PropTypes"].object.isRequired
-};
-EndScreen.propTypes = {
-    onEnd: __WEBPACK_IMPORTED_MODULE_1_react__["PropTypes"].func.isRequired,
-    gamepadState: __WEBPACK_IMPORTED_MODULE_1_react__["PropTypes"].number.isRequired
-};
-/* harmony default export */ exports["a"] = EndScreen;
-
-/***/ },
-/* 310 */
-/***/ function(module, exports, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__loadingScreen_css__ = __webpack_require__(312);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__loadingScreen_css___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__loadingScreen_css__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react__ = __webpack_require__(4);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_react__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__preloadAssetsList__ = __webpack_require__(105);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__preloadAssetsList___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__preloadAssetsList__);
-
-
-
-
-
-class LoadingScreen extends __WEBPACK_IMPORTED_MODULE_1_react___default.a.Component {
-
-    constructor(...args) {
-        super(...args);
-
-        this.totalAssets = __WEBPACK_IMPORTED_MODULE_2__preloadAssetsList___default.a.length;
-        this.state = {
-            assetsLoaded: 0,
-            loadingFailed: false
-        };
-
-        __WEBPACK_IMPORTED_MODULE_2__preloadAssetsList___default.a.forEach(([assetSrc, assetType]) => {
-            if (assetType === 'image') {
-                const image = new Image();
-                image.onload = () => {
-                    this.handleAssetLoaded();
-                };
-                image.onerror = () => {
-                    this.handleAssetError(`Couldn't load image ${ assetSrc }`);
-                };
-                image.src = assetSrc;
-            } else if (assetType === 'audio') {
-                fetch(assetSrc).then(response => response.arrayBuffer()).then(buffer => new Promise((resolve, reject) => {
-                    this.context.audioCtx.decodeAudioData(buffer, decodedData => {
-                        this.props.cacheAssetData(assetSrc, decodedData);
-                        resolve();
-                    }, reject);
-                })).then(() => {
-                    this.handleAssetLoaded();
-                }).catch(error => {
-                    this.handleAssetError(error);
-                });
-            }
-        });
-    }
-
-    componentDidUpdate() {
-        if (this.state.assetsLoaded === this.totalAssets) {
-            this.props.onLoaded();
-        }
-    }
-
-    render() {
-        const percent = Math.ceil(100 * this.state.assetsLoaded / this.totalAssets);
-        return __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
-            'div',
-            { className: __WEBPACK_IMPORTED_MODULE_0__loadingScreen_css___default.a.root },
-            this.state.loadingFailed ? 'Loading failed, sorry' : `Loading assets ${ percent } %`
-        );
-    }
-
-    handleAssetLoaded() {
-        this.setState({ assetsLoaded: this.state.assetsLoaded + 1 });
-    }
-
-    handleAssetError(error) {
-        this.setState({ loadingFailed: true });
-        console.error(error);
-    }
-}
-
-LoadingScreen.propTypes = {
-    onLoaded: __WEBPACK_IMPORTED_MODULE_1_react__["PropTypes"].func.isRequired,
-    cacheAssetData: __WEBPACK_IMPORTED_MODULE_1_react__["PropTypes"].func.isRequired
-};
-LoadingScreen.contextTypes = {
-    audioCtx: __WEBPACK_IMPORTED_MODULE_1_react__["PropTypes"].object.isRequired
-};
-/* harmony default export */ exports["a"] = LoadingScreen;
-
-/***/ },
-/* 311 */
-/***/ function(module, exports) {
-
-// removed by extract-text-webpack-plugin
-module.exports = {"root":"endScreen-root-HnQnd","message":"endScreen-message-2QthM","anyKey":"endScreen-anyKey-3nFhc"};
-
-/***/ },
-/* 312 */
-/***/ function(module, exports) {
-
-// removed by extract-text-webpack-plugin
-module.exports = {"root":"loadingScreen-root-3w6aQ"};
-
-/***/ },
-/* 313 */
-/***/ function(module, exports, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__constants_actionNames__ = __webpack_require__(9);
-/* harmony export (immutable) */ exports["setVolume"] = setVolume;
-/* harmony export (immutable) */ exports["setMouseSensitivity"] = setMouseSensitivity;
-/* harmony export (immutable) */ exports["setStickSensitivity"] = setStickSensitivity;
-
-
-function setVolume(value) {
-    return {
-        type: __WEBPACK_IMPORTED_MODULE_0__constants_actionNames__["t" /* SET_SETTINGS_VOLUME */],
-        value
-    };
-}
-
-function setMouseSensitivity(value) {
-    return {
-        type: __WEBPACK_IMPORTED_MODULE_0__constants_actionNames__["u" /* SET_SETTINGS_MOUSE_SENSITIVITY */],
-        value
-    };
-}
-
-function setStickSensitivity(value) {
-    return {
-        type: __WEBPACK_IMPORTED_MODULE_0__constants_actionNames__["v" /* SET_SETTINGS_STICK_SENSITIVITY */],
-        value
-    };
-}
-
-/***/ },
-/* 314 */
-/***/ function(module, exports, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__settings_css__ = __webpack_require__(316);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__settings_css___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__settings_css__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react__ = __webpack_require__(4);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_react__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_redux__ = __webpack_require__(19);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_react_redux__ = __webpack_require__(16);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_react_redux___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_react_redux__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__actionCreators__ = __webpack_require__(41);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__lib_loop__ = __webpack_require__(130);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__constants_constants__ = __webpack_require__(8);
-
-
-
-
-
-
-
-
-
-class Settings extends __WEBPACK_IMPORTED_MODULE_1_react___default.a.Component {
-
-    constructor(...args) {
-        super(...args);
-
-        // raf loop for capturing player actions
-        this.loop = new __WEBPACK_IMPORTED_MODULE_5__lib_loop__["a" /* default */](this.loopCallback.bind(this));
-
-        this.onVolumeChange = this.onVolumeChange.bind(this);
-        this.onMouseSensChange = this.onMouseSensChange.bind(this);
-        this.onStickSensChange = this.onStickSensChange.bind(this);
-
-        this.state = {
-            itemActive: 0,
-            items: [{
-                id: 'soundVolume',
-                index: 0,
-                label: 'Sound volume',
-                min: 0,
-                max: 1,
-                step: 0.2,
-                onChange: this.onVolumeChange,
-                action: this.props.setVolume
-            }, {
-                id: 'mouseSensitivity',
-                index: 1,
-                label: 'Mouse sensitivity',
-                min: 0,
-                max: 2,
-                step: 0.5,
-                onChange: this.onMouseSensChange,
-                action: this.props.setMouseSensitivity
-            }, {
-                id: 'stickSensitivity',
-                index: 2,
-                label: 'Stick sensitivity',
-                min: 0,
-                max: 4,
-                step: 0.5,
-                onChange: this.onStickSensChange,
-                action: this.props.setStickSensitivity
-            }]
-        };
-    }
-
-    componentDidMount() {
-        this.loop.start();
-    }
-
-    componentWillUnmount() {
-        this.loop.stop();
-    }
-
-    render() {
-        const { items } = this.state;
-        const { gamepadState } = this.props;
-        return __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
-            'div',
-            { className: __WEBPACK_IMPORTED_MODULE_0__settings_css___default.a.root },
-            this.renderItem(items[0]),
-            this.renderItem(items[1]),
-            gamepadState !== -1 ? this.renderItem(items[2]) : ''
-        );
-    }
-
-    renderItem(item) {
-        const { itemActive } = this.state;
-        const { settings } = this.props;
-        return __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
-            'div',
-            { className: __WEBPACK_IMPORTED_MODULE_0__settings_css___default.a.item + (itemActive === item.index ? ' ' + __WEBPACK_IMPORTED_MODULE_0__settings_css___default.a.itemActive : '') },
-            __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
-                'label',
-                { className: __WEBPACK_IMPORTED_MODULE_0__settings_css___default.a.label, htmlFor: item.id },
-                item.label
-            ),
-            __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement('input', {
-                className: [__WEBPACK_IMPORTED_MODULE_0__settings_css___default.a.range, __WEBPACK_IMPORTED_MODULE_0__settings_css___default.a.input].join(' '),
-                type: 'range',
-                min: item.min,
-                max: item.max,
-                step: item.step,
-                id: item.id,
-                value: settings[item.id],
-                onChange: item.onChange,
-                onFocus: this.setActiveItem.bind(this, item.index)
-            }),
-            __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
-                'output',
-                { className: __WEBPACK_IMPORTED_MODULE_0__settings_css___default.a.output },
-                settings[item.id]
-            )
-        );
-    }
-
-    loopCallback() {
-        // gamepad
-        const gamepadStickLeftMoved = this.getGamepadLeftStickMove();
-        const gamepadStickRightMoved = this.getGamepadRightStickMove();
-        if (gamepadStickLeftMoved === -1) {
-            this.setState({ itemActive: Math.max(0, this.state.itemActive - 1) });
-        } else if (gamepadStickLeftMoved === 1) {
-            this.setState({ itemActive: Math.min(this.state.items.length - 1, this.state.itemActive + 1) });
-        }
-        const curItem = this.state.items[this.state.itemActive];
-        if (gamepadStickRightMoved === 1) {
-            curItem.action(Settings.round(Math.min(curItem.max, Math.max(curItem.min, this.props.settings[curItem.id] + curItem.step))));
-        }
-        if (gamepadStickRightMoved === -1) {
-            curItem.action(Settings.round(Math.min(curItem.max, Math.max(curItem.min, this.props.settings[curItem.id] - curItem.step))));
-        }
-    }
-
-    onVolumeChange(event) {
-        this.props.setVolume(event.target.value);
-    }
-
-    onMouseSensChange(event) {
-        this.props.setMouseSensitivity(event.target.value);
-    }
-
-    onStickSensChange(event) {
-        this.props.setStickSensitivity(event.target.value);
-    }
-
-    setActiveItem(id) {
-        this.setState({ itemActive: id });
-    }
-
-    getGamepadLeftStickMove() {
-        if (this.context.controls.gamepadAxesUnit[__WEBPACK_IMPORTED_MODULE_6__constants_constants__["d" /* XBOX_STICK_LEFT_AXIS_Y */]][0] === 1) {
-            return this.context.controls.gamepadAxesUnit[__WEBPACK_IMPORTED_MODULE_6__constants_constants__["d" /* XBOX_STICK_LEFT_AXIS_Y */]][2];
-        }
-        return 0;
-    }
-
-    getGamepadRightStickMove() {
-        if (this.context.controls.gamepadAxesUnit[__WEBPACK_IMPORTED_MODULE_6__constants_constants__["e" /* XBOX_STICK_RIGHT_AXIS_X */]][0] === 1) {
-            return this.context.controls.gamepadAxesUnit[__WEBPACK_IMPORTED_MODULE_6__constants_constants__["e" /* XBOX_STICK_RIGHT_AXIS_X */]][2];
-        }
-        return 0;
-    }
-
-    static round(value) {
-        return Math.round(value * 10) / 10;
-    }
-}
-
-Settings.contextTypes = {
-    controls: __WEBPACK_IMPORTED_MODULE_1_react__["PropTypes"].object.isRequired
-};
-Settings.propTypes = {
-    settings: __WEBPACK_IMPORTED_MODULE_1_react__["PropTypes"].object.isRequired,
-    gamepadState: __WEBPACK_IMPORTED_MODULE_1_react__["PropTypes"].number.isRequired,
-    setVolume: __WEBPACK_IMPORTED_MODULE_1_react__["PropTypes"].func.isRequired,
-    setMouseSensitivity: __WEBPACK_IMPORTED_MODULE_1_react__["PropTypes"].func.isRequired,
-    setStickSensitivity: __WEBPACK_IMPORTED_MODULE_1_react__["PropTypes"].func.isRequired
-};
-function mapStateToProps(state) {
-    return {
-        settings: state.settings,
-        gamepadState: state.gamepad.state
-    };
-}
-
-function mapDispatchToProps(dispatch) {
-    return __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2_redux__["bindActionCreators"])({
-        setVolume: __WEBPACK_IMPORTED_MODULE_4__actionCreators__["a" /* settings */].setVolume,
-        setMouseSensitivity: __WEBPACK_IMPORTED_MODULE_4__actionCreators__["a" /* settings */].setMouseSensitivity,
-        setStickSensitivity: __WEBPACK_IMPORTED_MODULE_4__actionCreators__["a" /* settings */].setStickSensitivity
-    }, dispatch);
-}
-
-/* harmony default export */ exports["a"] = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_3_react_redux__["connect"])(mapStateToProps, mapDispatchToProps)(Settings);
-
-/***/ },
-/* 315 */
-/***/ function(module, exports, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__constants_actionNames__ = __webpack_require__(9);
-/* harmony export (immutable) */ exports["a"] = settings;
-var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-
-
-
-function settings(state = {
-    soundVolume: 1,
-    mouseSensitivity: 0.5,
-    stickSensitivity: 2
-}, action) {
-    switch (action.type) {
-        case __WEBPACK_IMPORTED_MODULE_0__constants_actionNames__["t" /* SET_SETTINGS_VOLUME */]:
-            return _extends({}, state, {
-                soundVolume: action.value
-            });
-        case __WEBPACK_IMPORTED_MODULE_0__constants_actionNames__["u" /* SET_SETTINGS_MOUSE_SENSITIVITY */]:
-            return _extends({}, state, {
-                mouseSensitivity: action.value
-            });
-        case __WEBPACK_IMPORTED_MODULE_0__constants_actionNames__["v" /* SET_SETTINGS_STICK_SENSITIVITY */]:
-            return _extends({}, state, {
-                stickSensitivity: action.value
-            });
-        default:
-            return state;
-    }
-}
-
-/***/ },
-/* 316 */
-/***/ function(module, exports) {
-
-// removed by extract-text-webpack-plugin
-module.exports = {"root":"settings-root-1ReEm","item":"settings-item-2kxyx","label":"settings-label-2Xc-m","itemActive":"settings-itemActive-1t9I3","input":"settings-input-1wTW_","range":"settings-range-309Ga","output":"settings-output-4rxkN"};
-
 /***/ }
-],[281]);
+],[292]);

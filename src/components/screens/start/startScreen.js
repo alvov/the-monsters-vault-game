@@ -180,13 +180,6 @@ class StartScreen extends React.Component {
                 });
             }
         }
-
-        // console.log(gamepadSnapshot.buttons.reduce((r, b, i) => {
-        //     if (b.pressed) {
-        //         r.push(i);
-        //     }
-        //     return r;
-        // }, []));
     }
 
     handleStart() {

@@ -2,9 +2,10 @@ import React, { PropTypes } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import {
-    LOADING, START, PLAY, END, CONTROL_STATE,
-    KEY_W, KEY_S, KEY_A, KEY_D, KEY_E, KEY_SHIFT, KEY_ENTER, KEY_ESCAPE,
-    XBOX_BUTTON_A, XBOX_BUTTON_B, XBOX_BUTTON_X, XBOX_BUTTON_CROSS_UP, XBOX_BUTTON_CROSS_DOWN,
+    LOADING, START, PLAY, END,
+    CONTROL_STATE,
+    KEY_W, KEY_S, KEY_A, KEY_D, KEY_E, KEY_Q, KEY_SHIFT, KEY_ENTER, KEY_ESCAPE,
+    XBOX_BUTTON_A, XBOX_BUTTON_B, XBOX_BUTTON_X, XBOX_BUTTON_BACK, XBOX_BUTTON_CROSS_UP, XBOX_BUTTON_CROSS_DOWN,
     XBOX_STICK_LEFT_AXIS_Y, XBOX_STICK_RIGHT_AXIS_X
 } from '../constants/constants'
 import * as actionCreators from '../actionCreators';
@@ -26,6 +27,7 @@ const DEFAULT_GAMEPAD_BUTTONS = {
     [XBOX_BUTTON_A]: [CONTROL_STATE.UNUSED, 0],
     [XBOX_BUTTON_B]: [CONTROL_STATE.UNUSED, 0],
     [XBOX_BUTTON_X]: [CONTROL_STATE.UNUSED, 0],
+    [XBOX_BUTTON_BACK]: [CONTROL_STATE.UNUSED, 0],
     [XBOX_BUTTON_CROSS_UP]: [CONTROL_STATE.UNUSED, 0],
     [XBOX_BUTTON_CROSS_DOWN]: [CONTROL_STATE.UNUSED, 0]
 };
@@ -74,6 +76,7 @@ class Game extends React.Component {
                 [KEY_A]: [CONTROL_STATE.UNUSED, 0],
                 [KEY_D]: [CONTROL_STATE.UNUSED, 0],
                 [KEY_E]: [CONTROL_STATE.UNUSED, 0],
+                [KEY_Q]: [CONTROL_STATE.UNUSED, 0],
                 [KEY_SHIFT]: [CONTROL_STATE.UNUSED, 0],
                 [KEY_ENTER]: [CONTROL_STATE.UNUSED, 0],
                 [KEY_ESCAPE]: [CONTROL_STATE.UNUSED, 0]
@@ -237,6 +240,14 @@ class Game extends React.Component {
         if (!gamepadSnapshot) {
             return;
         }
+
+        // console.log(gamepadSnapshot.buttons.reduce((r, b, i) => {
+        //     if (b.pressed) {
+        //         r.push(i);
+        //     }
+        //     return r;
+        // }, []));
+
         // gamepad buttons
         Object.keys(this.controls.gamepadButtons).forEach(button => {
             const [state, timestamp] = this.controls.gamepadButtons[button];

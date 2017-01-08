@@ -2,7 +2,6 @@ export const SET_GAME_START = 'setGameStart';
 export const SET_GAME_PLAY = 'setGamePlay';
 export const SET_GAME_END = 'setGameEnd';
 
-export const TOGGLE_KEY_PRESSED = 'toggleKeyPressed';
 export const UPDATE_POINTER_DELTA = 'updatePointerDelta';
 export const RESET_POINTER_DELTA = 'resetPointerDelta';
 

@@ -1,18 +1,37 @@
 import React, { PropTypes } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { LOADING, START, PLAY, END } from '../constants/constants'
+import {
+    LOADING, START, PLAY, END, CONTROL_STATE,
+    KEY_W, KEY_S, KEY_A, KEY_D, KEY_E, KEY_SHIFT, KEY_ENTER, KEY_ESCAPE,
+    XBOX_BUTTON_A, XBOX_BUTTON_B, XBOX_BUTTON_X, XBOX_BUTTON_CROSS_UP, XBOX_BUTTON_CROSS_DOWN,
+    XBOX_STICK_LEFT_AXIS_Y
+} from '../constants/constants'
 import * as actionCreators from '../actionCreators';
 
-import LoadingScreen from '../components/loadingScreen/loadingScreen';
-import StartScreen from '../components/startScreen/startScreen';
-import EndScreen from '../components/endScreen/endScreen';
+import LoadingScreen from '../components/screens/loading/loadingScreen';
+import StartScreen from '../components/screens/start/startScreen';
+import EndScreen from '../components/screens/end/endScreen';
 import Hints from '../components/hints/hints';
 import Viewport from './viewport/viewport';
 import Camera from './camera/camera';
 import Player from './player/player';
 import Scene from './scene';
 import GameLoop from './gameLoop';
+import Loop from '../lib/loop';
+
+const BUTTON_REPEAT_DELAY = 500;
+const GAMEPAD_AXIS_UNIT_THRESHOLD = 0.5;
+const DEFAULT_GAMEPAD_BUTTONS = {
+    [XBOX_BUTTON_A]: [CONTROL_STATE.UNUSED, 0],
+    [XBOX_BUTTON_B]: [CONTROL_STATE.UNUSED, 0],
+    [XBOX_BUTTON_X]: [CONTROL_STATE.UNUSED, 0],
+    [XBOX_BUTTON_CROSS_UP]: [CONTROL_STATE.UNUSED, 0],
+    [XBOX_BUTTON_CROSS_DOWN]: [CONTROL_STATE.UNUSED, 0]
+};
+const DEFAULT_GAMEPAD_AXES_UNIT = {
+    [XBOX_STICK_LEFT_AXIS_Y]: [CONTROL_STATE.UNUSED, 0, 0]
+};
 
 class Game extends React.Component {
     static propTypes = {
@@ -23,7 +42,8 @@ class Game extends React.Component {
     };
     static childContextTypes = {
         audioCtx: PropTypes.object.isRequired,
-        assets: PropTypes.object.isRequired
+        assets: PropTypes.object.isRequired,
+        controls: PropTypes.object.isRequired
     };
 
     constructor(...args) {
@@ -41,6 +61,26 @@ class Game extends React.Component {
             id: 'unknown'
         };
 
+        this.controls = {
+            keyPressed: {
+                [KEY_W]: [CONTROL_STATE.UNUSED, 0],
+                [KEY_S]: [CONTROL_STATE.UNUSED, 0],
+                [KEY_A]: [CONTROL_STATE.UNUSED, 0],
+                [KEY_D]: [CONTROL_STATE.UNUSED, 0],
+                [KEY_E]: [CONTROL_STATE.UNUSED, 0],
+                [KEY_SHIFT]: [CONTROL_STATE.UNUSED, 0],
+                [KEY_ENTER]: [CONTROL_STATE.UNUSED, 0],
+                [KEY_ESCAPE]: [CONTROL_STATE.UNUSED, 0]
+            },
+            gamepadButtons: DEFAULT_GAMEPAD_BUTTONS,
+            gamepadAxesUnit: DEFAULT_GAMEPAD_AXES_UNIT
+        };
+
+        // raf loop for capturing player actions
+        this.loop = new Loop(this.loopCallback.bind(this));
+
+        this.onKeyDown = this.onKeyDown.bind(this);
+        this.onKeyUp = this.onKeyUp.bind(this);
         this.handleGamepadConnected = this.handleGamepadConnected.bind(this);
         this.handleGamepadDisconnected = this.handleGamepadDisconnected.bind(this);
 
@@ -49,7 +89,17 @@ class Game extends React.Component {
         this.setGameStateEnd = this.setGameState.bind(this, END);
 
         this.cacheAssetData = this.cacheAssetData.bind(this);
+    }
 
+    getChildContext() {
+        return {
+            audioCtx: this.audioCtx,
+            assets: this.assets,
+            controls: this.controls
+        };
+    }
+
+    componentDidMount() {
         this.gamepadPolling = setInterval(() => {
             const gamepads = navigator.getGamepads();
             if (gamepads[0]) {
@@ -60,30 +110,29 @@ class Game extends React.Component {
         }, 1000);
         window.addEventListener('gamepadconnected', this.handleGamepadConnected);
         window.addEventListener('gamepaddisconnected', this.handleGamepadDisconnected);
-    }
-
-    getChildContext() {
-        return {
-            audioCtx: this.audioCtx,
-            assets: this.assets
-        };
+        document.addEventListener('keyup', this.onKeyUp);
+        document.addEventListener('keydown', this.onKeyDown);
+        this.loop.start();
     }
 
     componentWillUnmount() {
         window.removeEventListener('gamepadconnected', this.handleGamepadConnected);
         window.removeEventListener('gamepaddisconnected', this.handleGamepadDisconnected);
+        document.removeEventListener('keyup', this.onKeyUp);
+        document.removeEventListener('keydown', this.onKeyDown);
         clearInterval(this.gamepadPolling);
+        this.loop.stop();
     }
 
     render() {
-        const { gameState, hints } = this.props;
+        const { gameState, hints, gamepadState } = this.props;
         if (gameState === LOADING) {
             return <LoadingScreen
                 onLoaded={this.setGameStateStart}
                 cacheAssetData={this.cacheAssetData}
             />;
         } else if (gameState === START) {
-            return <StartScreen onStart={this.setGameStatePlay} />
+            return <StartScreen onStart={this.setGameStatePlay} gamepadState={gamepadState} />
         } else if (gameState === PLAY) {
             return <Viewport>
                 <Hints hints={hints} />
@@ -96,7 +145,7 @@ class Game extends React.Component {
                 </GameLoop>
             </Viewport>;
         } else if (gameState === END) {
-            return <EndScreen onEnd={this.setGameStateStart} />
+            return <EndScreen onEnd={this.setGameStateStart} gamepadState={gamepadState} />
         }
     }
 
@@ -119,6 +168,23 @@ class Game extends React.Component {
             this.gamepad.index = -1;
             this.gamepad.id = 'unknown';
             this.props.setGamepadState(-1);
+            this.controls.gamepadButtons = DEFAULT_GAMEPAD_BUTTONS;
+            this.controls.gamepadAxesUnit = DEFAULT_GAMEPAD_AXES_UNIT;
+        }
+    }
+
+    onKeyDown(event) {
+        if (
+            event.keyCode in this.controls.keyPressed &&
+            this.controls.keyPressed[event.keyCode][0] === CONTROL_STATE.UNUSED
+        ) {
+            this.controls.keyPressed[event.keyCode] = [0.5, 0];
+        }
+    }
+
+    onKeyUp(event) {
+        if (event.keyCode in this.controls.keyPressed) {
+            this.controls.keyPressed[event.keyCode] = [CONTROL_STATE.UNUSED, 0];
         }
     }
 
@@ -129,19 +195,89 @@ class Game extends React.Component {
     cacheAssetData(assetSrc, data) {
         this.assets[assetSrc] = data;
     }
+
+    loopCallback() {
+        const now = Date.now();
+
+        // keyboard buttons
+        Object.keys(this.controls.keyPressed).forEach(keyCode => {
+            const [state, timestamp] = this.controls.keyPressed[keyCode];
+            if (state !== CONTROL_STATE.UNUSED) {
+                if (timestamp <= now) {
+                    this.controls.keyPressed[keyCode] = [
+                        CONTROL_STATE.FIRST_TIME_DOWN,
+                        now + BUTTON_REPEAT_DELAY
+                    ];
+                } else if (state === CONTROL_STATE.FIRST_TIME_DOWN) {
+                    this.controls.keyPressed[keyCode][0] = CONTROL_STATE.DOWN;
+                }
+            }
+        });
+
+        // gamepad
+        if (this.gamepad.index === -1) {
+            return;
+        }
+        const gamepadSnapshot = navigator.getGamepads()[this.gamepad.index];
+        if (!gamepadSnapshot) {
+            return;
+        }
+        // gamepad buttons
+        Object.keys(this.controls.gamepadButtons).forEach(button => {
+            const [state, timestamp] = this.controls.gamepadButtons[button];
+            if (gamepadSnapshot.buttons[button].pressed) {
+                if (timestamp <= now) {
+                    this.controls.gamepadButtons[button] = [
+                        CONTROL_STATE.FIRST_TIME_DOWN,
+                        now + BUTTON_REPEAT_DELAY
+                    ];
+                } else if (state === CONTROL_STATE.FIRST_TIME_DOWN) {
+                    this.controls.gamepadButtons[button][0] = CONTROL_STATE.DOWN;
+                }
+            } else if (state !== CONTROL_STATE.UNUSED) {
+                this.controls.gamepadButtons[button] = [CONTROL_STATE.UNUSED, 0];
+            }
+        });
+
+        // gamepad axes
+        Object.keys(this.controls.gamepadAxesUnit).forEach(axis => {
+            let curAxisValue = 0;
+            if (Math.abs(gamepadSnapshot.axes[axis]) > GAMEPAD_AXIS_UNIT_THRESHOLD) {
+                curAxisValue = Math.sign(gamepadSnapshot.axes[axis]);
+            }
+            const [state, timestamp, value] = this.controls.gamepadAxesUnit[axis];
+            if (curAxisValue !== 0) {
+                if (
+                    curAxisValue !== value ||
+                    timestamp <= now
+                ) {
+                    this.controls.gamepadAxesUnit[axis] = [
+                        CONTROL_STATE.FIRST_TIME_DOWN,
+                        now + BUTTON_REPEAT_DELAY,
+                        curAxisValue
+                    ];
+                } else if (state === CONTROL_STATE.FIRST_TIME_DOWN) {
+                    this.controls.gamepadAxesUnit[axis][0] = CONTROL_STATE.DOWN;
+                }
+            } else if (state !== CONTROL_STATE.UNUSED) {
+                this.controls.gamepadAxesUnit[axis] = [CONTROL_STATE.UNUSED, 0, curAxisValue];
+            }
+        });
+    }
 }
 
 function mapStateToProps(state) {
     return {
         gameState: state.gameState,
-        hints: state.hints
-    }
+        hints: state.hints,
+        gamepadState: state.gamepad.state
+    };
 }
 
 function mapDispatchToProps(dispatch) {
     return bindActionCreators({
         setGameState: actionCreators.game.setGameState,
-        setGamepadState: actionCreators.gamepadState.setGamepadState
+        setGamepadState: actionCreators.gamepad.setGamepadState
     }, dispatch);
 }
 

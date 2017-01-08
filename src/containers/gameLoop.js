@@ -4,7 +4,10 @@ import { batchActions } from 'redux-batched-actions';
 import storeShape from 'react-redux/src/utils/storeShape';
 
 import {
-    FPS, KEY_W, KEY_S, KEY_A, KEY_D, KEY_E, KEY_SHIFT, BUTTON_XBOX_A, BUTTON_XBOX_X,
+    FPS, KEY_W, KEY_S, KEY_A, KEY_D, KEY_E, KEY_SHIFT,
+    XBOX_BUTTON_X,
+    XBOX_STICK_LEFT_AXIS_X, XBOX_STICK_LEFT_AXIS_Y, XBOX_STICK_RIGHT_AXIS_X, XBOX_STICK_RIGHT_AXIS_Y, XBOX_TRIGGER_RIGHT_AXIS,
+    CONTROL_STATE,
     PLAYER_SPEED, RUNNING_COEFF, BROAD_CELL_SIZE,
     MOUSE_SENSITIVITY, STICK_SENSITIVITY, STICK_VALUE_THRESHOLD,
     HAND_LENGTH, DOOR_OPEN, DOOR_CLOSE, DOOR_OPENING, DOOR_CLOSING, DOOR_OPEN_TIME, SWITCHER_TYPE, HINT_SHOW_TIME
@@ -31,7 +34,8 @@ import * as actionCreators from '../actionCreators';
 
 class GameLoop extends React.Component {
     static contextTypes = {
-        store: storeShape.isRequired
+        store: storeShape.isRequired,
+        controls: PropTypes.object.isRequired
     };
     static propTypes = {
         onWin: PropTypes.func.isRequired
@@ -48,7 +52,7 @@ class GameLoop extends React.Component {
     }
 
     componentDidMount() {
-        const gamepadIndex = this.context.store.getState().gamepadState;
+        const gamepadIndex = this.context.store.getState().gamepad.state;
         let gamepadSnapshot;
         if (gamepadIndex !== -1) {
             gamepadSnapshot = navigator.getGamepads()[gamepadIndex];
@@ -84,16 +88,16 @@ class GameLoop extends React.Component {
         const currentStore = this.context.store.getState();
 
         let gamepadSnapshot;
-        if (currentStore.gamepadState !== -1) {
-            gamepadSnapshot = navigator.getGamepads()[currentStore.gamepadState];
+        if (currentStore.gamepad.state !== -1) {
+            gamepadSnapshot = navigator.getGamepads()[currentStore.gamepad.state];
         }
 
         // get new view angle
         // try gamepad
         if (gamepadSnapshot) {
             const currentViewAngle = currentStore.viewAngle;
-            const x = GameLoop.filterStickValue(gamepadSnapshot.axes[3]);
-            const y = GameLoop.filterStickValue(gamepadSnapshot.axes[4]);
+            const x = GameLoop.filterStickValue(gamepadSnapshot.axes[XBOX_STICK_RIGHT_AXIS_X]);
+            const y = GameLoop.filterStickValue(gamepadSnapshot.axes[XBOX_STICK_RIGHT_AXIS_Y]);
             if (x || y) {
                 const newViewAngle = [
                     (currentViewAngle[0] + x * STICK_SENSITIVITY) % 360,
@@ -126,17 +130,10 @@ class GameLoop extends React.Component {
 
         // try gamepad
         if (gamepadSnapshot) {
-            // console.log(gamepadSnapshot.buttons.reduce((r, b, i) => {
-            //     if (b.pressed) {
-            //         r.push(i);
-            //     }
-            //     return r;
-            // }, []));
-
-            const x = GameLoop.filterStickValue(gamepadSnapshot.axes[0]);
-            const z = -GameLoop.filterStickValue(gamepadSnapshot.axes[1]) + 0;  // convert -0 to 0 by adding 0
+            const x = GameLoop.filterStickValue(gamepadSnapshot.axes[XBOX_STICK_LEFT_AXIS_X]);
+            const z = -GameLoop.filterStickValue(gamepadSnapshot.axes[XBOX_STICK_LEFT_AXIS_Y]) + 0;  // convert -0 to 0 by adding 0
             if (x || z) {
-                if (gamepadSnapshot.buttons[BUTTON_XBOX_A].pressed) {
+                if (gamepadSnapshot.axes[XBOX_TRIGGER_RIGHT_AXIS] >= 0.5) {
                     isRunning = true;
                 }
                 step = Math.sqrt(x ** 2 + z ** 2);
@@ -148,35 +145,30 @@ class GameLoop extends React.Component {
             }
         }
 
-        const keyPressed = currentStore.keyPressed;
-        if (keyPressed[KEY_W]) {
+        const keyPressed = this.context.controls.keyPressed;
+        if (keyPressed[KEY_W][0] !== CONTROL_STATE.UNUSED) {
             angleShift.push(0);
-        }
-        if (keyPressed[KEY_S]) {
-            angleShift.push(Math.PI);
-        }
-        if (keyPressed[KEY_D]) {
-            angleShift.push(Math.PI / 2);
-        }
-        if (keyPressed[KEY_A]) {
-            // hack for angles sum
-            if (keyPressed[KEY_W]) {
-                angleShift.push(3 * Math.PI / 2);
-            } else {
-                angleShift.push(-Math.PI / 2);
-            }
-        }
-        if (keyPressed[KEY_SHIFT]) {
-            isRunning = true;
-        }
-
-        if (
-            keyPressed[KEY_W] ||
-            keyPressed[KEY_S] ||
-            keyPressed[KEY_A] ||
-            keyPressed[KEY_D]
-        ) {
             step = Math.max(step, 1);
+        }
+        if (keyPressed[KEY_S][0] !== CONTROL_STATE.UNUSED) {
+            angleShift.push(Math.PI);
+            step = Math.max(step, 1);
+        }
+        if (keyPressed[KEY_D][0] !== CONTROL_STATE.UNUSED) {
+            angleShift.push(Math.PI / 2);
+            step = Math.max(step, 1);
+        }
+        if (keyPressed[KEY_A][0] !== CONTROL_STATE.UNUSED) {
+            // hack for angles sum
+            if (keyPressed[KEY_W][0] !== CONTROL_STATE.UNUSED) {
+                angleShift.push(-Math.PI / 2);
+            } else {
+                angleShift.push(3 * Math.PI / 2);
+            }
+            step = Math.max(step, 1);
+        }
+        if (keyPressed[KEY_SHIFT][0] !== CONTROL_STATE.UNUSED) {
+            isRunning = true;
         }
 
         // get new player state
@@ -257,10 +249,13 @@ class GameLoop extends React.Component {
             reachableObject = currentStore.objects.find(obj => obj.isReachable);
         }
 
-        // perform interaction if key E is pressed
+        // perform interaction if key is pressed
         if (
             reachableObject &&
-            (keyPressed[KEY_E] || gamepadSnapshot && gamepadSnapshot.buttons[BUTTON_XBOX_X].pressed)
+            (
+                keyPressed[KEY_E][0] === CONTROL_STATE.FIRST_TIME_DOWN ||
+                this.context.controls.gamepadButtons[XBOX_BUTTON_X][0] === CONTROL_STATE.FIRST_TIME_DOWN
+            )
         ) {
             if (reachableObject.type === SWITCHER_TYPE) {
                 const door = currentStore.doorsState[reachableObject.props.id];

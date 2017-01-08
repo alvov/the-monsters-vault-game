@@ -20,7 +20,7 @@ body {
     transform-style: preserve-3d;
     backface-visibility: hidden;
 }
-.loadingScreen-root-1mysW {
+.loadingScreen-root-3w6aQ {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -29,40 +29,92 @@ body {
     overflow: hidden;
     background: #000;
     color: #fff;
-}.startScreen-root-jM2W- {
+}.startScreen-root-2jYZG {
     width: 100%;
     height: 100%;
     padding: 10% 10% 0 20%;
     overflow: hidden;
+    overflow-y: auto;
     background: #000;
     color: #fff;
     box-sizing: border-box;
 }
-.startScreen-menuItem-1ZrkU {
-    margin: 20px 0;
+.startScreen-menu-wltxb {
+    display: inline-flex;
+    flex-direction: column;
 }
-.startScreen-menuItemButton-3tYC1 {
+.startScreen-menuButton-34XIz {
+    position: relative;
+    border: 0;
+    background: none;
+    color: #fff;
+    font-family: inherit;
+    padding: 12px 10px;
+    font-size: 25px;
+    font-style: italic;
+    cursor: pointer;
+    outline: none;
+    text-align: left;
+    transform-origin: 0 50%;
+}
+.startScreen-menu-wltxb:not(:hover) .startScreen-menuButtonActive-2nMKx,
+.startScreen-menuButton-34XIz:hover {
+    transform: scale(1.2);
+}
+.startScreen-menu-wltxb:not(:hover) .startScreen-menuButtonActive-2nMKx::before,
+.startScreen-menuButton-34XIz:hover::before {
+    content: '>>';
+    position: absolute;
+    left: -1.5em;
+}
+
+.startScreen-title-12rPm {
+    font-size: 30px;
+    font-weight: normal;
+    margin: 30px 0;
+}
+.startScreen-backButton-2uMuT {
     border: 0;
     background: none;
     color: #fff;
     font-family: inherit;
     padding: 5px 10px;
-    font-size: 25px;
+    font-size: 22px;
     font-style: italic;
     cursor: pointer;
+    outline: none;
 }
-.startScreen-menuItemButton-3tYC1:hover {
-    transform: scale(1.1);
-}
-.startScreen-menuItemButton-3tYC1:focus {
+.startScreen-backButton-2uMuT:focus {
     outline: 1px dotted;
-}.logo-root-1ptFe {
+}.logo-root-4wLX_ {
+    margin: 0 0 70px;
     color: #fff;
     font-size: 40px;
+    font-weight: normal;
     filter: blur(1px);
     text-shadow: 0 0 9px;
 }
-.endScreen-root-37ZFZ {
+.credits-creditsList-3MIgP {
+    margin: 0;
+    font-size: 18px;
+    line-height: 1.4;
+}
+.credits-creditsDescription-MWNxQ {
+    margin: 10px 0 30px 40px;
+}
+.externalLink-root-1gOTc {
+    position: relative;
+    text-decoration: underline;
+    color: inherit;
+}
+.externalLink-root-1gOTc:active,
+.externalLink-root-1gOTc:focus {
+    outline: 1px dotted;
+}
+.externalLink-root-1gOTc:hover {
+    text-decoration: none;
+}
+.endScreen-root-HnQnd {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -72,9 +124,9 @@ body {
     overflow: hidden;
     box-sizing: border-box;
     color: #000;
-    animation: endScreen-root-37ZFZ 3s linear;
+    animation: endScreen-root-HnQnd 3s linear;
 }
-@keyframes endScreen-root-37ZFZ {
+@keyframes endScreen-root-HnQnd {
     0% {
         background-color: #000;
     }
@@ -83,11 +135,11 @@ body {
     }
 }
 
-.endScreen-message-2i6JW {
+.endScreen-message-2QthM {
     font-size: 32px;
-    animation: endScreen-message-2i6JW 3s linear;
+    animation: endScreen-message-2QthM 3s linear;
 }
-@keyframes endScreen-message-2i6JW {
+@keyframes endScreen-message-2QthM {
     0% {
         opacity: 0;
     }
@@ -96,10 +148,10 @@ body {
     }
 }
 
-.endScreen-anyKey--krEO {
+.endScreen-anyKey-3nFhc {
     margin-top: 40px;
     font-size: 24px;
-    animation: endScreen-message-2i6JW 3s 3s backwards linear;
+    animation: endScreen-message-2QthM 3s 3s backwards linear;
 }.hints-root-3NehV {
     position: absolute;
     bottom: 0;

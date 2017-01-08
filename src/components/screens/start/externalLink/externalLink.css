@@ -1,0 +1,12 @@
+.root {
+    position: relative;
+    text-decoration: underline;
+    color: inherit;
+}
+.root:active,
+.root:focus {
+    outline: 1px dotted;
+}
+.root:hover {
+    text-decoration: none;
+}

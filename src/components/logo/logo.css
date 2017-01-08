@@ -1,6 +1,8 @@
 .root {
+    margin: 0 0 70px;
     color: #fff;
     font-size: 40px;
+    font-weight: normal;
     filter: blur(1px);
     text-shadow: 0 0 9px;
 }

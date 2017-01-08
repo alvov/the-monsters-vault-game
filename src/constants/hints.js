@@ -7,5 +7,5 @@ export const HINT_RUN_KEYBOARD = '[[ Hold `Shift` to run ]]';
 export const HINT_INTERACT_KEYBOAD = '[[ Press `E` to interact ]]';
 
 export const HINT_MOVE_GAMEPAD = '[[ Use left stick to move ]]';
-export const HINT_RUN_GAMEPAD = '[[ Hold `A` on your gamepad to run ]]';
+export const HINT_RUN_GAMEPAD = '[[ Hold right trigger to run ]]';
 export const HINT_INTERACT_GAMEPAD = '[[ Press `X` on your gamepad to interact ]]';

@@ -7,7 +7,6 @@ import {
     SET_GAME_START,
     SET_GAME_PLAY,
     SET_GAME_END,
-    TOGGLE_KEY_PRESSED,
     UPDATE_POINTER_DELTA,
     RESET_POINTER_DELTA
 } from '../constants/actionNames';
@@ -26,13 +25,6 @@ export function setGameState(state) {
             return {
                 type: SET_GAME_END
             };
-    }
-}
-
-export function toggleKeyPressed(keyCode, on) {
-    return {
-        type: TOGGLE_KEY_PRESSED,
-        keyCode, on
     }
 }
 

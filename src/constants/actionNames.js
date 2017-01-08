@@ -23,3 +23,7 @@ export const HINTS_ADD = 'hintsAdd';
 export const HINTS_REMOVE = 'hintsRemove';
 
 export const SET_GAMEPAD_STATE = 'setGamepadState';
+
+export const SET_SETTINGS_VOLUME = 'setSettingsVolume';
+export const SET_SETTINGS_MOUSE_SENSITIVITY = 'setSettingsMouseSensitivity';
+export const SET_SETTINGS_STICK_SENSITIVITY = 'setSettingsStickSensitivity';

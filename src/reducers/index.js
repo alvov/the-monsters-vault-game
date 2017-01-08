@@ -9,6 +9,7 @@ import objects from './objects';
 import doorsState from './doorsState';
 import hints from './hints';
 import gamepad from './gamepad';
+import settings from './settings';
 
 export default combineReducers({
     gameState,
@@ -19,5 +20,6 @@ export default combineReducers({
     objects,
     doorsState,
     hints,
-    gamepad
+    gamepad,
+    settings
 });

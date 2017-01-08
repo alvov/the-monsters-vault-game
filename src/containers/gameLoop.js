@@ -9,7 +9,7 @@ import {
     XBOX_STICK_LEFT_AXIS_X, XBOX_STICK_LEFT_AXIS_Y, XBOX_STICK_RIGHT_AXIS_X, XBOX_STICK_RIGHT_AXIS_Y, XBOX_TRIGGER_RIGHT_AXIS,
     CONTROL_STATE,
     PLAYER_SPEED, RUNNING_COEFF, BROAD_CELL_SIZE,
-    MOUSE_SENSITIVITY, STICK_SENSITIVITY, STICK_VALUE_THRESHOLD,
+    STICK_VALUE_THRESHOLD,
     HAND_LENGTH, DOOR_OPEN, DOOR_CLOSE, DOOR_OPENING, DOOR_CLOSING, DOOR_OPEN_TIME, SWITCHER_TYPE, HINT_SHOW_TIME
 } from '../constants/constants';
 
@@ -100,8 +100,8 @@ class GameLoop extends React.Component {
             const y = GameLoop.filterStickValue(gamepadSnapshot.axes[XBOX_STICK_RIGHT_AXIS_Y]);
             if (x || y) {
                 const newViewAngle = [
-                    (currentViewAngle[0] + x * STICK_SENSITIVITY) % 360,
-                    Math.min(Math.max(currentViewAngle[1] - y * STICK_SENSITIVITY, -90), 90),
+                    (currentViewAngle[0] + x * currentStore.settings.stickSensitivity) % 360,
+                    Math.min(Math.max(currentViewAngle[1] - y * currentStore.settings.stickSensitivity, -90), 90),
                     0
                 ];
                 actions.push(actionCreators.player.updateViewAngle(newViewAngle));
@@ -114,8 +114,10 @@ class GameLoop extends React.Component {
         if (pointerDelta.x || pointerDelta.y) {
             const currentViewAngle = newState.viewAngle || currentStore.viewAngle;
             const newViewAngle = [
-                (currentViewAngle[0] - pointerDelta.x * MOUSE_SENSITIVITY) % 360,
-                Math.min(Math.max(currentViewAngle[1] + pointerDelta.y * MOUSE_SENSITIVITY, -90), 90),
+                (currentViewAngle[0] - pointerDelta.x * currentStore.settings.mouseSensitivity) % 360,
+                Math.min(Math.max(
+                    currentViewAngle[1] + pointerDelta.y * currentStore.settings.mouseSensitivity, -90
+                ), 90),
                 0
             ];
             actions.push(actionCreators.player.updateViewAngle(newViewAngle));

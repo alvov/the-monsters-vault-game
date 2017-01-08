@@ -26,8 +26,6 @@ export const CONTROL_STATE = {
 
 export const PLAYER_SPEED = 4;
 export const RUNNING_COEFF = 1.5;
-export const MOUSE_SENSITIVITY = 0.5;
-export const STICK_SENSITIVITY = 2;
 export const STICK_VALUE_THRESHOLD = 0.3;
 export const BROAD_CELL_SIZE = 250;
 export const HAND_LENGTH = 150;

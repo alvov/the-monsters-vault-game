@@ -5,7 +5,7 @@ import {
     LOADING, START, PLAY, END, CONTROL_STATE,
     KEY_W, KEY_S, KEY_A, KEY_D, KEY_E, KEY_SHIFT, KEY_ENTER, KEY_ESCAPE,
     XBOX_BUTTON_A, XBOX_BUTTON_B, XBOX_BUTTON_X, XBOX_BUTTON_CROSS_UP, XBOX_BUTTON_CROSS_DOWN,
-    XBOX_STICK_LEFT_AXIS_Y
+    XBOX_STICK_LEFT_AXIS_Y, XBOX_STICK_RIGHT_AXIS_X
 } from '../constants/constants'
 import * as actionCreators from '../actionCreators';
 
@@ -30,7 +30,8 @@ const DEFAULT_GAMEPAD_BUTTONS = {
     [XBOX_BUTTON_CROSS_DOWN]: [CONTROL_STATE.UNUSED, 0]
 };
 const DEFAULT_GAMEPAD_AXES_UNIT = {
-    [XBOX_STICK_LEFT_AXIS_Y]: [CONTROL_STATE.UNUSED, 0, 0]
+    [XBOX_STICK_LEFT_AXIS_Y]: [CONTROL_STATE.UNUSED, 0, 0],
+    [XBOX_STICK_RIGHT_AXIS_X]: [CONTROL_STATE.UNUSED, 0, 0]
 };
 
 class Game extends React.Component {
@@ -42,6 +43,7 @@ class Game extends React.Component {
     };
     static childContextTypes = {
         audioCtx: PropTypes.object.isRequired,
+        masterGain: PropTypes.object.isRequired,
         assets: PropTypes.object.isRequired,
         controls: PropTypes.object.isRequired
     };
@@ -54,6 +56,10 @@ class Game extends React.Component {
         } else {
             this.audioCtx = new window.webkitAudioContext();
         }
+        this.masterGain = this.audioCtx.createGain();
+        this.masterGain.gain.value = this.props.settings.soundVolume;
+        this.masterGain.connect(this.audioCtx.destination);
+
         this.assets = {};
 
         this.gamepad = {
@@ -94,6 +100,7 @@ class Game extends React.Component {
     getChildContext() {
         return {
             audioCtx: this.audioCtx,
+            masterGain: this.masterGain,
             assets: this.assets,
             controls: this.controls
         };
@@ -124,15 +131,23 @@ class Game extends React.Component {
         this.loop.stop();
     }
 
+    componentWillReceiveProps(nextProps) {
+        this.masterGain.gain.value = nextProps.settings.soundVolume;
+    }
+
     render() {
-        const { gameState, hints, gamepadState } = this.props;
+        const { gameState, hints, gamepadState, settings } = this.props;
         if (gameState === LOADING) {
             return <LoadingScreen
                 onLoaded={this.setGameStateStart}
                 cacheAssetData={this.cacheAssetData}
             />;
         } else if (gameState === START) {
-            return <StartScreen onStart={this.setGameStatePlay} gamepadState={gamepadState} />
+            return <StartScreen
+                onStart={this.setGameStatePlay}
+                gamepadState={gamepadState}
+                settings={settings}
+            />;
         } else if (gameState === PLAY) {
             return <Viewport>
                 <Hints hints={hints} />
@@ -270,7 +285,8 @@ function mapStateToProps(state) {
     return {
         gameState: state.gameState,
         hints: state.hints,
-        gamepadState: state.gamepad.state
+        gamepadState: state.gamepad.state,
+        settings: state.settings
     };
 }
 

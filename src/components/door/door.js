@@ -10,6 +10,7 @@ const BARS_GAP = 25;
 class Door extends React.Component {
     static contextTypes = {
         audioCtx: PropTypes.object.isRequired,
+        masterGain: PropTypes.object.isRequired,
         assets: PropTypes.object.isRequired
     };
     static defaultProps = {
@@ -47,7 +48,7 @@ class Door extends React.Component {
         } else {
             this.panner.setPosition(pos[0], pos[1] + size[1], pos[2]);
         }
-        this.panner.connect(this.context.audioCtx.destination);
+        this.panner.connect(this.context.masterGain);
     }
 
     componentWillUpdate(nextProps) {

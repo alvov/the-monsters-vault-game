@@ -3,6 +3,7 @@ import React, { PropTypes } from 'react';
 import Logo from '../../logo/logo';
 import Credits from './credits/credits';
 import Loop from '../../../lib/loop';
+import Settings from '../../../containers/settings/settings';
 
 import {
     CONTROL_STATE,
@@ -24,6 +25,7 @@ const SCREEN_CREDITS = 'credits';
 class StartScreen extends React.Component {
     static contextTypes = {
         audioCtx: PropTypes.object.isRequired,
+        masterGain: PropTypes.object.isRequired,
         assets: PropTypes.object.isRequired,
         controls: PropTypes.object.isRequired
     };
@@ -41,7 +43,7 @@ class StartScreen extends React.Component {
         this.decodedAudioBuffer = this.context.assets['src/components/screens/start/theme.m4a'];
         this.gainNode = this.context.audioCtx.createGain();
         this.gainNode.gain.value = MUSIC_VOLUME;
-        this.gainNode.connect(this.context.audioCtx.destination);
+        this.gainNode.connect(this.context.masterGain);
 
         this.handleStart = this.handleStart.bind(this);
         this.setScreenSettings = this.setScreen.bind(this, SCREEN_SETTINGS);
@@ -83,7 +85,6 @@ class StartScreen extends React.Component {
 
     render() {
         return <div className={styles.root}>
-            <Logo />
             {this.renderDefaultScreen()}
             {this.renderSettingsScreen()}
             {this.renderCreditsScreen()}
@@ -93,17 +94,20 @@ class StartScreen extends React.Component {
     renderDefaultScreen() {
         const { menu, menuItemActive } = this.state;
         if (this.state.screen === SCREEN_DEFAULT) {
-            return <div className={styles.menu}>
-                {menu.map((item, index) =>
-                    <button key={item.text}
-                        className={styles.menuButton + (menuItemActive === index ? ` ${styles.menuButtonActive}` : '')}
-                        onClick={item.action}
-                        onFocus={this.setActiveButton.bind(this, index)}
-                        tabIndex={index + 1}
-                    >
-                        {item.text}
-                    </button>
-                )}
+            return <div>
+                <Logo />
+                <div className={styles.menu}>
+                    {menu.map((item, index) =>
+                        <button key={item.text}
+                            className={styles.menuButton + (menuItemActive === index ? ` ${styles.menuButtonActive}` : '')}
+                            onClick={item.action}
+                            onFocus={this.setActiveButton.bind(this, index)}
+                            tabIndex={index + 1}
+                        >
+                            {item.text}
+                        </button>
+                    )}
+                </div>
             </div>;
         }
         return null;
@@ -111,11 +115,10 @@ class StartScreen extends React.Component {
 
     renderSettingsScreen() {
         if (this.state.screen === SCREEN_SETTINGS) {
-            // const { gamepadState } = this.props;
             return <div>
                 {this.renderBackButton()}
                 <h2 className={styles.title}>Settings</h2>
-                // todo
+                <Settings />
             </div>;
         }
         return null;

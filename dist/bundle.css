@@ -114,6 +114,51 @@ body {
 .externalLink-root-1gOTc:hover {
     text-decoration: none;
 }
+.settings-root-1ReEm {
+    max-width: 470px;
+    font-size: 18px;
+    line-height: 1.4;
+}
+.settings-item-2kxyx {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+}
+.settings-label-2Xc-m {
+    flex: 0 0 170px;
+    margin-right: 10px;
+}
+.settings-itemActive-1t9I3 .settings-input-1wTW_,
+.settings-input-1wTW_:focus {
+    outline: 1px dotted #fff;
+    outline-offset: 0;
+}
+.settings-range-309Ga {
+    -webkit-appearance: none;
+    width: 100%;
+    margin: 0;
+    padding: 16px 0;
+    background: transparent;
+}
+.settings-range-309Ga::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    border: 1px solid #fff;
+    height: 34px;
+    width: 12px;
+    background: #000;
+    cursor: pointer;
+    margin-top: -16px;
+}
+.settings-range-309Ga::-webkit-slider-runnable-track {
+    width: 100%;
+    height: 2px;
+    cursor: pointer;
+    background: #fff;
+}
+.settings-output-4rxkN {
+    flex: 0 0 40px;
+    margin-left: 10px;
+}
 .endScreen-root-HnQnd {
     display: flex;
     justify-content: center;

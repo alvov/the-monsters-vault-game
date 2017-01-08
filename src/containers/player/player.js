@@ -8,6 +8,7 @@ import { convertDegreeToRad } from '../../lib/utils';
 class Player extends React.Component {
     static contextTypes = {
         audioCtx: PropTypes.object.isRequired,
+        masterGain: PropTypes.object.isRequired,
         assets: PropTypes.object.isRequired
     };
     static propTypes = {
@@ -30,7 +31,7 @@ class Player extends React.Component {
         this.panner.coneInnerAngle = 360;
         this.panner.coneOuterAngle = 0;
         this.panner.coneOuterGain = 0;
-        this.panner.connect(this.context.audioCtx.destination);
+        this.panner.connect(this.context.masterGain);
 
         this.gainNode = this.context.audioCtx.createGain();
         this.gainNode.gain.value = 1;
@@ -176,7 +177,7 @@ function mapStateToProps(state) {
         playerPos: state.pos,
         viewAngle: state.viewAngle,
         playerState: state.playerState
-    }
+    };
 }
 
 export default connect(mapStateToProps)(Player);

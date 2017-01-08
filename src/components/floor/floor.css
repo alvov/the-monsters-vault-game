@@ -1,3 +1,4 @@
 .root {
     background: url(./floor.jpg);
+    background-size: contain;
 }

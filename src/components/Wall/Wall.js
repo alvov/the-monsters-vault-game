@@ -11,6 +11,11 @@ class Wall extends React.Component {
 
         this.posWithInvertedY = [props.pos[0], -props.pos[1], props.pos[2]];
         this.styleRules = getTransformRule({ pos: this.posWithInvertedY });
+        this.className = [
+            'obj',
+            styles.root,
+            styles['mode-' + props.mode]
+        ].join(' ');
     }
 
     shouldComponentUpdate(nextProps) {
@@ -21,7 +26,7 @@ class Wall extends React.Component {
         const { size, playerPos } = this.props;
 
         // Front-Back-Left-Right
-        return <div className={'obj ' + styles.root} style={this.styleRules}>
+        return <div className={this.className} style={this.styleRules}>
             <Plain
                 pos={[0, 0, size[2] / 2]}
                 parentPos={[this.posWithInvertedY]}

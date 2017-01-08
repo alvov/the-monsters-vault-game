@@ -265,11 +265,23 @@ body {
     background: #000;
 }
 .floor-root-3F8ag {
-    background: url(./cc88c5d09dfc94f5daa77e65b2233782.jpg);
-}.ceiling-root-oxGSS {
+    background: url(./151b6411d53b17de82d882485fcbaaf5.jpg);
+    background-size: contain;
+}
+.ceiling-root-oxGSS {
     background: #000;
 }.wall-root-1TWW_ .plain {
-    background: url(./4419d2b2d3f0aa84d05e653afbce87a8.jpg) 50% 50% / cover;
+    background-position: 50% 50%;
+    background-size: cover;
+}
+.wall-mode-1-2Yh66 .plain {
+    background-image: url(./a0a62fe89c1eb6ec77f414a77fdb4a92.jpg);
+}
+.wall-mode-2-16wZg .plain {
+    background-image: url(./4db9414e7ca808670cbc9b15dc0eaa74.jpg);
+}
+.wall-mode-3-3LM2a .plain {
+    background-image: url(./c3e2941f8e7e3eb4fa9f378466ad0a0b.jpg);
 }
 .box-root-1bYIs .plain {
     background-position: 50% 50%;

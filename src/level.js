@@ -61,13 +61,19 @@ const level = {
             name: 'wall_007',
             type: WALL_TYPE,
             size: [550, 250, 50],
-            pos: [1250, 125, 1000]
+            pos: [1250, 125, 1000],
+            props: {
+                mode: 2
+            }
         },
         {
             name: 'wall_008',
             type: WALL_TYPE,
             size: [50, 250, 450],
-            pos: [1000, 125, 1250]
+            pos: [1000, 125, 1250],
+            props: {
+                mode: 2
+            }
         },
         // {
         //     name: 'dickbutt',
@@ -82,43 +88,64 @@ const level = {
             name: 'wall_009',
             type: WALL_TYPE,
             size: [550, 250, 50],
-            pos: [1250, 125, 1500]
+            pos: [1250, 125, 1500],
+            props: {
+                mode: 2
+            }
         },
         {
             name: 'wall_010',
             type: WALL_TYPE,
             size: [500, 250, 50],
-            pos: [2225, 125, 1500]
+            pos: [2225, 125, 1500],
+            props: {
+                mode: 3
+            }
         },
         {
             name: 'wall_011',
             type: WALL_TYPE,
             size: [50, 250, 500],
-            pos: [500, 125, 1750]
+            pos: [500, 125, 1750],
+            props: {
+                mode: 3
+            }
         },
         {
             name: 'wall_012',
             type: WALL_TYPE,
             size: [50, 250, 450],
-            pos: [2000, 125, 1750]
+            pos: [2000, 125, 1750],
+            props: {
+                mode: 3
+            }
         },
         {
             name: 'wall_013',
             type: WALL_TYPE,
             size: [500, 250, 50],
-            pos: [750, 125, 2000]
+            pos: [750, 125, 2000],
+            props: {
+                mode: 3
+            }
         },
         {
             name: 'wall_014',
             type: WALL_TYPE,
             size: [550, 250, 50],
-            pos: [1750, 125, 2000]
+            pos: [1750, 125, 2000],
+            props: {
+                mode: 3
+            }
         },
         {
             name: 'wall_015',
             type: WALL_TYPE,
             size: [50, 250, 500],
-            pos: [500, 125, 2250]
+            pos: [500, 125, 2250],
+            props: {
+                mode: 3
+            }
         },
         {
             name: 'box_001',
@@ -142,7 +169,7 @@ const level = {
             name: 'box_003',
             type: BOX_TYPE,
             size: [150, 150, 150],
-            pos: [2425, 75, 75],
+            pos: [2100, 75, 500],
             props: {
                 mode: 3
             }
@@ -309,22 +336,36 @@ for (let x = 250; x < level.boundaries[0]; x += 500) {
         if (x === 1250 && z === 25) {
             continue;
         }
-        level.objects.push({
+        const wall = {
             name: 'border wall ' + x + '_' + z,
             type: WALL_TYPE,
             size: [500, 250, 50],
             pos: [x, 125, z]
-        });
+        };
+        // set special mode for far walls
+        if (z === 2475) {
+            wall.props = {
+                mode: 3
+            };
+        }
+        level.objects.push(wall);
     }
 }
 for (let z = 250; z < level.boundaries[2]; z += 500) {
     for (let x = 25; x <= level.boundaries[0] - 25; x += level.boundaries[0] - 50) {
-        level.objects.push({
+        const wall = {
             name: 'border wall ' + x + '_' + z,
             type: WALL_TYPE,
             size: [50, 250, 500],
             pos: [x, 125, z]
-        });
+        };
+        // set special mode for far walls
+        if (z >= 1750) {
+            wall.props = {
+                mode: 3
+            };
+        }
+        level.objects.push(wall);
     }
 }
 

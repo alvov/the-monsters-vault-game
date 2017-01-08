@@ -58,7 +58,7 @@ class StartScreen extends React.Component {
             menuItemActive: 0,
             menu: [
                 {
-                    text: 'Start',
+                    text: 'Play',
                     action: this.handleStart
                 },
                 {

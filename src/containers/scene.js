@@ -62,6 +62,7 @@ function Scene({ pos, viewAngle, doorsState, visibleObjects }) {
                     pos={object.pos}
                     playerPos={pos}
                     size={object.size}
+                    mode={object.props ? object.props.mode: 1}
                 />);
                 break;
             case BOX_TYPE:

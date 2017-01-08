@@ -94,25 +94,25 @@ const FPS = 60;
 
 
 const KEY_W = 87;
-/* harmony export (immutable) */ exports["J"] = KEY_W;
+/* harmony export (immutable) */ exports["K"] = KEY_W;
 
 const KEY_S = 83;
-/* harmony export (immutable) */ exports["K"] = KEY_S;
+/* harmony export (immutable) */ exports["L"] = KEY_S;
 
 const KEY_A = 65;
-/* harmony export (immutable) */ exports["M"] = KEY_A;
+/* harmony export (immutable) */ exports["N"] = KEY_A;
 
 const KEY_D = 68;
-/* harmony export (immutable) */ exports["L"] = KEY_D;
+/* harmony export (immutable) */ exports["M"] = KEY_D;
 
 const KEY_E = 69;
-/* harmony export (immutable) */ exports["Q"] = KEY_E;
+/* harmony export (immutable) */ exports["R"] = KEY_E;
 
 const KEY_Q = 81;
-/* harmony export (immutable) */ exports["E"] = KEY_Q;
+/* harmony export (immutable) */ exports["F"] = KEY_Q;
 
 const KEY_SHIFT = 16;
-/* harmony export (immutable) */ exports["N"] = KEY_SHIFT;
+/* harmony export (immutable) */ exports["O"] = KEY_SHIFT;
 
 const KEY_ESCAPE = 27;
 /* harmony export (immutable) */ exports["f"] = KEY_ESCAPE;
@@ -136,10 +136,10 @@ const XBOX_BUTTON_CROSS_DOWN = 12;
 /* harmony export (immutable) */ exports["k"] = XBOX_BUTTON_CROSS_DOWN;
 
 const XBOX_BUTTON_BACK = 9;
-/* harmony export (immutable) */ exports["F"] = XBOX_BUTTON_BACK;
+/* harmony export (immutable) */ exports["G"] = XBOX_BUTTON_BACK;
 
 const XBOX_STICK_LEFT_AXIS_X = 0;
-/* harmony export (immutable) */ exports["H"] = XBOX_STICK_LEFT_AXIS_X;
+/* harmony export (immutable) */ exports["I"] = XBOX_STICK_LEFT_AXIS_X;
 
 const XBOX_STICK_LEFT_AXIS_Y = 1;
 /* harmony export (immutable) */ exports["d"] = XBOX_STICK_LEFT_AXIS_Y;
@@ -148,10 +148,10 @@ const XBOX_STICK_RIGHT_AXIS_X = 3;
 /* harmony export (immutable) */ exports["e"] = XBOX_STICK_RIGHT_AXIS_X;
 
 const XBOX_STICK_RIGHT_AXIS_Y = 4;
-/* harmony export (immutable) */ exports["G"] = XBOX_STICK_RIGHT_AXIS_Y;
+/* harmony export (immutable) */ exports["H"] = XBOX_STICK_RIGHT_AXIS_Y;
 
 const XBOX_TRIGGER_RIGHT_AXIS = 5;
-/* harmony export (immutable) */ exports["I"] = XBOX_TRIGGER_RIGHT_AXIS;
+/* harmony export (immutable) */ exports["J"] = XBOX_TRIGGER_RIGHT_AXIS;
 
 const CONTROL_STATE = {
     UNUSED: 0,
@@ -162,10 +162,10 @@ const CONTROL_STATE = {
 
 
 const PLAYER_SPEED = 4;
-/* harmony export (immutable) */ exports["P"] = PLAYER_SPEED;
+/* harmony export (immutable) */ exports["Q"] = PLAYER_SPEED;
 
 const RUNNING_COEFF = 1.5;
-/* harmony export (immutable) */ exports["O"] = RUNNING_COEFF;
+/* harmony export (immutable) */ exports["P"] = RUNNING_COEFF;
 
 const STICK_VALUE_THRESHOLD = 0.3;
 /* harmony export (immutable) */ exports["S"] = STICK_VALUE_THRESHOLD;
@@ -177,7 +177,7 @@ const HAND_LENGTH = 150;
 /* harmony export (immutable) */ exports["C"] = HAND_LENGTH;
 
 const HINT_SHOW_TIME = 5000;
-/* harmony export (immutable) */ exports["R"] = HINT_SHOW_TIME;
+/* harmony export (immutable) */ exports["E"] = HINT_SHOW_TIME;
 
 const DOOR_OPEN_TIME = 3000;
 /* harmony export (immutable) */ exports["r"] = DOOR_OPEN_TIME;
@@ -1420,7 +1420,7 @@ const DEFAULT_GAMEPAD_BUTTONS = {
     [__WEBPACK_IMPORTED_MODULE_3__constants_constants__["i" /* XBOX_BUTTON_A */]]: [__WEBPACK_IMPORTED_MODULE_3__constants_constants__["l" /* CONTROL_STATE */].UNUSED, 0],
     [__WEBPACK_IMPORTED_MODULE_3__constants_constants__["h" /* XBOX_BUTTON_B */]]: [__WEBPACK_IMPORTED_MODULE_3__constants_constants__["l" /* CONTROL_STATE */].UNUSED, 0],
     [__WEBPACK_IMPORTED_MODULE_3__constants_constants__["m" /* XBOX_BUTTON_X */]]: [__WEBPACK_IMPORTED_MODULE_3__constants_constants__["l" /* CONTROL_STATE */].UNUSED, 0],
-    [__WEBPACK_IMPORTED_MODULE_3__constants_constants__["F" /* XBOX_BUTTON_BACK */]]: [__WEBPACK_IMPORTED_MODULE_3__constants_constants__["l" /* CONTROL_STATE */].UNUSED, 0],
+    [__WEBPACK_IMPORTED_MODULE_3__constants_constants__["G" /* XBOX_BUTTON_BACK */]]: [__WEBPACK_IMPORTED_MODULE_3__constants_constants__["l" /* CONTROL_STATE */].UNUSED, 0],
     [__WEBPACK_IMPORTED_MODULE_3__constants_constants__["j" /* XBOX_BUTTON_CROSS_UP */]]: [__WEBPACK_IMPORTED_MODULE_3__constants_constants__["l" /* CONTROL_STATE */].UNUSED, 0],
     [__WEBPACK_IMPORTED_MODULE_3__constants_constants__["k" /* XBOX_BUTTON_CROSS_DOWN */]]: [__WEBPACK_IMPORTED_MODULE_3__constants_constants__["l" /* CONTROL_STATE */].UNUSED, 0]
 };
@@ -1452,13 +1452,13 @@ class Game extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
 
         this.controls = {
             keyPressed: {
-                [__WEBPACK_IMPORTED_MODULE_3__constants_constants__["J" /* KEY_W */]]: [__WEBPACK_IMPORTED_MODULE_3__constants_constants__["l" /* CONTROL_STATE */].UNUSED, 0],
-                [__WEBPACK_IMPORTED_MODULE_3__constants_constants__["K" /* KEY_S */]]: [__WEBPACK_IMPORTED_MODULE_3__constants_constants__["l" /* CONTROL_STATE */].UNUSED, 0],
-                [__WEBPACK_IMPORTED_MODULE_3__constants_constants__["M" /* KEY_A */]]: [__WEBPACK_IMPORTED_MODULE_3__constants_constants__["l" /* CONTROL_STATE */].UNUSED, 0],
-                [__WEBPACK_IMPORTED_MODULE_3__constants_constants__["L" /* KEY_D */]]: [__WEBPACK_IMPORTED_MODULE_3__constants_constants__["l" /* CONTROL_STATE */].UNUSED, 0],
-                [__WEBPACK_IMPORTED_MODULE_3__constants_constants__["Q" /* KEY_E */]]: [__WEBPACK_IMPORTED_MODULE_3__constants_constants__["l" /* CONTROL_STATE */].UNUSED, 0],
-                [__WEBPACK_IMPORTED_MODULE_3__constants_constants__["E" /* KEY_Q */]]: [__WEBPACK_IMPORTED_MODULE_3__constants_constants__["l" /* CONTROL_STATE */].UNUSED, 0],
-                [__WEBPACK_IMPORTED_MODULE_3__constants_constants__["N" /* KEY_SHIFT */]]: [__WEBPACK_IMPORTED_MODULE_3__constants_constants__["l" /* CONTROL_STATE */].UNUSED, 0],
+                [__WEBPACK_IMPORTED_MODULE_3__constants_constants__["K" /* KEY_W */]]: [__WEBPACK_IMPORTED_MODULE_3__constants_constants__["l" /* CONTROL_STATE */].UNUSED, 0],
+                [__WEBPACK_IMPORTED_MODULE_3__constants_constants__["L" /* KEY_S */]]: [__WEBPACK_IMPORTED_MODULE_3__constants_constants__["l" /* CONTROL_STATE */].UNUSED, 0],
+                [__WEBPACK_IMPORTED_MODULE_3__constants_constants__["N" /* KEY_A */]]: [__WEBPACK_IMPORTED_MODULE_3__constants_constants__["l" /* CONTROL_STATE */].UNUSED, 0],
+                [__WEBPACK_IMPORTED_MODULE_3__constants_constants__["M" /* KEY_D */]]: [__WEBPACK_IMPORTED_MODULE_3__constants_constants__["l" /* CONTROL_STATE */].UNUSED, 0],
+                [__WEBPACK_IMPORTED_MODULE_3__constants_constants__["R" /* KEY_E */]]: [__WEBPACK_IMPORTED_MODULE_3__constants_constants__["l" /* CONTROL_STATE */].UNUSED, 0],
+                [__WEBPACK_IMPORTED_MODULE_3__constants_constants__["F" /* KEY_Q */]]: [__WEBPACK_IMPORTED_MODULE_3__constants_constants__["l" /* CONTROL_STATE */].UNUSED, 0],
+                [__WEBPACK_IMPORTED_MODULE_3__constants_constants__["O" /* KEY_SHIFT */]]: [__WEBPACK_IMPORTED_MODULE_3__constants_constants__["l" /* CONTROL_STATE */].UNUSED, 0],
                 [__WEBPACK_IMPORTED_MODULE_3__constants_constants__["g" /* KEY_ENTER */]]: [__WEBPACK_IMPORTED_MODULE_3__constants_constants__["l" /* CONTROL_STATE */].UNUSED, 0],
                 [__WEBPACK_IMPORTED_MODULE_3__constants_constants__["f" /* KEY_ESCAPE */]]: [__WEBPACK_IMPORTED_MODULE_3__constants_constants__["l" /* CONTROL_STATE */].UNUSED, 0]
             },
@@ -3317,13 +3317,21 @@ class GameLoop extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
         }
         if (gamepadSnapshot) {
             this.delayedActions.pushAction({
-                action: this.showHints([__WEBPACK_IMPORTED_MODULE_5__constants_hints__["a" /* HINT_GOAL */], __WEBPACK_IMPORTED_MODULE_5__constants_hints__["b" /* HINT_MOVE_GAMEPAD */], __WEBPACK_IMPORTED_MODULE_5__constants_hints__["c" /* HINT_RUN_GAMEPAD */]], true),
+                action: this.showHints([__WEBPACK_IMPORTED_MODULE_5__constants_hints__["a" /* HINT_GOAL */], __WEBPACK_IMPORTED_MODULE_5__constants_hints__["b" /* HINT_MOVE_GAMEPAD */]], true),
                 delay: 0
+            });
+            this.delayedActions.pushAction({
+                action: this.showHints([__WEBPACK_IMPORTED_MODULE_5__constants_hints__["c" /* HINT_RUN_GAMEPAD */]], true, __WEBPACK_IMPORTED_MODULE_4__constants_constants__["E" /* HINT_SHOW_TIME */]),
+                delay: __WEBPACK_IMPORTED_MODULE_4__constants_constants__["E" /* HINT_SHOW_TIME */]
             });
         } else {
             this.delayedActions.pushAction({
-                action: this.showHints([__WEBPACK_IMPORTED_MODULE_5__constants_hints__["a" /* HINT_GOAL */], __WEBPACK_IMPORTED_MODULE_5__constants_hints__["d" /* HINT_MOVE_KEYBOARD */], __WEBPACK_IMPORTED_MODULE_5__constants_hints__["e" /* HINT_RUN_KEYBOARD */]], true),
+                action: this.showHints([__WEBPACK_IMPORTED_MODULE_5__constants_hints__["a" /* HINT_GOAL */], __WEBPACK_IMPORTED_MODULE_5__constants_hints__["d" /* HINT_MOVE_KEYBOARD */]], true),
                 delay: 0
+            });
+            this.delayedActions.pushAction({
+                action: this.showHints([__WEBPACK_IMPORTED_MODULE_5__constants_hints__["e" /* HINT_RUN_KEYBOARD */]], true, __WEBPACK_IMPORTED_MODULE_4__constants_constants__["E" /* HINT_SHOW_TIME */]),
+                delay: __WEBPACK_IMPORTED_MODULE_4__constants_constants__["E" /* HINT_SHOW_TIME */]
             });
         }
         this.loop.start();
@@ -3346,7 +3354,7 @@ class GameLoop extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
         const currentStore = this.context.store.getState();
 
         // check exit
-        if (this.context.controls.keyPressed[__WEBPACK_IMPORTED_MODULE_4__constants_constants__["E" /* KEY_Q */]][0] === __WEBPACK_IMPORTED_MODULE_4__constants_constants__["l" /* CONTROL_STATE */].FIRST_TIME_DOWN || this.context.controls.gamepadButtons[__WEBPACK_IMPORTED_MODULE_4__constants_constants__["F" /* XBOX_BUTTON_BACK */]][0] === __WEBPACK_IMPORTED_MODULE_4__constants_constants__["l" /* CONTROL_STATE */].FIRST_TIME_DOWN) {
+        if (this.context.controls.keyPressed[__WEBPACK_IMPORTED_MODULE_4__constants_constants__["F" /* KEY_Q */]][0] === __WEBPACK_IMPORTED_MODULE_4__constants_constants__["l" /* CONTROL_STATE */].FIRST_TIME_DOWN || this.context.controls.gamepadButtons[__WEBPACK_IMPORTED_MODULE_4__constants_constants__["G" /* XBOX_BUTTON_BACK */]][0] === __WEBPACK_IMPORTED_MODULE_4__constants_constants__["l" /* CONTROL_STATE */].FIRST_TIME_DOWN) {
             actions.push(__WEBPACK_IMPORTED_MODULE_10__actionCreators__["b" /* game */].setGameState(__WEBPACK_IMPORTED_MODULE_4__constants_constants__["a" /* START */]));
         }
 
@@ -3360,7 +3368,7 @@ class GameLoop extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
         if (gamepadSnapshot) {
             const currentViewAngle = currentStore.viewAngle;
             const x = GameLoop.filterStickValue(gamepadSnapshot.axes[__WEBPACK_IMPORTED_MODULE_4__constants_constants__["e" /* XBOX_STICK_RIGHT_AXIS_X */]]);
-            const y = GameLoop.filterStickValue(gamepadSnapshot.axes[__WEBPACK_IMPORTED_MODULE_4__constants_constants__["G" /* XBOX_STICK_RIGHT_AXIS_Y */]]);
+            const y = GameLoop.filterStickValue(gamepadSnapshot.axes[__WEBPACK_IMPORTED_MODULE_4__constants_constants__["H" /* XBOX_STICK_RIGHT_AXIS_Y */]]);
             if (x || y) {
                 const newViewAngle = [(currentViewAngle[0] + x * currentStore.settings.stickSensitivity) % 360, Math.min(Math.max(currentViewAngle[1] - y * currentStore.settings.stickSensitivity, -90), 90), 0];
                 actions.push(__WEBPACK_IMPORTED_MODULE_10__actionCreators__["c" /* player */].updateViewAngle(newViewAngle));
@@ -3385,10 +3393,10 @@ class GameLoop extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
 
         // try gamepad
         if (gamepadSnapshot) {
-            const x = GameLoop.filterStickValue(gamepadSnapshot.axes[__WEBPACK_IMPORTED_MODULE_4__constants_constants__["H" /* XBOX_STICK_LEFT_AXIS_X */]]);
+            const x = GameLoop.filterStickValue(gamepadSnapshot.axes[__WEBPACK_IMPORTED_MODULE_4__constants_constants__["I" /* XBOX_STICK_LEFT_AXIS_X */]]);
             const z = -GameLoop.filterStickValue(gamepadSnapshot.axes[__WEBPACK_IMPORTED_MODULE_4__constants_constants__["d" /* XBOX_STICK_LEFT_AXIS_Y */]]) + 0; // convert -0 to 0 by adding 0
             if (x || z) {
-                if (gamepadSnapshot.axes[__WEBPACK_IMPORTED_MODULE_4__constants_constants__["I" /* XBOX_TRIGGER_RIGHT_AXIS */]] >= 0.5) {
+                if (gamepadSnapshot.axes[__WEBPACK_IMPORTED_MODULE_4__constants_constants__["J" /* XBOX_TRIGGER_RIGHT_AXIS */]] >= 0.5) {
                     isRunning = true;
                 }
                 step = Math.sqrt(x ** 2 + z ** 2);
@@ -3401,28 +3409,28 @@ class GameLoop extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
         }
 
         const keyPressed = this.context.controls.keyPressed;
-        if (keyPressed[__WEBPACK_IMPORTED_MODULE_4__constants_constants__["J" /* KEY_W */]][0] !== __WEBPACK_IMPORTED_MODULE_4__constants_constants__["l" /* CONTROL_STATE */].UNUSED) {
+        if (keyPressed[__WEBPACK_IMPORTED_MODULE_4__constants_constants__["K" /* KEY_W */]][0] !== __WEBPACK_IMPORTED_MODULE_4__constants_constants__["l" /* CONTROL_STATE */].UNUSED) {
             angleShift.push(0);
             step = Math.max(step, 1);
         }
-        if (keyPressed[__WEBPACK_IMPORTED_MODULE_4__constants_constants__["K" /* KEY_S */]][0] !== __WEBPACK_IMPORTED_MODULE_4__constants_constants__["l" /* CONTROL_STATE */].UNUSED) {
+        if (keyPressed[__WEBPACK_IMPORTED_MODULE_4__constants_constants__["L" /* KEY_S */]][0] !== __WEBPACK_IMPORTED_MODULE_4__constants_constants__["l" /* CONTROL_STATE */].UNUSED) {
             angleShift.push(Math.PI);
             step = Math.max(step, 1);
         }
-        if (keyPressed[__WEBPACK_IMPORTED_MODULE_4__constants_constants__["L" /* KEY_D */]][0] !== __WEBPACK_IMPORTED_MODULE_4__constants_constants__["l" /* CONTROL_STATE */].UNUSED) {
+        if (keyPressed[__WEBPACK_IMPORTED_MODULE_4__constants_constants__["M" /* KEY_D */]][0] !== __WEBPACK_IMPORTED_MODULE_4__constants_constants__["l" /* CONTROL_STATE */].UNUSED) {
             angleShift.push(Math.PI / 2);
             step = Math.max(step, 1);
         }
-        if (keyPressed[__WEBPACK_IMPORTED_MODULE_4__constants_constants__["M" /* KEY_A */]][0] !== __WEBPACK_IMPORTED_MODULE_4__constants_constants__["l" /* CONTROL_STATE */].UNUSED) {
+        if (keyPressed[__WEBPACK_IMPORTED_MODULE_4__constants_constants__["N" /* KEY_A */]][0] !== __WEBPACK_IMPORTED_MODULE_4__constants_constants__["l" /* CONTROL_STATE */].UNUSED) {
             // hack for angles sum
-            if (keyPressed[__WEBPACK_IMPORTED_MODULE_4__constants_constants__["J" /* KEY_W */]][0] !== __WEBPACK_IMPORTED_MODULE_4__constants_constants__["l" /* CONTROL_STATE */].UNUSED) {
+            if (keyPressed[__WEBPACK_IMPORTED_MODULE_4__constants_constants__["K" /* KEY_W */]][0] !== __WEBPACK_IMPORTED_MODULE_4__constants_constants__["l" /* CONTROL_STATE */].UNUSED) {
                 angleShift.push(-Math.PI / 2);
             } else {
                 angleShift.push(3 * Math.PI / 2);
             }
             step = Math.max(step, 1);
         }
-        if (keyPressed[__WEBPACK_IMPORTED_MODULE_4__constants_constants__["N" /* KEY_SHIFT */]][0] !== __WEBPACK_IMPORTED_MODULE_4__constants_constants__["l" /* CONTROL_STATE */].UNUSED) {
+        if (keyPressed[__WEBPACK_IMPORTED_MODULE_4__constants_constants__["O" /* KEY_SHIFT */]][0] !== __WEBPACK_IMPORTED_MODULE_4__constants_constants__["l" /* CONTROL_STATE */].UNUSED) {
             isRunning = true;
         }
 
@@ -3447,7 +3455,7 @@ class GameLoop extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
 
             angleShiftSum = angleShiftSum + __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_6__lib_utils__["b" /* convertDegreeToRad */])(currentStore.viewAngle[0]);
 
-            step = step * frameRateCoefficient * (isRunning ? __WEBPACK_IMPORTED_MODULE_4__constants_constants__["O" /* RUNNING_COEFF */] : 1) * __WEBPACK_IMPORTED_MODULE_4__constants_constants__["P" /* PLAYER_SPEED */];
+            step = step * frameRateCoefficient * (isRunning ? __WEBPACK_IMPORTED_MODULE_4__constants_constants__["P" /* RUNNING_COEFF */] : 1) * __WEBPACK_IMPORTED_MODULE_4__constants_constants__["Q" /* PLAYER_SPEED */];
             const shift = [step * Math.sin(angleShiftSum), 0, -step * Math.cos(angleShiftSum)];
             const newPos = [];
             for (let i = 0; i < 3; i++) {
@@ -3500,7 +3508,7 @@ class GameLoop extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
         }
 
         // perform interaction if key is pressed
-        if (reachableObject && (keyPressed[__WEBPACK_IMPORTED_MODULE_4__constants_constants__["Q" /* KEY_E */]][0] === __WEBPACK_IMPORTED_MODULE_4__constants_constants__["l" /* CONTROL_STATE */].FIRST_TIME_DOWN || this.context.controls.gamepadButtons[__WEBPACK_IMPORTED_MODULE_4__constants_constants__["m" /* XBOX_BUTTON_X */]][0] === __WEBPACK_IMPORTED_MODULE_4__constants_constants__["l" /* CONTROL_STATE */].FIRST_TIME_DOWN)) {
+        if (reachableObject && (keyPressed[__WEBPACK_IMPORTED_MODULE_4__constants_constants__["R" /* KEY_E */]][0] === __WEBPACK_IMPORTED_MODULE_4__constants_constants__["l" /* CONTROL_STATE */].FIRST_TIME_DOWN || this.context.controls.gamepadButtons[__WEBPACK_IMPORTED_MODULE_4__constants_constants__["m" /* XBOX_BUTTON_X */]][0] === __WEBPACK_IMPORTED_MODULE_4__constants_constants__["l" /* CONTROL_STATE */].FIRST_TIME_DOWN)) {
             if (reachableObject.type === __WEBPACK_IMPORTED_MODULE_4__constants_constants__["A" /* SWITCHER_TYPE */]) {
                 const door = currentStore.doorsState[reachableObject.props.id];
                 if (![__WEBPACK_IMPORTED_MODULE_4__constants_constants__["t" /* DOOR_OPENING */], __WEBPACK_IMPORTED_MODULE_4__constants_constants__["s" /* DOOR_CLOSING */]].includes(door)) {
@@ -3535,7 +3543,7 @@ class GameLoop extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
         if (rawHints.length) {
             this.delayedActions.pushAction({
                 action: __WEBPACK_IMPORTED_MODULE_10__actionCreators__["f" /* hints */].removeHints(rawHints),
-                delay: __WEBPACK_IMPORTED_MODULE_4__constants_constants__["R" /* HINT_SHOW_TIME */] + delay
+                delay: __WEBPACK_IMPORTED_MODULE_4__constants_constants__["E" /* HINT_SHOW_TIME */] + delay
             });
         }
         return __WEBPACK_IMPORTED_MODULE_10__actionCreators__["f" /* hints */].addHints(rawHints);

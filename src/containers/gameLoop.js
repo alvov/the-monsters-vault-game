@@ -60,13 +60,21 @@ class GameLoop extends React.Component {
         }
         if (gamepadSnapshot) {
             this.delayedActions.pushAction({
-                action: this.showHints([HINT_GOAL, HINT_MOVE_GAMEPAD, HINT_RUN_GAMEPAD], true),
+                action: this.showHints([HINT_GOAL, HINT_MOVE_GAMEPAD], true),
                 delay: 0
+            });
+            this.delayedActions.pushAction({
+                action: this.showHints([HINT_RUN_GAMEPAD], true, HINT_SHOW_TIME),
+                delay: HINT_SHOW_TIME
             });
         } else {
             this.delayedActions.pushAction({
-                action: this.showHints([HINT_GOAL, HINT_MOVE_KEYBOARD, HINT_RUN_KEYBOARD], true),
+                action: this.showHints([HINT_GOAL, HINT_MOVE_KEYBOARD], true),
                 delay: 0
+            });
+            this.delayedActions.pushAction({
+                action: this.showHints([HINT_RUN_KEYBOARD], true, HINT_SHOW_TIME),
+                delay: HINT_SHOW_TIME
             });
         }
         this.loop.start();

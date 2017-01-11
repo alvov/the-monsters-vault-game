@@ -1,6 +1,6 @@
 {
-  "name": "the-deep-dark-dungeon",
-  "version": "0.0.1-pre-alpha",
+  "name": "doors-and-levers-game",
+  "version": "0.0.1-alpha",
   "description": "",
   "author": "alvov",
   "devDependencies": {

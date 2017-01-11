@@ -2433,7 +2433,7 @@ function Logo() {
     return __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
         'h1',
         { className: __WEBPACK_IMPORTED_MODULE_0__logo_css___default.a.root },
-        'The deep dark dungeon'
+        'Doors & levers'
     );
 }
 
@@ -2869,7 +2869,7 @@ class StartScreen extends __WEBPACK_IMPORTED_MODULE_1_react___default.a.Componen
                 null,
                 this.renderBackButton(),
                 __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
-                    'h2',
+                    'h1',
                     { className: __WEBPACK_IMPORTED_MODULE_0__startScreen_css___default.a.title },
                     'Settings'
                 ),
@@ -2886,7 +2886,7 @@ class StartScreen extends __WEBPACK_IMPORTED_MODULE_1_react___default.a.Componen
                 null,
                 this.renderBackButton(),
                 __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
-                    'h2',
+                    'h1',
                     { className: __WEBPACK_IMPORTED_MODULE_0__startScreen_css___default.a.title },
                     'Credits'
                 ),

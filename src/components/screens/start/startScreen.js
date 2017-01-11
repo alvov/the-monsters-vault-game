@@ -117,7 +117,7 @@ class StartScreen extends React.Component {
         if (this.state.screen === SCREEN_SETTINGS) {
             return <div>
                 {this.renderBackButton()}
-                <h2 className={styles.title}>Settings</h2>
+                <h1 className={styles.title}>Settings</h1>
                 <Settings />
             </div>;
         }
@@ -128,7 +128,7 @@ class StartScreen extends React.Component {
         if (this.state.screen === SCREEN_CREDITS) {
             return <div>
                 {this.renderBackButton()}
-                <h2 className={styles.title}>Credits</h2>
+                <h1 className={styles.title}>Credits</h1>
                 <Credits />
             </div>;
         }

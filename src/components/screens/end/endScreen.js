@@ -66,11 +66,13 @@ class EndScreen extends React.Component {
         }
         // keyboard
         if (this.context.controls.keyPressed[KEY_ENTER][0] === CONTROL_STATE.FIRST_TIME_DOWN) {
+            this.context.controls.keyPressed[KEY_ENTER][0] = CONTROL_STATE.DOWN;
             this.props.onEnd();
         }
 
         // gamepad
         if (this.context.controls.gamepadButtons[XBOX_BUTTON_X][0] === CONTROL_STATE.FIRST_TIME_DOWN) {
+            this.context.controls.gamepadButtons[XBOX_BUTTON_X][0] = CONTROL_STATE.DOWN;
             this.props.onEnd();
         }
     }

@@ -217,11 +217,19 @@ class StartScreen extends React.Component {
     }
 
     isKeyboardButtonPressed(keyCode) {
-        return this.context.controls.keyPressed[keyCode][0] === CONTROL_STATE.FIRST_TIME_DOWN;
+        const isPressed = this.context.controls.keyPressed[keyCode][0] === CONTROL_STATE.FIRST_TIME_DOWN;
+        if (isPressed) {
+            this.context.controls.keyPressed[keyCode][0] = CONTROL_STATE.DOWN;
+        }
+        return isPressed;
     }
 
     isGamepadButtonPressed(button) {
-        return this.context.controls.gamepadButtons[button][0] === CONTROL_STATE.FIRST_TIME_DOWN;
+        const isPressed = this.context.controls.gamepadButtons[button][0] === CONTROL_STATE.FIRST_TIME_DOWN;
+        if (isPressed) {
+            this.context.controls.gamepadButtons[button][0] = CONTROL_STATE.DOWN;
+        }
+        return isPressed;
     }
 
     getGamepadLeftStickMove() {

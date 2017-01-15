@@ -1,5 +1,6 @@
 import {
     SET_SETTINGS_VOLUME,
+    SET_SETTINGS_GRAPHICS_QUALITY,
     SET_SETTINGS_MOUSE_SENSITIVITY,
     SET_SETTINGS_STICK_SENSITIVITY
 } from '../constants/actionNames';
@@ -7,6 +8,13 @@ import {
 export function setVolume(value) {
     return {
         type: SET_SETTINGS_VOLUME,
+        value
+    };
+}
+
+export function setGraphicsQuality(value) {
+    return {
+        type: SET_SETTINGS_GRAPHICS_QUALITY,
         value
     };
 }

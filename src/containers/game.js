@@ -14,6 +14,7 @@ import LoadingScreen from '../components/screens/loading/loadingScreen';
 import StartScreen from '../components/screens/start/startScreen';
 import EndScreen from '../components/screens/end/endScreen';
 import Hints from '../components/hints/hints';
+import Patterns from '../components/patterns/patterns';
 import Viewport from './viewport/viewport';
 import Camera from './camera/camera';
 import Player from './player/player';
@@ -153,6 +154,7 @@ class Game extends React.Component {
             />;
         } else if (gameState === PLAY) {
             return <Viewport>
+                <Patterns />
                 <Hints hints={hints} />
                 <GameLoop onWin={this.setGameStateEnd}>
                     <Camera>

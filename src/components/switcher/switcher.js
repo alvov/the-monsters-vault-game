@@ -28,11 +28,11 @@ export default class Switcher extends React.Component {
     }
 
     render() {
-        const { playerPos, size, angle, isReachable = false,
-            isOn = false, isInteractive = true } = this.props;
+        const { name, playerPos, size, angle, isReachable = false,
+            isOn = false, isInteractive = true, graphicsQuality } = this.props;
         const classNames = [
             'obj',
-            styles.root,
+            styles['quality-' + graphicsQuality],
             isOn ? styles.on : styles.off
         ];
         if (isInteractive && isReachable) {
@@ -40,12 +40,15 @@ export default class Switcher extends React.Component {
         }
         return <div className={classNames.join(' ')} style={this.styleRules}>
             <Plain
+                id={name}
                 className={styles.wood}
                 size={[size[0], size[1]]}
                 pos={[0, 0, 0]}
                 playerPos={playerPos}
                 parentPos={[this.posWithInvertedY]}
                 parentAngle={[angle]}
+                patternId='wood'
+                graphicsQuality={graphicsQuality}
             />
             <div className={`${styles.handle} obj`}>
                 {/*left*/}

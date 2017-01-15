@@ -1,12 +1,10 @@
 import styles from './light.css';
 import React  from 'react';
-import { vectorsAdd3D } from '../../lib/utils';
 import { SPOTLIGHT_RADIUS } from '../../constants/constants';
 
 class SimpleLight extends React.Component {
     render() {
-        const { parentPos, playerPos, pos } = this.props;
-        const relativePos = parentPos ? [pos].concat(parentPos).reduce(vectorsAdd3D) : pos;
+        const { relativePos, playerPos } = this.props;
         const opacity = SimpleLight.getOpacity(
             SimpleLight.vectorLength3D([
                 playerPos[0] - relativePos[0],
@@ -25,7 +23,7 @@ class SimpleLight extends React.Component {
     }
 
     static vectorLength3D(v) {
-        return Math.sqrt(v[0] * v[0] + v[1] * v[1] + v[2] * v[2]);
+        return Math.sqrt(v[0] ** 2 + v[1] ** 2 + v[2] ** 2);
     }
 }
 

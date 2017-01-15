@@ -8,3 +8,6 @@
     width: 5px;
     background: linear-gradient(to right, #000 0%, #e0e0e0 50%, #000 100%);
 }
+.bar.quality-0 {
+    background: #e0e0e0;
+}

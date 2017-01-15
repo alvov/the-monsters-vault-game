@@ -3,19 +3,18 @@ import styles from './floor.css';
 import React  from 'react';
 import Plain from '../plain/plain';
 
-class Floor extends React.Component {
-    shouldComponentUpdate(nextProps) {
-        return nextProps.playerPos !== this.props.playerPos;
-    }
-
+class Floor extends React.PureComponent {
     render() {
-        const { pos, playerPos, size } = this.props;
+        const { name, pos, playerPos, size, graphicsQuality } = this.props;
         return <Plain
-            className={styles.root}
+            id={name}
+            className={styles['quality-' + graphicsQuality]}
             pos={pos}
             size={[size[0], size[2]]}
             angle={[90, 0, 0]}
             playerPos={playerPos}
+            patternId='floor'
+            graphicsQuality={graphicsQuality}
         />;
     }
 }

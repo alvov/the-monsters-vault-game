@@ -22,7 +22,7 @@ import {
     DOOR_TYPE
 } from '../constants/constants';
 
-function Scene({ pos, viewAngle, doorsState, visibleObjects }) {
+function Scene({ pos, viewAngle, doorsState, visibleObjects, graphicsQuality }) {
     const transformRule = getTransformRule({
         pos: [-pos[0], pos[1], -pos[2]]
     });
@@ -44,9 +44,11 @@ function Scene({ pos, viewAngle, doorsState, visibleObjects }) {
             case FLOOR_TYPE:
                 renderedObjects.push(<Floor
                     key={object.name}
+                    name={object.name}
                     pos={object.pos}
                     playerPos={pos}
                     size={object.size}
+                    graphicsQuality={graphicsQuality}
                 />);
                 break;
             case CEILING_TYPE:
@@ -59,24 +61,29 @@ function Scene({ pos, viewAngle, doorsState, visibleObjects }) {
             case WALL_TYPE:
                 renderedObjects.push(<Wall
                     key={object.name}
+                    name={object.name}
                     pos={object.pos}
                     playerPos={pos}
                     size={object.size}
                     mode={object.props ? object.props.mode: 1}
+                    graphicsQuality={graphicsQuality}
                 />);
                 break;
             case BOX_TYPE:
                 renderedObjects.push(<Box
                     key={object.name}
+                    name={object.name}
                     pos={object.pos}
                     playerPos={pos}
                     size={object.size}
                     mode={object.props.mode}
+                    graphicsQuality={graphicsQuality}
                 />);
                 break;
             case SWITCHER_TYPE:
                 renderedObjects.push(<Switcher
                     key={object.name}
+                    name={object.name}
                     pos={object.pos}
                     size={object.size}
                     angle={object.angle}
@@ -84,6 +91,7 @@ function Scene({ pos, viewAngle, doorsState, visibleObjects }) {
                     isReachable={object.isReachable}
                     isInteractive={[DOOR_OPEN, DOOR_CLOSE].includes(doorsState[object.props.id])}
                     isOn={[DOOR_OPEN, DOOR_OPENING].includes(doorsState[object.props.id])}
+                    graphicsQuality={graphicsQuality}
                 />);
                 break;
             case DOOR_TYPE:
@@ -95,6 +103,7 @@ function Scene({ pos, viewAngle, doorsState, visibleObjects }) {
                     viewAngle={viewAngle}
                     size={object.size}
                     state={doorsState[object.props.id]}
+                    graphicsQuality={graphicsQuality}
                 />);
                 break;
         }
@@ -107,7 +116,8 @@ Scene.propTypes = {
     pos: PropTypes.arrayOf(PropTypes.number).isRequired,
     viewAngle: PropTypes.arrayOf(PropTypes.number).isRequired,
     doorsState: PropTypes.object.isRequired,
-    visibleObjects: PropTypes.arrayOf(PropTypes.object).isRequired
+    visibleObjects: PropTypes.arrayOf(PropTypes.object).isRequired,
+    graphicsQuality: PropTypes.number.isRequired
 };
 
 function mapStateToProps(state) {
@@ -115,7 +125,8 @@ function mapStateToProps(state) {
         pos: state.pos,
         viewAngle: state.viewAngle,
         visibleObjects: state.objects.filter(obj => obj.isVisible || obj.type === DOOR_TYPE),
-        doorsState: state.doorsState
+        doorsState: state.doorsState,
+        graphicsQuality: state.settings.graphicsQuality.value
     }
 }
 

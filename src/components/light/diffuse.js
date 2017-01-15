@@ -1,32 +1,21 @@
-import styles from './light.css';
 import React  from 'react';
 
-import { SPOTLIGHT_RADIUS } from '../../constants/constants';
-
-const DEFAULT_STYLE_RULES = {
-    backgroundImage: 'none',
-    backgroundColor: '#000'
-};
-
-class Light extends React.Component {
-    shouldComponentUpdate(nextProps) {
-        return nextProps.playerPos !== this.props.playerPos;
-    }
-
+class DiffuseLight extends React.Component {
     render() {
         const {
+            id,
             relativePos,
             relativeAngle,
             size,
             playerPos
         } = this.props;
 
-        let styleRules = DEFAULT_STYLE_RULES;
+        let styleRules;
 
         // front
         if (relativeAngle[0] === 0 && relativeAngle[1] % 360 === 0 && relativeAngle[2] === 0) {
             if (playerPos[2] > relativePos[2]) {
-                styleRules = Light.getPlayerSpotLightBackground({
+                styleRules = DiffuseLight.getPlayerSpotLightBackground({
                     pos: [playerPos[0] - (relativePos[0] - size[0] / 2), -relativePos[1] + size[1] / 2 - playerPos[1]],
                     distance: playerPos[2] - relativePos[2]
                 });
@@ -34,7 +23,7 @@ class Light extends React.Component {
         // back
         } else if (relativeAngle[0] === 0 && Math.abs(relativeAngle[1] % 360) === 180 && relativeAngle[2] === 0) {
             if (playerPos[2] < relativePos[2]) {
-                styleRules = Light.getPlayerSpotLightBackground({
+                styleRules = DiffuseLight.getPlayerSpotLightBackground({
                     pos: [relativePos[0] + size[0] / 2 - playerPos[0], -relativePos[1] + size[1] / 2 - playerPos[1]],
                     distance: relativePos[2] - playerPos[2]
                 });
@@ -42,7 +31,7 @@ class Light extends React.Component {
         // left
         } else if (relativeAngle[0] === 0 && (relativeAngle[1] % 360 === -90 || relativeAngle[1] % 360 === 270) && relativeAngle[2] === 0) {
             if (playerPos[0] < relativePos[0]) {
-                styleRules = Light.getPlayerSpotLightBackground({
+                styleRules = DiffuseLight.getPlayerSpotLightBackground({
                     pos: [playerPos[2] - (relativePos[2] - size[0] / 2), -relativePos[1] + size[1] / 2 - playerPos[1]],
                     distance: relativePos[0] - playerPos[0]
                 });
@@ -50,7 +39,7 @@ class Light extends React.Component {
         // right
         } else if (relativeAngle[0] === 0 && (relativeAngle[1] % 360 === 90 || relativeAngle[1] % 360 === -270) && relativeAngle[2] === 0) {
             if (playerPos[0] > relativePos[0]) {
-                styleRules = Light.getPlayerSpotLightBackground({
+                styleRules = DiffuseLight.getPlayerSpotLightBackground({
                     pos: [relativePos[2] + size[0] / 2 - playerPos[2], -relativePos[1] + size[1] / 2 - playerPos[1]],
                     distance: playerPos[0] - relativePos[0]
                 });
@@ -58,35 +47,43 @@ class Light extends React.Component {
         // top
         } else if ((relativeAngle[0] % 360 === 90 || relativeAngle[0] % 360 === -270) && relativeAngle[1] === 0 && relativeAngle[2] === 0) {
             if (playerPos[1] > -relativePos[1]) {
-                styleRules = Light.getPlayerSpotLightBackground({
+                styleRules = DiffuseLight.getPlayerSpotLightBackground({
                     pos: [playerPos[0] - (relativePos[0] - size[0] / 2), playerPos[2] - (relativePos[2] - size[1] / 2)],
                     distance: playerPos[1] + relativePos[1]
                 });
             }
         }
 
-        // return <div className={styles.root} style={{
-        //     backgroundImage: 'none',
-        //     backgroundColor: 'none'
-        // }} />;
-        return <div className={styles.root}
-            style={styleRules}
-        />;
+        if (!styleRules) {
+            return null;
+        }
+
+        return <filter id={id}>
+            <feGaussianBlur stdDeviation='3' result='blurred' />
+            <feColorMatrix in='blurred' type='luminanceToAlpha' result='bumpMap' />
+            <feDiffuseLighting in='bumpMap' result='light'
+                surfaceScale='3'
+            >
+                <fePointLight
+                    x={styleRules.x}
+                    y={styleRules.y}
+                    z={styleRules.z}
+                />
+            </feDiffuseLighting>
+            <feComposite in='light' in2='SourceGraphic'
+                operator='arithmetic'
+                k1='1' k2='0' k3='0' k4='0'
+            />
+        </filter>;
     }
 
     static getPlayerSpotLightBackground({ pos, distance }) {
-        const ratio = Math.max(0, SPOTLIGHT_RADIUS - distance) / SPOTLIGHT_RADIUS;
-        if (ratio) {
-            const size = (2 + ratio) * SPOTLIGHT_RADIUS / 2 * 10;
-            return {
-                backgroundPosition: pos[0] - size / 2 + 'px ' + (pos[1] - size / 2) + 'px',
-                backgroundSize: size,
-                backgroundColor: 'rgba(0, 0, 0, ' + (1 - ratio) + ')'
-            };
-        } else {
-            return DEFAULT_STYLE_RULES;
-        }
+        return {
+            x: pos[0],
+            y: pos[1],
+            z: Math.round(distance / 8)
+        };
     }
 }
 
-export default Light;
+export default DiffuseLight;

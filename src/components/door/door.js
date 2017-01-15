@@ -2,7 +2,7 @@ import styles from 'components/door/door.css';
 
 import React, { PropTypes } from 'react';
 import SimpleLight from '../light/simple';
-import { getTransformRule } from '../../lib/utils';
+import { getTransformRule, vectorsAdd3D } from '../../lib/utils';
 import { DOOR_OPEN, DOOR_OPENING, DOOR_CLOSE, DOOR_CLOSING, DOOR_OPEN_TIME } from '../../constants/constants';
 
 const BARS_GAP = 25;
@@ -88,24 +88,25 @@ class Door extends React.Component {
     }
 
     renderBars({ parentPos, angle }) {
-        const { size, playerPos } = this.props;
+        const { size, playerPos, graphicsQuality } = this.props;
         const bars = [];
         const maxDimension = size[0] > size[2] ? 0 : 2;
+        const barClassName = [styles.bar, styles['quality-' + graphicsQuality]].join(' ');
         let key = 0;
         for (let i = Math.floor(BARS_GAP / 2); i < size[maxDimension]; i = i + BARS_GAP) {
             const pos = maxDimension === 0 ? [-size[0] / 2 + i, -size[1] / 2, 0] : [0, -size[1] / 2, -size[2] / 2 + i];
+            const relativePos = [pos].concat(parentPos).reduce(vectorsAdd3D);
             bars.push(
                 <div key={key}
-                    className={styles.bar}
+                    className={barClassName}
                     style={{
                         ...getTransformRule({ pos, angle }),
                         height: size[1]
                     }}
                 >
                     <SimpleLight
-                        parentPos={parentPos}
+                        relativePos={relativePos}
                         playerPos={playerPos}
-                        pos={pos}
                     />
                 </div>
             );

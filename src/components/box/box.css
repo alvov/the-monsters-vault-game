@@ -1,13 +1,22 @@
-.root :global(.plain) {
+.quality-0.mode-1 :global(.plain) {
+    background: #92938e;
+}
+.quality-0.mode-2 :global(.plain) {
+    background: #e0e2e1;
+}
+.quality-0.mode-3 :global(.plain) {
+    background: #827360;
+}
+.quality-1 :global(.plain) {
     background-position: 50% 50%;
     background-size: cover;
 }
-.mode-1 :global(.plain) {
+.quality-1.mode-1 :global(.plain) {
     background-image: url(./box01.jpg);
 }
-.mode-2 :global(.plain) {
+.quality-1.mode-2 :global(.plain) {
     background-image: url(./box02.jpg);
 }
-.mode-3 :global(.plain) {
+.quality-1.mode-3 :global(.plain) {
     background-image: url(./box03.jpg);
 }

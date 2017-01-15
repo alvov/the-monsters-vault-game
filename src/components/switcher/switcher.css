@@ -1,4 +1,8 @@
-.root :global(.plain){
+.quality-0 :global(.plain) {
+    background: #936f4f;
+}
+.quality-1 :global(.plain),
+.quality-2 .handle :global(.plain) {
     background: url(./wood.jpg) 50% 50% / cover;
 }
 

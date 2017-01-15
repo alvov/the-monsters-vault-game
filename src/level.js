@@ -337,7 +337,7 @@ for (let x = 250; x < level.boundaries[0]; x += 500) {
             continue;
         }
         const wall = {
-            name: 'border wall ' + x + '_' + z,
+            name: 'border_wall_' + x + '_' + z,
             type: WALL_TYPE,
             size: [500, 250, 50],
             pos: [x, 125, z]
@@ -354,7 +354,7 @@ for (let x = 250; x < level.boundaries[0]; x += 500) {
 for (let z = 250; z < level.boundaries[2]; z += 500) {
     for (let x = 25; x <= level.boundaries[0] - 25; x += level.boundaries[0] - 50) {
         const wall = {
-            name: 'border wall ' + x + '_' + z,
+            name: 'border_wall_' + x + '_' + z,
             type: WALL_TYPE,
             size: [50, 250, 500],
             pos: [x, 125, z]
@@ -373,7 +373,7 @@ for (let z = 250; z < level.boundaries[2]; z += 500) {
 for (let z = 0; z < level.boundaries[2]; z += 500) {
     for (let x = 0; x < level.boundaries[0]; x += 500) {
         level.objects.push({
-            name: 'floor tile ' + z + '_' + x,
+            name: 'floor_tile_' + z + '_' + x,
             type: FLOOR_TYPE,
             size: [500, 0, 500],
             pos: [x + 250, 0, z + 250],
@@ -386,7 +386,7 @@ for (let z = 0; z < level.boundaries[2]; z += 500) {
 for (let z = 0; z < level.boundaries[2]; z += 500) {
     for (let x = 0; x < level.boundaries[0]; x += 500) {
         level.objects.push({
-            name: 'ceiling tile ' + z + '_' + x,
+            name: 'ceiling_tile_' + z + '_' + x,
             type: CEILING_TYPE,
             size: [500, 0, 500],
             pos: [x + 250, 250, z + 250],

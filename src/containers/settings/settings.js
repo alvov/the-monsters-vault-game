@@ -30,44 +30,58 @@ class Settings extends React.Component {
         this.loop = new Loop(this.loopCallback.bind(this));
 
         this.onVolumeChange = this.onVolumeChange.bind(this);
+        this.onGraphicsQualityChange = this.onGraphicsQualityChange.bind(this);
         this.onMouseSensChange = this.onMouseSensChange.bind(this);
         this.onStickSensChange = this.onStickSensChange.bind(this);
 
         this.state = {
-            itemActive: 0,
-            items: [
-                {
-                    id: 'soundVolume',
-                    index: 0,
-                    label: 'Sound volume',
-                    min: 0,
-                    max: 1,
-                    step: 0.2,
-                    onChange: this.onVolumeChange,
-                    action: this.props.setVolume
-                },
-                {
-                    id: 'mouseSensitivity',
-                    index: 1,
-                    label: 'Mouse sensitivity',
-                    min: 0,
-                    max: 2,
-                    step: 0.5,
-                    onChange: this.onMouseSensChange,
-                    action: this.props.setMouseSensitivity
-                },
-                {
-                    id: 'stickSensitivity',
-                    index: 2,
-                    label: 'Stick sensitivity',
-                    min: 0,
-                    max: 4,
-                    step: 0.5,
-                    onChange: this.onStickSensChange,
-                    action: this.props.setStickSensitivity
-                }
-            ]
+            itemActive: 0
         };
+        this.items = [
+            {
+                id: 'soundVolume',
+                label: 'Sound volume',
+                min: 0,
+                max: 1,
+                step: 0.2,
+                onChange: this.onVolumeChange,
+                action: this.props.setVolume
+            },
+            {
+                id: 'graphicsQuality',
+                label: 'Graphics quality',
+                min: 0,
+                max: 2,
+                step: 1,
+                onChange: this.onGraphicsQualityChange,
+                action: this.props.setGraphicsQuality
+            },
+            {
+                id: 'mouseSensitivity',
+                label: 'Mouse sensitivity',
+                min: 0,
+                max: 2,
+                step: 0.5,
+                onChange: this.onMouseSensChange,
+                action: this.props.setMouseSensitivity
+            },
+            {
+                id: 'stickSensitivity',
+                disabled: this.props.gamepadState === -1,
+                label: 'Stick sensitivity',
+                min: 0,
+                max: 4,
+                step: 0.5,
+                onChange: this.onStickSensChange,
+                action: this.props.setStickSensitivity
+            }
+        ];
+    }
+
+    componentWillUpdate(nextProps) {
+        if (nextProps.gamepadState !== undefined) {
+            this.items[3].disabled = nextProps.gamepadState === -1;
+        }
     }
 
     componentDidMount() {
@@ -79,35 +93,42 @@ class Settings extends React.Component {
     }
 
     render() {
-        const { items } = this.state;
-        const { gamepadState } = this.props;
-        return <div className={styles.root}>
-            {this.renderItem(items[0])}
-            {this.renderItem(items[1])}
-            {gamepadState !== -1 ? this.renderItem(items[2]) : ''}
-        </div>;
-    }
-
-    renderItem(item) {
         const { itemActive } = this.state;
         const { settings } = this.props;
-        return <div className={styles.item + (itemActive === item.index ? ' ' + styles.itemActive : '')}>
-            <label className={styles.label} htmlFor={item.id}>
-                {item.label}
-            </label>
-            <input
-                className={[styles.range, styles.input].join(' ')}
-                type='range'
-                min={item.min}
-                max={item.max}
-                step={item.step}
-                id={item.id}
-                value={settings[item.id]}
-                onChange={item.onChange}
-                onFocus={this.setActiveItem.bind(this, item.index)}
-            />
-            <output className={styles.output}>{settings[item.id]}</output>
-        </div>
+        return <div className={styles.root}>
+            {this.items.map((item, index) => {
+                let value = settings[item.id];
+                let warning;
+                if (typeof value === 'object') {
+                    warning = value.warning;
+                    value = value.value;
+                }
+                return <div
+                    key={item.id}
+                    className={styles.item + (itemActive === index ? ' ' + styles.itemActive : '')}
+                >
+                    <label className={styles.label} htmlFor={item.id}>
+                        {item.label}
+                    </label>
+                    <div className={styles.inputContainer}>
+                        <input
+                            className={[styles.range, styles.input].join(' ')}
+                            type='range'
+                            min={item.min}
+                            max={item.max}
+                            step={item.step}
+                            id={item.id}
+                            value={value}
+                            disabled={Boolean(item.disabled)}
+                            onChange={item.onChange}
+                            onFocus={this.setActiveItem.bind(this, index)}
+                        />
+                        {warning ? <div className={styles.warning}>{warning}</div> : null}
+                    </div>
+                    <output className={styles.output}>{value}</output>
+                </div>;
+            })}
+        </div>;
     }
 
     loopCallback() {
@@ -117,9 +138,9 @@ class Settings extends React.Component {
         if (gamepadStickLeftMoved === -1) {
             this.setState({ itemActive: Math.max(0, this.state.itemActive - 1) });
         } else if (gamepadStickLeftMoved === 1) {
-            this.setState({ itemActive: Math.min(this.state.items.length - 1, this.state.itemActive + 1) });
+            this.setState({ itemActive: Math.min(this.items.length - 1, this.state.itemActive + 1) });
         }
-        const curItem = this.state.items[this.state.itemActive];
+        const curItem = this.items[this.state.itemActive];
         if (gamepadStickRightMoved === 1) {
             curItem.action(Settings.round(
                 Math.min(curItem.max, Math.max(curItem.min, this.props.settings[curItem.id] + curItem.step))
@@ -133,15 +154,19 @@ class Settings extends React.Component {
     }
 
     onVolumeChange(event) {
-        this.props.setVolume(event.target.value);
+        this.props.setVolume(Number(event.target.value));
+    }
+
+    onGraphicsQualityChange(event) {
+        this.props.setGraphicsQuality(Number(event.target.value));
     }
 
     onMouseSensChange(event) {
-        this.props.setMouseSensitivity(event.target.value);
+        this.props.setMouseSensitivity(Number(event.target.value));
     }
 
     onStickSensChange(event) {
-        this.props.setStickSensitivity(event.target.value);
+        this.props.setStickSensitivity(Number(event.target.value));
     }
 
     setActiveItem(id) {
@@ -177,6 +202,7 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
     return bindActionCreators({
         setVolume: actionCreators.settings.setVolume,
+        setGraphicsQuality: actionCreators.settings.setGraphicsQuality,
         setMouseSensitivity: actionCreators.settings.setMouseSensitivity,
         setStickSensitivity: actionCreators.settings.setStickSensitivity
     }, dispatch);

@@ -17,6 +17,9 @@
     outline: 1px dotted #fff;
     outline-offset: 0;
 }
+.inputContainer {
+    width: 100%;
+}
 .range {
     -webkit-appearance: none;
     width: 100%;
@@ -38,6 +41,10 @@
     height: 2px;
     cursor: pointer;
     background: #fff;
+}
+.warning {
+    font-style: italic;
+    color: #ffb8b3;
 }
 .output {
     flex: 0 0 40px;

@@ -1,7 +1,7 @@
 {
   "name": "doors-and-levers-game",
-  "version": "0.0.1-alpha",
-  "description": "",
+  "version": "0.0.1-beta",
+  "description": "3d game made with CSS 3d transforms",
   "author": "alvov",
   "devDependencies": {
     "babel-eslint": "7.1.1",

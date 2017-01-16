@@ -101,7 +101,11 @@ class Settings extends React.Component {
                 let value = settings[item.id];
                 return <div
                     key={item.id}
-                    className={styles.item + (itemActive === index ? ' ' + styles.itemActive : '')}
+                    className={
+                        styles.item +
+                        (itemActive === index ? ' ' + styles.itemActive : '') +
+                        (item.disabled ? ' ' + styles.itemDisabled : '')
+                    }
                 >
                     <label className={styles.label} htmlFor={item.id}>
                         {item.label}

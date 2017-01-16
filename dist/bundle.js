@@ -2476,6 +2476,14 @@ class DiffuseLight extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Compone
                     distance: playerPos[1] + relativePos[1]
                 });
             }
+            // bottom
+        } else if ((relativeAngle[0] % 360 === -90 || relativeAngle[0] % 360 === 270) && relativeAngle[1] === 0 && relativeAngle[2] === 0) {
+            if (playerPos[1] < -relativePos[1]) {
+                styleRules = Light.getPlayerSpotLightBackground({
+                    pos: [playerPos[0] - (relativePos[0] - size[0] / 2), relativePos[2] + size[1] / 2 - playerPos[2]],
+                    distance: playerPos[1] + relativePos[1]
+                });
+            }
         }
 
         if (!styleRules) {
@@ -2584,6 +2592,14 @@ class Light extends __WEBPACK_IMPORTED_MODULE_1_react___default.a.PureComponent 
             if (playerPos[1] > -relativePos[1]) {
                 styleRules = Light.getPlayerSpotLightBackground({
                     pos: [playerPos[0] - (relativePos[0] - size[0] / 2), playerPos[2] - (relativePos[2] - size[1] / 2)],
+                    distance: playerPos[1] + relativePos[1]
+                });
+            }
+            // bottom
+        } else if ((relativeAngle[0] % 360 === -90 || relativeAngle[0] % 360 === 270) && relativeAngle[1] === 0 && relativeAngle[2] === 0) {
+            if (playerPos[1] < -relativePos[1]) {
+                styleRules = Light.getPlayerSpotLightBackground({
+                    pos: [playerPos[0] - (relativePos[0] - size[0] / 2), relativePos[2] + size[1] / 2 - playerPos[2]],
                     distance: playerPos[1] + relativePos[1]
                 });
             }
@@ -4260,7 +4276,7 @@ class Settings extends __WEBPACK_IMPORTED_MODULE_1_react___default.a.Component {
                     'div',
                     {
                         key: item.id,
-                        className: __WEBPACK_IMPORTED_MODULE_0__settings_css___default.a.item + (itemActive === index ? ' ' + __WEBPACK_IMPORTED_MODULE_0__settings_css___default.a.itemActive : '')
+                        className: __WEBPACK_IMPORTED_MODULE_0__settings_css___default.a.item + (itemActive === index ? ' ' + __WEBPACK_IMPORTED_MODULE_0__settings_css___default.a.itemActive : '') + (item.disabled ? ' ' + __WEBPACK_IMPORTED_MODULE_0__settings_css___default.a.itemDisabled : '')
                     },
                     __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
                         'label',
@@ -4967,7 +4983,7 @@ module.exports = {"playerAnimationWalking":"player-playerAnimationWalking-v-Wqe"
 /***/ function(module, exports) {
 
 // removed by extract-text-webpack-plugin
-module.exports = {"root":"settings-root-1ReEm","item":"settings-item-2kxyx","label":"settings-label-2Xc-m","itemActive":"settings-itemActive-1t9I3","input":"settings-input-1wTW_","inputContainer":"settings-inputContainer-PK0l2","range":"settings-range-309Ga","warning":"settings-warning-a7ZHY","output":"settings-output-4rxkN"};
+module.exports = {"root":"settings-root-1ReEm","item":"settings-item-2kxyx","label":"settings-label-2Xc-m","input":"settings-input-1wTW_","itemActive":"settings-itemActive-1t9I3","itemDisabled":"settings-itemDisabled-kjBA9","inputContainer":"settings-inputContainer-PK0l2","range":"settings-range-309Ga","warning":"settings-warning-a7ZHY","output":"settings-output-4rxkN"};
 
 /***/ },
 /* 167 */

@@ -52,6 +52,14 @@ class DiffuseLight extends React.Component {
                     distance: playerPos[1] + relativePos[1]
                 });
             }
+        // bottom
+        } else if ((relativeAngle[0] % 360 === -90 || relativeAngle[0] % 360 === 270) && relativeAngle[1] === 0 && relativeAngle[2] === 0) {
+            if (playerPos[1] < -relativePos[1]) {
+                styleRules = Light.getPlayerSpotLightBackground({
+                    pos: [playerPos[0] - (relativePos[0] - size[0] / 2), relativePos[2] + size[1] / 2 - playerPos[2]],
+                    distance: playerPos[1] + relativePos[1]
+                });
+            }
         }
 
         if (!styleRules) {

@@ -66,6 +66,8 @@ class Plain extends React.PureComponent {
                 relativePos={this.relativePos}
                 playerPos={playerPos}
             />;
+        } else if (light === 'none') {
+            return null;
         } else {
             return <Light
                 relativePos={this.relativePos}

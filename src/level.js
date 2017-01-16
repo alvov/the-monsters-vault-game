@@ -75,15 +75,6 @@ const level = {
                 mode: 2
             }
         },
-        // {
-        //     name: 'dickbutt',
-        //     type: PAINTING_TYPE,
-        //     size: [50, 50, 0],
-        //     pos: [1026, 125, 1250],
-        //     angle: [0, 90, 0],
-        //     background: 'url(assets/dickbutt.png) 50% 50% / contain',
-        //     collides: false
-        // },
         {
             name: 'wall_009',
             type: WALL_TYPE,
@@ -209,6 +200,61 @@ const level = {
             props: {
                 mode: 3
             }
+        },
+        {
+            name: 'painting_give-up',
+            type: PAINTING_TYPE,
+            size: [205, 68, 0],
+            pos: [1974, 125, 250],
+            angle: [0, -90, 0],
+            props: {
+                alias: 'give-up'
+            },
+            collides: false
+        },
+        {
+            name: 'painting_forever',
+            type: PAINTING_TYPE,
+            size: [314, 193, 0],
+            pos: [1250, 125, 1474],
+            angle: [0, 180, 0],
+            props: {
+                alias: 'forever'
+            },
+            collides: false
+        },
+        {
+            name: 'painting_easter',
+            type: PAINTING_TYPE,
+            size: [139, 150, 0],
+            pos: [51, 90, 200],
+            angle: [0, 90, 0],
+            props: {
+                alias: 'easter'
+            },
+            collides: false
+        },
+        {
+            name: 'painting_red',
+            type: PAINTING_TYPE,
+            size: [200, 114, 0],
+            pos: [974, 130, 1300],
+            angle: [0, -90, 0],
+            props: {
+                alias: 'red-wall'
+            },
+            collides: false
+        },
+        {
+            name: 'painting_game',
+            type: PAINTING_TYPE,
+            size: [243, 51, 0],
+            pos: [2449, 150, 1250],
+            angle: [0, -90, 0],
+            props: {
+                alias: 'game'
+            },
+            collides: false
         },
         {
             name: 'switcher_01',

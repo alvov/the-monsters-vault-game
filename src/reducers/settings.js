@@ -4,16 +4,11 @@ import {
     SET_SETTINGS_MOUSE_SENSITIVITY,
     SET_SETTINGS_STICK_SENSITIVITY
 } from '../constants/actionNames';
-
-const GRAPHICS = [
-    { value: 0 },
-    { value: 1 },
-    { value: 2, warning: 'may cause low fps' }
-];
+import { GRAPHICS_QUALITY } from '../constants/constants';
 
 export default function settings(state = {
     soundVolume: 1,
-    graphicsQuality: GRAPHICS[1],
+    graphicsQuality: GRAPHICS_QUALITY.NORMAL,
     mouseSensitivity: 0.5,
     stickSensitivity: 2
 }, action) {
@@ -26,7 +21,7 @@ export default function settings(state = {
         case SET_SETTINGS_GRAPHICS_QUALITY:
             return {
                 ...state,
-                graphicsQuality: GRAPHICS[action.value]
+                graphicsQuality: action.value
             };
         case SET_SETTINGS_MOUSE_SENSITIVITY:
             return {

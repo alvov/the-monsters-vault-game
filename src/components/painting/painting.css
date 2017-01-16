@@ -1,0 +1,20 @@
+.root {
+    background-position: 50% 50%;
+    background-repeat: no-repeat;
+}
+
+.give-up {
+    background-image: url(./assets/message-give-up.png);
+}
+.forever {
+    background-image: url(./assets/message-forever.png);
+}
+.easter {
+    background-image: url(./assets/message-easter.png);
+}
+.red-wall {
+    background-image: url(./assets/message-red-wall.png);
+}
+.game {
+    background-image: url(./assets/message-game.png);
+}

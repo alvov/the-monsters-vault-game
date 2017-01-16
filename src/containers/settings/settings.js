@@ -7,7 +7,8 @@ import * as actionCreators from '../../actionCreators';
 import Loop from '../../lib/loop';
 import {
     XBOX_STICK_LEFT_AXIS_Y,
-    XBOX_STICK_RIGHT_AXIS_X
+    XBOX_STICK_RIGHT_AXIS_X,
+    GRAPHICS_QUALITY
 } from '../../constants/constants';
 
 class Settings extends React.Component {
@@ -98,11 +99,6 @@ class Settings extends React.Component {
         return <div className={styles.root}>
             {this.items.map((item, index) => {
                 let value = settings[item.id];
-                let warning;
-                if (typeof value === 'object') {
-                    warning = value.warning;
-                    value = value.value;
-                }
                 return <div
                     key={item.id}
                     className={styles.item + (itemActive === index ? ' ' + styles.itemActive : '')}
@@ -123,7 +119,11 @@ class Settings extends React.Component {
                             onChange={item.onChange}
                             onFocus={this.setActiveItem.bind(this, index)}
                         />
-                        {warning ? <div className={styles.warning}>{warning}</div> : null}
+                        {
+                            item.id === 'graphicsQuality' && value === GRAPHICS_QUALITY.ULTRA
+                                ? <div className={styles.warning}>may cause low fps</div>
+                                : null
+                        }
                     </div>
                     <output className={styles.output}>{value}</output>
                 </div>;

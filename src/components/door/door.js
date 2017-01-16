@@ -7,7 +7,7 @@ import { DOOR_OPEN, DOOR_OPENING, DOOR_CLOSE, DOOR_CLOSING, DOOR_OPEN_TIME } fro
 
 const BARS_GAP = 25;
 
-class Door extends React.Component {
+class Door extends React.PureComponent {
     static contextTypes = {
         audioCtx: PropTypes.object.isRequired,
         masterGain: PropTypes.object.isRequired,
@@ -61,13 +61,6 @@ class Door extends React.Component {
 
     componentWillUnmount() {
         this.stopSound();
-    }
-
-    shouldComponentUpdate(nextProps) {
-        return nextProps.playerPos !== this.props.playerPos ||
-            nextProps.viewAngle !== this.props.viewAngle ||
-            nextProps.state !== this.props.state ||
-            nextProps.isVisible !== this.props.isVisible;
     }
 
     render() {

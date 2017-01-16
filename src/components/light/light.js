@@ -8,11 +8,7 @@ const DEFAULT_STYLE_RULES = {
     backgroundColor: '#000'
 };
 
-class Light extends React.Component {
-    shouldComponentUpdate(nextProps) {
-        return nextProps.playerPos !== this.props.playerPos;
-    }
-
+class Light extends React.PureComponent {
     render() {
         const {
             relativePos,

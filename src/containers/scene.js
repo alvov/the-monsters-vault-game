@@ -19,7 +19,8 @@ import {
     WALL_TYPE,
     BOX_TYPE,
     SWITCHER_TYPE,
-    DOOR_TYPE
+    DOOR_TYPE,
+    GRAPHICS_QUALITY
 } from '../constants/constants';
 
 function Scene({ pos, viewAngle, doorsState, visibleObjects, graphicsQuality }) {
@@ -30,17 +31,16 @@ function Scene({ pos, viewAngle, doorsState, visibleObjects, graphicsQuality }) 
     for (let i = 0; i < visibleObjects.length; i++) {
         const object = visibleObjects[i];
         switch(object.type) {
-            // case PAINTING_TYPE:
-            //     renderedObjects.push(<Painting
-            //         key={object.name}
-            //         pos={object.pos}
-            //         playerPos={pos}
-            //         angle={object.angle}
-            //         size={object.size.filter(value => value !== 0).slice(0, 2)}
-            //         background={object.background}
-            //         getTransformRule={getTransformRule}
-            //     />);
-            //     break;
+            case PAINTING_TYPE:
+                renderedObjects.push(<Painting
+                    key={object.name}
+                    pos={object.pos}
+                    playerPos={pos}
+                    angle={object.angle}
+                    size={object.size.filter(value => value !== 0).slice(0, 2)}
+                    alias={object.props.alias}
+                />);
+                break;
             case FLOOR_TYPE:
                 renderedObjects.push(<Floor
                     key={object.name}
@@ -124,9 +124,14 @@ function mapStateToProps(state) {
     return {
         pos: state.pos,
         viewAngle: state.viewAngle,
-        visibleObjects: state.objects.filter(obj => obj.isVisible || obj.type === DOOR_TYPE),
+        visibleObjects: state.objects.filter(obj => {
+            if (obj.type === PAINTING_TYPE && state.graphicsQuality === GRAPHICS_QUALITY.LOW) {
+                return false;
+            }
+            return obj.isVisible || obj.type === DOOR_TYPE
+        }),
         doorsState: state.doorsState,
-        graphicsQuality: state.settings.graphicsQuality.value
+        graphicsQuality: state.settings.graphicsQuality
     }
 }
 

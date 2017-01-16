@@ -56,3 +56,9 @@ export const END = 'end';
 export const PLAYER_RUN = 'run';
 export const PLAYER_WALK = 'walk';
 export const PLAYER_STOP = 'stop';
+
+export const GRAPHICS_QUALITY = {
+    LOW: 0,
+    NORMAL: 1,
+    ULTRA: 2
+};

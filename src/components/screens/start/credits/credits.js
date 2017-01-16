@@ -32,5 +32,10 @@ export default function Credits() {
                 360Controller on GitHub
             </ExternalLink>
         </dd>
+        <dt>
+            <ExternalLink href='https://github.com/alvov/doors-and-levers-game'>
+                Github Repo
+            </ExternalLink>
+        </dt>
     </dl>;
 }

@@ -5,9 +5,8 @@ import Plain from '../plain/plain';
 import { getTransformRule } from '../../lib/utils';
 
 const HANDLE_SIZE = [6, 40];
-const meaningfulProps = ['playerPos', 'isReachable', 'isOn', 'isInteractive'];
 
-export default class Switcher extends React.Component {
+export default class Switcher extends React.PureComponent {
     constructor(props) {
         super(props);
 
@@ -16,15 +15,6 @@ export default class Switcher extends React.Component {
             pos: this.posWithInvertedY,
             angle: props.angle
         });
-    }
-
-    shouldComponentUpdate(nextProps) {
-        for (let i = 0; i < meaningfulProps.length; i++) {
-            if (nextProps[meaningfulProps[i]] !== this.props[meaningfulProps[i]]) {
-                return true;
-            }
-        }
-        return false;
     }
 
     render() {

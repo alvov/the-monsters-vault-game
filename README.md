@@ -28,7 +28,8 @@ You find yourself locked in some sort of a
 `Back` — quit to main menu  
 `A` — select item in menu  
 `B` — go up one level in menu  
-[[./assets/screencapture-001.gif|alt=gameplay]]
+
+![gamepad gameplay](./assets/screencapture-001.gif)
 
 ## Motivation
 * Can I make a 3d interactive game with CSS 3d

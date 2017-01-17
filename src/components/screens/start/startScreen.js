@@ -23,15 +23,15 @@ const SCREEN_SETTINGS = 'settings';
 const SCREEN_CREDITS = 'credits';
 
 class StartScreen extends React.Component {
+    static propTypes = {
+        onStart: PropTypes.func.isRequired,
+        gamepadState: PropTypes.number.isRequired
+    };
     static contextTypes = {
         audioCtx: PropTypes.object.isRequired,
         masterGain: PropTypes.object.isRequired,
         assets: PropTypes.object.isRequired,
         controls: PropTypes.object.isRequired
-    };
-    static propTypes = {
-        onStart: PropTypes.func.isRequired,
-        gamepadState: PropTypes.number.isRequired
     };
 
     constructor(...args) {

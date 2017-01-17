@@ -1,5 +1,5 @@
 import styles from './patterns.css';
-import React  from 'react';
+import React from 'react';
 
 const PATTERNS = [
     ['wall01', 'src/components/wall/wall01.jpg'],

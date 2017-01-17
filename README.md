@@ -20,7 +20,7 @@ You find yourself locked in some sort of a
 `E` — interact with stuff  
 `Q` — quit to main menu  
 
-### Gamepad (Xbox 360/One Wired)
+### Gamepad (Xbox 360/One, wired)
 `Left stick` — move around  
 `Right stick` — look around  
 `Right trigger` — run  
@@ -28,15 +28,18 @@ You find yourself locked in some sort of a
 `Back` — quit to main menu  
 `A` — select item in menu  
 `B` — go up one level in menu  
+[[./assets/screencapture-001.gif|alt=gameplay]]
 
 ## Motivation
-* Try to create a 3d interactive game with CSS 3d
- transforms only (no canvases)
-* Become more experienced in React/Redux/Webpack/Tape
-* Try out various web APIs useful for HTML5 games
-like: [Pointer Lock API](https://w3c.github.io/pointerlock/),
+* Can I make a 3d interactive game with CSS 3d
+ transforms only (no canvases)?
+* What if I use React/Redux/Webpack/Tape?
+* What are various web APIs like:
+[Pointer Lock API](https://w3c.github.io/pointerlock/),
 [Web Audio API](https://webaudio.github.io/web-audio-api/),
-[Gamepad API](https://w3c.github.io/gamepad/).
+[Gamepad API](https://w3c.github.io/gamepad/)
+all about?
+* What if I use SVG lighting filters?
 
 ## Credits
 * **Inspired by** — the [famous CSS 3d scene](http://keithclark.co.uk/labs/css-fps/)

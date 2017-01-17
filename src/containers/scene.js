@@ -115,8 +115,8 @@ function Scene({ pos, viewAngle, doorsState, visibleObjects, graphicsQuality }) 
 Scene.propTypes = {
     pos: PropTypes.arrayOf(PropTypes.number).isRequired,
     viewAngle: PropTypes.arrayOf(PropTypes.number).isRequired,
-    doorsState: PropTypes.object.isRequired,
     visibleObjects: PropTypes.arrayOf(PropTypes.object).isRequired,
+    doorsState: PropTypes.object.isRequired,
     graphicsQuality: PropTypes.number.isRequired
 };
 

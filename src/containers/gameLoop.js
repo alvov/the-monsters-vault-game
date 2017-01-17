@@ -34,12 +34,12 @@ import Collision from '../lib/collision';
 import * as actionCreators from '../actionCreators';
 
 class GameLoop extends React.Component {
+    static propTypes = {
+        onWin: PropTypes.func.isRequired
+    };
     static contextTypes = {
         store: storeShape.isRequired,
         controls: PropTypes.object.isRequired
-    };
-    static propTypes = {
-        onWin: PropTypes.func.isRequired
     };
 
     constructor(...args) {

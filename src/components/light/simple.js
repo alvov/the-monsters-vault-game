@@ -1,8 +1,13 @@
 import styles from './light.css';
-import React  from 'react';
+import React, { PropTypes } from 'react';
 import { SPOTLIGHT_RADIUS } from '../../constants/constants';
 
 class SimpleLight extends React.Component {
+    static propTypes = {
+        relativePos: PropTypes.arrayOf(PropTypes.number).isRequired,
+        playerPos: PropTypes.arrayOf(PropTypes.number).isRequired
+    };
+
     render() {
         const { relativePos, playerPos } = this.props;
         const opacity = SimpleLight.getOpacity(

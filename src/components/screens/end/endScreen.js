@@ -10,12 +10,12 @@ import {
 const ENDING_TIME = 3000;
 
 class EndScreen extends React.Component {
-    static contextTypes = {
-        controls: PropTypes.object.isRequired
-    };
     static propTypes = {
         onEnd: PropTypes.func.isRequired,
         gamepadState: PropTypes.number.isRequired
+    };
+    static contextTypes = {
+        controls: PropTypes.object.isRequired
     };
 
     constructor(...args) {

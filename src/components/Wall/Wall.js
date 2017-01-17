@@ -1,11 +1,20 @@
 import styles from './wall.css';
 
-import React from 'react';
+import React, { PropTypes } from 'react';
 import Plain from '../plain/plain';
 import { getTransformRule } from '../../lib/utils';
 
 // no support for rotated walls for now
 class Wall extends React.PureComponent {
+    static propTypes = {
+        name: PropTypes.string.isRequired,
+        pos: PropTypes.arrayOf(PropTypes.number).isRequired,
+        playerPos: PropTypes.arrayOf(PropTypes.number).isRequired,
+        size: PropTypes.arrayOf(PropTypes.number).isRequired,
+        mode: PropTypes.number.isRequired,
+        graphicsQuality: PropTypes.number.isRequired
+    };
+
     constructor(props) {
         super(props);
 

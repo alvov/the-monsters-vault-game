@@ -202,6 +202,17 @@ const level = {
             }
         },
         {
+            name: 'painting_escape',
+            type: PAINTING_TYPE,
+            size: [187, 103, 0],
+            pos: [350, 125, 51],
+            angle: [0, 0, 0],
+            props: {
+                alias: 'escape'
+            },
+            collides: false
+        },
+        {
             name: 'painting_give-up',
             type: PAINTING_TYPE,
             size: [205, 68, 0],

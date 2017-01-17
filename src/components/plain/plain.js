@@ -1,15 +1,31 @@
 import styles from './plain.css';
 
-import React from 'react';
+import React, { PropTypes } from 'react';
 import DiffuseLight from '../light/diffuse';
 import Light from '../light/light';
 import SimpleLight from '../light/simple';
 import { getTransformRule, vectorsAdd3D } from '../../lib/utils';
+import { GRAPHICS_QUALITY } from '../../constants/constants';
 
 class Plain extends React.PureComponent {
+    static propTypes = {
+        id: PropTypes.string,
+        light: PropTypes.string,
+        className: PropTypes.string,
+        size: PropTypes.arrayOf(PropTypes.number).isRequired,
+        pos: PropTypes.arrayOf(PropTypes.number).isRequired,
+        angle: PropTypes.arrayOf(PropTypes.number).isRequired,
+        playerPos: PropTypes.arrayOf(PropTypes.number).isRequired,
+        parentPos: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.number)),
+        parentAngle: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.number)),
+        patternId: PropTypes.string,
+        graphicsQuality: PropTypes.number
+    };
     static defaultProps = {
         angle: [0, 0, 0],
-        className: ''
+        className: '',
+        light: 'default',
+        graphicsQuality: GRAPHICS_QUALITY.NORMAL
     };
 
     constructor(props) {
@@ -32,11 +48,11 @@ class Plain extends React.PureComponent {
     }
 
     render() {
-        const { light, graphicsQuality} = this.props;
+        const { light, graphicsQuality } = this.props;
 
         return <div className={this.className} style={this.styleRules}>
             {graphicsQuality === 2 ? this.renderPattern() : this.renderLight(light)}
-            {graphicsQuality === 2 ? this.renderLight('') : null}
+            {graphicsQuality === 2 ? this.renderLight('default') : null}
         </div>;
     }
 

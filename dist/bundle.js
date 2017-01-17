@@ -101,7 +101,7 @@ const HINT_SHOW_TIME = 5000;
 /* harmony export (immutable) */ exports["G"] = HINT_SHOW_TIME;
 
 const DOOR_OPEN_TIME = 3000;
-/* harmony export (immutable) */ exports["s"] = DOOR_OPEN_TIME;
+/* harmony export (immutable) */ exports["w"] = DOOR_OPEN_TIME;
 
 const SPOTLIGHT_RADIUS = 1.5 * BROAD_CELL_SIZE;
 /* harmony export (immutable) */ exports["r"] = SPOTLIGHT_RADIUS;
@@ -130,16 +130,16 @@ const DOOR_TYPE = 'door';
 
 
 const DOOR_OPEN = 'open';
-/* harmony export (immutable) */ exports["v"] = DOOR_OPEN;
+/* harmony export (immutable) */ exports["s"] = DOOR_OPEN;
 
 const DOOR_OPENING = 'opening';
-/* harmony export (immutable) */ exports["u"] = DOOR_OPENING;
+/* harmony export (immutable) */ exports["t"] = DOOR_OPENING;
 
 const DOOR_CLOSE = 'close';
-/* harmony export (immutable) */ exports["w"] = DOOR_CLOSE;
+/* harmony export (immutable) */ exports["u"] = DOOR_CLOSE;
 
 const DOOR_CLOSING = 'closing';
-/* harmony export (immutable) */ exports["t"] = DOOR_CLOSING;
+/* harmony export (immutable) */ exports["v"] = DOOR_CLOSING;
 
 
 const LOADING = 'loading';
@@ -427,7 +427,9 @@ function convertDegreeToRad(angle) {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__light_light__ = __webpack_require__(120);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__light_simple__ = __webpack_require__(65);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__lib_utils__ = __webpack_require__(12);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__constants_constants__ = __webpack_require__(7);
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
 
 
 
@@ -464,7 +466,7 @@ class Plain extends __WEBPACK_IMPORTED_MODULE_1_react___default.a.PureComponent 
             'div',
             { className: this.className, style: this.styleRules },
             graphicsQuality === 2 ? this.renderPattern() : this.renderLight(light),
-            graphicsQuality === 2 ? this.renderLight('') : null
+            graphicsQuality === 2 ? this.renderLight('default') : null
         );
     }
 
@@ -513,9 +515,24 @@ class Plain extends __WEBPACK_IMPORTED_MODULE_1_react___default.a.PureComponent 
     }
 }
 
+Plain.propTypes = {
+    id: __WEBPACK_IMPORTED_MODULE_1_react__["PropTypes"].string,
+    light: __WEBPACK_IMPORTED_MODULE_1_react__["PropTypes"].string,
+    className: __WEBPACK_IMPORTED_MODULE_1_react__["PropTypes"].string,
+    size: __WEBPACK_IMPORTED_MODULE_1_react__["PropTypes"].arrayOf(__WEBPACK_IMPORTED_MODULE_1_react__["PropTypes"].number).isRequired,
+    pos: __WEBPACK_IMPORTED_MODULE_1_react__["PropTypes"].arrayOf(__WEBPACK_IMPORTED_MODULE_1_react__["PropTypes"].number).isRequired,
+    angle: __WEBPACK_IMPORTED_MODULE_1_react__["PropTypes"].arrayOf(__WEBPACK_IMPORTED_MODULE_1_react__["PropTypes"].number).isRequired,
+    playerPos: __WEBPACK_IMPORTED_MODULE_1_react__["PropTypes"].arrayOf(__WEBPACK_IMPORTED_MODULE_1_react__["PropTypes"].number).isRequired,
+    parentPos: __WEBPACK_IMPORTED_MODULE_1_react__["PropTypes"].arrayOf(__WEBPACK_IMPORTED_MODULE_1_react__["PropTypes"].arrayOf(__WEBPACK_IMPORTED_MODULE_1_react__["PropTypes"].number)),
+    parentAngle: __WEBPACK_IMPORTED_MODULE_1_react__["PropTypes"].arrayOf(__WEBPACK_IMPORTED_MODULE_1_react__["PropTypes"].arrayOf(__WEBPACK_IMPORTED_MODULE_1_react__["PropTypes"].number)),
+    patternId: __WEBPACK_IMPORTED_MODULE_1_react__["PropTypes"].string,
+    graphicsQuality: __WEBPACK_IMPORTED_MODULE_1_react__["PropTypes"].number
+};
 Plain.defaultProps = {
     angle: [0, 0, 0],
-    className: ''
+    className: '',
+    light: 'default',
+    graphicsQuality: __WEBPACK_IMPORTED_MODULE_6__constants_constants__["d" /* GRAPHICS_QUALITY */].NORMAL
 };
 /* harmony default export */ exports["a"] = Plain;
 
@@ -697,6 +714,16 @@ const level = {
             mode: 3
         }
     }, {
+        name: 'painting_escape',
+        type: __WEBPACK_IMPORTED_MODULE_2__constants_constants__["x" /* PAINTING_TYPE */],
+        size: [187, 103, 0],
+        pos: [350, 125, 51],
+        angle: [0, 0, 0],
+        props: {
+            alias: 'escape'
+        },
+        collides: false
+    }, {
         name: 'painting_give-up',
         type: __WEBPACK_IMPORTED_MODULE_2__constants_constants__["x" /* PAINTING_TYPE */],
         size: [205, 68, 0],
@@ -763,7 +790,7 @@ const level = {
         pos: [250, 125, 975],
         props: {
             id: 1,
-            state: __WEBPACK_IMPORTED_MODULE_2__constants_constants__["w" /* DOOR_CLOSE */]
+            state: __WEBPACK_IMPORTED_MODULE_2__constants_constants__["u" /* DOOR_CLOSE */]
         }
     }, {
         name: 'switcher_02',
@@ -782,7 +809,7 @@ const level = {
         pos: [2250, 125, 975],
         props: {
             id: 2,
-            state: __WEBPACK_IMPORTED_MODULE_2__constants_constants__["w" /* DOOR_CLOSE */]
+            state: __WEBPACK_IMPORTED_MODULE_2__constants_constants__["u" /* DOOR_CLOSE */]
         }
     }, {
         name: 'switcher_03',
@@ -801,7 +828,7 @@ const level = {
         pos: [250, 125, 1525],
         props: {
             id: 3,
-            state: __WEBPACK_IMPORTED_MODULE_2__constants_constants__["w" /* DOOR_CLOSE */]
+            state: __WEBPACK_IMPORTED_MODULE_2__constants_constants__["u" /* DOOR_CLOSE */]
         }
     }, {
         name: 'switcher_04',
@@ -820,7 +847,7 @@ const level = {
         pos: [1500, 125, 2250],
         props: {
             id: 4,
-            state: __WEBPACK_IMPORTED_MODULE_2__constants_constants__["w" /* DOOR_CLOSE */]
+            state: __WEBPACK_IMPORTED_MODULE_2__constants_constants__["u" /* DOOR_CLOSE */]
         }
     }, {
         name: 'switcher_05',
@@ -851,7 +878,7 @@ const level = {
         pos: [1250, 125, 25],
         props: {
             id: 5,
-            state: __WEBPACK_IMPORTED_MODULE_2__constants_constants__["w" /* DOOR_CLOSE */]
+            state: __WEBPACK_IMPORTED_MODULE_2__constants_constants__["u" /* DOOR_CLOSE */]
         }
     }]
 };
@@ -1089,6 +1116,7 @@ class Loop {
 
 
 class SimpleLight extends __WEBPACK_IMPORTED_MODULE_1_react___default.a.Component {
+
     render() {
         const { relativePos, playerPos } = this.props;
         const opacity = SimpleLight.getOpacity(SimpleLight.vectorLength3D([playerPos[0] - relativePos[0], playerPos[1] + relativePos[1], playerPos[2] - relativePos[2]]));
@@ -1107,6 +1135,10 @@ class SimpleLight extends __WEBPACK_IMPORTED_MODULE_1_react___default.a.Componen
     }
 }
 
+SimpleLight.propTypes = {
+    relativePos: __WEBPACK_IMPORTED_MODULE_1_react__["PropTypes"].arrayOf(__WEBPACK_IMPORTED_MODULE_1_react__["PropTypes"].number).isRequired,
+    playerPos: __WEBPACK_IMPORTED_MODULE_1_react__["PropTypes"].arrayOf(__WEBPACK_IMPORTED_MODULE_1_react__["PropTypes"].number).isRequired
+};
 /* harmony default export */ exports["a"] = SimpleLight;
 
 /***/ },
@@ -2090,6 +2122,7 @@ function setStickSensitivity(value) {
 
 
 class Box extends __WEBPACK_IMPORTED_MODULE_1_react___default.a.PureComponent {
+
     constructor(props) {
         super(props);
 
@@ -2154,11 +2187,19 @@ class Box extends __WEBPACK_IMPORTED_MODULE_1_react___default.a.PureComponent {
                 angle: [90, 0, 0],
                 patternId: 'box0' + mode,
                 graphicsQuality: graphicsQuality
-            }) : ''
+            }) : null
         );
     }
 }
 
+Box.propTypes = {
+    name: __WEBPACK_IMPORTED_MODULE_1_react__["PropTypes"].string.isRequired,
+    pos: __WEBPACK_IMPORTED_MODULE_1_react__["PropTypes"].arrayOf(__WEBPACK_IMPORTED_MODULE_1_react__["PropTypes"].number).isRequired,
+    playerPos: __WEBPACK_IMPORTED_MODULE_1_react__["PropTypes"].arrayOf(__WEBPACK_IMPORTED_MODULE_1_react__["PropTypes"].number).isRequired,
+    size: __WEBPACK_IMPORTED_MODULE_1_react__["PropTypes"].arrayOf(__WEBPACK_IMPORTED_MODULE_1_react__["PropTypes"].number).isRequired,
+    mode: __WEBPACK_IMPORTED_MODULE_1_react__["PropTypes"].number.isRequired,
+    graphicsQuality: __WEBPACK_IMPORTED_MODULE_1_react__["PropTypes"].number.isRequired
+};
 /* harmony default export */ exports["a"] = Box;
 
 /***/ },
@@ -2179,6 +2220,7 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 
 
 class Ceiling extends __WEBPACK_IMPORTED_MODULE_1_react___default.a.Component {
+
     constructor(props) {
         super(props);
 
@@ -2203,6 +2245,10 @@ class Ceiling extends __WEBPACK_IMPORTED_MODULE_1_react___default.a.Component {
     }
 }
 
+Ceiling.propTypes = {
+    pos: __WEBPACK_IMPORTED_MODULE_1_react__["PropTypes"].arrayOf(__WEBPACK_IMPORTED_MODULE_1_react__["PropTypes"].number).isRequired,
+    size: __WEBPACK_IMPORTED_MODULE_1_react__["PropTypes"].arrayOf(__WEBPACK_IMPORTED_MODULE_1_react__["PropTypes"].number).isRequired
+};
 /* harmony default export */ exports["a"] = Ceiling;
 
 /***/ },
@@ -2227,6 +2273,7 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 
 
 const BARS_GAP = 25;
+const DOOR_STATES = [__WEBPACK_IMPORTED_MODULE_4__constants_constants__["s" /* DOOR_OPEN */], __WEBPACK_IMPORTED_MODULE_4__constants_constants__["t" /* DOOR_OPENING */], __WEBPACK_IMPORTED_MODULE_4__constants_constants__["u" /* DOOR_CLOSE */], __WEBPACK_IMPORTED_MODULE_4__constants_constants__["v" /* DOOR_CLOSING */]];
 
 class Door extends __WEBPACK_IMPORTED_MODULE_1_react___default.a.PureComponent {
 
@@ -2238,7 +2285,7 @@ class Door extends __WEBPACK_IMPORTED_MODULE_1_react___default.a.PureComponent {
         this.posWithInvertedY = [pos[0], -pos[1], pos[2]];
         this.rootStyleRules = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_3__lib_utils__["a" /* getTransformRule */])({ pos: this.posWithInvertedY });
         this.doorStyleRules = {
-            transitionDuration: __WEBPACK_IMPORTED_MODULE_4__constants_constants__["s" /* DOOR_OPEN_TIME */] + 'ms',
+            transitionDuration: __WEBPACK_IMPORTED_MODULE_4__constants_constants__["w" /* DOOR_OPEN_TIME */] + 'ms',
             height: size[1]
         };
 
@@ -2264,9 +2311,9 @@ class Door extends __WEBPACK_IMPORTED_MODULE_1_react___default.a.PureComponent {
     }
 
     componentWillUpdate(nextProps) {
-        if ([__WEBPACK_IMPORTED_MODULE_4__constants_constants__["t" /* DOOR_CLOSING */], __WEBPACK_IMPORTED_MODULE_4__constants_constants__["u" /* DOOR_OPENING */]].includes(nextProps.state) && nextProps.state !== this.props.state) {
+        if ([__WEBPACK_IMPORTED_MODULE_4__constants_constants__["v" /* DOOR_CLOSING */], __WEBPACK_IMPORTED_MODULE_4__constants_constants__["t" /* DOOR_OPENING */]].includes(nextProps.state) && nextProps.state !== this.props.state) {
             this.startSound();
-        } else if ([__WEBPACK_IMPORTED_MODULE_4__constants_constants__["v" /* DOOR_OPEN */], __WEBPACK_IMPORTED_MODULE_4__constants_constants__["w" /* DOOR_CLOSE */]].includes(nextProps.state) && nextProps.state !== this.props.state) {
+        } else if ([__WEBPACK_IMPORTED_MODULE_4__constants_constants__["s" /* DOOR_OPEN */], __WEBPACK_IMPORTED_MODULE_4__constants_constants__["u" /* DOOR_CLOSE */]].includes(nextProps.state) && nextProps.state !== this.props.state) {
             this.stopSound();
         }
     }
@@ -2277,7 +2324,7 @@ class Door extends __WEBPACK_IMPORTED_MODULE_1_react___default.a.PureComponent {
 
     render() {
         const { isVisible, viewAngle, state, size } = this.props;
-        const isOpen = [__WEBPACK_IMPORTED_MODULE_4__constants_constants__["u" /* DOOR_OPENING */], __WEBPACK_IMPORTED_MODULE_4__constants_constants__["v" /* DOOR_OPEN */]].includes(state);
+        const isOpen = [__WEBPACK_IMPORTED_MODULE_4__constants_constants__["t" /* DOOR_OPENING */], __WEBPACK_IMPORTED_MODULE_4__constants_constants__["s" /* DOOR_OPEN */]].includes(state);
         const doorStyleRules = _extends({}, this.doorStyleRules, {
             transform: 'translateY(' + (isOpen ? -size[1] * 0.9 : 0) + 'px)'
         });
@@ -2338,14 +2385,22 @@ class Door extends __WEBPACK_IMPORTED_MODULE_1_react___default.a.PureComponent {
     }
 }
 
+Door.propTypes = {
+    isVisible: __WEBPACK_IMPORTED_MODULE_1_react__["PropTypes"].bool,
+    pos: __WEBPACK_IMPORTED_MODULE_1_react__["PropTypes"].arrayOf(__WEBPACK_IMPORTED_MODULE_1_react__["PropTypes"].number).isRequired,
+    playerPos: __WEBPACK_IMPORTED_MODULE_1_react__["PropTypes"].arrayOf(__WEBPACK_IMPORTED_MODULE_1_react__["PropTypes"].number).isRequired,
+    viewAngle: __WEBPACK_IMPORTED_MODULE_1_react__["PropTypes"].arrayOf(__WEBPACK_IMPORTED_MODULE_1_react__["PropTypes"].number).isRequired,
+    size: __WEBPACK_IMPORTED_MODULE_1_react__["PropTypes"].arrayOf(__WEBPACK_IMPORTED_MODULE_1_react__["PropTypes"].number).isRequired,
+    state: __WEBPACK_IMPORTED_MODULE_1_react__["PropTypes"].oneOf(DOOR_STATES).isRequired,
+    graphicsQuality: __WEBPACK_IMPORTED_MODULE_1_react__["PropTypes"].number.isRequired
+};
 Door.contextTypes = {
     audioCtx: __WEBPACK_IMPORTED_MODULE_1_react__["PropTypes"].object.isRequired,
     masterGain: __WEBPACK_IMPORTED_MODULE_1_react__["PropTypes"].object.isRequired,
     assets: __WEBPACK_IMPORTED_MODULE_1_react__["PropTypes"].object.isRequired
 };
 Door.defaultProps = {
-    isVisible: true,
-    isOpen: false
+    isVisible: true
 };
 /* harmony default export */ exports["a"] = Door;
 
@@ -2365,6 +2420,7 @@ Door.defaultProps = {
 
 
 class Floor extends __WEBPACK_IMPORTED_MODULE_1_react___default.a.PureComponent {
+
     render() {
         const { name, pos, playerPos, size, graphicsQuality } = this.props;
         return __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2__plain_plain__["a" /* default */], {
@@ -2380,6 +2436,13 @@ class Floor extends __WEBPACK_IMPORTED_MODULE_1_react___default.a.PureComponent 
     }
 }
 
+Floor.propTypes = {
+    name: __WEBPACK_IMPORTED_MODULE_1_react__["PropTypes"].string.isRequired,
+    pos: __WEBPACK_IMPORTED_MODULE_1_react__["PropTypes"].arrayOf(__WEBPACK_IMPORTED_MODULE_1_react__["PropTypes"].number).isRequired,
+    playerPos: __WEBPACK_IMPORTED_MODULE_1_react__["PropTypes"].arrayOf(__WEBPACK_IMPORTED_MODULE_1_react__["PropTypes"].number).isRequired,
+    size: __WEBPACK_IMPORTED_MODULE_1_react__["PropTypes"].arrayOf(__WEBPACK_IMPORTED_MODULE_1_react__["PropTypes"].number).isRequired,
+    graphicsQuality: __WEBPACK_IMPORTED_MODULE_1_react__["PropTypes"].number.isRequired
+};
 /* harmony default export */ exports["a"] = Floor;
 
 /***/ },
@@ -2424,7 +2487,10 @@ Hints.propTypes = {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
 
 
+const Z_LIGHT_COEFFICIENT = 0.125;
+
 class DiffuseLight extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
+
     render() {
         const {
             id,
@@ -2434,12 +2500,12 @@ class DiffuseLight extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Compone
             playerPos
         } = this.props;
 
-        let styleRules;
+        let lightRelativeCoords;
 
         // front
         if (relativeAngle[0] === 0 && relativeAngle[1] % 360 === 0 && relativeAngle[2] === 0) {
             if (playerPos[2] > relativePos[2]) {
-                styleRules = DiffuseLight.getPlayerSpotLightBackground({
+                lightRelativeCoords = DiffuseLight.getLightRelativeCoords({
                     pos: [playerPos[0] - (relativePos[0] - size[0] / 2), -relativePos[1] + size[1] / 2 - playerPos[1]],
                     distance: playerPos[2] - relativePos[2]
                 });
@@ -2447,7 +2513,7 @@ class DiffuseLight extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Compone
             // back
         } else if (relativeAngle[0] === 0 && Math.abs(relativeAngle[1] % 360) === 180 && relativeAngle[2] === 0) {
             if (playerPos[2] < relativePos[2]) {
-                styleRules = DiffuseLight.getPlayerSpotLightBackground({
+                lightRelativeCoords = DiffuseLight.getLightRelativeCoords({
                     pos: [relativePos[0] + size[0] / 2 - playerPos[0], -relativePos[1] + size[1] / 2 - playerPos[1]],
                     distance: relativePos[2] - playerPos[2]
                 });
@@ -2455,7 +2521,7 @@ class DiffuseLight extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Compone
             // left
         } else if (relativeAngle[0] === 0 && (relativeAngle[1] % 360 === -90 || relativeAngle[1] % 360 === 270) && relativeAngle[2] === 0) {
             if (playerPos[0] < relativePos[0]) {
-                styleRules = DiffuseLight.getPlayerSpotLightBackground({
+                lightRelativeCoords = DiffuseLight.getLightRelativeCoords({
                     pos: [playerPos[2] - (relativePos[2] - size[0] / 2), -relativePos[1] + size[1] / 2 - playerPos[1]],
                     distance: relativePos[0] - playerPos[0]
                 });
@@ -2463,7 +2529,7 @@ class DiffuseLight extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Compone
             // right
         } else if (relativeAngle[0] === 0 && (relativeAngle[1] % 360 === 90 || relativeAngle[1] % 360 === -270) && relativeAngle[2] === 0) {
             if (playerPos[0] > relativePos[0]) {
-                styleRules = DiffuseLight.getPlayerSpotLightBackground({
+                lightRelativeCoords = DiffuseLight.getLightRelativeCoords({
                     pos: [relativePos[2] + size[0] / 2 - playerPos[2], -relativePos[1] + size[1] / 2 - playerPos[1]],
                     distance: playerPos[0] - relativePos[0]
                 });
@@ -2471,7 +2537,7 @@ class DiffuseLight extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Compone
             // top
         } else if ((relativeAngle[0] % 360 === 90 || relativeAngle[0] % 360 === -270) && relativeAngle[1] === 0 && relativeAngle[2] === 0) {
             if (playerPos[1] > -relativePos[1]) {
-                styleRules = DiffuseLight.getPlayerSpotLightBackground({
+                lightRelativeCoords = DiffuseLight.getLightRelativeCoords({
                     pos: [playerPos[0] - (relativePos[0] - size[0] / 2), playerPos[2] - (relativePos[2] - size[1] / 2)],
                     distance: playerPos[1] + relativePos[1]
                 });
@@ -2479,14 +2545,14 @@ class DiffuseLight extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Compone
             // bottom
         } else if ((relativeAngle[0] % 360 === -90 || relativeAngle[0] % 360 === 270) && relativeAngle[1] === 0 && relativeAngle[2] === 0) {
             if (playerPos[1] < -relativePos[1]) {
-                styleRules = Light.getPlayerSpotLightBackground({
+                lightRelativeCoords = DiffuseLight.getLightRelativeCoords({
                     pos: [playerPos[0] - (relativePos[0] - size[0] / 2), relativePos[2] + size[1] / 2 - playerPos[2]],
                     distance: playerPos[1] + relativePos[1]
                 });
             }
         }
 
-        if (!styleRules) {
+        if (!lightRelativeCoords) {
             return null;
         }
 
@@ -2501,9 +2567,9 @@ class DiffuseLight extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Compone
                     surfaceScale: '3'
                 },
                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('fePointLight', {
-                    x: styleRules.x,
-                    y: styleRules.y,
-                    z: styleRules.z
+                    x: lightRelativeCoords.x,
+                    y: lightRelativeCoords.y,
+                    z: lightRelativeCoords.z
                 })
             ),
             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('feComposite', { 'in': 'light', in2: 'SourceGraphic',
@@ -2513,15 +2579,22 @@ class DiffuseLight extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Compone
         );
     }
 
-    static getPlayerSpotLightBackground({ pos, distance }) {
+    static getLightRelativeCoords({ pos, distance }) {
         return {
             x: pos[0],
             y: pos[1],
-            z: Math.round(distance / 8)
+            z: Math.round(distance * Z_LIGHT_COEFFICIENT)
         };
     }
 }
 
+DiffuseLight.propTypes = {
+    id: __WEBPACK_IMPORTED_MODULE_0_react__["PropTypes"].string.isRequired,
+    relativePos: __WEBPACK_IMPORTED_MODULE_0_react__["PropTypes"].arrayOf(__WEBPACK_IMPORTED_MODULE_0_react__["PropTypes"].number).isRequired,
+    relativeAngle: __WEBPACK_IMPORTED_MODULE_0_react__["PropTypes"].arrayOf(__WEBPACK_IMPORTED_MODULE_0_react__["PropTypes"].number).isRequired,
+    playerPos: __WEBPACK_IMPORTED_MODULE_0_react__["PropTypes"].arrayOf(__WEBPACK_IMPORTED_MODULE_0_react__["PropTypes"].number).isRequired,
+    size: __WEBPACK_IMPORTED_MODULE_0_react__["PropTypes"].arrayOf(__WEBPACK_IMPORTED_MODULE_0_react__["PropTypes"].number).isRequired
+};
 /* harmony default export */ exports["a"] = DiffuseLight;
 
 /***/ },
@@ -2545,6 +2618,7 @@ const DEFAULT_STYLE_RULES = {
 };
 
 class Light extends __WEBPACK_IMPORTED_MODULE_1_react___default.a.PureComponent {
+
     render() {
         const {
             relativePos,
@@ -2605,13 +2679,7 @@ class Light extends __WEBPACK_IMPORTED_MODULE_1_react___default.a.PureComponent 
             }
         }
 
-        // return <div className={styles.root} style={{
-        //     backgroundImage: 'none',
-        //     backgroundColor: 'none'
-        // }} />;
-        return __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement('div', { className: __WEBPACK_IMPORTED_MODULE_0__light_css___default.a.root,
-            style: styleRules
-        });
+        return __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement('div', { className: __WEBPACK_IMPORTED_MODULE_0__light_css___default.a.root, style: styleRules });
     }
 
     static getPlayerSpotLightBackground({ pos, distance }) {
@@ -2629,6 +2697,12 @@ class Light extends __WEBPACK_IMPORTED_MODULE_1_react___default.a.PureComponent 
     }
 }
 
+Light.propTypes = {
+    relativePos: __WEBPACK_IMPORTED_MODULE_1_react__["PropTypes"].arrayOf(__WEBPACK_IMPORTED_MODULE_1_react__["PropTypes"].number).isRequired,
+    relativeAngle: __WEBPACK_IMPORTED_MODULE_1_react__["PropTypes"].arrayOf(__WEBPACK_IMPORTED_MODULE_1_react__["PropTypes"].number).isRequired,
+    playerPos: __WEBPACK_IMPORTED_MODULE_1_react__["PropTypes"].arrayOf(__WEBPACK_IMPORTED_MODULE_1_react__["PropTypes"].number).isRequired,
+    size: __WEBPACK_IMPORTED_MODULE_1_react__["PropTypes"].arrayOf(__WEBPACK_IMPORTED_MODULE_1_react__["PropTypes"].number).isRequired
+};
 /* harmony default export */ exports["a"] = Light;
 
 /***/ },
@@ -2669,6 +2743,7 @@ function Logo() {
 
 
 class Painting extends __WEBPACK_IMPORTED_MODULE_1_react___default.a.PureComponent {
+
     render() {
         const { pos, playerPos, size, angle, alias } = this.props;
         return __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2__plain_plain__["a" /* default */], {
@@ -2682,6 +2757,13 @@ class Painting extends __WEBPACK_IMPORTED_MODULE_1_react___default.a.PureCompone
     }
 }
 
+Painting.propTypes = {
+    pos: __WEBPACK_IMPORTED_MODULE_1_react__["PropTypes"].arrayOf(__WEBPACK_IMPORTED_MODULE_1_react__["PropTypes"].number).isRequired,
+    playerPos: __WEBPACK_IMPORTED_MODULE_1_react__["PropTypes"].arrayOf(__WEBPACK_IMPORTED_MODULE_1_react__["PropTypes"].number).isRequired,
+    angle: __WEBPACK_IMPORTED_MODULE_1_react__["PropTypes"].arrayOf(__WEBPACK_IMPORTED_MODULE_1_react__["PropTypes"].number).isRequired,
+    size: __WEBPACK_IMPORTED_MODULE_1_react__["PropTypes"].arrayOf(__WEBPACK_IMPORTED_MODULE_1_react__["PropTypes"].number).isRequired,
+    alias: __WEBPACK_IMPORTED_MODULE_1_react__["PropTypes"].string.isRequired
+};
 /* harmony default export */ exports["a"] = Painting;
 
 /***/ },
@@ -2806,12 +2888,12 @@ class EndScreen extends __WEBPACK_IMPORTED_MODULE_1_react___default.a.Component 
     }
 }
 
-EndScreen.contextTypes = {
-    controls: __WEBPACK_IMPORTED_MODULE_1_react__["PropTypes"].object.isRequired
-};
 EndScreen.propTypes = {
     onEnd: __WEBPACK_IMPORTED_MODULE_1_react__["PropTypes"].func.isRequired,
     gamepadState: __WEBPACK_IMPORTED_MODULE_1_react__["PropTypes"].number.isRequired
+};
+EndScreen.contextTypes = {
+    controls: __WEBPACK_IMPORTED_MODULE_1_react__["PropTypes"].object.isRequired
 };
 /* harmony default export */ exports["a"] = EndScreen;
 
@@ -3254,15 +3336,15 @@ class StartScreen extends __WEBPACK_IMPORTED_MODULE_1_react___default.a.Componen
     }
 }
 
+StartScreen.propTypes = {
+    onStart: __WEBPACK_IMPORTED_MODULE_1_react__["PropTypes"].func.isRequired,
+    gamepadState: __WEBPACK_IMPORTED_MODULE_1_react__["PropTypes"].number.isRequired
+};
 StartScreen.contextTypes = {
     audioCtx: __WEBPACK_IMPORTED_MODULE_1_react__["PropTypes"].object.isRequired,
     masterGain: __WEBPACK_IMPORTED_MODULE_1_react__["PropTypes"].object.isRequired,
     assets: __WEBPACK_IMPORTED_MODULE_1_react__["PropTypes"].object.isRequired,
     controls: __WEBPACK_IMPORTED_MODULE_1_react__["PropTypes"].object.isRequired
-};
-StartScreen.propTypes = {
-    onStart: __WEBPACK_IMPORTED_MODULE_1_react__["PropTypes"].func.isRequired,
-    gamepadState: __WEBPACK_IMPORTED_MODULE_1_react__["PropTypes"].number.isRequired
 };
 /* harmony default export */ exports["a"] = StartScreen;
 
@@ -3286,6 +3368,7 @@ StartScreen.propTypes = {
 const HANDLE_SIZE = [6, 40];
 
 class Switcher extends __WEBPACK_IMPORTED_MODULE_1_react___default.a.PureComponent {
+
     constructor(props) {
         super(props);
 
@@ -3297,8 +3380,8 @@ class Switcher extends __WEBPACK_IMPORTED_MODULE_1_react___default.a.PureCompone
     }
 
     render() {
-        const { name, playerPos, size, angle, isReachable = false,
-            isOn = false, isInteractive = true, graphicsQuality } = this.props;
+        const { name, playerPos, size, angle, isReachable,
+            isOn, isInteractive, graphicsQuality } = this.props;
         const classNames = ['obj', __WEBPACK_IMPORTED_MODULE_0_components_switcher_switcher_css___default.a['quality-' + graphicsQuality], isOn ? __WEBPACK_IMPORTED_MODULE_0_components_switcher_switcher_css___default.a.on : __WEBPACK_IMPORTED_MODULE_0_components_switcher_switcher_css___default.a.off];
         if (isInteractive && isReachable) {
             classNames.push(__WEBPACK_IMPORTED_MODULE_0_components_switcher_switcher_css___default.a.reachable);
@@ -3371,6 +3454,20 @@ class Switcher extends __WEBPACK_IMPORTED_MODULE_1_react___default.a.PureCompone
 }
 /* harmony export (immutable) */ exports["a"] = Switcher;
 
+Switcher.propTypes = {
+    name: __WEBPACK_IMPORTED_MODULE_1_react__["PropTypes"].string.isRequired,
+    size: __WEBPACK_IMPORTED_MODULE_1_react__["PropTypes"].arrayOf(__WEBPACK_IMPORTED_MODULE_1_react__["PropTypes"].number).isRequired,
+    pos: __WEBPACK_IMPORTED_MODULE_1_react__["PropTypes"].arrayOf(__WEBPACK_IMPORTED_MODULE_1_react__["PropTypes"].number).isRequired,
+    angle: __WEBPACK_IMPORTED_MODULE_1_react__["PropTypes"].arrayOf(__WEBPACK_IMPORTED_MODULE_1_react__["PropTypes"].number).isRequired,
+    playerPos: __WEBPACK_IMPORTED_MODULE_1_react__["PropTypes"].arrayOf(__WEBPACK_IMPORTED_MODULE_1_react__["PropTypes"].number).isRequired,
+    isReachable: __WEBPACK_IMPORTED_MODULE_1_react__["PropTypes"].bool,
+    isInteractive: __WEBPACK_IMPORTED_MODULE_1_react__["PropTypes"].bool.isRequired,
+    isOn: __WEBPACK_IMPORTED_MODULE_1_react__["PropTypes"].bool.isRequired,
+    graphicsQuality: __WEBPACK_IMPORTED_MODULE_1_react__["PropTypes"].number.isRequired
+};
+Switcher.defaultProps = {
+    isReachable: false
+};
 
 /***/ },
 /* 130 */
@@ -3391,6 +3488,7 @@ class Switcher extends __WEBPACK_IMPORTED_MODULE_1_react___default.a.PureCompone
 
 // no support for rotated walls for now
 class Wall extends __WEBPACK_IMPORTED_MODULE_1_react___default.a.PureComponent {
+
     constructor(props) {
         super(props);
 
@@ -3450,6 +3548,14 @@ class Wall extends __WEBPACK_IMPORTED_MODULE_1_react___default.a.PureComponent {
     }
 }
 
+Wall.propTypes = {
+    name: __WEBPACK_IMPORTED_MODULE_1_react__["PropTypes"].string.isRequired,
+    pos: __WEBPACK_IMPORTED_MODULE_1_react__["PropTypes"].arrayOf(__WEBPACK_IMPORTED_MODULE_1_react__["PropTypes"].number).isRequired,
+    playerPos: __WEBPACK_IMPORTED_MODULE_1_react__["PropTypes"].arrayOf(__WEBPACK_IMPORTED_MODULE_1_react__["PropTypes"].number).isRequired,
+    size: __WEBPACK_IMPORTED_MODULE_1_react__["PropTypes"].arrayOf(__WEBPACK_IMPORTED_MODULE_1_react__["PropTypes"].number).isRequired,
+    mode: __WEBPACK_IMPORTED_MODULE_1_react__["PropTypes"].number.isRequired,
+    graphicsQuality: __WEBPACK_IMPORTED_MODULE_1_react__["PropTypes"].number.isRequired
+};
 /* harmony default export */ exports["a"] = Wall;
 
 /***/ },
@@ -3780,16 +3886,16 @@ class GameLoop extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
         if (reachableObject && (keyPressed[__WEBPACK_IMPORTED_MODULE_4__constants_constants__["T" /* KEY_E */]][0] === __WEBPACK_IMPORTED_MODULE_4__constants_constants__["m" /* CONTROL_STATE */].FIRST_TIME_DOWN || this.context.controls.gamepadButtons[__WEBPACK_IMPORTED_MODULE_4__constants_constants__["n" /* XBOX_BUTTON_X */]][0] === __WEBPACK_IMPORTED_MODULE_4__constants_constants__["m" /* CONTROL_STATE */].FIRST_TIME_DOWN)) {
             if (reachableObject.type === __WEBPACK_IMPORTED_MODULE_4__constants_constants__["C" /* SWITCHER_TYPE */]) {
                 const door = currentStore.doorsState[reachableObject.props.id];
-                if (![__WEBPACK_IMPORTED_MODULE_4__constants_constants__["u" /* DOOR_OPENING */], __WEBPACK_IMPORTED_MODULE_4__constants_constants__["t" /* DOOR_CLOSING */]].includes(door)) {
-                    actions.push(__WEBPACK_IMPORTED_MODULE_10__actionCreators__["e" /* doorsState */][door === __WEBPACK_IMPORTED_MODULE_4__constants_constants__["v" /* DOOR_OPEN */] ? 'setClosing' : 'setOpening'](reachableObject.props.id));
+                if (![__WEBPACK_IMPORTED_MODULE_4__constants_constants__["t" /* DOOR_OPENING */], __WEBPACK_IMPORTED_MODULE_4__constants_constants__["v" /* DOOR_CLOSING */]].includes(door)) {
+                    actions.push(__WEBPACK_IMPORTED_MODULE_10__actionCreators__["e" /* doorsState */][door === __WEBPACK_IMPORTED_MODULE_4__constants_constants__["s" /* DOOR_OPEN */] ? 'setClosing' : 'setOpening'](reachableObject.props.id));
                     this.delayedActions.pushAction({
-                        action: __WEBPACK_IMPORTED_MODULE_10__actionCreators__["e" /* doorsState */][door === __WEBPACK_IMPORTED_MODULE_4__constants_constants__["v" /* DOOR_OPEN */] ? 'setClose' : 'setOpen'](reachableObject.props.id),
-                        delay: __WEBPACK_IMPORTED_MODULE_4__constants_constants__["s" /* DOOR_OPEN_TIME */]
+                        action: __WEBPACK_IMPORTED_MODULE_10__actionCreators__["e" /* doorsState */][door === __WEBPACK_IMPORTED_MODULE_4__constants_constants__["s" /* DOOR_OPEN */] ? 'setClose' : 'setOpen'](reachableObject.props.id),
+                        delay: __WEBPACK_IMPORTED_MODULE_4__constants_constants__["w" /* DOOR_OPEN_TIME */]
                     });
-                    if (door === __WEBPACK_IMPORTED_MODULE_4__constants_constants__["w" /* DOOR_CLOSE */]) {
+                    if (door === __WEBPACK_IMPORTED_MODULE_4__constants_constants__["u" /* DOOR_CLOSE */]) {
                         this.delayedActions.pushAction({
-                            action: this.showHints([__WEBPACK_IMPORTED_MODULE_5__constants_hints__["i" /* HINT_DOOR */]], false, __WEBPACK_IMPORTED_MODULE_4__constants_constants__["s" /* DOOR_OPEN_TIME */]),
-                            delay: __WEBPACK_IMPORTED_MODULE_4__constants_constants__["s" /* DOOR_OPEN_TIME */]
+                            action: this.showHints([__WEBPACK_IMPORTED_MODULE_5__constants_hints__["i" /* HINT_DOOR */]], false, __WEBPACK_IMPORTED_MODULE_4__constants_constants__["w" /* DOOR_OPEN_TIME */]),
+                            delay: __WEBPACK_IMPORTED_MODULE_4__constants_constants__["w" /* DOOR_OPEN_TIME */]
                         });
                     }
                 }
@@ -3823,12 +3929,12 @@ class GameLoop extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
     }
 }
 
+GameLoop.propTypes = {
+    onWin: __WEBPACK_IMPORTED_MODULE_0_react__["PropTypes"].func.isRequired
+};
 GameLoop.contextTypes = {
     store: __WEBPACK_IMPORTED_MODULE_3_react_redux_src_utils_storeShape__["a" /* default */].isRequired,
     controls: __WEBPACK_IMPORTED_MODULE_0_react__["PropTypes"].object.isRequired
-};
-GameLoop.propTypes = {
-    onWin: __WEBPACK_IMPORTED_MODULE_0_react__["PropTypes"].func.isRequired
 };
 /* harmony default export */ exports["a"] = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1_react_redux__["connect"])()(GameLoop);
 
@@ -4007,15 +4113,15 @@ class Player extends __WEBPACK_IMPORTED_MODULE_1_react___default.a.Component {
     }
 }
 
-Player.contextTypes = {
-    audioCtx: __WEBPACK_IMPORTED_MODULE_1_react__["PropTypes"].object.isRequired,
-    masterGain: __WEBPACK_IMPORTED_MODULE_1_react__["PropTypes"].object.isRequired,
-    assets: __WEBPACK_IMPORTED_MODULE_1_react__["PropTypes"].object.isRequired
-};
 Player.propTypes = {
     playerPos: __WEBPACK_IMPORTED_MODULE_1_react__["PropTypes"].arrayOf(__WEBPACK_IMPORTED_MODULE_1_react__["PropTypes"].number).isRequired,
     viewAngle: __WEBPACK_IMPORTED_MODULE_1_react__["PropTypes"].arrayOf(__WEBPACK_IMPORTED_MODULE_1_react__["PropTypes"].number).isRequired,
     playerState: __WEBPACK_IMPORTED_MODULE_1_react__["PropTypes"].string.isRequired
+};
+Player.contextTypes = {
+    audioCtx: __WEBPACK_IMPORTED_MODULE_1_react__["PropTypes"].object.isRequired,
+    masterGain: __WEBPACK_IMPORTED_MODULE_1_react__["PropTypes"].object.isRequired,
+    assets: __WEBPACK_IMPORTED_MODULE_1_react__["PropTypes"].object.isRequired
 };
 function mapStateToProps(state) {
     return {
@@ -4124,8 +4230,8 @@ function Scene({ pos, viewAngle, doorsState, visibleObjects, graphicsQuality }) 
                     angle: object.angle,
                     playerPos: pos,
                     isReachable: object.isReachable,
-                    isInteractive: [__WEBPACK_IMPORTED_MODULE_10__constants_constants__["v" /* DOOR_OPEN */], __WEBPACK_IMPORTED_MODULE_10__constants_constants__["w" /* DOOR_CLOSE */]].includes(doorsState[object.props.id]),
-                    isOn: [__WEBPACK_IMPORTED_MODULE_10__constants_constants__["v" /* DOOR_OPEN */], __WEBPACK_IMPORTED_MODULE_10__constants_constants__["u" /* DOOR_OPENING */]].includes(doorsState[object.props.id]),
+                    isInteractive: [__WEBPACK_IMPORTED_MODULE_10__constants_constants__["s" /* DOOR_OPEN */], __WEBPACK_IMPORTED_MODULE_10__constants_constants__["u" /* DOOR_CLOSE */]].includes(doorsState[object.props.id]),
+                    isOn: [__WEBPACK_IMPORTED_MODULE_10__constants_constants__["s" /* DOOR_OPEN */], __WEBPACK_IMPORTED_MODULE_10__constants_constants__["t" /* DOOR_OPENING */]].includes(doorsState[object.props.id]),
                     graphicsQuality: graphicsQuality
                 }));
                 break;
@@ -4152,8 +4258,8 @@ function Scene({ pos, viewAngle, doorsState, visibleObjects, graphicsQuality }) 
 Scene.propTypes = {
     pos: __WEBPACK_IMPORTED_MODULE_0_react__["PropTypes"].arrayOf(__WEBPACK_IMPORTED_MODULE_0_react__["PropTypes"].number).isRequired,
     viewAngle: __WEBPACK_IMPORTED_MODULE_0_react__["PropTypes"].arrayOf(__WEBPACK_IMPORTED_MODULE_0_react__["PropTypes"].number).isRequired,
-    doorsState: __WEBPACK_IMPORTED_MODULE_0_react__["PropTypes"].object.isRequired,
     visibleObjects: __WEBPACK_IMPORTED_MODULE_0_react__["PropTypes"].arrayOf(__WEBPACK_IMPORTED_MODULE_0_react__["PropTypes"].object).isRequired,
+    doorsState: __WEBPACK_IMPORTED_MODULE_0_react__["PropTypes"].object.isRequired,
     graphicsQuality: __WEBPACK_IMPORTED_MODULE_0_react__["PropTypes"].number.isRequired
 };
 
@@ -4371,15 +4477,15 @@ class Settings extends __WEBPACK_IMPORTED_MODULE_1_react___default.a.Component {
     }
 }
 
-Settings.contextTypes = {
-    controls: __WEBPACK_IMPORTED_MODULE_1_react__["PropTypes"].object.isRequired
-};
 Settings.propTypes = {
     settings: __WEBPACK_IMPORTED_MODULE_1_react__["PropTypes"].object.isRequired,
     gamepadState: __WEBPACK_IMPORTED_MODULE_1_react__["PropTypes"].number.isRequired,
     setVolume: __WEBPACK_IMPORTED_MODULE_1_react__["PropTypes"].func.isRequired,
     setMouseSensitivity: __WEBPACK_IMPORTED_MODULE_1_react__["PropTypes"].func.isRequired,
     setStickSensitivity: __WEBPACK_IMPORTED_MODULE_1_react__["PropTypes"].func.isRequired
+};
+Settings.contextTypes = {
+    controls: __WEBPACK_IMPORTED_MODULE_1_react__["PropTypes"].object.isRequired
 };
 function mapStateToProps(state) {
     return {
@@ -4508,19 +4614,19 @@ function doorsState(state = {}, action) {
     switch (action.type) {
         case __WEBPACK_IMPORTED_MODULE_2__constants_actionNames__["m" /* DOOR_SET_CLOSING */]:
             return _extends({}, state, {
-                [action.id]: __WEBPACK_IMPORTED_MODULE_1__constants_constants__["t" /* DOOR_CLOSING */]
+                [action.id]: __WEBPACK_IMPORTED_MODULE_1__constants_constants__["v" /* DOOR_CLOSING */]
             });
         case __WEBPACK_IMPORTED_MODULE_2__constants_actionNames__["n" /* DOOR_SET_OPENING */]:
             return _extends({}, state, {
-                [action.id]: __WEBPACK_IMPORTED_MODULE_1__constants_constants__["u" /* DOOR_OPENING */]
+                [action.id]: __WEBPACK_IMPORTED_MODULE_1__constants_constants__["t" /* DOOR_OPENING */]
             });
         case __WEBPACK_IMPORTED_MODULE_2__constants_actionNames__["o" /* DOOR_SET_CLOSE */]:
             return _extends({}, state, {
-                [action.id]: __WEBPACK_IMPORTED_MODULE_1__constants_constants__["w" /* DOOR_CLOSE */]
+                [action.id]: __WEBPACK_IMPORTED_MODULE_1__constants_constants__["u" /* DOOR_CLOSE */]
             });
         case __WEBPACK_IMPORTED_MODULE_2__constants_actionNames__["p" /* DOOR_SET_OPEN */]:
             return _extends({}, state, {
-                [action.id]: __WEBPACK_IMPORTED_MODULE_1__constants_constants__["v" /* DOOR_OPEN */]
+                [action.id]: __WEBPACK_IMPORTED_MODULE_1__constants_constants__["s" /* DOOR_OPEN */]
             });
         case __WEBPACK_IMPORTED_MODULE_2__constants_actionNames__["a" /* SET_GAME_START */]:
             return getInitialState();
@@ -4899,7 +5005,7 @@ module.exports = {"root":"logo-root-4wLX_"};
 /***/ function(module, exports) {
 
 // removed by extract-text-webpack-plugin
-module.exports = {"root":"painting-root-1Y3pc","give-up":"painting-give-up-ypyAl","forever":"painting-forever-3qg45","easter":"painting-easter-A9-Ij","red-wall":"painting-red-wall-2hKAI","game":"painting-game-myk2f"};
+module.exports = {"root":"painting-root-1Y3pc","give-up":"painting-give-up-ypyAl","forever":"painting-forever-3qg45","easter":"painting-easter-A9-Ij","red-wall":"painting-red-wall-2hKAI","game":"painting-game-myk2f","escape":"painting-escape-32YAa"};
 
 /***/ },
 /* 155 */

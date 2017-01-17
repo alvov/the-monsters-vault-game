@@ -1,9 +1,18 @@
 import styles from './box.css';
-import React from 'react';
+import React, { PropTypes } from 'react';
 import Plain from '../plain/plain';
 import { getTransformRule } from '../../lib/utils';
 
 class Box extends React.PureComponent {
+    static propTypes = {
+        name: PropTypes.string.isRequired,
+        pos: PropTypes.arrayOf(PropTypes.number).isRequired,
+        playerPos: PropTypes.arrayOf(PropTypes.number).isRequired,
+        size: PropTypes.arrayOf(PropTypes.number).isRequired,
+        mode: PropTypes.number.isRequired,
+        graphicsQuality: PropTypes.number.isRequired
+    };
+
     constructor(props) {
         super(props);
 
@@ -61,8 +70,8 @@ class Box extends React.PureComponent {
                 patternId={'box0' + mode}
                 graphicsQuality={graphicsQuality}
             />
-            {playerPos[1] > pos[1] + size[1] / 2 ?
-                <Plain
+            {playerPos[1] > pos[1] + size[1] / 2
+                ? <Plain
                     id={name + '-4'}
                     pos={[0, -size[1] / 2, 0]}
                     parentPos={[this.posWithInvertedY]}
@@ -71,8 +80,8 @@ class Box extends React.PureComponent {
                     angle={[90, 0, 0]}
                     patternId={'box0' + mode}
                     graphicsQuality={graphicsQuality}
-                /> :
-                ''
+                />
+                : null
             }
         </div>
     }

@@ -4,17 +4,20 @@
 }
 
 .give-up {
-    background-image: url(./assets/message-give-up.png);
+    background-image: url(./assets/writings-give-up.png);
 }
 .forever {
-    background-image: url(./assets/message-forever.png);
+    background-image: url(./assets/writings-forever.png);
 }
 .easter {
-    background-image: url(./assets/message-easter.png);
+    background-image: url(./assets/writings-easter.png);
 }
 .red-wall {
-    background-image: url(./assets/message-red-wall.png);
+    background-image: url(./assets/writings-red-wall.png);
 }
 .game {
-    background-image: url(./assets/message-game.png);
+    background-image: url(./assets/writings-game.png);
+}
+.escape {
+    background-image: url(./assets/writings-escape.png);
 }

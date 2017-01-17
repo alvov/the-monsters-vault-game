@@ -1,5 +1,5 @@
 import styles from './light.css';
-import React  from 'react';
+import React, { PropTypes } from 'react';
 
 import { SPOTLIGHT_RADIUS } from '../../constants/constants';
 
@@ -9,6 +9,13 @@ const DEFAULT_STYLE_RULES = {
 };
 
 class Light extends React.PureComponent {
+    static propTypes = {
+        relativePos: PropTypes.arrayOf(PropTypes.number).isRequired,
+        relativeAngle: PropTypes.arrayOf(PropTypes.number).isRequired,
+        playerPos: PropTypes.arrayOf(PropTypes.number).isRequired,
+        size: PropTypes.arrayOf(PropTypes.number).isRequired
+    };
+
     render() {
         const {
             relativePos,
@@ -69,13 +76,7 @@ class Light extends React.PureComponent {
             }
         }
 
-        // return <div className={styles.root} style={{
-        //     backgroundImage: 'none',
-        //     backgroundColor: 'none'
-        // }} />;
-        return <div className={styles.root}
-            style={styleRules}
-        />;
+        return <div className={styles.root} style={styleRules} />;
     }
 
     static getPlayerSpotLightBackground({ pos, distance }) {

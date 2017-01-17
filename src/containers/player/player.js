@@ -6,15 +6,15 @@ import { PLAYER_RUN, PLAYER_WALK } from '../../constants/constants';
 import { convertDegreeToRad } from '../../lib/utils';
 
 class Player extends React.Component {
-    static contextTypes = {
-        audioCtx: PropTypes.object.isRequired,
-        masterGain: PropTypes.object.isRequired,
-        assets: PropTypes.object.isRequired
-    };
     static propTypes = {
         playerPos: PropTypes.arrayOf(PropTypes.number).isRequired,
         viewAngle: PropTypes.arrayOf(PropTypes.number).isRequired,
         playerState: PropTypes.string.isRequired
+    };
+    static contextTypes = {
+        audioCtx: PropTypes.object.isRequired,
+        masterGain: PropTypes.object.isRequired,
+        assets: PropTypes.object.isRequired
     };
 
     constructor(...args) {

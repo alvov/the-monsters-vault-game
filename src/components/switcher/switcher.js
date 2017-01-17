@@ -1,12 +1,27 @@
 import styles from 'components/switcher/switcher.css';
 
-import React from 'react';
+import React, { PropTypes } from 'react';
 import Plain from '../plain/plain';
 import { getTransformRule } from '../../lib/utils';
 
 const HANDLE_SIZE = [6, 40];
 
 export default class Switcher extends React.PureComponent {
+    static propTypes = {
+        name: PropTypes.string.isRequired,
+        size: PropTypes.arrayOf(PropTypes.number).isRequired,
+        pos: PropTypes.arrayOf(PropTypes.number).isRequired,
+        angle: PropTypes.arrayOf(PropTypes.number).isRequired,
+        playerPos: PropTypes.arrayOf(PropTypes.number).isRequired,
+        isReachable: PropTypes.bool,
+        isInteractive: PropTypes.bool.isRequired,
+        isOn: PropTypes.bool.isRequired,
+        graphicsQuality: PropTypes.number.isRequired
+    };
+    static defaultProps = {
+        isReachable: false
+    };
+
     constructor(props) {
         super(props);
 
@@ -18,8 +33,8 @@ export default class Switcher extends React.PureComponent {
     }
 
     render() {
-        const { name, playerPos, size, angle, isReachable = false,
-            isOn = false, isInteractive = true, graphicsQuality } = this.props;
+        const { name, playerPos, size, angle, isReachable,
+            isOn, isInteractive, graphicsQuality } = this.props;
         const classNames = [
             'obj',
             styles['quality-' + graphicsQuality],

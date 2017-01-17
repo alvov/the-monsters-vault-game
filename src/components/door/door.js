@@ -6,16 +6,25 @@ import { getTransformRule, vectorsAdd3D } from '../../lib/utils';
 import { DOOR_OPEN, DOOR_OPENING, DOOR_CLOSE, DOOR_CLOSING, DOOR_OPEN_TIME } from '../../constants/constants';
 
 const BARS_GAP = 25;
+const DOOR_STATES = [DOOR_OPEN, DOOR_OPENING, DOOR_CLOSE, DOOR_CLOSING];
 
 class Door extends React.PureComponent {
+    static propTypes = {
+        isVisible: PropTypes.bool,
+        pos: PropTypes.arrayOf(PropTypes.number).isRequired,
+        playerPos: PropTypes.arrayOf(PropTypes.number).isRequired,
+        viewAngle: PropTypes.arrayOf(PropTypes.number).isRequired,
+        size: PropTypes.arrayOf(PropTypes.number).isRequired,
+        state: PropTypes.oneOf(DOOR_STATES).isRequired,
+        graphicsQuality: PropTypes.number.isRequired
+    };
     static contextTypes = {
         audioCtx: PropTypes.object.isRequired,
         masterGain: PropTypes.object.isRequired,
         assets: PropTypes.object.isRequired
     };
     static defaultProps = {
-        isVisible: true,
-        isOpen: false
+        isVisible: true
     };
 
     constructor(props, context) {

@@ -12,16 +12,15 @@ import {
 } from '../../constants/constants';
 
 class Settings extends React.Component {
-    static contextTypes = {
-        controls: PropTypes.object.isRequired
-    };
-
     static propTypes = {
         settings: PropTypes.object.isRequired,
         gamepadState: PropTypes.number.isRequired,
         setVolume: PropTypes.func.isRequired,
         setMouseSensitivity: PropTypes.func.isRequired,
         setStickSensitivity: PropTypes.func.isRequired
+    };
+    static contextTypes = {
+        controls: PropTypes.object.isRequired
     };
 
     constructor(...args) {

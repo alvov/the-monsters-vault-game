@@ -1,6 +1,16 @@
-import React  from 'react';
+import React, { PropTypes } from 'react';
+
+const Z_LIGHT_COEFFICIENT = 0.125;
 
 class DiffuseLight extends React.Component {
+    static propTypes = {
+        id: PropTypes.string.isRequired,
+        relativePos: PropTypes.arrayOf(PropTypes.number).isRequired,
+        relativeAngle: PropTypes.arrayOf(PropTypes.number).isRequired,
+        playerPos: PropTypes.arrayOf(PropTypes.number).isRequired,
+        size: PropTypes.arrayOf(PropTypes.number).isRequired
+    };
+
     render() {
         const {
             id,
@@ -10,12 +20,12 @@ class DiffuseLight extends React.Component {
             playerPos
         } = this.props;
 
-        let styleRules;
+        let lightRelativeCoords;
 
         // front
         if (relativeAngle[0] === 0 && relativeAngle[1] % 360 === 0 && relativeAngle[2] === 0) {
             if (playerPos[2] > relativePos[2]) {
-                styleRules = DiffuseLight.getPlayerSpotLightBackground({
+                lightRelativeCoords = DiffuseLight.getLightRelativeCoords({
                     pos: [playerPos[0] - (relativePos[0] - size[0] / 2), -relativePos[1] + size[1] / 2 - playerPos[1]],
                     distance: playerPos[2] - relativePos[2]
                 });
@@ -23,7 +33,7 @@ class DiffuseLight extends React.Component {
         // back
         } else if (relativeAngle[0] === 0 && Math.abs(relativeAngle[1] % 360) === 180 && relativeAngle[2] === 0) {
             if (playerPos[2] < relativePos[2]) {
-                styleRules = DiffuseLight.getPlayerSpotLightBackground({
+                lightRelativeCoords = DiffuseLight.getLightRelativeCoords({
                     pos: [relativePos[0] + size[0] / 2 - playerPos[0], -relativePos[1] + size[1] / 2 - playerPos[1]],
                     distance: relativePos[2] - playerPos[2]
                 });
@@ -31,7 +41,7 @@ class DiffuseLight extends React.Component {
         // left
         } else if (relativeAngle[0] === 0 && (relativeAngle[1] % 360 === -90 || relativeAngle[1] % 360 === 270) && relativeAngle[2] === 0) {
             if (playerPos[0] < relativePos[0]) {
-                styleRules = DiffuseLight.getPlayerSpotLightBackground({
+                lightRelativeCoords = DiffuseLight.getLightRelativeCoords({
                     pos: [playerPos[2] - (relativePos[2] - size[0] / 2), -relativePos[1] + size[1] / 2 - playerPos[1]],
                     distance: relativePos[0] - playerPos[0]
                 });
@@ -39,7 +49,7 @@ class DiffuseLight extends React.Component {
         // right
         } else if (relativeAngle[0] === 0 && (relativeAngle[1] % 360 === 90 || relativeAngle[1] % 360 === -270) && relativeAngle[2] === 0) {
             if (playerPos[0] > relativePos[0]) {
-                styleRules = DiffuseLight.getPlayerSpotLightBackground({
+                lightRelativeCoords = DiffuseLight.getLightRelativeCoords({
                     pos: [relativePos[2] + size[0] / 2 - playerPos[2], -relativePos[1] + size[1] / 2 - playerPos[1]],
                     distance: playerPos[0] - relativePos[0]
                 });
@@ -47,7 +57,7 @@ class DiffuseLight extends React.Component {
         // top
         } else if ((relativeAngle[0] % 360 === 90 || relativeAngle[0] % 360 === -270) && relativeAngle[1] === 0 && relativeAngle[2] === 0) {
             if (playerPos[1] > -relativePos[1]) {
-                styleRules = DiffuseLight.getPlayerSpotLightBackground({
+                lightRelativeCoords = DiffuseLight.getLightRelativeCoords({
                     pos: [playerPos[0] - (relativePos[0] - size[0] / 2), playerPos[2] - (relativePos[2] - size[1] / 2)],
                     distance: playerPos[1] + relativePos[1]
                 });
@@ -55,14 +65,14 @@ class DiffuseLight extends React.Component {
         // bottom
         } else if ((relativeAngle[0] % 360 === -90 || relativeAngle[0] % 360 === 270) && relativeAngle[1] === 0 && relativeAngle[2] === 0) {
             if (playerPos[1] < -relativePos[1]) {
-                styleRules = Light.getPlayerSpotLightBackground({
+                lightRelativeCoords = DiffuseLight.getLightRelativeCoords({
                     pos: [playerPos[0] - (relativePos[0] - size[0] / 2), relativePos[2] + size[1] / 2 - playerPos[2]],
                     distance: playerPos[1] + relativePos[1]
                 });
             }
         }
 
-        if (!styleRules) {
+        if (!lightRelativeCoords) {
             return null;
         }
 
@@ -73,9 +83,9 @@ class DiffuseLight extends React.Component {
                 surfaceScale='3'
             >
                 <fePointLight
-                    x={styleRules.x}
-                    y={styleRules.y}
-                    z={styleRules.z}
+                    x={lightRelativeCoords.x}
+                    y={lightRelativeCoords.y}
+                    z={lightRelativeCoords.z}
                 />
             </feDiffuseLighting>
             <feComposite in='light' in2='SourceGraphic'
@@ -85,11 +95,11 @@ class DiffuseLight extends React.Component {
         </filter>;
     }
 
-    static getPlayerSpotLightBackground({ pos, distance }) {
+    static getLightRelativeCoords({ pos, distance }) {
         return {
             x: pos[0],
             y: pos[1],
-            z: Math.round(distance / 8)
+            z: Math.round(distance * Z_LIGHT_COEFFICIENT)
         };
     }
 }

@@ -1,9 +1,14 @@
 import styles from './ceiling.css';
 
-import React  from 'react';
+import React, { PropTypes } from 'react';
 import { getTransformRule } from '../../lib/utils';
 
 class Ceiling extends React.Component {
+    static propTypes = {
+        pos: PropTypes.arrayOf(PropTypes.number).isRequired,
+        size: PropTypes.arrayOf(PropTypes.number).isRequired
+    };
+
     constructor(props) {
         super(props);
 

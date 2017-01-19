@@ -2,7 +2,7 @@ const fs = require('fs');
 const path = require('path');
 
 const ENTRIES = [
-    ['dist', ['jpg', 'svg']],
+    ['dist', ['jpg', 'png', 'svg']],
     ['src', ['m4a']]
 ];
 

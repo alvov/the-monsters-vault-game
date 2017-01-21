@@ -131,3 +131,39 @@ export function vectorsAdd3D(v1, v2) {
 export function convertDegreeToRad(angle) {
     return angle / 180 * Math.PI;
 }
+
+export function createPanner({
+    audioCtx,
+    panningModel = 'HRTF',
+    distanceModel = 'inverse',
+    refDistance = 20,
+    rolloffFactor = 0.1,
+    maxDistance = 100,
+    coneInnerAngle = 360,
+    coneOuterAngle = 0,
+    coneOuterGain = 0,
+    pos
+}) {
+    const panner = audioCtx.createPanner();
+    panner.panningModel = panningModel;
+    panner.distanceModel = distanceModel;
+    panner.refDistance = refDistance;
+    if (maxDistance) {
+        panner.maxDistance = maxDistance;
+    } else if (rolloffFactor) {
+        panner.rolloffFactor = rolloffFactor;
+    }
+    panner.coneInnerAngle = coneInnerAngle;
+    panner.coneOuterAngle = coneOuterAngle;
+    panner.coneOuterGain = coneOuterGain;
+    if (pos) {
+        if (panner.positionX) {
+            panner.positionX.value = pos[0];
+            panner.positionY.value = pos[1];
+            panner.positionZ.value = pos[2];
+        } else {
+            panner.setPosition(...pos);
+        }
+    }
+    return panner;
+}

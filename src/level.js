@@ -144,7 +144,8 @@ const level = {
             size: [150, 150, 150],
             pos: [200, 75, 200],
             props: {
-                mode: 1
+                mode: 1,
+                inhabited: 1
             }
         },
         {
@@ -162,16 +163,19 @@ const level = {
             size: [150, 150, 150],
             pos: [2100, 75, 500],
             props: {
-                mode: 3
+                mode: 3,
+                inhabited: 2
             }
         },
         {
             name: 'box_004',
             type: BOX_TYPE,
             size: [150, 150, 150],
-            pos: [1300, 75, 900],
+            pos: [1300, 75, 899],
             props: {
-                mode: 2
+                mode: 2,
+                inhabited: 1,
+                dependsOnDoor: 5
             }
         },
         {
@@ -180,7 +184,8 @@ const level = {
             size: [150, 150, 150],
             pos: [2110, 75, 1975],
             props: {
-                mode: 1
+                mode: 1,
+                inhabited: 2
             }
         },
         {

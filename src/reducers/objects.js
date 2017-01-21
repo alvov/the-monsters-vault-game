@@ -1,4 +1,4 @@
-import { DOOR_TYPE } from '../constants/constants';
+import { DOOR_TYPE, BOX_TYPE } from '../constants/constants';
 import {
     OBJECTS_SET_VISIBLE,
     OBJECTS_SET_REACHABLE,
@@ -57,7 +57,17 @@ export default function objects(state = getInitialState(), action) {
             return objects;
         }
         case DOOR_SET_OPEN: {
-            return setDoorCollidable({ state, id: action.id, on: false });
+            const newState = setDoorCollidable({ state, id: action.id, on: false });
+            const objects = new Array(newState.length);
+            for (let i = 0; i < newState.length; i++) {
+                let object = newState[i];
+                if (object.type === BOX_TYPE && object.props.dependsOnDoor === action.id) {
+                    object.collides = false;
+                    object.isBroken = true;
+                }
+                objects[i] = object;
+            }
+            return objects;
         }
         case DOOR_SET_CLOSE: {
             return setDoorCollidable({ state, id: action.id, on: true });

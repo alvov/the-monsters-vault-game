@@ -20,3 +20,8 @@
 .quality-1.mode-3 :global(.plain) {
     background-image: url(./box03.jpg);
 }
+
+.broken :global(.plain):not(.bottom) {
+    clip-path: polygon(0% 70%, 20% 50%, 45% 65%, 75% 60%, 100% 80%, 100% 100%, 0% 100%);
+    backface-visibility: visible;
+}

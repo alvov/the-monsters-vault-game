@@ -73,11 +73,13 @@ function Scene({ pos, viewAngle, doorsState, visibleObjects, graphicsQuality }) 
                 renderedObjects.push(<Box
                     key={object.name}
                     name={object.name}
+                    isVisible={object.isVisible}
+                    isBroken={object.isBroken}
                     pos={object.pos}
                     playerPos={pos}
                     size={object.size}
-                    mode={object.props.mode}
                     graphicsQuality={graphicsQuality}
+                    {...object.props}
                 />);
                 break;
             case SWITCHER_TYPE:
@@ -128,7 +130,7 @@ function mapStateToProps(state) {
             if (obj.type === PAINTING_TYPE && state.graphicsQuality === GRAPHICS_QUALITY.LOW) {
                 return false;
             }
-            return obj.isVisible || obj.type === DOOR_TYPE
+            return obj.isVisible || obj.type === DOOR_TYPE || obj.type === BOX_TYPE
         }),
         doorsState: state.doorsState,
         graphicsQuality: state.settings.graphicsQuality

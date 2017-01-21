@@ -3,7 +3,7 @@ import styles from './player.css';
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { PLAYER_RUN, PLAYER_WALK } from '../../constants/constants';
-import { convertDegreeToRad } from '../../lib/utils';
+import { convertDegreeToRad, createPanner } from '../../lib/utils';
 
 class Player extends React.Component {
     static propTypes = {
@@ -20,17 +20,12 @@ class Player extends React.Component {
     constructor(...args) {
         super(...args);
 
-        this.decodedAudioBufferWalking = this.context.assets['src/containers/player/steps-walking.m4a'];
-        this.decodedAudioBufferRunning = this.context.assets['src/containers/player/steps-running.m4a'];
+        this.walkingAudioBuffer = this.context.assets['src/containers/player/steps-walking.m4a'];
+        this.runnningAudioBuffer = this.context.assets['src/containers/player/steps-running.m4a'];
 
-        this.panner = this.context.audioCtx.createPanner();
-        this.panner.panningModel = 'HRTF';
-        this.panner.distanceModel = 'inverse';
-        this.panner.refDistance = 20;
-        this.panner.rolloffFactor = 0.1;
-        this.panner.coneInnerAngle = 360;
-        this.panner.coneOuterAngle = 0;
-        this.panner.coneOuterGain = 0;
+        this.panner = createPanner({
+            audioCtx: this.context.audioCtx
+        });
         this.panner.connect(this.context.masterGain);
 
         this.gainNode = this.context.audioCtx.createGain();
@@ -55,11 +50,11 @@ class Player extends React.Component {
             switch (nextProps.playerState) {
                 case PLAYER_WALK:
                     this.soundStop();
-                    this.soundStart(this.decodedAudioBufferWalking);
+                    this.soundStart(this.walkingAudioBuffer);
                     break;
                 case PLAYER_RUN:
                     this.soundStop();
-                    this.soundStart(this.decodedAudioBufferRunning);
+                    this.soundStart(this.runnningAudioBuffer);
                     break;
                 default:
                     this.soundStop();

@@ -32,7 +32,7 @@ body {
 }.startScreen-root-2jYZG {
     width: 100%;
     height: 100%;
-    padding: 10% 10% 0 20%;
+    padding: 10% 10% 5% 20%;
     overflow: hidden;
     overflow-y: auto;
     background: #000;
@@ -67,7 +67,15 @@ body {
     position: absolute;
     left: -1.5em;
 }
-
+.startScreen-version-1Ykby {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    padding: 5px 10px;
+    background: #000;
+    font-size: 12px;
+    font-weight: bold;
+}
 .startScreen-title-12rPm {
     font-size: 30px;
     font-weight: normal;
@@ -365,7 +373,11 @@ body {
 .box-quality-1-3NYWd.box-mode-3-ZvQ5H .plain {
     background-image: url(./3628ed55158b5a413097584e7fd8a725.jpg);
 }
-.switcher-quality-0-2BcaU .plain {
+
+.box-broken-1514h .plain:not(.box-bottom-Ws9np) {
+    clip-path: polygon(0% 70%, 20% 50%, 45% 65%, 75% 60%, 100% 80%, 100% 100%, 0% 100%);
+    backface-visibility: visible;
+}.switcher-quality-0-2BcaU .plain {
     background: #936f4f;
 }
 .switcher-quality-1-3Cf5G .plain,

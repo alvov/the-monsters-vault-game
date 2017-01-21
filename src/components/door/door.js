@@ -2,7 +2,7 @@ import styles from 'components/door/door.css';
 
 import React, { PropTypes } from 'react';
 import SimpleLight from '../light/simple';
-import { getTransformRule, vectorsAdd3D } from '../../lib/utils';
+import { getTransformRule, vectorsAdd3D, createPanner } from '../../lib/utils';
 import { DOOR_OPEN, DOOR_OPENING, DOOR_CLOSE, DOOR_CLOSING, DOOR_OPEN_TIME } from '../../constants/constants';
 
 const BARS_GAP = 25;
@@ -42,21 +42,10 @@ class Door extends React.PureComponent {
         this.audioSource = null;
         this.decodedAudioBuffer = this.context.assets['src/components/door/mixdown.m4a'];
 
-        this.panner = this.context.audioCtx.createPanner();
-        this.panner.panningModel = 'HRTF';
-        this.panner.distanceModel = 'inverse';
-        this.panner.refDistance = 20;
-        this.panner.rolloffFactor = 0.1;
-        this.panner.coneInnerAngle = 360;
-        this.panner.coneOuterAngle = 0;
-        this.panner.coneOuterGain = 0;
-        if (this.panner.positionX) {
-            this.panner.positionX.value = pos[0];
-            this.panner.positionY.value = pos[1] + size[1];
-            this.panner.positionZ.value = pos[2];
-        } else {
-            this.panner.setPosition(pos[0], pos[1] + size[1], pos[2]);
-        }
+        this.panner = createPanner({
+            audioCtx: this.context.audioCtx,
+            pos: [pos[0], pos[1] + size[1], pos[2]]
+        });
         this.panner.connect(this.context.masterGain);
     }
 

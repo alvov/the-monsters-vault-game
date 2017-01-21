@@ -1,3 +1,5 @@
+export const GAME_VERSION = '0.3.0';
+
 export const FPS = 60;
 
 export const KEY_W = 87;

@@ -13,7 +13,8 @@ import {
     XBOX_BUTTON_B,
     XBOX_BUTTON_CROSS_UP,
     XBOX_BUTTON_CROSS_DOWN,
-    XBOX_STICK_LEFT_AXIS_Y
+    XBOX_STICK_LEFT_AXIS_Y,
+    GAME_VERSION
 } from '../../../constants/constants';
 
 const MUSIC_VOLUME = 0.2;
@@ -85,6 +86,7 @@ class StartScreen extends React.Component {
 
     render() {
         return <div className={styles.root}>
+            <div className={styles.version}>{'v' + GAME_VERSION}</div>
             {this.renderDefaultScreen()}
             {this.renderSettingsScreen()}
             {this.renderCreditsScreen()}

@@ -150,7 +150,8 @@ class GameLoop extends React.Component {
         // try gamepad
         if (gamepadSnapshot) {
             const x = GameLoop.filterStickValue(gamepadSnapshot.axes[XBOX_STICK_LEFT_AXIS_X]);
-            const z = -GameLoop.filterStickValue(gamepadSnapshot.axes[XBOX_STICK_LEFT_AXIS_Y]) + 0;  // convert -0 to 0 by adding 0
+            // convert -0 to 0 by adding 0
+            const z = -GameLoop.filterStickValue(gamepadSnapshot.axes[XBOX_STICK_LEFT_AXIS_Y]) + 0;
             if (x || z) {
                 if (gamepadSnapshot.axes[XBOX_TRIGGER_RIGHT_AXIS] >= 0.5) {
                     isRunning = true;

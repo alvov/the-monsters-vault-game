@@ -1,6 +1,7 @@
 export const SET_GAME_START = 'setGameStart';
 export const SET_GAME_PLAY = 'setGamePlay';
-export const SET_GAME_END = 'setGameEnd';
+export const SET_GAME_WIN = 'setGameWin';
+export const SET_GAME_LOOSE = 'setGameLoose';
 
 export const UPDATE_POINTER_DELTA = 'updatePointerDelta';
 export const RESET_POINTER_DELTA = 'resetPointerDelta';
@@ -28,3 +29,9 @@ export const SET_SETTINGS_VOLUME = 'setSettingsVolume';
 export const SET_SETTINGS_GRAPHICS_QUALITY = 'setSettingsGraphicsQuality';
 export const SET_SETTINGS_MOUSE_SENSITIVITY = 'setSettingsMouseSensitivity';
 export const SET_SETTINGS_STICK_SENSITIVITY = 'setSettingsStickSensitivity';
+
+export const SET_ENEMY_STATE = 'setEnemyState';
+export const SET_ENEMY_POSITION = 'setEnemyPosition';
+export const SET_ENEMY_DIRECTION = 'setEnemyDirection';
+export const SET_ENEMY_TARGET = 'setEnemyTarget';
+export const SET_ENEMY_VISIBILITY = 'setEnemyVisibility';

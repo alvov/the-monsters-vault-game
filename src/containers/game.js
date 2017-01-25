@@ -2,7 +2,7 @@ import React, { PropTypes } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import {
-    LOADING, START, PLAY, END,
+    LOADING, START, PLAY, WIN, LOOSE,
     CONTROL_STATE,
     KEY_W, KEY_S, KEY_A, KEY_D, KEY_E, KEY_Q, KEY_SHIFT, KEY_ENTER, KEY_ESCAPE,
     XBOX_BUTTON_A, XBOX_BUTTON_B, XBOX_BUTTON_X, XBOX_BUTTON_BACK, XBOX_BUTTON_CROSS_UP, XBOX_BUTTON_CROSS_DOWN,
@@ -96,7 +96,8 @@ class Game extends React.Component {
 
         this.setGameStateStart = this.setGameState.bind(this, START);
         this.setGameStatePlay = this.setGameState.bind(this, PLAY);
-        this.setGameStateEnd = this.setGameState.bind(this, END);
+        this.setGameStateWin = this.setGameState.bind(this, WIN);
+        this.setGameStateLoose = this.setGameState.bind(this, LOOSE);
 
         this.cacheAssetData = this.cacheAssetData.bind(this);
     }
@@ -156,7 +157,11 @@ class Game extends React.Component {
             return <Viewport>
                 <Patterns />
                 <Hints hints={hints} />
-                <GameLoop onWin={this.setGameStateEnd}>
+                <GameLoop
+                    onWin={this.setGameStateWin}
+                    onLoose={this.setGameStateLoose}
+                    onExit={this.setGameStateStart}
+                >
                     <Camera>
                         <Player>
                             <Scene />
@@ -164,8 +169,11 @@ class Game extends React.Component {
                     </Camera>
                 </GameLoop>
             </Viewport>;
-        } else if (gameState === END) {
-            return <EndScreen onEnd={this.setGameStateStart} gamepadState={gamepadState} />
+        } else if ([WIN, LOOSE].includes(gameState)) {
+            return <EndScreen
+                gameState={gameState}
+                onEnd={this.setGameStateStart}
+                gamepadState={gamepadState} />
         }
     }
 

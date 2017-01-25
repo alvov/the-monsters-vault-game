@@ -61,7 +61,7 @@ export default function objects(state = getInitialState(), action) {
             const objects = new Array(newState.length);
             for (let i = 0; i < newState.length; i++) {
                 let object = newState[i];
-                if (object.type === BOX_TYPE && object.props.dependsOnDoor === action.id) {
+                if (object.type === BOX_TYPE && object.props.triggerDoorId === action.id) {
                     object.collides = false;
                     object.isBroken = true;
                 }

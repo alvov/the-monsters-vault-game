@@ -2,7 +2,8 @@ import styles from 'components/door/door.css';
 
 import React, { PropTypes } from 'react';
 import SimpleLight from '../light/simple';
-import { getTransformRule, vectorsAdd3D, createPanner } from '../../lib/utils';
+import { getTransformRule, vectorsAdd3D } from '../../lib/utils';
+import Audio from '../../lib/Audio';
 import { DOOR_OPEN, DOOR_OPENING, DOOR_CLOSE, DOOR_CLOSING, DOOR_OPEN_TIME } from '../../constants/constants';
 
 const BARS_GAP = 25;
@@ -42,7 +43,7 @@ class Door extends React.PureComponent {
         this.audioSource = null;
         this.decodedAudioBuffer = this.context.assets['src/components/door/mixdown.m4a'];
 
-        this.panner = createPanner({
+        this.panner = Audio.createPanner({
             audioCtx: this.context.audioCtx,
             pos: [pos[0], pos[1] + size[1], pos[2]]
         });
@@ -51,14 +52,19 @@ class Door extends React.PureComponent {
 
     componentWillUpdate(nextProps) {
         if ([DOOR_CLOSING, DOOR_OPENING].includes(nextProps.state) && nextProps.state !== this.props.state) {
-            this.startSound();
+            this.audioSource = Audio.soundStart({
+                audioSource: this.audioSource,
+                audioCtx: this.context.audioCtx,
+                destination: this.panner,
+                buffer: this.decodedAudioBuffer
+            });
         } else if ([DOOR_OPEN, DOOR_CLOSE].includes(nextProps.state) && nextProps.state !== this.props.state) {
-            this.stopSound();
+            Audio.soundStop(this.audioSource);
         }
     }
 
     componentWillUnmount() {
-        this.stopSound();
+        Audio.soundStop(this.audioSource);
     }
 
     render() {
@@ -104,21 +110,6 @@ class Door extends React.PureComponent {
             key = key + 1;
         }
         return bars;
-    }
-
-    startSound() {
-        this.audioSource = this.context.audioCtx.createBufferSource();
-        this.audioSource.connect(this.panner);
-        this.audioSource.buffer = this.decodedAudioBuffer;
-        this.audioSource.start(0);
-    }
-
-    stopSound() {
-        if (this.audioSource) {
-            this.audioSource.stop();
-            this.audioSource.disconnect(this.panner);
-            this.audioSource = null;
-        }
     }
 }
 

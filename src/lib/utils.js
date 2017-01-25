@@ -75,50 +75,6 @@ export function getPointPosition({ pos, distance, angle }) {
     return [x, y, z];
 }
 
-/**
- * Stores an array of actions that should be dispatched at a certain time
- */
-export class DelayedActions {
-    constructor() {
-        this.delayedActions = [];
-    }
-
-    /**
-     * Returns an array of actions, that are to be dispatched
-     * @returns {Array}
-     */
-    getActualActions() {
-        const now = Date.now();
-        let actualActions = [];
-        let delayedActions = [];
-        for (let i = 0; i < this.delayedActions.length; i++) {
-            if (this.delayedActions[i].timestamp <= now) {
-                actualActions.push(this.delayedActions[i].action);
-            } else {
-                delayedActions.push(this.delayedActions[i]);
-            }
-        }
-        this.delayedActions = delayedActions;
-        return actualActions;
-    }
-
-    /**
-     * Adds a delayed action to the list
-     * @param {Object} action
-     * @param {number} delay
-     */
-    pushAction({ action, delay }) {
-        this.delayedActions.push({
-            action,
-            timestamp: Date.now() + delay
-        })
-    }
-
-    clear() {
-        this.delayedActions = [];
-    }
-}
-
 export function vectorsAdd3D(v1, v2) {
     return [v1[0] + v2[0], v1[1] + v2[1], v1[2] + v2[2]];
 }
@@ -132,38 +88,11 @@ export function convertDegreeToRad(angle) {
     return angle / 180 * Math.PI;
 }
 
-export function createPanner({
-    audioCtx,
-    panningModel = 'HRTF',
-    distanceModel = 'inverse',
-    refDistance = 20,
-    rolloffFactor = 0.1,
-    maxDistance = 100,
-    coneInnerAngle = 360,
-    coneOuterAngle = 0,
-    coneOuterGain = 0,
-    pos
-}) {
-    const panner = audioCtx.createPanner();
-    panner.panningModel = panningModel;
-    panner.distanceModel = distanceModel;
-    panner.refDistance = refDistance;
-    if (maxDistance) {
-        panner.maxDistance = maxDistance;
-    } else if (rolloffFactor) {
-        panner.rolloffFactor = rolloffFactor;
-    }
-    panner.coneInnerAngle = coneInnerAngle;
-    panner.coneOuterAngle = coneOuterAngle;
-    panner.coneOuterGain = coneOuterGain;
-    if (pos) {
-        if (panner.positionX) {
-            panner.positionX.value = pos[0];
-            panner.positionY.value = pos[1];
-            panner.positionZ.value = pos[2];
-        } else {
-            panner.setPosition(...pos);
-        }
-    }
-    return panner;
+/**
+ * Returns degrees for given radians
+ * @param {number} angle
+ * @returns {number}
+ */
+export function convertRadToDegree(angle) {
+    return angle / Math.PI * 180;
 }

@@ -1,0 +1,108 @@
+.direction {
+    transition: transform .1s ease-in-out;
+    animation: animationWalkingY 1.5s ease-in-out infinite,
+        animationWalkingX 3s ease-in-out infinite;
+}
+.noise {
+    position: absolute;
+    content: '';
+    width: 100px;
+    height: 100px;
+    background: url(./texture.png);
+    animation: white-noise 300ms step-start infinite;
+}
+.noise:nth-child(1) {
+    transform: translate(-50%, -50%) rotateX(45deg);
+}
+.noise:nth-child(2) {
+    transform: translate(-50%, -50%) rotateX(-45deg);
+}
+.noise:nth-child(3) {
+    transform: translate(-50%, -50%) rotateX(90deg) rotateY(45deg);
+}
+.noise:nth-child(4) {
+    transform: translate(-50%, -50%) rotateX(90deg) rotateY(-45deg);
+}
+
+.eyes {
+    position: absolute;
+    width: 40px;
+    transform: translate3d(-50%, -10px, -40px) rotateY(180deg);
+    transform-style: preserve-3d;
+}
+.eye {
+    position: absolute;
+    width: 9px;
+    height: 4px;
+    overflow: hidden;
+    background-color: #f3ff9b;
+    border-radius: 50%;
+    backface-visibility: hidden;
+}
+.eye::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 6px;
+    height: 6px;
+    margin: -3px 0 0 -3px;
+    background-color: #000;
+    border-radius: 50%;
+}
+.eye:nth-child(1) {
+    left: 0;
+}
+.eye:nth-child(2) {
+    right: 0;
+}
+
+.state-attack .direction {
+    transition: none;
+}
+.state-attack .eye {
+    background-color: #b4020a;
+    height: 6px;
+}
+.state-attack .eye:nth-child(1) {
+    transform: rotateY(-10deg) rotateZ(10deg);
+}
+.state-attack .eye:nth-child(2) {
+    transform: rotateY(10deg) rotateZ(-10deg);
+}
+
+.quality-0 .noise {
+    animation: none;
+    background: transparent;
+    border: 5px solid #000;
+}
+
+@keyframes white-noise {
+    0% {
+        background-position: 0 0;
+    }
+    50% {
+        background-position: 50% 0;
+    }
+    100% {
+        background-position: 100% 0;
+    }
+}
+
+@keyframes animationWalkingY {
+    0%, 100% {
+        top: 0;
+    }
+    50% {
+        top: -5px;
+    }
+}
+
+@keyframes animationWalkingX {
+    0%, 100% {
+        left: -3px;
+    }
+    50% {
+        left: 3px;
+    }
+}

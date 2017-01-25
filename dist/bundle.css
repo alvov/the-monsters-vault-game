@@ -190,14 +190,32 @@ body {
     overflow: hidden;
     box-sizing: border-box;
     color: #000;
-    animation: endScreen-root-HnQnd 3s linear;
+    animation-duration: 3s;
+    animation-timing-function: linear;
+    animation-fill-mode: forwards;
 }
-@keyframes endScreen-root-HnQnd {
+.endScreen-state-win-1uVtt {
+    animation-name: endScreen-win-1YKcl;
+}
+.endScreen-state-loose-MsRk7 {
+    animation-name: endScreen-loose-u4Qtu;
+}
+
+@keyframes endScreen-win-1YKcl {
     0% {
         background-color: #000;
     }
     100% {
         background-color: #fff;
+    }
+}
+
+@keyframes endScreen-loose-u4Qtu {
+    0% {
+        background-color: #000;
+    }
+    100% {
+        background-color: #b4020a;
     }
 }
 
@@ -214,7 +232,7 @@ body {
     }
 }
 
-.endScreen-anyKey-3nFhc {
+.endScreen-key-3en1k {
     margin-top: 40px;
     font-size: 24px;
     animation: endScreen-message-2QthM 3s 3s backwards linear;
@@ -413,4 +431,112 @@ body {
 }
 .door-bar-eZp6B.door-quality-0-dsESl {
     background: #e0e0e0;
+}
+.enemy-direction-1I8dN {
+    transition: transform .1s ease-in-out;
+    animation: enemy-animationWalkingY-3zjx6 1.5s ease-in-out infinite,
+        enemy-animationWalkingX-2RaGh 3s ease-in-out infinite;
+}
+.enemy-noise-13-ze {
+    position: absolute;
+    content: '';
+    width: 100px;
+    height: 100px;
+    background: url(./1c1430572300aa82719312e3483d80d9.png);
+    animation: enemy-white-noise-3-kZ8 300ms step-start infinite;
+}
+.enemy-noise-13-ze:nth-child(1) {
+    transform: translate(-50%, -50%) rotateX(45deg);
+}
+.enemy-noise-13-ze:nth-child(2) {
+    transform: translate(-50%, -50%) rotateX(-45deg);
+}
+.enemy-noise-13-ze:nth-child(3) {
+    transform: translate(-50%, -50%) rotateX(90deg) rotateY(45deg);
+}
+.enemy-noise-13-ze:nth-child(4) {
+    transform: translate(-50%, -50%) rotateX(90deg) rotateY(-45deg);
+}
+
+.enemy-eyes-FCLJ1 {
+    position: absolute;
+    width: 40px;
+    transform: translate3d(-50%, -10px, -40px) rotateY(180deg);
+    transform-style: preserve-3d;
+}
+.enemy-eye-3_1bw {
+    position: absolute;
+    width: 9px;
+    height: 4px;
+    overflow: hidden;
+    background-color: #f3ff9b;
+    border-radius: 50%;
+    backface-visibility: hidden;
+}
+.enemy-eye-3_1bw::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 6px;
+    height: 6px;
+    margin: -3px 0 0 -3px;
+    background-color: #000;
+    border-radius: 50%;
+}
+.enemy-eye-3_1bw:nth-child(1) {
+    left: 0;
+}
+.enemy-eye-3_1bw:nth-child(2) {
+    right: 0;
+}
+
+.enemy-state-attack-2rWST .enemy-direction-1I8dN {
+    transition: none;
+}
+.enemy-state-attack-2rWST .enemy-eye-3_1bw {
+    background-color: #b4020a;
+    height: 6px;
+}
+.enemy-state-attack-2rWST .enemy-eye-3_1bw:nth-child(1) {
+    transform: rotateY(-10deg) rotateZ(10deg);
+}
+.enemy-state-attack-2rWST .enemy-eye-3_1bw:nth-child(2) {
+    transform: rotateY(10deg) rotateZ(-10deg);
+}
+
+.enemy-quality-0-3fbYD .enemy-noise-13-ze {
+    animation: none;
+    background: transparent;
+    border: 5px solid #000;
+}
+
+@keyframes enemy-white-noise-3-kZ8 {
+    0% {
+        background-position: 0 0;
+    }
+    50% {
+        background-position: 50% 0;
+    }
+    100% {
+        background-position: 100% 0;
+    }
+}
+
+@keyframes enemy-animationWalkingY-3zjx6 {
+    0%, 100% {
+        top: 0;
+    }
+    50% {
+        top: -5px;
+    }
+}
+
+@keyframes enemy-animationWalkingX-2RaGh {
+    0%, 100% {
+        left: -3px;
+    }
+    50% {
+        left: 3px;
+    }
 }

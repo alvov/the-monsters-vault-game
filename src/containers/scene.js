@@ -8,6 +8,7 @@ import Wall from '../components/wall/wall';
 import Box from '../components/box/box';
 import Switcher from '../components/switcher/switcher';
 import Door from '../components/door/door';
+import Enemy from '../components/enemy/enemy';
 import { getTransformRule } from '../lib/utils';
 import {
     DOOR_OPEN,
@@ -20,10 +21,11 @@ import {
     BOX_TYPE,
     SWITCHER_TYPE,
     DOOR_TYPE,
-    GRAPHICS_QUALITY
+    GRAPHICS_QUALITY,
+    ENEMY_STATE
 } from '../constants/constants';
 
-function Scene({ pos, viewAngle, doorsState, visibleObjects, graphicsQuality }) {
+function Scene({ pos, viewAngle, enemy, doorsState, visibleObjects, graphicsQuality }) {
     const transformRule = getTransformRule({
         pos: [-pos[0], pos[1], -pos[2]]
     });
@@ -110,6 +112,17 @@ function Scene({ pos, viewAngle, doorsState, visibleObjects, graphicsQuality }) 
                 break;
         }
     }
+    if (enemy.state !== ENEMY_STATE.LIMBO) {
+        renderedObjects.push(<Enemy
+            key='enemy'
+            pos={enemy.position}
+            state={enemy.state}
+            direction={enemy.direction}
+            isVisible={enemy.isVisible}
+            graphicsQuality={graphicsQuality}
+        />);
+    }
+
     return <div className="obj scene" style={transformRule}>
         {renderedObjects}
     </div>;
@@ -117,6 +130,7 @@ function Scene({ pos, viewAngle, doorsState, visibleObjects, graphicsQuality }) 
 Scene.propTypes = {
     pos: PropTypes.arrayOf(PropTypes.number).isRequired,
     viewAngle: PropTypes.arrayOf(PropTypes.number).isRequired,
+    enemy: PropTypes.object.isRequired,
     visibleObjects: PropTypes.arrayOf(PropTypes.object).isRequired,
     doorsState: PropTypes.object.isRequired,
     graphicsQuality: PropTypes.number.isRequired
@@ -126,6 +140,7 @@ function mapStateToProps(state) {
     return {
         pos: state.pos,
         viewAngle: state.viewAngle,
+        enemy: state.enemy,
         visibleObjects: state.objects.filter(obj => {
             if (obj.type === PAINTING_TYPE && state.graphicsQuality === GRAPHICS_QUALITY.LOW) {
                 return false;

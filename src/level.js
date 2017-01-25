@@ -10,8 +10,11 @@ import {
     WALL_TYPE,
     BOX_TYPE,
     SWITCHER_TYPE,
-    DOOR_TYPE
+    DOOR_TYPE,
+    ENEMY_STATE
 } from './constants/constants';
+
+const ENEMY_TRIGGER_DOOR_ID = 3;
 
 const level = {
     boundaries: [2500, null, 2500],
@@ -19,6 +22,16 @@ const level = {
         pos: [1250, 150, 250],
         size: [50, 150, 50],
         angle: [0, 0, 0]
+    },
+    enemy: {
+        state: ENEMY_STATE.LIMBO,
+        isVisible: false,
+        position: [1250, 70, 750],
+        target: [1250, 0, 750],
+        direction: 0,
+        props: {
+            triggerDoorId: ENEMY_TRIGGER_DOOR_ID
+        }
     },
     objects: [
         {
@@ -175,7 +188,7 @@ const level = {
             props: {
                 mode: 2,
                 inhabited: 1,
-                dependsOnDoor: 5
+                triggerDoorId: ENEMY_TRIGGER_DOOR_ID
             }
         },
         {

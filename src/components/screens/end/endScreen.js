@@ -4,7 +4,8 @@ import Loop from '../../../lib/loop';
 import {
     KEY_ENTER,
     XBOX_BUTTON_X,
-    CONTROL_STATE
+    CONTROL_STATE,
+    WIN
 } from '../../../constants/constants';
 
 const ENDING_TIME = 3000;
@@ -28,6 +29,8 @@ class EndScreen extends React.Component {
             showAnyKeyMessage: false
         };
         this.endingTimer = null;
+
+        this.handleClick = this.handleClick.bind(this);
     }
 
     componentDidMount() {
@@ -46,16 +49,27 @@ class EndScreen extends React.Component {
     }
 
     render() {
-        const { gamepadState } = this.props;
+        const { gameState, gamepadState } = this.props;
+        const className = [
+            styles.root,
+            styles['state-' + gameState]
+        ].join(' ');
+
         return <div
-            className={styles.root}
-            onClick={this.handleKeyDown}
+            className={className}
+            onClick={this.handleClick}
         >
             <div className={styles.message}>
-                You escaped
+                {gameState === WIN
+                    ? 'You escaped'
+                    : 'You died. The monster got you'
+                }
             </div>
-            <div className={styles.anyKey}>
-                {gamepadState === -1 ? '[[ Press `Enter` ]]' : '[[ Press `X` button ]]'}
+            <div className={styles.key}>
+                {gamepadState === -1
+                    ? '[[ Press `Enter` ]]'
+                    : '[[ Press `X` button ]]'
+                }
             </div>
         </div>;
     }
@@ -75,6 +89,10 @@ class EndScreen extends React.Component {
             this.context.controls.gamepadButtons[XBOX_BUTTON_X][0] = CONTROL_STATE.DOWN;
             this.props.onEnd();
         }
+    }
+
+    handleClick() {
+        this.props.onEnd();
     }
 }
 

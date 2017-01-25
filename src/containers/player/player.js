@@ -3,7 +3,8 @@ import styles from './player.css';
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { PLAYER_RUN, PLAYER_WALK } from '../../constants/constants';
-import { convertDegreeToRad, createPanner } from '../../lib/utils';
+import { convertDegreeToRad } from '../../lib/utils';
+import Audio from '../../lib/Audio';
 
 class Player extends React.Component {
     static propTypes = {
@@ -23,7 +24,7 @@ class Player extends React.Component {
         this.walkingAudioBuffer = this.context.assets['src/containers/player/steps-walking.m4a'];
         this.runnningAudioBuffer = this.context.assets['src/containers/player/steps-running.m4a'];
 
-        this.panner = createPanner({
+        this.panner = Audio.createPanner({
             audioCtx: this.context.audioCtx
         });
         this.panner.connect(this.context.masterGain);
@@ -49,11 +50,9 @@ class Player extends React.Component {
         if (nextProps.playerState && this.props.playerState !== nextProps.playerState) {
             switch (nextProps.playerState) {
                 case PLAYER_WALK:
-                    this.soundStop();
                     this.soundStart(this.walkingAudioBuffer);
                     break;
                 case PLAYER_RUN:
-                    this.soundStop();
                     this.soundStart(this.runnningAudioBuffer);
                     break;
                 default:
@@ -80,29 +79,21 @@ class Player extends React.Component {
     }
 
     soundStart(decodedAudioBuffer) {
-        this.audioSource = this.context.audioCtx.createBufferSource();
-        this.audioSource.connect(this.gainNode);
-        this.audioSource.buffer = decodedAudioBuffer;
-        this.audioSource.loop = true;
-        this.audioSource.start(0);
+        this.audioSource = Audio.soundStart({
+            audioSource: this.audioSource,
+            audioCtx: this.context.audioCtx,
+            destination: this.gainNode,
+            buffer: decodedAudioBuffer,
+            loop: true
+        });
     }
 
     soundStop() {
-        if (this.audioSource) {
-            this.audioSource.stop();
-            this.audioSource.disconnect(this.gainNode);
-            this.audioSource = null;
-        }
+        Audio.soundStop(this.audioSource);
     }
 
     updatePannerPosition(pos) {
-        if (this.panner.positionX) {
-            this.panner.positionX.value = pos[0];
-            this.panner.positionY.value = 0;
-            this.panner.positionZ.value = pos[2];
-        } else {
-            this.panner.setPosition(pos[0], 0, pos[2]);
-        }
+        Audio.setPannerPosition(this.panner, [pos[0], 0, pos[2]]);
     }
 
     /**

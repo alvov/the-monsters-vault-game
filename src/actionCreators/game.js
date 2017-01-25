@@ -1,12 +1,14 @@
 import {
     START,
     PLAY,
-    END
+    WIN,
+    LOOSE
 } from '../constants/constants';
 import {
     SET_GAME_START,
     SET_GAME_PLAY,
-    SET_GAME_END,
+    SET_GAME_WIN,
+    SET_GAME_LOOSE,
     UPDATE_POINTER_DELTA,
     RESET_POINTER_DELTA
 } from '../constants/actionNames';
@@ -21,9 +23,13 @@ export function setGameState(state) {
             return {
                 type: SET_GAME_PLAY
             };
-        case END:
+        case WIN:
             return {
-                type: SET_GAME_END
+                type: SET_GAME_WIN
+            };
+        case LOOSE:
+            return {
+                type: SET_GAME_LOOSE
             };
     }
 }

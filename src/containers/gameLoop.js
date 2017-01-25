@@ -11,7 +11,8 @@ import {
     PLAYER_SPEED, RUNNING_COEFF, BROAD_CELL_SIZE,
     STICK_VALUE_THRESHOLD,
     HAND_LENGTH, DOOR_OPEN, DOOR_CLOSE, DOOR_OPENING, DOOR_CLOSING, DOOR_OPEN_TIME, SWITCHER_TYPE, HINT_SHOW_TIME,
-    START
+    ENEMY_STATE, ENEMY_SPEED, ENEMY_SPEED_RUNNING, ENEMY_ATTACK_DISTANCE, ENEMY_ATTACK_DISTANCE_VISIBLE,
+    ENEMY_VIEW_ANGLE_RAD, ENEMY_TARGET_REACH_THRESHOLD, ENEMY_CHANGE_TARGET_TIME, ENEMY_KILL_DISTANCE
 } from '../constants/constants';
 
 import {
@@ -26,16 +27,21 @@ import {
     HINT_DOOR
 } from '../constants/hints';
 
-import { getVisibleObjects, getPointPosition, DelayedActions, convertDegreeToRad } from '../lib/utils';
+import DelayedActions from '../lib/DelayedActions';
+import { getVisibleObjects, getPointPosition, convertDegreeToRad, vectorsAdd3D } from '../lib/utils';
 
 import Loop from '../lib/loop';
 import level from '../level';
 import Collision from '../lib/collision';
 import * as actionCreators from '../actionCreators';
 
+const EPSILON = 0.1;
+
 class GameLoop extends React.Component {
     static propTypes = {
-        onWin: PropTypes.func.isRequired
+        onWin: PropTypes.func.isRequired,
+        onLoose: PropTypes.func.isRequired,
+        onExit: PropTypes.func.isRequired
     };
     static contextTypes = {
         store: storeShape.isRequired,
@@ -101,7 +107,8 @@ class GameLoop extends React.Component {
             this.context.controls.keyPressed[KEY_Q][0] === CONTROL_STATE.FIRST_TIME_DOWN ||
             this.context.controls.gamepadButtons[XBOX_BUTTON_BACK][0] === CONTROL_STATE.FIRST_TIME_DOWN
         ) {
-            actions.push(actionCreators.game.setGameState(START));
+            this.props.onExit();
+            return;
         }
 
         let gamepadSnapshot;
@@ -213,11 +220,8 @@ class GameLoop extends React.Component {
             angleShiftSum = angleShiftSum + convertDegreeToRad(currentStore.viewAngle[0]);
 
             step = step * frameRateCoefficient * (isRunning ? RUNNING_COEFF : 1) * PLAYER_SPEED;
-            const shift = [step * Math.sin(angleShiftSum), 0, -step * Math.cos(angleShiftSum)];
-            const newPos = [];
-            for (let i = 0; i < 3; i++) {
-                newPos.push(currentStore.pos[i] + shift[i]);
-            }
+            const shift = GameLoop.getShift2d(angleShiftSum, step);
+            const newPos = vectorsAdd3D(currentStore.pos, shift);
             const objects = currentStore.objects;
             const collisions = Collision.getCollisions([currentStore.pos, newPos], objects, BROAD_CELL_SIZE);
             // get last collision result as new player position
@@ -297,6 +301,101 @@ class GameLoop extends React.Component {
             }
         }
 
+        // enemy
+        if (currentStore.enemy.state !== ENEMY_STATE.LIMBO) {
+            const playerPosition = newState.pos || currentStore.pos;
+            const distanceToPlayer = GameLoop.getDistance2d(currentStore.enemy.position, playerPosition);
+            const directionToPlayer = GameLoop.getDirection2d(currentStore.enemy.position, playerPosition);
+            const canSeeEachOther = Collision.getCollisionView(
+                [currentStore.enemy.position, playerPosition],
+                currentStore.objects,
+                BROAD_CELL_SIZE
+            ) === null;
+            actions.push(actionCreators.enemy.setVisibility(canSeeEachOther));
+            if (
+                canSeeEachOther &&
+                (
+                    // if player is too close
+                    distanceToPlayer < ENEMY_ATTACK_DISTANCE ||
+                    // if player id close and in sight
+                    distanceToPlayer < ENEMY_ATTACK_DISTANCE_VISIBLE &&
+                        Math.abs(directionToPlayer - currentStore.enemy.direction) < ENEMY_VIEW_ANGLE_RAD / 2
+                )
+            ) {
+                // if enemy is not already attacking
+                if ([ENEMY_STATE.WANDER, ENEMY_STATE.STOP].includes(currentStore.enemy.state)) {
+                    actions.push(actionCreators.enemy.setState(ENEMY_STATE.ATTACK));
+                }
+            } else if (currentStore.enemy.state === ENEMY_STATE.ATTACK) {
+                actions.push(actionCreators.enemy.setState(ENEMY_STATE.WANDER));
+                const newTarget = Collision.getRandomFreeCell({
+                    pos: currentStore.enemy.position,
+                    objects: currentStore.objects,
+                    broadCellSize: BROAD_CELL_SIZE,
+                    boundaries: level.boundaries
+                });
+                actions.push(actionCreators.enemy.setTarget(newTarget));
+                actions.push(actionCreators.enemy.setDirection(GameLoop.getDirection2d(
+                    currentStore.enemy.position, newTarget
+                )));
+            }
+            if (currentStore.enemy.state === ENEMY_STATE.WANDER) {
+                let directionToTarget;
+                // if enemy reached it's current target
+                if (
+                    GameLoop.getDistance2d(
+                        currentStore.enemy.position,
+                        currentStore.enemy.target
+                    ) < ENEMY_TARGET_REACH_THRESHOLD
+                ) {
+                    const newTarget = Collision.getRandomFreeCell({
+                        pos: currentStore.enemy.position,
+                        objects: currentStore.objects,
+                        broadCellSize: BROAD_CELL_SIZE,
+                        boundaries: level.boundaries
+                    });
+                    directionToTarget = GameLoop.getDirection2d(
+                        currentStore.enemy.position, newTarget
+                    );
+                    actions.push(actionCreators.enemy.setTarget(newTarget));
+                    // stop for a while if direction has changed
+                    if (!GameLoop.floatsEqual(directionToTarget, currentStore.enemy.direction)) {
+                        actions.push(actionCreators.enemy.setState(ENEMY_STATE.STOP));
+                        actions.push(actionCreators.enemy.setDirection(directionToTarget));
+                        this.delayedActions.pushAction({
+                            action: actionCreators.enemy.setState(ENEMY_STATE.WANDER),
+                            delay: ENEMY_CHANGE_TARGET_TIME
+                        });
+                    }
+                }
+                if (!directionToTarget) {
+                    directionToTarget = GameLoop.getDirection2d(
+                        currentStore.enemy.position, currentStore.enemy.target
+                    );
+                }
+                actions.push(actionCreators.enemy.setDirection(directionToTarget));
+                actions.push(actionCreators.enemy.setPosition(
+                    vectorsAdd3D(
+                        currentStore.enemy.position,
+                        GameLoop.getShift2d(directionToTarget, ENEMY_SPEED * frameRateCoefficient)
+                    )
+                ));
+            } else if (currentStore.enemy.state === ENEMY_STATE.ATTACK) {
+                if (distanceToPlayer < ENEMY_KILL_DISTANCE) {
+                    this.props.onLoose();
+                    return;
+                } else {
+                    actions.push(actionCreators.enemy.setDirection(directionToPlayer));
+                    actions.push(actionCreators.enemy.setPosition(
+                        vectorsAdd3D(
+                            currentStore.enemy.position,
+                            GameLoop.getShift2d(directionToPlayer, ENEMY_SPEED_RUNNING * frameRateCoefficient)
+                        )
+                    ));
+                }
+            }
+        }
+
         if (actions.length) {
             this.props.dispatch(batchActions(actions));
         }
@@ -322,6 +421,43 @@ class GameLoop extends React.Component {
 
     static filterStickValue(value) {
         return Math.abs(value) >= STICK_VALUE_THRESHOLD ? value : 0;
+    }
+
+    static getDistance2d(p1, p2) {
+        return Math.sqrt((p1[0] - p2[0]) ** 2 + (p1[2] - p2[2]) ** 2);
+    }
+
+    static getDirection2d(p1, p2) {
+        const xShift = p2[0] - p1[0];
+        let zShift = p2[2] - p1[2];
+        if (!xShift && !zShift) {
+            return 0;
+        }
+        if (zShift) {
+            zShift = -zShift;
+        }
+        let direction;
+        if (zShift >= 0) {
+            direction = Math.atan(xShift / zShift);
+        } else {
+            direction = Math.atan(xShift / zShift) + Math.PI;
+        }
+        if (direction < 0) {
+            direction = direction + Math.PI * 2;
+        }
+        return direction;
+    }
+
+    static getShift2d(direction, distance) {
+        return [
+            distance * Math.sin(direction),
+            0,
+            -distance * Math.cos(direction)
+        ];
+    }
+
+    static floatsEqual(f1, f2) {
+        return Math.abs(f1 - f2) < EPSILON;
     }
 }
 

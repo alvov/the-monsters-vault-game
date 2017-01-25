@@ -19,24 +19,11 @@ export default function Credits() {
         </dd>
         <dt>Sound effects</dt>
         <dd className={styles.creditsDescription}>
-            steps, doors —
+            <ExternalLink href='http://www.littlerobotsoundfactory.com/' />
             <br />
             <ExternalLink href='http://www.bigsoundbank.com/' />
             <br />
-            by&nbsp;
-            <ExternalLink href='https://twitter.com/josephsardin'>
-                @josephsardin
-            </ExternalLink>
-            <br />
-            <br />
-            breaking boxes, growls —
-            <br />
             <ExternalLink href='http://opengameart.org/' />
-            <br />
-            by&nbsp;
-            <ExternalLink href='https://twitter.com/opengameart'>
-                @opengameart
-            </ExternalLink>
         </dd>
         <dt>Xbox controller driver for MacOs</dt>
         <dd className={styles.creditsDescription}>

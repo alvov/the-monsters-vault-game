@@ -1,7 +1,8 @@
 import styles from './box.css';
 import React, { PropTypes } from 'react';
 import Plain from '../plain/plain';
-import { getTransformRule, createPanner } from '../../lib/utils';
+import { getTransformRule } from '../../lib/utils';
+import Audio from '../../lib/Audio';
 
 const INHABITED_MODE = {
     1: 'clawsOnWood',
@@ -34,11 +35,10 @@ class Box extends React.PureComponent {
                 `src/components/box/${INHABITED_MODE[props.inhabited]}.m4a`
             ];
             this.breakAudioBuffer = this.context.assets['src/components/box/breakBox.m4a'];
-            this.laughAudioBuffer = this.context.assets['src/components/box/growl.m4a'];
 
             this.audioSource = null;
 
-            this.inhabitedPanner = createPanner({
+            this.inhabitedPanner = Audio.createPanner({
                 audioCtx: this.context.audioCtx,
                 distanceModel: 'linear',
                 refDistance: props.size[0] / 2,
@@ -47,13 +47,14 @@ class Box extends React.PureComponent {
             });
             this.inhabitedPanner.connect(this.context.masterGain);
 
-            this.breakPanner = createPanner({
+            this.breakPanner = Audio.createPanner({
                 audioCtx: this.context.audioCtx,
                 pos: props.pos
             });
             this.breakPanner.connect(this.context.masterGain);
 
-            this.soundStart({
+            this.audioSource = Audio.soundStart({
+                audioCtx: this.context.audioCtx,
                 buffer: this.inhabitedAutioBuffer,
                 destination: this.inhabitedPanner,
                 loop: true
@@ -63,23 +64,17 @@ class Box extends React.PureComponent {
 
     componentWillReceiveProps(nextProps) {
         if (!this.props.isBroken && nextProps.isBroken) {
-            this.soundStop();
-            this.soundStart({
+            this.audioSource = Audio.soundStart({
+                audioSource: this.audioSource,
+                audioCtx: this.context.audioCtx,
                 buffer: this.breakAudioBuffer,
                 destination: this.breakPanner
             });
-            setTimeout(() => {
-                this.soundStop();
-                this.soundStart({
-                    buffer: this.laughAudioBuffer,
-                    destination: this.breakPanner
-                });
-            }, 2000);
         }
     }
 
     componentWillUnmount() {
-        this.soundStop();
+        Audio.soundStop(this.audioSource);
     }
 
     render() {
@@ -165,22 +160,6 @@ class Box extends React.PureComponent {
                 : null
             }
         </div>
-    }
-
-    soundStart({ buffer, destination, loop = false }) {
-        this.audioSource = this.context.audioCtx.createBufferSource();
-        this.audioSource.connect(destination);
-        this.audioSource.buffer = buffer;
-        this.audioSource.loop = loop;
-        this.audioSource.start(0);
-    }
-
-    soundStop() {
-        if (this.audioSource) {
-            this.audioSource.stop();
-            this.audioSource.disconnect();
-            this.audioSource = null;
-        }
     }
 }
 

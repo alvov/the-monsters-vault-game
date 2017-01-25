@@ -3,7 +3,7 @@ export default class Collision {
      * Returns an array of collisions with objects
      * @param {Array} line - coordinates of initial and final player positions
      * @param {Array} objects - array of objects
-     * @param {Array} broadCellSize - maximum cell size
+     * @param {number} broadCellSize - maximum cell size
      * @returns {Array} - array of objects with info about collisions
      */
     static getCollisions(line, objects, broadCellSize) {
@@ -29,7 +29,7 @@ export default class Collision {
      * Returns an object with info about collision
      * @param {Array} line - coordinates of initial and final subject positions
      * @param {Array} objects - array of objects
-     * @param {Array} broadCellSize - maximum cell size
+     * @param {number} broadCellSize - maximum cell size
      * @returns {Object} - object with info about collision
      */
     static getCollisionPos(line, objects, broadCellSize) {
@@ -171,7 +171,7 @@ export default class Collision {
      * Returns array of objects which are first to intersect with `line` in 3d space (or null if there's none)
      * @param {Array} line
      * @param {Array} objects
-     * @param {Array} broadCellSize - maximum cell size
+     * @param {number} broadCellSize - maximum cell size
      * @returns {null|Array}
      */
     static getCollisionView(line, objects, broadCellSize) {
@@ -231,11 +231,55 @@ export default class Collision {
         return null;
     }
 
+    static getRandomFreeCell({ pos, objects, broadCellSize, boundaries }) {
+        broadCellSize = broadCellSize * 2;
+        const currentCellCenter = [];
+        for (let i = 0; i < pos.length; i++) {
+            if (i === 1) {
+                continue;
+            }
+            currentCellCenter.push(
+                Math.floor(pos[i] / broadCellSize) * broadCellSize + broadCellSize / 2
+            );
+        }
+        const allVariants = [
+            [currentCellCenter[0] - broadCellSize, 0, currentCellCenter[1]],
+            [currentCellCenter[0] + broadCellSize, 0, currentCellCenter[1]],
+            [currentCellCenter[0], 0, currentCellCenter[1] - broadCellSize],
+            [currentCellCenter[0], 0, currentCellCenter[1] + broadCellSize]
+        ];
+        const availableVariants = [];
+        for (let i = 0; i < allVariants.length; i++) {
+            if (
+                allVariants[i][0] < 0 ||
+                allVariants[i][0] > boundaries[0] ||
+                allVariants[i][2] < 0 ||
+                allVariants[i][2] > boundaries[2] ||
+                Collision.getCollisionView([
+                    pos, [allVariants[i][0], pos[1], allVariants[i][2]]
+                ], objects, broadCellSize / 2)
+            ) {
+                continue;
+            }
+            availableVariants.push(allVariants[i]);
+        }
+        let variantIndex;
+        // locked in a room
+        if (availableVariants.length === 0) {
+            return currentCellCenter;
+        } else if (availableVariants.length === 1) {
+            variantIndex = 0;
+        } else {
+            variantIndex = Collision.getRandom(availableVariants.length);
+        }
+        return availableVariants[variantIndex];
+    }
+
     /**
      * Returns set of objects that can potentially collide with line2d
      * @param {Array} line - coordinates of initial and final subject positions
      * @param {Array} objects - array of objects
-     * @param {Array} broadCellSize - maximum cell size
+     * @param {number} broadCellSize - maximum cell size
      * @returns {Array} - array of objects, that can possibly collide with the subject
      */
     static filterInvolvedObjects(line, objects, broadCellSize) {
@@ -335,5 +379,9 @@ export default class Collision {
      */
     static vectorsEqual(v1, v2) {
         return v1[0] === v2[0] && v1[1] === v2[1] && v1[2] === v2[2];
+    }
+
+    static getRandom(max) {
+        return Math.floor(Math.random() * max);
     }
 }

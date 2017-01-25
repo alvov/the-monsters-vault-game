@@ -2,13 +2,20 @@
 
 ## Story
 You find yourself locked in some sort of a
- dungeon in the pitch darkness. You don't
- remember how you got here (maybe you were
- poisoned or hypnotized or maybe I'm just too
+ creepy dungeon in the pitch darkness. You don't
+ remember how you got here (because I'm too
  lazy to make up this part of the story). Anyway,
  the only way out is through this metal door
  ahead of you, and you need to find out how
  to open it.
+ 
+## How to play
+Push down the levers to open doors.
+You can guess where the opened door is by the
+sound it makes (use your headphones).  
+Don't get caught by the monster. You can also
+guess its position and direction by the sound
+it makes.
 
 ## Controls
 ### Keyboard
@@ -32,7 +39,7 @@ You find yourself locked in some sort of a
 
 ![gamepad gameplay](./assets/screencapture-001.gif)
 
-## Motivation
+## Motivation for making this game
 * Go nuts and make a 3d (well, more like 2.5d)
 interactive game with CSS 3d transforms only
 * Use React/Redux/Webpack/Tape stack, because I can
@@ -42,7 +49,7 @@ interactive game with CSS 3d transforms only
   * [Gamepad API](https://w3c.github.io/gamepad/)
   * [Service Workers](https://www.w3.org/TR/service-workers/)
 * Use SVG lighting filters for textures
-(in order to test my laptop's cooling system)
+(basically to test my laptop's cooling system)
 
 ## Features
 - [x] No canvases
@@ -57,10 +64,9 @@ by [@keithclarkcouk](https://twitter.com/keithclarkcouk)
 by [@PinkOnHead](https://twitter.com/pinkonhead)
 and [@PawelWoz](https://twitter.com/PawelWoz)
 * **Sounds effects**  
-  * steps, doors — http://www.bigsoundbank.com/
-  by [@josephsardin](https://twitter.com/josephsardin)
-  * breaking boxes, growls — http://opengameart.org/
-  by [@opengameart](https://twitter.com/opengameart)
+  * http://www.littlerobotsoundfactory.com/
+  * http://www.bigsoundbank.com/
+  * http://opengameart.org/
 
 * **Xbox controller driver for MacOs** —
 [360Controller on GitHub](https://github.com/360Controller/360Controller'>)

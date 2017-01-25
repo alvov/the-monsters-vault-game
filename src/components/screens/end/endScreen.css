@@ -8,14 +8,32 @@
     overflow: hidden;
     box-sizing: border-box;
     color: #000;
-    animation: root 3s linear;
+    animation-duration: 3s;
+    animation-timing-function: linear;
+    animation-fill-mode: forwards;
 }
-@keyframes root {
+.state-win {
+    animation-name: win;
+}
+.state-loose {
+    animation-name: loose;
+}
+
+@keyframes win {
     0% {
         background-color: #000;
     }
     100% {
         background-color: #fff;
+    }
+}
+
+@keyframes loose {
+    0% {
+        background-color: #000;
+    }
+    100% {
+        background-color: #b4020a;
     }
 }
 
@@ -32,7 +50,7 @@
     }
 }
 
-.anyKey {
+.key {
     margin-top: 40px;
     font-size: 24px;
     animation: message 3s 3s backwards linear;

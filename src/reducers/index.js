@@ -2,7 +2,7 @@ import { combineReducers } from 'redux';
 
 import gameState from './gameState';
 import pointerDelta from './pointerDelta';
-import viewAngle from './viewAngle';
+import playerViewAngle from './playerViewAngle';
 import playerPosition from './playerPosition';
 import playerState from './playerState';
 import objects from './objects';
@@ -15,7 +15,7 @@ import enemy from './enemy';
 export default combineReducers({
     gameState,
     pointerDelta,
-    viewAngle,
+    playerViewAngle,
     pos: playerPosition,
     playerState,
     objects,

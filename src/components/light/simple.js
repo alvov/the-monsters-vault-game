@@ -11,11 +11,12 @@ class SimpleLight extends React.Component {
     render() {
         const { relativePos, playerPos } = this.props;
         const opacity = SimpleLight.getOpacity(
-            SimpleLight.vectorLength3D([
+            // vector length
+            Math.hypot(
                 playerPos[0] - relativePos[0],
                 playerPos[1] + relativePos[1],
                 playerPos[2] - relativePos[2]
-            ])
+            )
         );
         return <div className={styles.overlay}
             style={{ opacity }}
@@ -25,10 +26,6 @@ class SimpleLight extends React.Component {
     static getOpacity(distance) {
         const ratio = Math.max(0, SPOTLIGHT_RADIUS - distance) / SPOTLIGHT_RADIUS;
         return 1 - ratio;
-    }
-
-    static vectorLength3D(v) {
-        return Math.sqrt(v[0] ** 2 + v[1] ** 2 + v[2] ** 2);
     }
 }
 

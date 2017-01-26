@@ -1,11 +1,11 @@
 import styles from './endScreen.css';
 import React, { PropTypes } from 'react';
-import Loop from '../../../lib/loop';
+import Loop from '../../../lib/Loop';
 import {
     KEY_ENTER,
     XBOX_BUTTON_X,
     CONTROL_STATE,
-    WIN
+    GAME_STATE_WIN
 } from '../../../constants/constants';
 
 const ENDING_TIME = 3000;
@@ -60,7 +60,7 @@ class EndScreen extends React.Component {
             onClick={this.handleClick}
         >
             <div className={styles.message}>
-                {gameState === WIN
+                {gameState === GAME_STATE_WIN
                     ? 'You escaped'
                     : 'You died. The monster got you'
                 }

@@ -2,12 +2,12 @@ import styles from './startScreen.css';
 import React, { PropTypes } from 'react';
 import Logo from '../../logo/logo';
 import Credits from './credits/credits';
-import Loop from '../../../lib/loop';
+import Loop from '../../../lib/Loop';
 import Settings from '../../../containers/settings/settings';
 
 import {
     CONTROL_STATE,
-    KEY_ESCAPE,
+    KEY_BACK,
     KEY_ENTER,
     XBOX_BUTTON_A,
     XBOX_BUTTON_B,
@@ -147,7 +147,7 @@ class StartScreen extends React.Component {
 
     loopCallback() {
         // keyboard
-        if (this.state.screen !== SCREEN_DEFAULT && this.isKeyboardButtonPressed(KEY_ESCAPE)) {
+        if (this.state.screen !== SCREEN_DEFAULT && this.isKeyboardButtonPressed(KEY_BACK)) {
             this.setScreenDefault();
         }
         if (this.state.screen === SCREEN_DEFAULT && this.isKeyboardButtonPressed(KEY_ENTER)) {
@@ -218,10 +218,10 @@ class StartScreen extends React.Component {
         }
     }
 
-    isKeyboardButtonPressed(keyCode) {
-        const isPressed = this.context.controls.keyPressed[keyCode][0] === CONTROL_STATE.FIRST_TIME_DOWN;
+    isKeyboardButtonPressed(code) {
+        const isPressed = this.context.controls.keyPressed[code][0] === CONTROL_STATE.FIRST_TIME_DOWN;
         if (isPressed) {
-            this.context.controls.keyPressed[keyCode][0] = CONTROL_STATE.DOWN;
+            this.context.controls.keyPressed[code][0] = CONTROL_STATE.DOWN;
         }
         return isPressed;
     }

@@ -1,7 +1,7 @@
 import {
     HINTS_ADD,
     HINTS_REMOVE,
-    SET_GAME_START
+    GAME_SET_STATE_START
 } from '../constants/actionNames';
 
 export default function hints(state = new Map(), action) {
@@ -33,7 +33,7 @@ export default function hints(state = new Map(), action) {
             });
             return newState;
         }
-        case SET_GAME_START:
+        case GAME_SET_STATE_START:
             return new Map();
         default:
             return state;

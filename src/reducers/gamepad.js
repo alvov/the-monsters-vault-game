@@ -1,9 +1,9 @@
-import { SET_GAMEPAD_STATE } from '../constants/actionNames';
+import { GAMEPAD_SET_STATE } from '../constants/actionNames';
 import { combineReducers } from 'redux';
 
 function gamepadState(state = -1, action) {
     switch (action.type) {
-        case SET_GAMEPAD_STATE:
+        case GAMEPAD_SET_STATE:
             return action.index;
         default:
             return state;

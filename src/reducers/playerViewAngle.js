@@ -1,15 +1,15 @@
 import level from '../level';
-import { VIEW_ANGLE_UPDATE, SET_GAME_START } from '../constants/actionNames';
+import { PLAYER_UPDATE_VIEW_ANGLE, GAME_SET_STATE_START } from '../constants/actionNames';
 
 function getInitialState() {
     return [...level.player.angle];
 }
 
-export default function viewAngle(state = getInitialState(), action) {
+export default function playerViewAngle(state = getInitialState(), action) {
     switch (action.type) {
-        case VIEW_ANGLE_UPDATE:
+        case PLAYER_UPDATE_VIEW_ANGLE:
             return action.viewAngle;
-        case SET_GAME_START:
+        case GAME_SET_STATE_START:
             return getInitialState();
         default:
             return state;

@@ -4,13 +4,13 @@ import { batchActions } from 'redux-batched-actions';
 import storeShape from 'react-redux/src/utils/storeShape';
 
 import {
-    FPS, KEY_W, KEY_S, KEY_A, KEY_D, KEY_E, KEY_SHIFT, KEY_Q,
-    XBOX_BUTTON_X, XBOX_BUTTON_BACK,
-    XBOX_STICK_LEFT_AXIS_X, XBOX_STICK_LEFT_AXIS_Y, XBOX_STICK_RIGHT_AXIS_X, XBOX_STICK_RIGHT_AXIS_Y, XBOX_TRIGGER_RIGHT_AXIS,
+    FPS,
+    KEY_FORWARD, KEY_BACKWARD, KEY_LEFT, KEY_RIGHT, KEY_INTERACT, KEY_RUN, KEY_QUIT_GAME,
+    XBOX_BUTTON_X, XBOX_BUTTON_BACK, XBOX_TRIGGER_RIGHT_AXIS,
+    XBOX_STICK_LEFT_AXIS_X, XBOX_STICK_LEFT_AXIS_Y, XBOX_STICK_RIGHT_AXIS_X, XBOX_STICK_RIGHT_AXIS_Y,
     CONTROL_STATE,
-    PLAYER_SPEED, RUNNING_COEFF, BROAD_CELL_SIZE,
-    STICK_VALUE_THRESHOLD,
-    HAND_LENGTH, DOOR_OPEN, DOOR_CLOSE, DOOR_OPENING, DOOR_CLOSING, DOOR_OPEN_TIME, SWITCHER_TYPE, HINT_SHOW_TIME,
+    PLAYER_SPEED, PLAYER_RUNNING_COEFF, BROAD_CELL_SIZE,
+    PLAYER_HAND_LENGTH, DOOR_STATE_OPEN, DOOR_STATE_CLOSE, DOOR_STATE_OPENING, DOOR_STATE_CLOSING, DOOR_OPEN_TIME, SWITCHER_TYPE, HINT_SHOW_TIME,
     ENEMY_STATE, ENEMY_SPEED, ENEMY_SPEED_RUNNING, ENEMY_ATTACK_DISTANCE, ENEMY_ATTACK_DISTANCE_VISIBLE,
     ENEMY_VIEW_ANGLE_RAD, ENEMY_TARGET_REACH_THRESHOLD, ENEMY_CHANGE_TARGET_TIME, ENEMY_KILL_DISTANCE
 } from '../constants/constants';
@@ -30,12 +30,13 @@ import {
 import DelayedActions from '../lib/DelayedActions';
 import { getVisibleObjects, getPointPosition, convertDegreeToRad, vectorsAdd3D } from '../lib/utils';
 
-import Loop from '../lib/loop';
+import Loop from '../lib/Loop';
 import level from '../level';
-import Collision from '../lib/collision';
+import Collision from '../lib/Collision';
 import * as actionCreators from '../actionCreators';
 
 const EPSILON = 0.1;
+const STICK_VALUE_THRESHOLD = 0.3;
 
 class GameLoop extends React.Component {
     static propTypes = {
@@ -104,7 +105,7 @@ class GameLoop extends React.Component {
 
         // check exit
         if (
-            this.context.controls.keyPressed[KEY_Q][0] === CONTROL_STATE.FIRST_TIME_DOWN ||
+            this.context.controls.keyPressed[KEY_QUIT_GAME][0] === CONTROL_STATE.FIRST_TIME_DOWN ||
             this.context.controls.gamepadButtons[XBOX_BUTTON_BACK][0] === CONTROL_STATE.FIRST_TIME_DOWN
         ) {
             this.props.onExit();
@@ -119,7 +120,7 @@ class GameLoop extends React.Component {
         // get new view angle
         // try gamepad
         if (gamepadSnapshot) {
-            const currentViewAngle = currentStore.viewAngle;
+            const currentViewAngle = currentStore.playerViewAngle;
             const x = GameLoop.filterStickValue(gamepadSnapshot.axes[XBOX_STICK_RIGHT_AXIS_X]);
             const y = GameLoop.filterStickValue(gamepadSnapshot.axes[XBOX_STICK_RIGHT_AXIS_Y]);
             if (x || y) {
@@ -136,7 +137,7 @@ class GameLoop extends React.Component {
         // try mouse
         const pointerDelta = currentStore.pointerDelta;
         if (pointerDelta.x || pointerDelta.y) {
-            const currentViewAngle = newState.viewAngle || currentStore.viewAngle;
+            const currentViewAngle = newState.viewAngle || currentStore.playerViewAngle;
             const newViewAngle = [
                 (currentViewAngle[0] - pointerDelta.x * currentStore.settings.mouseSensitivity) % 360,
                 Math.min(Math.max(
@@ -163,7 +164,7 @@ class GameLoop extends React.Component {
                 if (gamepadSnapshot.axes[XBOX_TRIGGER_RIGHT_AXIS] >= 0.5) {
                     isRunning = true;
                 }
-                step = Math.sqrt(x ** 2 + z ** 2);
+                step = Math.hypot(x, z);
                 if (z >= 0) {
                     angleShift.push(Math.atan(x / z));
                 } else {
@@ -173,28 +174,28 @@ class GameLoop extends React.Component {
         }
 
         const keyPressed = this.context.controls.keyPressed;
-        if (keyPressed[KEY_W][0] !== CONTROL_STATE.UNUSED) {
+        if (keyPressed[KEY_FORWARD][0] !== CONTROL_STATE.UNUSED) {
             angleShift.push(0);
             step = Math.max(step, 1);
         }
-        if (keyPressed[KEY_S][0] !== CONTROL_STATE.UNUSED) {
+        if (keyPressed[KEY_BACKWARD][0] !== CONTROL_STATE.UNUSED) {
             angleShift.push(Math.PI);
             step = Math.max(step, 1);
         }
-        if (keyPressed[KEY_D][0] !== CONTROL_STATE.UNUSED) {
+        if (keyPressed[KEY_RIGHT][0] !== CONTROL_STATE.UNUSED) {
             angleShift.push(Math.PI / 2);
             step = Math.max(step, 1);
         }
-        if (keyPressed[KEY_A][0] !== CONTROL_STATE.UNUSED) {
+        if (keyPressed[KEY_LEFT][0] !== CONTROL_STATE.UNUSED) {
             // hack for angles sum
-            if (keyPressed[KEY_W][0] !== CONTROL_STATE.UNUSED) {
+            if (keyPressed[KEY_FORWARD][0] !== CONTROL_STATE.UNUSED) {
                 angleShift.push(-Math.PI / 2);
             } else {
                 angleShift.push(3 * Math.PI / 2);
             }
             step = Math.max(step, 1);
         }
-        if (keyPressed[KEY_SHIFT][0] !== CONTROL_STATE.UNUSED) {
+        if (keyPressed[KEY_RUN][0] !== CONTROL_STATE.UNUSED) {
             isRunning = true;
         }
 
@@ -217,9 +218,9 @@ class GameLoop extends React.Component {
             }
             angleShiftSum = angleShiftSum / angleShift.length;
 
-            angleShiftSum = angleShiftSum + convertDegreeToRad(currentStore.viewAngle[0]);
+            angleShiftSum = angleShiftSum + convertDegreeToRad(currentStore.playerViewAngle[0]);
 
-            step = step * frameRateCoefficient * (isRunning ? RUNNING_COEFF : 1) * PLAYER_SPEED;
+            step = step * frameRateCoefficient * (isRunning ? PLAYER_RUNNING_COEFF : 1) * PLAYER_SPEED;
             const shift = GameLoop.getShift2d(angleShiftSum, step);
             const newPos = vectorsAdd3D(currentStore.pos, shift);
             const objects = currentStore.objects;
@@ -252,10 +253,10 @@ class GameLoop extends React.Component {
         let reachableObject;
         if (newState.pos || newState.viewAngle) {
             const playerPosition = newState.pos || currentStore.pos;
-            const viewAngle = newState.viewAngle || currentStore.viewAngle;
+            const viewAngle = newState.viewAngle || currentStore.playerViewAngle;
             const collisionView = Collision.getCollisionView([
                 playerPosition,
-                getPointPosition({ pos: playerPosition, distance: HAND_LENGTH, angle: viewAngle })
+                getPointPosition({ pos: playerPosition, distance: PLAYER_HAND_LENGTH, angle: viewAngle })
             ], currentStore.objects, BROAD_CELL_SIZE);
             if (collisionView && collisionView.obj.isInteractive) {
                 reachableObject = collisionView.obj;
@@ -277,21 +278,21 @@ class GameLoop extends React.Component {
         if (
             reachableObject &&
             (
-                keyPressed[KEY_E][0] === CONTROL_STATE.FIRST_TIME_DOWN ||
-                this.context.controls.gamepadButtons[XBOX_BUTTON_X][0] === CONTROL_STATE.FIRST_TIME_DOWN
+                keyPressed[KEY_INTERACT][0] > CONTROL_STATE.UNUSED ||
+                this.context.controls.gamepadButtons[XBOX_BUTTON_X][0] > CONTROL_STATE.UNUSED
             )
         ) {
             if (reachableObject.type === SWITCHER_TYPE) {
                 const door = currentStore.doorsState[reachableObject.props.id];
-                if (![DOOR_OPENING, DOOR_CLOSING].includes(door)) {
+                if (![DOOR_STATE_OPENING, DOOR_STATE_CLOSING].includes(door)) {
                     actions.push(
-                        actionCreators.doorsState[door === DOOR_OPEN ? 'setClosing' : 'setOpening'](reachableObject.props.id)
+                        actionCreators.doorsState[door === DOOR_STATE_OPEN ? 'setClosing' : 'setOpening'](reachableObject.props.id)
                     );
                     this.delayedActions.pushAction({
-                        action: actionCreators.doorsState[door === DOOR_OPEN ? 'setClose' : 'setOpen'](reachableObject.props.id),
+                        action: actionCreators.doorsState[door === DOOR_STATE_OPEN ? 'setClose' : 'setOpen'](reachableObject.props.id),
                         delay: DOOR_OPEN_TIME
                     });
-                    if (door === DOOR_CLOSE) {
+                    if (door === DOOR_STATE_CLOSE) {
                         this.delayedActions.pushAction({
                             action: this.showHints([HINT_DOOR], false, DOOR_OPEN_TIME),
                             delay: DOOR_OPEN_TIME
@@ -424,7 +425,7 @@ class GameLoop extends React.Component {
     }
 
     static getDistance2d(p1, p2) {
-        return Math.sqrt((p1[0] - p2[0]) ** 2 + (p1[2] - p2[2]) ** 2);
+        return Math.hypot(p1[0] - p2[0], p1[2] - p2[2]);
     }
 
     static getDirection2d(p1, p2) {

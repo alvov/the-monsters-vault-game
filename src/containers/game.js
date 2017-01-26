@@ -2,9 +2,10 @@ import React, { PropTypes } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import {
-    LOADING, START, PLAY, WIN, LOOSE,
+    GAME_STATE_LOADING, GAME_STATE_START, GAME_STATE_PLAY, GAME_STATE_WIN, GAME_STATE_LOOSE,
     CONTROL_STATE,
-    KEY_W, KEY_S, KEY_A, KEY_D, KEY_E, KEY_Q, KEY_SHIFT, KEY_ENTER, KEY_ESCAPE,
+    KEY_FORWARD, KEY_BACKWARD, KEY_LEFT, KEY_RIGHT, KEY_INTERACT,
+    KEY_QUIT_GAME, KEY_RUN, KEY_ENTER, KEY_BACK,
     XBOX_BUTTON_A, XBOX_BUTTON_B, XBOX_BUTTON_X, XBOX_BUTTON_BACK, XBOX_BUTTON_CROSS_UP, XBOX_BUTTON_CROSS_DOWN,
     XBOX_STICK_LEFT_AXIS_Y, XBOX_STICK_RIGHT_AXIS_X
 } from '../constants/constants'
@@ -20,7 +21,7 @@ import Camera from './camera/camera';
 import Player from './player/player';
 import Scene from './scene';
 import GameLoop from './gameLoop';
-import Loop from '../lib/loop';
+import Loop from '../lib/Loop';
 
 const BUTTON_REPEAT_DELAY = 500;
 const GAMEPAD_AXIS_UNIT_THRESHOLD = 0.5;
@@ -72,15 +73,15 @@ class Game extends React.Component {
 
         this.controls = {
             keyPressed: {
-                [KEY_W]: [CONTROL_STATE.UNUSED, 0],
-                [KEY_S]: [CONTROL_STATE.UNUSED, 0],
-                [KEY_A]: [CONTROL_STATE.UNUSED, 0],
-                [KEY_D]: [CONTROL_STATE.UNUSED, 0],
-                [KEY_E]: [CONTROL_STATE.UNUSED, 0],
-                [KEY_Q]: [CONTROL_STATE.UNUSED, 0],
-                [KEY_SHIFT]: [CONTROL_STATE.UNUSED, 0],
+                [KEY_FORWARD]: [CONTROL_STATE.UNUSED, 0],
+                [KEY_BACKWARD]: [CONTROL_STATE.UNUSED, 0],
+                [KEY_LEFT]: [CONTROL_STATE.UNUSED, 0],
+                [KEY_RIGHT]: [CONTROL_STATE.UNUSED, 0],
+                [KEY_INTERACT]: [CONTROL_STATE.UNUSED, 0],
+                [KEY_QUIT_GAME]: [CONTROL_STATE.UNUSED, 0],
+                [KEY_RUN]: [CONTROL_STATE.UNUSED, 0],
                 [KEY_ENTER]: [CONTROL_STATE.UNUSED, 0],
-                [KEY_ESCAPE]: [CONTROL_STATE.UNUSED, 0]
+                [KEY_BACK]: [CONTROL_STATE.UNUSED, 0]
             },
             gamepadButtons: DEFAULT_GAMEPAD_BUTTONS,
             gamepadAxesUnit: DEFAULT_GAMEPAD_AXES_UNIT
@@ -94,10 +95,10 @@ class Game extends React.Component {
         this.handleGamepadConnected = this.handleGamepadConnected.bind(this);
         this.handleGamepadDisconnected = this.handleGamepadDisconnected.bind(this);
 
-        this.setGameStateStart = this.setGameState.bind(this, START);
-        this.setGameStatePlay = this.setGameState.bind(this, PLAY);
-        this.setGameStateWin = this.setGameState.bind(this, WIN);
-        this.setGameStateLoose = this.setGameState.bind(this, LOOSE);
+        this.setGameStateStart = this.setGameState.bind(this, GAME_STATE_START);
+        this.setGameStatePlay = this.setGameState.bind(this, GAME_STATE_PLAY);
+        this.setGameStateWin = this.setGameState.bind(this, GAME_STATE_WIN);
+        this.setGameStateLoose = this.setGameState.bind(this, GAME_STATE_LOOSE);
 
         this.cacheAssetData = this.cacheAssetData.bind(this);
     }
@@ -142,18 +143,18 @@ class Game extends React.Component {
 
     render() {
         const { gameState, hints, gamepadState, settings } = this.props;
-        if (gameState === LOADING) {
+        if (gameState === GAME_STATE_LOADING) {
             return <LoadingScreen
                 onLoaded={this.setGameStateStart}
                 cacheAssetData={this.cacheAssetData}
             />;
-        } else if (gameState === START) {
+        } else if (gameState === GAME_STATE_START) {
             return <StartScreen
                 onStart={this.setGameStatePlay}
                 gamepadState={gamepadState}
                 settings={settings}
             />;
-        } else if (gameState === PLAY) {
+        } else if (gameState === GAME_STATE_PLAY) {
             return <Viewport>
                 <Patterns />
                 <Hints hints={hints} />
@@ -169,7 +170,7 @@ class Game extends React.Component {
                     </Camera>
                 </GameLoop>
             </Viewport>;
-        } else if ([WIN, LOOSE].includes(gameState)) {
+        } else if ([GAME_STATE_WIN, GAME_STATE_LOOSE].includes(gameState)) {
             return <EndScreen
                 gameState={gameState}
                 onEnd={this.setGameStateStart}
@@ -203,16 +204,16 @@ class Game extends React.Component {
 
     onKeyDown(event) {
         if (
-            event.keyCode in this.controls.keyPressed &&
-            this.controls.keyPressed[event.keyCode][0] === CONTROL_STATE.UNUSED
+            event.code in this.controls.keyPressed &&
+            this.controls.keyPressed[event.code][0] === CONTROL_STATE.UNUSED
         ) {
-            this.controls.keyPressed[event.keyCode] = [0.5, 0];
+            this.controls.keyPressed[event.code] = [0.5, 0];
         }
     }
 
     onKeyUp(event) {
-        if (event.keyCode in this.controls.keyPressed) {
-            this.controls.keyPressed[event.keyCode] = [CONTROL_STATE.UNUSED, 0];
+        if (event.code in this.controls.keyPressed) {
+            this.controls.keyPressed[event.code] = [CONTROL_STATE.UNUSED, 0];
         }
     }
 
@@ -228,16 +229,16 @@ class Game extends React.Component {
         const now = Date.now();
 
         // keyboard buttons
-        Object.keys(this.controls.keyPressed).forEach(keyCode => {
-            const [state, timestamp] = this.controls.keyPressed[keyCode];
+        Object.keys(this.controls.keyPressed).forEach(code => {
+            const [state, timestamp] = this.controls.keyPressed[code];
             if (state !== CONTROL_STATE.UNUSED) {
                 if (timestamp <= now) {
-                    this.controls.keyPressed[keyCode] = [
+                    this.controls.keyPressed[code] = [
                         CONTROL_STATE.FIRST_TIME_DOWN,
                         now + BUTTON_REPEAT_DELAY
                     ];
                 } else if (state === CONTROL_STATE.FIRST_TIME_DOWN) {
-                    this.controls.keyPressed[keyCode][0] = CONTROL_STATE.DOWN;
+                    this.controls.keyPressed[code][0] = CONTROL_STATE.DOWN;
                 }
             }
         });

@@ -4,10 +4,10 @@ import React, { PropTypes } from 'react';
 import SimpleLight from '../light/simple';
 import { getTransformRule, vectorsAdd3D } from '../../lib/utils';
 import Audio from '../../lib/Audio';
-import { DOOR_OPEN, DOOR_OPENING, DOOR_CLOSE, DOOR_CLOSING, DOOR_OPEN_TIME } from '../../constants/constants';
+import { DOOR_STATE_OPEN, DOOR_STATE_OPENING, DOOR_STATE_CLOSE, DOOR_STATE_CLOSING, DOOR_OPEN_TIME } from '../../constants/constants';
 
 const BARS_GAP = 25;
-const DOOR_STATES = [DOOR_OPEN, DOOR_OPENING, DOOR_CLOSE, DOOR_CLOSING];
+const DOOR_STATES = [DOOR_STATE_OPEN, DOOR_STATE_OPENING, DOOR_STATE_CLOSE, DOOR_STATE_CLOSING];
 
 class Door extends React.PureComponent {
     static propTypes = {
@@ -51,14 +51,14 @@ class Door extends React.PureComponent {
     }
 
     componentWillUpdate(nextProps) {
-        if ([DOOR_CLOSING, DOOR_OPENING].includes(nextProps.state) && nextProps.state !== this.props.state) {
+        if ([DOOR_STATE_CLOSING, DOOR_STATE_OPENING].includes(nextProps.state) && nextProps.state !== this.props.state) {
             this.audioSource = Audio.soundStart({
                 audioSource: this.audioSource,
                 audioCtx: this.context.audioCtx,
                 destination: this.panner,
                 buffer: this.decodedAudioBuffer
             });
-        } else if ([DOOR_OPEN, DOOR_CLOSE].includes(nextProps.state) && nextProps.state !== this.props.state) {
+        } else if ([DOOR_STATE_OPEN, DOOR_STATE_CLOSE].includes(nextProps.state) && nextProps.state !== this.props.state) {
             Audio.soundStop(this.audioSource);
         }
     }
@@ -69,7 +69,7 @@ class Door extends React.PureComponent {
 
     render() {
         const { isVisible, viewAngle, state, size } = this.props;
-        const isOpen = [DOOR_OPENING, DOOR_OPEN].includes(state);
+        const isOpen = [DOOR_STATE_OPENING, DOOR_STATE_OPEN].includes(state);
         const doorStyleRules = {
             ...this.doorStyleRules,
             transform: 'translateY(' + (isOpen ? -size[1] * 0.9 : 0) + 'px)'

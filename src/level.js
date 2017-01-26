@@ -1,9 +1,9 @@
-import Collision from './lib/collision';
+import Collision from './lib/Collision';
 import { isObjectVisible, getPlayerCell, getPointPosition } from './lib/utils';
 import {
     BROAD_CELL_SIZE,
-    HAND_LENGTH,
-    DOOR_CLOSE,
+    PLAYER_HAND_LENGTH,
+    DOOR_STATE_CLOSE,
     PAINTING_TYPE,
     FLOOR_TYPE,
     CEILING_TYPE,
@@ -303,7 +303,7 @@ const level = {
             pos: [250, 125, 975],
             props: {
                 id: 1,
-                state: DOOR_CLOSE
+                state: DOOR_STATE_CLOSE
             }
         },
         {
@@ -324,7 +324,7 @@ const level = {
             pos: [2250, 125, 975],
             props: {
                 id: 2,
-                state: DOOR_CLOSE
+                state: DOOR_STATE_CLOSE
             }
         },
         {
@@ -345,7 +345,7 @@ const level = {
             pos: [250, 125, 1525],
             props: {
                 id: 3,
-                state: DOOR_CLOSE
+                state: DOOR_STATE_CLOSE
             }
         },
         {
@@ -366,7 +366,7 @@ const level = {
             pos: [1500, 125, 2250],
             props: {
                 id: 4,
-                state: DOOR_CLOSE
+                state: DOOR_STATE_CLOSE
             }
         },
         {
@@ -398,7 +398,7 @@ const level = {
             pos: [1250, 125, 25],
             props: {
                 id: 5,
-                state: DOOR_CLOSE
+                state: DOOR_STATE_CLOSE
             }
         }
     ]
@@ -525,7 +525,7 @@ for (let i = 0; i < level.objects.length; i++) {
 }
 
 const collisionView = Collision.getCollisionView(
-    [level.player.pos, getPointPosition({ pos: level.player.pos, distance: HAND_LENGTH, angle: level.player.angle })],
+    [level.player.pos, getPointPosition({ pos: level.player.pos, distance: PLAYER_HAND_LENGTH, angle: level.player.angle })],
     level.objects,
     BROAD_CELL_SIZE
 );

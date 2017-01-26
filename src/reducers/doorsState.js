@@ -1,11 +1,11 @@
 import level from '../level'
-import { DOOR_OPEN, DOOR_OPENING, DOOR_CLOSE, DOOR_CLOSING, DOOR_TYPE } from '../constants/constants';
+import { DOOR_STATE_OPEN, DOOR_STATE_OPENING, DOOR_STATE_CLOSE, DOOR_STATE_CLOSING, DOOR_TYPE } from '../constants/constants';
 import {
     DOOR_SET_CLOSING,
     DOOR_SET_CLOSE,
     DOOR_SET_OPENING,
     DOOR_SET_OPEN,
-    SET_GAME_START
+    GAME_SET_STATE_START
 } from '../constants/actionNames';
 
 function getInitialState() {
@@ -22,24 +22,24 @@ export default function doorsState(state = {}, action) {
         case DOOR_SET_CLOSING:
             return {
                 ...state,
-                [action.id]: DOOR_CLOSING
+                [action.id]: DOOR_STATE_CLOSING
             };
         case DOOR_SET_OPENING:
             return {
                 ...state,
-                [action.id]: DOOR_OPENING
+                [action.id]: DOOR_STATE_OPENING
             };
         case DOOR_SET_CLOSE:
             return {
                 ...state,
-                [action.id]: DOOR_CLOSE
+                [action.id]: DOOR_STATE_CLOSE
             };
         case DOOR_SET_OPEN:
             return {
                 ...state,
-                [action.id]: DOOR_OPEN
+                [action.id]: DOOR_STATE_OPEN
             };
-        case SET_GAME_START:
+        case GAME_SET_STATE_START:
             return getInitialState();
         default:
             return state;

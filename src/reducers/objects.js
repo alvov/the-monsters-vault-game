@@ -4,7 +4,7 @@ import {
     OBJECTS_SET_REACHABLE,
     DOOR_SET_OPEN,
     DOOR_SET_CLOSE,
-    SET_GAME_START
+    GAME_SET_STATE_START
 } from '../constants/actionNames';
 import level from '../level';
 
@@ -72,7 +72,7 @@ export default function objects(state = getInitialState(), action) {
         case DOOR_SET_CLOSE: {
             return setDoorCollidable({ state, id: action.id, on: true });
         }
-        case SET_GAME_START: {
+        case GAME_SET_STATE_START: {
             return getInitialState();
         }
         default:

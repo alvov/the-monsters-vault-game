@@ -5,7 +5,7 @@ class Audio {
         distanceModel = 'inverse',
         refDistance = 20,
         rolloffFactor = 0.1,
-        maxDistance = 100,
+        maxDistance,
         coneInnerAngle = 360,
         coneOuterAngle = 0,
         coneOuterGain = 0,
@@ -17,7 +17,7 @@ class Audio {
         panner.refDistance = refDistance;
         if (maxDistance) {
             panner.maxDistance = maxDistance;
-        } else if (rolloffFactor) {
+        } else {
             panner.rolloffFactor = rolloffFactor;
         }
         panner.coneInnerAngle = coneInnerAngle;

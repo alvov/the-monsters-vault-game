@@ -1,8 +1,8 @@
-import { SET_GAMEPAD_STATE } from '../constants/actionNames';
+import { GAMEPAD_SET_STATE } from '../constants/actionNames';
 
 export function setGamepadState(index) {
     return {
-        type: SET_GAMEPAD_STATE,
+        type: GAMEPAD_SET_STATE,
         index
     };
 }

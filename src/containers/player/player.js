@@ -2,7 +2,7 @@ import styles from './player.css';
 
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
-import { PLAYER_RUN, PLAYER_WALK } from '../../constants/constants';
+import { PLAYER_STATE_RUN, PLAYER_STATE_WALK } from '../../constants/constants';
 import { convertDegreeToRad } from '../../lib/utils';
 import Audio from '../../lib/Audio';
 
@@ -49,10 +49,10 @@ class Player extends React.Component {
 
         if (nextProps.playerState && this.props.playerState !== nextProps.playerState) {
             switch (nextProps.playerState) {
-                case PLAYER_WALK:
+                case PLAYER_STATE_WALK:
                     this.soundStart(this.walkingAudioBuffer);
                     break;
-                case PLAYER_RUN:
+                case PLAYER_STATE_RUN:
                     this.soundStart(this.runnningAudioBuffer);
                     break;
                 default:
@@ -69,8 +69,8 @@ class Player extends React.Component {
         const { children, playerState } = this.props;
         const className = [
             'obj player-animation',
-            playerState === PLAYER_WALK ? styles.playerAnimationWalking :
-                playerState === PLAYER_RUN ? styles.playerAnimationRunning : ''
+            playerState === PLAYER_STATE_WALK ? styles.playerAnimationWalking :
+                playerState === PLAYER_STATE_RUN ? styles.playerAnimationRunning : ''
         ].join(' ');
 
         return <div className={className}>
@@ -150,7 +150,7 @@ class Player extends React.Component {
         const y = Math.sin(convertDegreeToRad(verticalAngle));
         const xzProjectionDist = Math.sqrt(1 - y * y);
         const x = Math.sin(convertDegreeToRad(horizontalAngle)) * xzProjectionDist;
-        let z = Math.sqrt(xzProjectionDist * xzProjectionDist - x * x);
+        let z = Math.sqrt(xzProjectionDist ** 2 - x ** 2);
         if (Math.abs(horizontalAngle) < 90 || Math.abs(horizontalAngle) > 270) {
             z = -z;
         }
@@ -161,7 +161,7 @@ class Player extends React.Component {
 function mapStateToProps(state) {
     return {
         playerPos: state.pos,
-        viewAngle: state.viewAngle,
+        viewAngle: state.playerViewAngle,
         playerState: state.playerState
     };
 }

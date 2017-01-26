@@ -4,7 +4,7 @@ import React, { PropTypes } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import * as actionCreators from '../../actionCreators';
-import Loop from '../../lib/loop';
+import Loop from '../../lib/Loop';
 import {
     XBOX_STICK_LEFT_AXIS_Y,
     XBOX_STICK_RIGHT_AXIS_X,

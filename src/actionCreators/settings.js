@@ -1,34 +1,34 @@
 import {
-    SET_SETTINGS_VOLUME,
-    SET_SETTINGS_GRAPHICS_QUALITY,
-    SET_SETTINGS_MOUSE_SENSITIVITY,
-    SET_SETTINGS_STICK_SENSITIVITY
+    SETTINGS_SET_VOLUME,
+    SETTINGS_SET_GRAPHICS_QUALITY,
+    SETTINGS_SET_MOUSE_SENSITIVITY,
+    SETTINGS_SET_STICK_SENSITIVITY
 } from '../constants/actionNames';
 
 export function setVolume(value) {
     return {
-        type: SET_SETTINGS_VOLUME,
+        type: SETTINGS_SET_VOLUME,
         value
     };
 }
 
 export function setGraphicsQuality(value) {
     return {
-        type: SET_SETTINGS_GRAPHICS_QUALITY,
+        type: SETTINGS_SET_GRAPHICS_QUALITY,
         value
     };
 }
 
 export function setMouseSensitivity(value) {
     return {
-        type: SET_SETTINGS_MOUSE_SENSITIVITY,
+        type: SETTINGS_SET_MOUSE_SENSITIVITY,
         value
     };
 }
 
 export function setStickSensitivity(value) {
     return {
-        type: SET_SETTINGS_STICK_SENSITIVITY,
+        type: SETTINGS_SET_STICK_SENSITIVITY,
         value
     };
 }

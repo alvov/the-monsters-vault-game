@@ -32,17 +32,30 @@ class Enemy extends React.PureComponent {
         gainNode.gain.value = ENEMY_SOUNDS_GAIN;
         gainNode.connect(this.context.masterGain);
 
-        this.panner = Audio.createPanner({
+        this.noisePanner = Audio.createPanner({
+            audioCtx: this.context.audioCtx,
+            rolloffFactor: 0.5
+        });
+        this.noisePanner.connect(gainNode);
+
+        this.noiseAudioBuffer = this.context.assets['src/components/enemy/noise.m4a'];
+        this.noiseAudioSource = Audio.soundStart({
+            audioCtx: this.context.audioCtx,
+            destination: this.noisePanner,
+            buffer: this.noiseAudioBuffer,
+            loop: true
+        });
+
+        this.roarPanner = Audio.createPanner({
             audioCtx: this.context.audioCtx,
             pos: this.props.pos,
             coneInnerAngle: 60,
             coneOuterAngle: 160,
-            coneOuterGain: 0.1,
-            rolloffFactor: 4
+            coneOuterGain: 0.3
         });
-        this.panner.connect(gainNode);
+        this.roarPanner.connect(gainNode);
 
-        this.audioSource = null;
+        this.roarAudioSource = null;
         this.roarAudioBuffers = [
             this.context.assets['src/components/enemy/roar01.m4a'],
             this.context.assets['src/components/enemy/roar02.m4a'],
@@ -75,7 +88,8 @@ class Enemy extends React.PureComponent {
     }
 
     componentWillUnmount() {
-        Audio.soundStop(this.audioSource);
+        Audio.soundStop(this.roarAudioSource);
+        Audio.soundStop(this.noiseAudioSource);
         this.stopRoaring();
     }
 
@@ -126,27 +140,28 @@ class Enemy extends React.PureComponent {
     }
 
     soundStart(buffer) {
-        this.audioSource = Audio.soundStart({
-            audioSource: this.audioSource,
+        this.roarAudioSource = Audio.soundStart({
+            audioSource: this.roarAudioSource,
             audioCtx: this.context.audioCtx,
             buffer,
-            destination: this.panner
+            destination: this.roarPanner
         });
     }
 
     updatePannerPosition(pos) {
-        Audio.setPannerPosition(this.panner, pos);
+        Audio.setPannerPosition(this.roarPanner, pos);
+        Audio.setPannerPosition(this.noisePanner, pos);
     }
 
     updatePannerOrientation(direction) {
         const x = Math.sin(direction);
         let z = -Math.cos(direction);
-        if (this.panner.orientationX) {
-            this.panner.orientationX.value = x;
-            this.panner.orientationY.value = 0;
-            this.panner.orientationZ.value = z;
+        if (this.roarPanner.orientationX) {
+            this.roarPanner.orientationX.value = x;
+            this.roarPanner.orientationY.value = 0;
+            this.roarPanner.orientationZ.value = z;
         } else {
-            this.panner.setOrientation([x, 0, z]);
+            this.roarPanner.setOrientation([x, 0, z]);
         }
     }
 

@@ -1,48 +1,48 @@
 import {
-    START,
-    PLAY,
-    WIN,
-    LOOSE
+    GAME_STATE_START,
+    GAME_STATE_PLAY,
+    GAME_STATE_WIN,
+    GAME_STATE_LOOSE
 } from '../constants/constants';
 import {
-    SET_GAME_START,
-    SET_GAME_PLAY,
-    SET_GAME_WIN,
-    SET_GAME_LOOSE,
-    UPDATE_POINTER_DELTA,
-    RESET_POINTER_DELTA
+    GAME_SET_STATE_START,
+    GAME_SET_STATE_PLAY,
+    GAME_SET_STATE_WIN,
+    GAME_SET_STATE_LOOSE,
+    GAME_UPDATE_POINTER_DELTA,
+    GAME_RESET_POINTER_DELTA
 } from '../constants/actionNames';
 
 export function setGameState(state) {
     switch(state) {
-        case START:
+        case GAME_STATE_START:
             return {
-                type: SET_GAME_START
+                type: GAME_SET_STATE_START
             };
-        case PLAY:
+        case GAME_STATE_PLAY:
             return {
-                type: SET_GAME_PLAY
+                type: GAME_SET_STATE_PLAY
             };
-        case WIN:
+        case GAME_STATE_WIN:
             return {
-                type: SET_GAME_WIN
+                type: GAME_SET_STATE_WIN
             };
-        case LOOSE:
+        case GAME_STATE_LOOSE:
             return {
-                type: SET_GAME_LOOSE
+                type: GAME_SET_STATE_LOOSE
             };
     }
 }
 
 export function updatePointerDelta(x, y) {
     return {
-        type: UPDATE_POINTER_DELTA,
+        type: GAME_UPDATE_POINTER_DELTA,
         x, y
     }
 }
 
 export function resetPointerDelta() {
     return {
-        type: RESET_POINTER_DELTA
+        type: GAME_RESET_POINTER_DELTA
     }
 }

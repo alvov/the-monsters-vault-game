@@ -43,11 +43,12 @@ it makes.
 * Go nuts and make a 3d (well, more like 2.5d)
 interactive game with CSS 3d transforms only
 * Use React/Redux/Webpack/Tape stack, because I can
-* Try out various web APIs like:
+* Try out various web APIs and interfaces like:
   * [Pointer Lock events](https://w3c.github.io/pointerlock/)
   * [Web Audio API](https://webaudio.github.io/web-audio-api/)
   * [Gamepad API](https://w3c.github.io/gamepad/)
   * [Service Workers](https://www.w3.org/TR/service-workers/)
+  * [KeyboardEvent Interface](https://w3c.github.io/uievents/#interface-keyboardevent)
 * Use SVG lighting filters for textures
 (basically to test my laptop's cooling system)
 

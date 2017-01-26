@@ -1,8 +1,8 @@
 import {
-    SET_SETTINGS_VOLUME,
-    SET_SETTINGS_GRAPHICS_QUALITY,
-    SET_SETTINGS_MOUSE_SENSITIVITY,
-    SET_SETTINGS_STICK_SENSITIVITY
+    SETTINGS_SET_VOLUME,
+    SETTINGS_SET_GRAPHICS_QUALITY,
+    SETTINGS_SET_MOUSE_SENSITIVITY,
+    SETTINGS_SET_STICK_SENSITIVITY
 } from '../constants/actionNames';
 import { GRAPHICS_QUALITY } from '../constants/constants';
 
@@ -13,22 +13,22 @@ export default function settings(state = {
     stickSensitivity: 2
 }, action) {
     switch (action.type) {
-        case SET_SETTINGS_VOLUME:
+        case SETTINGS_SET_VOLUME:
             return {
                 ...state,
                 soundVolume: action.value
             };
-        case SET_SETTINGS_GRAPHICS_QUALITY:
+        case SETTINGS_SET_GRAPHICS_QUALITY:
             return {
                 ...state,
                 graphicsQuality: action.value
             };
-        case SET_SETTINGS_MOUSE_SENSITIVITY:
+        case SETTINGS_SET_MOUSE_SENSITIVITY:
             return {
                 ...state,
                 mouseSensitivity: action.value
             };
-        case SET_SETTINGS_STICK_SENSITIVITY:
+        case SETTINGS_SET_STICK_SENSITIVITY:
             return {
                 ...state,
                 stickSensitivity: action.value

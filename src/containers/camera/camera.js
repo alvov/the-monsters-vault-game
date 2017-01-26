@@ -20,7 +20,7 @@ Camera.propTypes = {
 
 function mapStateToProps(state) {
     return {
-        viewAngle: state.viewAngle
+        viewAngle: state.playerViewAngle
     }
 }
 

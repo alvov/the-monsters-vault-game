@@ -1,10 +1,10 @@
 import {
-    SET_ENEMY_STATE,
-    SET_ENEMY_POSITION,
-    SET_ENEMY_DIRECTION,
-    SET_ENEMY_TARGET,
-    SET_ENEMY_VISIBILITY,
-    SET_GAME_START,
+    ENEMY_SET_STATE,
+    ENEMY_SET_POSITION,
+    ENEMY_SET_DIRECTION,
+    ENEMY_SET_TARGET,
+    ENEMY_SET_VISIBILITY,
+    GAME_SET_STATE_START,
     DOOR_SET_OPEN
 } from '../constants/actionNames';
 
@@ -22,27 +22,27 @@ function getInitialState() {
 
 export default function enemy(state = getInitialState(), action) {
     switch (action.type) {
-        case SET_ENEMY_STATE:
+        case ENEMY_SET_STATE:
             return {
                 ...state,
                 state: action.state
             };
-        case SET_ENEMY_POSITION:
+        case ENEMY_SET_POSITION:
             return {
                 ...state,
                 position: action.position
             };
-        case SET_ENEMY_DIRECTION:
+        case ENEMY_SET_DIRECTION:
             return {
                 ...state,
                 direction: action.direction
             };
-        case SET_ENEMY_TARGET:
+        case ENEMY_SET_TARGET:
             return {
                 ...state,
                 target: action.target
             };
-        case SET_ENEMY_VISIBILITY:
+        case ENEMY_SET_VISIBILITY:
             return {
                 ...state,
                 isVisible: action.isVisible
@@ -55,7 +55,7 @@ export default function enemy(state = getInitialState(), action) {
                 };
             }
             return state;
-        case SET_GAME_START:
+        case GAME_SET_STATE_START:
             return getInitialState();
         default:
             return state;

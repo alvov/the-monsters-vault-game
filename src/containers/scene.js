@@ -11,9 +11,9 @@ import Door from '../components/door/door';
 import Enemy from '../components/enemy/enemy';
 import { getTransformRule } from '../lib/utils';
 import {
-    DOOR_OPEN,
-    DOOR_OPENING,
-    DOOR_CLOSE,
+    DOOR_STATE_OPEN,
+    DOOR_STATE_OPENING,
+    DOOR_STATE_CLOSE,
     PAINTING_TYPE,
     FLOOR_TYPE,
     CEILING_TYPE,
@@ -93,8 +93,8 @@ function Scene({ pos, viewAngle, enemy, doorsState, visibleObjects, graphicsQual
                     angle={object.angle}
                     playerPos={pos}
                     isReachable={object.isReachable}
-                    isInteractive={[DOOR_OPEN, DOOR_CLOSE].includes(doorsState[object.props.id])}
-                    isOn={[DOOR_OPEN, DOOR_OPENING].includes(doorsState[object.props.id])}
+                    isInteractive={[DOOR_STATE_OPEN, DOOR_STATE_CLOSE].includes(doorsState[object.props.id])}
+                    isOn={[DOOR_STATE_OPEN, DOOR_STATE_OPENING].includes(doorsState[object.props.id])}
                     graphicsQuality={graphicsQuality}
                 />);
                 break;
@@ -139,7 +139,7 @@ Scene.propTypes = {
 function mapStateToProps(state) {
     return {
         pos: state.pos,
-        viewAngle: state.viewAngle,
+        viewAngle: state.playerViewAngle,
         enemy: state.enemy,
         visibleObjects: state.objects.filter(obj => {
             if (obj.type === PAINTING_TYPE && state.graphicsQuality === GRAPHICS_QUALITY.LOW) {

@@ -6,5 +6,7 @@ const OUTPUT = path.join(__dirname, '../preloadAssetsList.js');
 
 fs.writeFileSync(
     OUTPUT,
-    'module.exports=' + JSON.stringify(getAssetsList())
+    '/* This script is auto-generated with `npm run build-assets-list` */\n\n' +
+    'var RESOURCES = ' + JSON.stringify(getAssetsList()) + ';\n' +
+    'if (typeof module !== \'undefined\') module.exports = RESOURCES;'
 );

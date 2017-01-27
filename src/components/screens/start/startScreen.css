@@ -39,7 +39,7 @@
 .version {
     position: absolute;
     bottom: 0;
-    right: 0;
+    right: 20px;
     padding: 5px 10px;
     background: #000;
     font-size: 12px;

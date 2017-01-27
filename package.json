@@ -1,6 +1,6 @@
 {
   "name": "doors-and-levers-game",
-  "version": "1.1.0-alpha",
+  "version": "1.2.0-alpha",
   "description": "3d game made with CSS 3d transforms",
   "author": "alvov",
   "devDependencies": {
@@ -38,7 +38,6 @@
     "start": "http-server -a 127.0.0.1",
     "watch": "webpack --watch",
     "build-assets-list": "node tools/buildAssetsList.js",
-    "build-sw": "npm run build-assets-list && node tools/buildSW/buildSW.js",
     "test:debug": "BABEL_DISABLE_CACHE=1 node debug tests/collision.js",
     "test": "BABEL_DISABLE_CACHE=1 node tests/collision.js | node_modules/faucet/bin/cmd.js"
   }

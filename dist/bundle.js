@@ -9,7 +9,7 @@ webpackJsonp([0],[
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
-const GAME_VERSION = '1.1.0-alpha';
+const GAME_VERSION = '1.2.0-alpha';
 /* harmony export (immutable) */ exports["h"] = GAME_VERSION;
 
 
@@ -2030,9 +2030,10 @@ function mapDispatchToProps(dispatch) {
 
 /***/ },
 /* 107 */
-/***/ function(module, exports) {
+/***/ function(module, exports, __webpack_require__) {
 
-module.exports = [["dist/0e58b004362d2cecaf96358cf5fa9f50.png", "image"], ["dist/12d4067df2155b204defac46c41c89d3.png", "image"], ["dist/151b6411d53b17de82d882485fcbaaf5.jpg", "image"], ["dist/1c1430572300aa82719312e3483d80d9.png", "image"], ["dist/3628ed55158b5a413097584e7fd8a725.jpg", "image"], ["dist/4db9414e7ca808670cbc9b15dc0eaa74.jpg", "image"], ["dist/6d73a1850ac64474712210aa8f34f818.png", "image"], ["dist/83f558afad0f8b176e361b3f574ccb42.jpg", "image"], ["dist/8b3a4e276e0a424265cc0c55fa95360d.svg", "image"], ["dist/a0a62fe89c1eb6ec77f414a77fdb4a92.jpg", "image"], ["dist/abcc39d175e2f5f6ad0df4cc14457193.jpg", "image"], ["dist/bad58d3de10ed478b28908a2380b31f8.png", "image"], ["dist/c161dc30a1bcbfb0ea16c3740f6189c3.jpg", "image"], ["dist/c3e2941f8e7e3eb4fa9f378466ad0a0b.jpg", "image"], ["dist/dc4aaa700984f97ca90dea2ec61957fc.png", "image"], ["dist/e2128edeeefcfd54119c659e1313a548.png", "image"], ["src/components/box/breakBox.m4a", "audio"], ["src/components/box/breathing.m4a", "audio"], ["src/components/box/clawsOnWood.m4a", "audio"], ["src/components/door/mixdown.m4a", "audio"], ["src/components/enemy/attack.m4a", "audio"], ["src/components/enemy/noise.m4a", "audio"], ["src/components/enemy/roar01.m4a", "audio"], ["src/components/enemy/roar02.m4a", "audio"], ["src/components/enemy/roar03.m4a", "audio"], ["src/components/screens/start/theme.m4a", "audio"], ["src/containers/player/scream.m4a", "audio"], ["src/containers/player/steps-running.m4a", "audio"], ["src/containers/player/steps-walking.m4a", "audio"]];
+var RESOURCES = [["dist/0e58b004362d2cecaf96358cf5fa9f50.png", "image"], ["dist/12d4067df2155b204defac46c41c89d3.png", "image"], ["dist/151b6411d53b17de82d882485fcbaaf5.jpg", "image"], ["dist/1c1430572300aa82719312e3483d80d9.png", "image"], ["dist/3628ed55158b5a413097584e7fd8a725.jpg", "image"], ["dist/4db9414e7ca808670cbc9b15dc0eaa74.jpg", "image"], ["dist/6d73a1850ac64474712210aa8f34f818.png", "image"], ["dist/83f558afad0f8b176e361b3f574ccb42.jpg", "image"], ["dist/8b3a4e276e0a424265cc0c55fa95360d.svg", "image"], ["dist/a0a62fe89c1eb6ec77f414a77fdb4a92.jpg", "image"], ["dist/abcc39d175e2f5f6ad0df4cc14457193.jpg", "image"], ["dist/bad58d3de10ed478b28908a2380b31f8.png", "image"], ["dist/c161dc30a1bcbfb0ea16c3740f6189c3.jpg", "image"], ["dist/c3e2941f8e7e3eb4fa9f378466ad0a0b.jpg", "image"], ["dist/dc4aaa700984f97ca90dea2ec61957fc.png", "image"], ["dist/e2128edeeefcfd54119c659e1313a548.png", "image"], ["src/components/box/breakBox.m4a", "audio"], ["src/components/box/breathing.m4a", "audio"], ["src/components/box/clawsOnWood.m4a", "audio"], ["src/components/door/mixdown.m4a", "audio"], ["src/components/enemy/attack.m4a", "audio"], ["src/components/enemy/noise.m4a", "audio"], ["src/components/enemy/roar01.m4a", "audio"], ["src/components/enemy/roar02.m4a", "audio"], ["src/components/enemy/roar03.m4a", "audio"], ["src/components/screens/start/theme.m4a", "audio"], ["src/containers/player/scream.m4a", "audio"], ["src/containers/player/steps-running.m4a", "audio"], ["src/containers/player/steps-walking.m4a", "audio"]];
+if (true) module.exports = RESOURCES;
 
 /***/ },
 /* 108 */
@@ -3217,11 +3218,57 @@ Painting.propTypes = {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__patterns_css___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__patterns_css__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react__ = __webpack_require__(3);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_react__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__wall_wall01_jpg__ = __webpack_require__(193);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__wall_wall01_jpg___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__wall_wall01_jpg__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__wall_wall02_jpg__ = __webpack_require__(194);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__wall_wall02_jpg___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3__wall_wall02_jpg__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__wall_wall03_jpg__ = __webpack_require__(195);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__wall_wall03_jpg___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4__wall_wall03_jpg__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__floor_floor_jpg__ = __webpack_require__(191);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__floor_floor_jpg___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5__floor_floor_jpg__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__box_box01_jpg__ = __webpack_require__(188);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__box_box01_jpg___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_6__box_box01_jpg__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__box_box02_jpg__ = __webpack_require__(189);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__box_box02_jpg___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_7__box_box02_jpg__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__box_box03_jpg__ = __webpack_require__(190);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__box_box03_jpg___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_8__box_box03_jpg__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__switcher_wood_jpg__ = __webpack_require__(192);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__switcher_wood_jpg___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_9__switcher_wood_jpg__);
 /* harmony export (immutable) */ exports["a"] = Patterns;
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
 
 
-const PATTERNS = [['wall01', 'src/components/wall/wall01.jpg'], ['wall02', 'src/components/wall/wall02.jpg'], ['wall03', 'src/components/wall/wall03.jpg'], ['floor', 'src/components/floor/floor.jpg'], ['box01', 'src/components/box/box01.jpg', 240, 160], ['box02', 'src/components/box/box02.jpg', 120, 80], ['box03', 'src/components/box/box03.jpg', 120, 80], ['wood', 'src/components/switcher/wood.jpg', 90, 60]];
+
+
+
+
+
+
+
+
+
+const PATTERNS = [{ name: 'wall01', url: __WEBPACK_IMPORTED_MODULE_2__wall_wall01_jpg___default.a }, { name: 'wall02', url: __WEBPACK_IMPORTED_MODULE_3__wall_wall02_jpg___default.a }, { name: 'wall03', url: __WEBPACK_IMPORTED_MODULE_4__wall_wall03_jpg___default.a }, { name: 'floor', url: __WEBPACK_IMPORTED_MODULE_5__floor_floor_jpg___default.a }, {
+    name: 'box01',
+    url: __WEBPACK_IMPORTED_MODULE_6__box_box01_jpg___default.a,
+    width: 240,
+    height: 160
+}, {
+    name: 'box02',
+    url: __WEBPACK_IMPORTED_MODULE_7__box_box02_jpg___default.a,
+    width: 120,
+    height: 80
+}, {
+    name: 'box03',
+    url: __WEBPACK_IMPORTED_MODULE_8__box_box03_jpg___default.a,
+    width: 120,
+    height: 80
+}, {
+    name: 'wood',
+    url: __WEBPACK_IMPORTED_MODULE_9__switcher_wood_jpg___default.a,
+    width: 90,
+    height: 60
+}];
 
 function Patterns() {
     return __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
@@ -3230,7 +3277,9 @@ function Patterns() {
         __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
             'defs',
             null,
-            PATTERNS.map(([name, imageSrc, width = 450, height = 300]) => __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
+            PATTERNS.map(pattern => _extends({}, pattern, {
+                url: pattern.url.replace('./', './dist/')
+            })).map(({ name, url, width = 450, height = 300 }) => __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
                 'pattern',
                 {
                     key: name,
@@ -3238,7 +3287,7 @@ function Patterns() {
                     width: width, height: height,
                     patternUnits: 'userSpaceOnUse'
                 },
-                __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement('image', { xlinkHref: imageSrc, width: width, height: height })
+                __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement('image', { xlinkHref: url, width: width, height: height })
             ))
         )
     );
@@ -4098,7 +4147,7 @@ function mapStateToProps(state) {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react_redux___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_react_redux__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_redux_batched_actions__ = __webpack_require__(34);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_redux_batched_actions___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_redux_batched_actions__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_react_redux_src_utils_storeShape__ = __webpack_require__(282);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_react_redux_src_utils_storeShape__ = __webpack_require__(290);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__constants_constants__ = __webpack_require__(6);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__constants_hints__ = __webpack_require__(134);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__lib_DelayedActions__ = __webpack_require__(141);
@@ -5804,14 +5853,54 @@ module.exports = {"root":"viewport-root-goyag"};
 /* 185 */,
 /* 186 */,
 /* 187 */,
-/* 188 */,
-/* 189 */,
-/* 190 */,
-/* 191 */,
-/* 192 */,
-/* 193 */,
-/* 194 */,
-/* 195 */,
+/* 188 */
+/***/ function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__.p + "83f558afad0f8b176e361b3f574ccb42.jpg";
+
+/***/ },
+/* 189 */
+/***/ function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__.p + "c161dc30a1bcbfb0ea16c3740f6189c3.jpg";
+
+/***/ },
+/* 190 */
+/***/ function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__.p + "3628ed55158b5a413097584e7fd8a725.jpg";
+
+/***/ },
+/* 191 */
+/***/ function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__.p + "151b6411d53b17de82d882485fcbaaf5.jpg";
+
+/***/ },
+/* 192 */
+/***/ function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__.p + "abcc39d175e2f5f6ad0df4cc14457193.jpg";
+
+/***/ },
+/* 193 */
+/***/ function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__.p + "a0a62fe89c1eb6ec77f414a77fdb4a92.jpg";
+
+/***/ },
+/* 194 */
+/***/ function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__.p + "4db9414e7ca808670cbc9b15dc0eaa74.jpg";
+
+/***/ },
+/* 195 */
+/***/ function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__.p + "c3e2941f8e7e3eb4fa9f378466ad0a0b.jpg";
+
+/***/ },
 /* 196 */,
 /* 197 */,
 /* 198 */,
@@ -5898,7 +5987,15 @@ module.exports = {"root":"viewport-root-goyag"};
 /* 279 */,
 /* 280 */,
 /* 281 */,
-/* 282 */
+/* 282 */,
+/* 283 */,
+/* 284 */,
+/* 285 */,
+/* 286 */,
+/* 287 */,
+/* 288 */,
+/* 289 */,
+/* 290 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5914,14 +6011,6 @@ module.exports = {"root":"viewport-root-goyag"};
 
 
 /***/ },
-/* 283 */,
-/* 284 */,
-/* 285 */,
-/* 286 */,
-/* 287 */,
-/* 288 */,
-/* 289 */,
-/* 290 */,
 /* 291 */,
 /* 292 */,
 /* 293 */,
@@ -5932,7 +6021,15 @@ module.exports = {"root":"viewport-root-goyag"};
 /* 298 */,
 /* 299 */,
 /* 300 */,
-/* 301 */
+/* 301 */,
+/* 302 */,
+/* 303 */,
+/* 304 */,
+/* 305 */,
+/* 306 */,
+/* 307 */,
+/* 308 */,
+/* 309 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5970,4 +6067,4 @@ __WEBPACK_IMPORTED_MODULE_2_react_dom___default.a.render(__WEBPACK_IMPORTED_MODU
 ), document.getElementById('app'));
 
 /***/ }
-],[301]);
+],[309]);

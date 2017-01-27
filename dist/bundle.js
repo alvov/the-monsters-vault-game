@@ -9,7 +9,7 @@ webpackJsonp([0],[
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
-const GAME_VERSION = '1.2.0-alpha';
+const GAME_VERSION = '1.2.1-alpha';
 /* harmony export (immutable) */ exports["h"] = GAME_VERSION;
 
 

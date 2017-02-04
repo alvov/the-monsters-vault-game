@@ -35,3 +35,5 @@ export const ENEMY_SET_POSITION = 'enemySetPosition';
 export const ENEMY_SET_DIRECTION = 'enemySetDirection';
 export const ENEMY_SET_TARGET = 'enemySetTarget';
 export const ENEMY_SET_VISIBILITY = 'enemySetVisibility';
+
+export const LEVEL_SET = 'levelSet';

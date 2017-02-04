@@ -4,13 +4,8 @@ import {
     OBJECTS_SET_REACHABLE,
     DOOR_SET_OPEN,
     DOOR_SET_CLOSE,
-    GAME_SET_STATE_START
+    LEVEL_SET
 } from '../constants/actionNames';
-import level from '../level';
-
-function getInitialState() {
-    return JSON.parse(level.objects);
-}
 
 function setDoorCollidable({ state, id, on }) {
     const objects = new Array(state.length);
@@ -24,7 +19,7 @@ function setDoorCollidable({ state, id, on }) {
     return objects;
 }
 
-export default function objects(state = getInitialState(), action) {
+export default function objects(state = [], action) {
     switch (action.type) {
         case OBJECTS_SET_VISIBLE: {
             const objects = new Array(state.length);
@@ -72,8 +67,8 @@ export default function objects(state = getInitialState(), action) {
         case DOOR_SET_CLOSE: {
             return setDoorCollidable({ state, id: action.id, on: true });
         }
-        case GAME_SET_STATE_START: {
-            return getInitialState();
+        case LEVEL_SET: {
+            return JSON.parse(action.level.objects);
         }
         default:
             return state;

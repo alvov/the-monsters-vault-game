@@ -31,7 +31,6 @@ import DelayedActions from '../lib/DelayedActions';
 import { getVisibleObjects, getPointPosition, convertDegreeToRad, vectorsAdd3D } from '../lib/utils';
 
 import Loop from '../lib/Loop';
-import level from '../level';
 import Collision from '../lib/Collision';
 import * as actionCreators from '../actionCreators';
 
@@ -234,8 +233,8 @@ class GameLoop extends React.Component {
         if (newState.pos) {
             // if out of bounds - win
             for (let i = 0; i < 3; i++) {
-                if (level.boundaries[i]) {
-                    if (newState.pos[i] < 0 || newState.pos[i] > level.boundaries[i]) {
+                if (currentStore.level.boundaries[i]) {
+                    if (newState.pos[i] < 0 || newState.pos[i] > currentStore.level.boundaries[i]) {
                         this.props.onWin();
                         return;
                     }
@@ -318,7 +317,7 @@ class GameLoop extends React.Component {
                 (
                     // if player is too close
                     distanceToPlayer < ENEMY_ATTACK_DISTANCE ||
-                    // if player id close and in sight
+                    // if player is close and in sight
                     distanceToPlayer < ENEMY_ATTACK_DISTANCE_VISIBLE &&
                         Math.abs(directionToPlayer - currentStore.enemy.direction) < ENEMY_VIEW_ANGLE_RAD / 2
                 )
@@ -333,7 +332,7 @@ class GameLoop extends React.Component {
                     pos: currentStore.enemy.position,
                     objects: currentStore.objects,
                     broadCellSize: BROAD_CELL_SIZE,
-                    boundaries: level.boundaries
+                    boundaries: currentStore.level.boundaries
                 });
                 actions.push(actionCreators.enemy.setTarget(newTarget));
                 actions.push(actionCreators.enemy.setDirection(GameLoop.getDirection2d(
@@ -353,7 +352,7 @@ class GameLoop extends React.Component {
                         pos: currentStore.enemy.position,
                         objects: currentStore.objects,
                         broadCellSize: BROAD_CELL_SIZE,
-                        boundaries: level.boundaries
+                        boundaries: currentStore.level.boundaries
                     });
                     directionToTarget = GameLoop.getDirection2d(
                         currentStore.enemy.position, newTarget

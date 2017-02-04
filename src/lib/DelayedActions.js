@@ -37,6 +37,9 @@ export default class DelayedActions {
         })
     }
 
+    /**
+     * Clears delayed actions list
+     */
     clear() {
         this.delayedActions = [];
     }

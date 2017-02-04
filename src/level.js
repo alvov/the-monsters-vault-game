@@ -1,8 +1,6 @@
-import Collision from './lib/Collision';
-import { isObjectVisible, getPlayerCell, getPointPosition } from './lib/utils';
+import LevelGenerator from './lib/LevelGenerator';
 import {
-    BROAD_CELL_SIZE,
-    PLAYER_HAND_LENGTH,
+    PLAYER_SIZE,
     DOOR_STATE_CLOSE,
     PAINTING_TYPE,
     FLOOR_TYPE,
@@ -11,16 +9,16 @@ import {
     BOX_TYPE,
     SWITCHER_TYPE,
     DOOR_TYPE,
-    ENEMY_STATE
+    ENEMY_STATE,
+    PAINTINGS,
+    ENEMY_TRIGGER_DOOR_ID
 } from './constants/constants';
-
-const ENEMY_TRIGGER_DOOR_ID = 3;
 
 const level = {
     boundaries: [2500, null, 2500],
     player: {
-        pos: [1250, 150, 250],
-        size: [50, 150, 50],
+        pos: [1250, PLAYER_SIZE.HEIGHT, 250],
+        size: [PLAYER_SIZE.WIDTH, PLAYER_SIZE.HEIGHT, PLAYER_SIZE.DEPTH],
         angle: [0, 0, 0]
     },
     enemy: {
@@ -220,68 +218,68 @@ const level = {
             }
         },
         {
-            name: 'painting_escape',
+            name: 'painting_' + PAINTINGS.ESCAPE.alias,
             type: PAINTING_TYPE,
-            size: [187, 103, 0],
+            size: PAINTINGS.ESCAPE.size,
             pos: [350, 125, 51],
             angle: [0, 0, 0],
             props: {
-                alias: 'escape'
+                alias: PAINTINGS.ESCAPE.alias
             },
             collides: false
         },
         {
-            name: 'painting_give-up',
+            name: 'painting_' + PAINTINGS.GIVE_UP.alias,
             type: PAINTING_TYPE,
-            size: [205, 68, 0],
+            size: PAINTINGS.GIVE_UP.size,
             pos: [1974, 125, 250],
             angle: [0, -90, 0],
             props: {
-                alias: 'give-up'
+                alias: PAINTINGS.GIVE_UP.alias
             },
             collides: false
         },
         {
-            name: 'painting_forever',
+            name: 'painting_' + PAINTINGS.FOREVER.alias,
             type: PAINTING_TYPE,
-            size: [314, 193, 0],
+            size: PAINTINGS.FOREVER.size,
             pos: [1250, 125, 1474],
             angle: [0, 180, 0],
             props: {
-                alias: 'forever'
+                alias: PAINTINGS.FOREVER.alias
             },
             collides: false
         },
         {
-            name: 'painting_easter',
+            name: 'painting_' + PAINTINGS.EASTER.alias,
             type: PAINTING_TYPE,
-            size: [139, 150, 0],
+            size: PAINTINGS.EASTER.size,
             pos: [51, 90, 200],
             angle: [0, 90, 0],
             props: {
-                alias: 'easter'
+                alias: PAINTINGS.EASTER.alias
             },
             collides: false
         },
         {
-            name: 'painting_red',
+            name: 'painting_' + PAINTINGS.RED_WALL.alias,
             type: PAINTING_TYPE,
-            size: [200, 114, 0],
+            size: PAINTINGS.RED_WALL.size,
             pos: [974, 130, 1300],
             angle: [0, -90, 0],
             props: {
-                alias: 'red-wall'
+                alias: PAINTINGS.RED_WALL.alias
             },
             collides: false
         },
         {
-            name: 'painting_game',
+            name: 'painting_' + PAINTINGS.GAME.alias,
             type: PAINTING_TYPE,
-            size: [243, 51, 0],
+            size: PAINTINGS.GAME.size,
             pos: [2449, 150, 1250],
             angle: [0, -90, 0],
             props: {
-                alias: 'game'
+                alias: PAINTINGS.GAME.alias
             },
             collides: false
         },
@@ -444,7 +442,7 @@ for (let z = 250; z < level.boundaries[2]; z += 500) {
     }
 }
 
-// generate floor panels
+// generate floor and ceiling panels
 for (let z = 0; z < level.boundaries[2]; z += 500) {
     for (let x = 0; x < level.boundaries[0]; x += 500) {
         level.objects.push({
@@ -454,12 +452,6 @@ for (let z = 0; z < level.boundaries[2]; z += 500) {
             pos: [x + 250, 0, z + 250],
             collides: false
         });
-    }
-}
-
-// generate ceiling panels
-for (let z = 0; z < level.boundaries[2]; z += 500) {
-    for (let x = 0; x < level.boundaries[0]; x += 500) {
         level.objects.push({
             name: 'ceiling_tile_' + z + '_' + x,
             type: CEILING_TYPE,
@@ -471,67 +463,7 @@ for (let z = 0; z < level.boundaries[2]; z += 500) {
 }
 
 // calculate 2d points coordinates for objects hitboxes
-const playerCell = getPlayerCell(level.player.pos);
-for (let i = 0; i < level.objects.length; i++) {
-    const obj = level.objects[i];
-    let sizeXHalf = 0;
-    let sizeYHalf = 0;
-    let sizeZHalf = 0;
-
-    if (obj.collides !== false) {
-        sizeXHalf = obj.size[0] / 2;
-        sizeYHalf = obj.size[1] / 2;
-        sizeZHalf = obj.size[2] / 2;
-    }
-    const playerXHalf = level.player.size[0] / 2;
-    const playerYHalf = level.player.size[1] / 2;
-    const playerZHalf = level.player.size[2] / 2;
-    // if object is "collidable", enlarge its hitbox to simulate players size (actual player is a dot)
-    obj.hitbox = [
-        [obj.pos[0] - sizeXHalf - playerXHalf, obj.pos[0] + sizeXHalf + playerXHalf],
-        [obj.pos[1] - sizeYHalf - playerYHalf, obj.pos[1] + sizeYHalf + playerYHalf],
-        [obj.pos[2] - sizeZHalf - playerZHalf, obj.pos[2] + sizeZHalf + playerZHalf]
-    ];
-
-    // define to which broad cells does an object belong
-    obj.broadCells = [];
-    const broadCellsXMax = Math.ceil(level.boundaries[0] / BROAD_CELL_SIZE) - 1;
-    const broadCellsYMax = Math.ceil(level.boundaries[2] / BROAD_CELL_SIZE) - 1;
-    const topLeftCellX = Math.min(
-        broadCellsXMax,
-        Math.max(0, Math.floor(obj.hitbox[0][0] / BROAD_CELL_SIZE))
-    );
-    const topLeftCellZ = Math.min(
-        broadCellsYMax,
-        Math.max(0, Math.floor(obj.hitbox[2][0] / BROAD_CELL_SIZE))
-    );
-    const bottomRightCellX = Math.min(
-        broadCellsXMax,
-        Math.max(0, Math.floor(obj.hitbox[0][1] / BROAD_CELL_SIZE))
-    );
-    const bottomRightCellZ = Math.min(
-        broadCellsYMax,
-        Math.max(0, Math.floor(obj.hitbox[2][1] / BROAD_CELL_SIZE))
-    );
-    for (let j = topLeftCellZ; j <= bottomRightCellZ; j++) {
-        for (let i = topLeftCellX; i <= bottomRightCellX; i++) {
-            obj.broadCells.push([i, j]);
-        }
-    }
-
-    obj.isVisible = isObjectVisible(playerCell, obj);
-
-    obj.isReachable = false;
-}
-
-const collisionView = Collision.getCollisionView(
-    [level.player.pos, getPointPosition({ pos: level.player.pos, distance: PLAYER_HAND_LENGTH, angle: level.player.angle })],
-    level.objects,
-    BROAD_CELL_SIZE
-);
-if (collisionView) {
-    collisionView.obj.isReachable = true;
-}
+LevelGenerator.addHitbox(level);
 
 level.objects = JSON.stringify(level.objects);
 

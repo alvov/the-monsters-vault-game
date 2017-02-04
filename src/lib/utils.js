@@ -39,6 +39,11 @@ export function getVisibleObjects(playerPos, objects) {
     return { addVisibleObjects, removeVisibleObjects };
 }
 
+/**
+ * Returns indexes for the cell where the player is located
+ * @param {number[]} playerPos
+ * @returns {number[]}
+ */
 export function getPlayerCell(playerPos) {
     return [
         Math.floor(playerPos[0] / BROAD_CELL_SIZE),
@@ -46,6 +51,13 @@ export function getPlayerCell(playerPos) {
     ];
 }
 
+/**
+ * Returns true if the <object> is located close enough to the player
+ * (which is on the same or the neighbour cell)
+ * @param {number[]} playerCell
+ * @param {Object} object
+ * @returns {boolean}
+ */
 export function isObjectVisible(playerCell, object) {
     let isVisible = false;
     for (let k = 0; k < object.broadCells.length; k = k + 1) {
@@ -75,6 +87,12 @@ export function getPointPosition({ pos, distance, angle }) {
     return [x, y, z];
 }
 
+/**
+ * Returns 3d vector sum
+ * @param {number[]} v1
+ * @param {number[]} v2
+ * @returns {number[]}
+ */
 export function vectorsAdd3D(v1, v2) {
     return [v1[0] + v2[0], v1[1] + v2[1], v1[2] + v2[2]];
 }

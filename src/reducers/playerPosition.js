@@ -1,16 +1,11 @@
-import { PLAYER_UPDATE_POSITION, GAME_SET_STATE_START } from '../constants/actionNames';
-import level from '../level';
+import { PLAYER_UPDATE_POSITION, LEVEL_SET } from '../constants/actionNames';
 
-function getInitialState() {
-    return [...level.player.pos];
-}
-
-export default function playerPosition(state = getInitialState(), action) {
+export default function playerPosition(state = [0, 0, 0], action) {
     switch (action.type) {
         case PLAYER_UPDATE_POSITION:
             return action.pos;
-        case GAME_SET_STATE_START:
-            return getInitialState();
+        case LEVEL_SET:
+            return [...action.level.player.pos];
         default:
             return state;
     }

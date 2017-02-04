@@ -4,23 +4,13 @@ import {
     ENEMY_SET_DIRECTION,
     ENEMY_SET_TARGET,
     ENEMY_SET_VISIBILITY,
-    GAME_SET_STATE_START,
+    LEVEL_SET,
     DOOR_SET_OPEN
 } from '../constants/actionNames';
 
 import { ENEMY_STATE } from '../constants/constants';
 
-import level from '../level';
-
-function getInitialState() {
-    return {
-        ...level.enemy,
-        position: [...level.enemy.position],
-        target: [...level.enemy.target]
-    };
-}
-
-export default function enemy(state = getInitialState(), action) {
+export default function enemy(state = {}, action) {
     switch (action.type) {
         case ENEMY_SET_STATE:
             return {
@@ -55,8 +45,12 @@ export default function enemy(state = getInitialState(), action) {
                 };
             }
             return state;
-        case GAME_SET_STATE_START:
-            return getInitialState();
+        case LEVEL_SET:
+            return {
+                ...action.level.enemy,
+                position: [...action.level.enemy.position],
+                target: [...action.level.enemy.target]
+            };
         default:
             return state;
     }

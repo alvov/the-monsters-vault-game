@@ -132,7 +132,7 @@ class Box extends React.PureComponent {
                 patternId={'box0' + mode}
                 graphicsQuality={graphicsQuality}
             />
-            {playerPos[1] > pos[1] + size[1] / 2
+            {!isBroken && playerPos[1] > pos[1] + size[1] / 2
                 ? <Plain
                     id={name + '-4'}
                     pos={[0, -size[1] / 2, 0]}

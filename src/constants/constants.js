@@ -1,4 +1,4 @@
-export const GAME_VERSION = '1.2.1-alpha';
+export const GAME_VERSION = '1.3.0-alpha';
 
 export const FPS = 60;
 export const BROAD_CELL_SIZE = 250;
@@ -32,6 +32,11 @@ export const CONTROL_STATE = {
     DOWN: 2
 };
 
+export const PLAYER_SIZE = {
+    WIDTH: 50,
+    HEIGHT: 150,
+    DEPTH: 50
+};
 export const PLAYER_SPEED = 4;
 export const PLAYER_RUNNING_COEFF = 1.5;
 export const PLAYER_HAND_LENGTH = 150;
@@ -51,12 +56,15 @@ export const ENEMY_STATE = {
 export const ENEMY_SPEED = 1.5;
 export const ENEMY_SPEED_RUNNING = 6;
 export const ENEMY_ATTACK_DISTANCE = 400;
+// export const ENEMY_ATTACK_DISTANCE = -1;
 export const ENEMY_ATTACK_DISTANCE_VISIBLE = 600;
+// export const ENEMY_ATTACK_DISTANCE_VISIBLE = -1;
 export const ENEMY_KILL_DISTANCE = 100;
 export const ENEMY_VIEW_ANGLE_DEG = 120;
 export const ENEMY_VIEW_ANGLE_RAD = ENEMY_VIEW_ANGLE_DEG / 180 * Math.PI;
 export const ENEMY_TARGET_REACH_THRESHOLD = 50;
 export const ENEMY_CHANGE_TARGET_TIME = 1000;
+export const ENEMY_TRIGGER_DOOR_ID = 3;
 
 export const PAINTING_TYPE = 'painting';
 export const FLOOR_TYPE = 'floor';
@@ -65,6 +73,33 @@ export const WALL_TYPE = 'wall';
 export const BOX_TYPE = 'box';
 export const SWITCHER_TYPE = 'switcher';
 export const DOOR_TYPE = 'door';
+
+export const PAINTINGS = {
+    ESCAPE: {
+        alias: 'escape',
+        size: [187, 103, 0]
+    },
+    GIVE_UP: {
+        alias: 'give-up',
+        size: [205, 68, 0]
+    },
+    FOREVER: {
+        alias: 'forever',
+        size: [314, 193, 0]
+    },
+    EASTER: {
+        alias: 'easter',
+        size: [139, 150, 0]
+    },
+    RED_WALL: {
+        alias: 'red-wall',
+        size: [200, 114, 0]
+    },
+    GAME: {
+        alias: 'game',
+        size: [243, 51, 0]
+    }
+};
 
 export const DOOR_STATE_OPEN = 'open';
 export const DOOR_STATE_OPENING = 'opening';

@@ -231,6 +231,14 @@ export default class Collision {
         return null;
     }
 
+    /**
+     * Returns random next free neighbour cell position of given size for given position
+     * @param {number[]} pos
+     * @param {Object[]} objects
+     * @param {number} broadCellSize
+     * @param {number[]} boundaries
+     * @returns {number[]}
+     */
     static getRandomFreeCell({ pos, objects, broadCellSize, boundaries }) {
         broadCellSize = broadCellSize * 2;
         const currentCellCenter = [];
@@ -381,6 +389,11 @@ export default class Collision {
         return v1[0] === v2[0] && v1[1] === v2[1] && v1[2] === v2[2];
     }
 
+    /**
+     * Returns random integer from 0 to given max (not including max)
+     * @param {number} max
+     * @returns {number}
+     */
     static getRandom(max) {
         return Math.floor(Math.random() * max);
     }

@@ -22,6 +22,8 @@ import Player from './player/player';
 import Scene from './scene';
 import GameLoop from './gameLoop';
 import Loop from '../lib/Loop';
+import LevelGenerator from '../lib/LevelGenerator';
+import level from '../level';
 
 const BUTTON_REPEAT_DELAY = 500;
 const GAMEPAD_AXIS_UNIT_THRESHOLD = 0.5;
@@ -96,9 +98,10 @@ class Game extends React.Component {
         this.handleGamepadDisconnected = this.handleGamepadDisconnected.bind(this);
 
         this.setGameStateStart = this.setGameState.bind(this, GAME_STATE_START);
-        this.setGameStatePlay = this.setGameState.bind(this, GAME_STATE_PLAY);
         this.setGameStateWin = this.setGameState.bind(this, GAME_STATE_WIN);
         this.setGameStateLoose = this.setGameState.bind(this, GAME_STATE_LOOSE);
+        this.setGameStatePlay = this.setGameStatePlay.bind(this);
+        this.setGameStatePlayRandom = this.setGameStatePlayRandom.bind(this);
 
         this.cacheAssetData = this.cacheAssetData.bind(this);
     }
@@ -151,6 +154,7 @@ class Game extends React.Component {
         } else if (gameState === GAME_STATE_START) {
             return <StartScreen
                 onStart={this.setGameStatePlay}
+                onStartRandom={this.setGameStatePlayRandom}
                 gamepadState={gamepadState}
                 settings={settings}
             />;
@@ -219,6 +223,16 @@ class Game extends React.Component {
 
     setGameState(state) {
         this.props.setGameState(state);
+    }
+
+    setGameStatePlay() {
+        this.props.setLevel(level);
+        this.setGameState(GAME_STATE_PLAY);
+    }
+
+    setGameStatePlayRandom() {
+        this.props.setLevel(new LevelGenerator().level);
+        this.setGameState(GAME_STATE_PLAY);
     }
 
     cacheAssetData(assetSrc, data) {
@@ -315,6 +329,7 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
     return bindActionCreators({
         setGameState: actionCreators.game.setGameState,
+        setLevel: actionCreators.level.setLevel,
         setGamepadState: actionCreators.gamepad.setGamepadState
     }, dispatch);
 }

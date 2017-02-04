@@ -26,6 +26,7 @@ const SCREEN_CREDITS = 'credits';
 class StartScreen extends React.Component {
     static propTypes = {
         onStart: PropTypes.func.isRequired,
+        onStartRandom: PropTypes.func.isRequired,
         gamepadState: PropTypes.number.isRequired
     };
     static contextTypes = {
@@ -47,6 +48,7 @@ class StartScreen extends React.Component {
         this.gainNode.connect(this.context.masterGain);
 
         this.handleStart = this.handleStart.bind(this);
+        this.handleStartRandom = this.handleStartRandom.bind(this);
         this.setScreenSettings = this.setScreen.bind(this, SCREEN_SETTINGS);
         this.setScreenCredits = this.setScreen.bind(this, SCREEN_CREDITS);
         this.setScreenDefault = function() {
@@ -61,6 +63,10 @@ class StartScreen extends React.Component {
                 {
                     text: 'Play',
                     action: this.handleStart
+                },
+                {
+                    text: 'Random level',
+                    action: this.handleStartRandom
                 },
                 {
                     text: 'Settings',
@@ -145,6 +151,14 @@ class StartScreen extends React.Component {
         </button>;
     }
 
+    handleStart() {
+        this.props.onStart();
+    }
+
+    handleStartRandom() {
+        this.props.onStartRandom();
+    }
+
     loopCallback() {
         // keyboard
         if (this.state.screen !== SCREEN_DEFAULT && this.isKeyboardButtonPressed(KEY_BACK)) {
@@ -182,10 +196,6 @@ class StartScreen extends React.Component {
                 });
             }
         }
-    }
-
-    handleStart() {
-        this.props.onStart();
     }
 
     launchActiveAction() {

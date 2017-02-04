@@ -11,6 +11,7 @@ import hints from './hints';
 import gamepad from './gamepad';
 import settings from './settings';
 import enemy from './enemy';
+import level from './level';
 
 export default combineReducers({
     gameState,
@@ -23,5 +24,6 @@ export default combineReducers({
     hints,
     gamepad,
     settings,
-    enemy
+    enemy,
+    level
 });

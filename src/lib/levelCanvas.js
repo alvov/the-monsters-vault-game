@@ -40,12 +40,13 @@ export default function getLevelCanvas(cells, level) {
         switch (obj.type) {
             case WALL_TYPE:
                 if (obj.props.mode === 2) {
-                    ctx.fillStyle = '#ff655b';
+                    ctx.strokeStyle = '#ff655b';
                 } else if (obj.props.mode === 3) {
-                    ctx.fillStyle = '#804f36';
+                    ctx.strokeStyle = '#804f36';
                 } else {
-                    ctx.fillStyle = '#000';
+                    ctx.strokeStyle = '#000';
                 }
+                ctx.beginPath();
                 ctx.rect(
                     (obj.pos[0] - obj.size[0] / 2) / CANVAS_SCALE,
                     (obj.pos[2] - obj.size[2] / 2) / CANVAS_SCALE,
@@ -53,6 +54,7 @@ export default function getLevelCanvas(cells, level) {
                     obj.size[2] / CANVAS_SCALE
                 );
                 ctx.stroke();
+                ctx.strokeStyle = '#000';
                 // ctx.fillStyle = '#aacbff';
                 // ctx.fillText(i, obj.pos[0] / CANVAS_SCALE, obj.pos[2] / CANVAS_SCALE);
                 break;
@@ -114,6 +116,7 @@ export default function getLevelCanvas(cells, level) {
     });
     // player
     ctx.fillStyle = '#000';
+    ctx.strokeStyle = '#000';
     ctx.fillRect(
         (level.player.pos[0] - level.player.size[0] / 2) / CANVAS_SCALE,
         (level.player.pos[2] - level.player.size[2] / 2) / CANVAS_SCALE,

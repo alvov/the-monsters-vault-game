@@ -234,12 +234,13 @@ export default class Collision {
     /**
      * Returns random next free neighbour cell position of given size for given position
      * @param {number[]} pos
+     * @param {number} direction
      * @param {Object[]} objects
      * @param {number} broadCellSize
      * @param {number[]} boundaries
      * @returns {number[]}
      */
-    static getRandomFreeCell({ pos, objects, broadCellSize, boundaries }) {
+    static getRandomFreeCell({ pos, direction, objects, broadCellSize, boundaries }) {
         broadCellSize = broadCellSize * 2;
         const currentCellCenter = [];
         for (let i = 0; i < pos.length; i++) {
@@ -257,6 +258,7 @@ export default class Collision {
             [currentCellCenter[0], 0, currentCellCenter[1] + broadCellSize]
         ];
         const availableVariants = [];
+        const availableVariantsWeights = [];
         for (let i = 0; i < allVariants.length; i++) {
             if (
                 allVariants[i][0] < 0 ||
@@ -270,6 +272,9 @@ export default class Collision {
                 continue;
             }
             availableVariants.push(allVariants[i]);
+            availableVariantsWeights.push(
+                Math.abs(1 - Math.abs(direction - Collision.getDirection2d(pos, allVariants[i])) / 2 / Math.PI)
+            );
         }
         let variantIndex;
         // locked in a room
@@ -278,7 +283,7 @@ export default class Collision {
         } else if (availableVariants.length === 1) {
             variantIndex = 0;
         } else {
-            variantIndex = Collision.getRandom(availableVariants.length);
+            variantIndex = Collision.getRandomIndexWithWeights(availableVariantsWeights);
         }
         return availableVariants[variantIndex];
     }
@@ -357,6 +362,33 @@ export default class Collision {
     }
 
     /**
+     * Returns direction in radians from p1 towards p2
+     * @param {number[]} p1
+     * @param {number[]} p2
+     * @returns {number}
+     */
+    static getDirection2d(p1, p2) {
+        const xShift = p2[0] - p1[0];
+        let zShift = p2[2] - p1[2];
+        if (!xShift && !zShift) {
+            return 0;
+        }
+        if (zShift) {
+            zShift = -zShift;
+        }
+        let direction;
+        if (zShift >= 0) {
+            direction = Math.atan(xShift / zShift);
+        } else {
+            direction = Math.atan(xShift / zShift) + Math.PI;
+        }
+        if (direction < 0) {
+            direction = direction + Math.PI * 2;
+        }
+        return direction;
+    }
+
+    /**
      * Returns true if point lies inside given object
      * @param {Object} obj
      * @param {Array} point
@@ -390,11 +422,22 @@ export default class Collision {
     }
 
     /**
-     * Returns random integer from 0 to given max (not including max)
-     * @param {number} max
+     * Returns random index considering given weights
+     * @param {number[]} weights
      * @returns {number}
      */
-    static getRandom(max) {
-        return Math.floor(Math.random() * max);
+    static getRandomIndexWithWeights(weights) {
+        const weightsSum = weights.reduce((prev, cur) => prev + cur);
+        weights[0] /= weightsSum;
+        for (let i = 1; i < weights.length; i++) {
+            weights[i] = weights[i] / weightsSum + weights[i - 1];
+        }
+        const randomValue = Math.random();
+        for (let i = 0; i < weights.length; i++) {
+            if (randomValue < weights[i]) {
+                return i;
+            }
+        }
+        return weights.length - 1;
     }
 }

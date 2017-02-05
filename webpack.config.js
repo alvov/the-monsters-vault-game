@@ -3,19 +3,23 @@ const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 const jsRule = {
     test: /\.js$/,
-    loader: 'babel-loader',
     exclude: /node_modules/,
-    options: {
-        presets: ['react'],
-        plugins: [
-            'syntax-object-rest-spread',
-            'transform-object-rest-spread',
-            'syntax-export-extensions',
-            'transform-export-extensions',
-            'syntax-class-properties',
-            'transform-class-properties'
-        ]
-    }
+    use: [
+        {
+            loader: 'babel-loader',
+            options: {
+                presets: ['react'],
+                plugins: [
+                    'syntax-object-rest-spread',
+                    'transform-object-rest-spread',
+                    'syntax-export-extensions',
+                    'transform-export-extensions',
+                    'syntax-class-properties',
+                    'transform-class-properties'
+                ]
+            }
+        }
+    ]
 };
 
 module.exports = [
@@ -38,14 +42,18 @@ module.exports = [
                 jsRule,
                 {
                     test: /\.css$/,
-                    loader: ExtractTextPlugin.extract({
-                        fallbackLoader: 'style-loader',
-                        loader: 'css-loader',
-                        query: {
-                            modules: true,
-                            importLoaders: 2,
-                            localIdentName: '[name]-[local]-[hash:base64:5]'
-                        }
+                    use: ExtractTextPlugin.extract({
+                        fallback: 'style-loader',
+                        use: [
+                            {
+                                loader: 'css-loader',
+                                options: {
+                                    modules: true,
+                                    importLoaders: 2,
+                                    localIdentName: '[name]-[local]-[hash:base64:5]'
+                                }
+                            }
+                        ]
                     })
                 },
                 {

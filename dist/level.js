@@ -33,16 +33,18 @@
 /******/ 	// expose the module cache
 /******/ 	__webpack_require__.c = installedModules;
 
-/******/ 	// identity function for calling harmory imports with the correct context
+/******/ 	// identity function for calling harmony imports with the correct context
 /******/ 	__webpack_require__.i = function(value) { return value; };
 
-/******/ 	// define getter function for harmory exports
+/******/ 	// define getter function for harmony exports
 /******/ 	__webpack_require__.d = function(exports, name, getter) {
-/******/ 		Object.defineProperty(exports, name, {
-/******/ 			configurable: false,
-/******/ 			enumerable: true,
-/******/ 			get: getter
-/******/ 		});
+/******/ 		if(!__webpack_require__.o(exports, name)) {
+/******/ 			Object.defineProperty(exports, name, {
+/******/ 				configurable: false,
+/******/ 				enumerable: true,
+/******/ 				get: getter
+/******/ 			});
+/******/ 		}
 /******/ 	};
 
 /******/ 	// getDefaultExport function for compatibility with non-harmony modules
@@ -61,12 +63,12 @@
 /******/ 	__webpack_require__.p = "";
 
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 4);
+/******/ 	return __webpack_require__(__webpack_require__.s = 5);
 /******/ })
 /************************************************************************/
 /******/ ([
 /* 0 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 const GAME_VERSION = '1.3.0-alpha';
@@ -77,7 +79,7 @@ const FPS = 60;
 /* unused harmony export FPS */
 
 const BROAD_CELL_SIZE = 250;
-/* harmony export (immutable) */ exports["a"] = BROAD_CELL_SIZE;
+/* harmony export (immutable) */ __webpack_exports__["m"] = BROAD_CELL_SIZE;
 
 const SPOTLIGHT_RADIUS = 1.5 * BROAD_CELL_SIZE;
 /* unused harmony export SPOTLIGHT_RADIUS */
@@ -158,7 +160,7 @@ const PLAYER_SIZE = {
     HEIGHT: 150,
     DEPTH: 50
 };
-/* harmony export (immutable) */ exports["b"] = PLAYER_SIZE;
+/* harmony export (immutable) */ __webpack_exports__["f"] = PLAYER_SIZE;
 
 const PLAYER_SPEED = 4;
 /* unused harmony export PLAYER_SPEED */
@@ -167,7 +169,7 @@ const PLAYER_RUNNING_COEFF = 1.5;
 /* unused harmony export PLAYER_RUNNING_COEFF */
 
 const PLAYER_HAND_LENGTH = 150;
-/* harmony export (immutable) */ exports["n"] = PLAYER_HAND_LENGTH;
+/* harmony export (immutable) */ __webpack_exports__["n"] = PLAYER_HAND_LENGTH;
 
 const PLAYER_STATE_RUN = 'run';
 /* unused harmony export PLAYER_STATE_RUN */
@@ -192,7 +194,7 @@ const ENEMY_STATE = {
     STOP: 'stop',
     ATTACK: 'attack'
 };
-/* harmony export (immutable) */ exports["e"] = ENEMY_STATE;
+/* harmony export (immutable) */ __webpack_exports__["h"] = ENEMY_STATE;
 
 const ENEMY_SPEED = 1.5;
 /* unused harmony export ENEMY_SPEED */
@@ -200,18 +202,18 @@ const ENEMY_SPEED = 1.5;
 const ENEMY_SPEED_RUNNING = 6;
 /* unused harmony export ENEMY_SPEED_RUNNING */
 
-const ENEMY_ATTACK_DISTANCE = 400;
+const ENEMY_ATTACK_DISTANCE = 200;
 /* unused harmony export ENEMY_ATTACK_DISTANCE */
 
 // export const ENEMY_ATTACK_DISTANCE = -1;
-const ENEMY_ATTACK_DISTANCE_VISIBLE = 600;
+const ENEMY_ATTACK_DISTANCE_VISIBLE = 400;
 /* unused harmony export ENEMY_ATTACK_DISTANCE_VISIBLE */
 
 // export const ENEMY_ATTACK_DISTANCE_VISIBLE = -1;
-const ENEMY_KILL_DISTANCE = 100;
+const ENEMY_KILL_DISTANCE = 50;
 /* unused harmony export ENEMY_KILL_DISTANCE */
 
-const ENEMY_VIEW_ANGLE_DEG = 120;
+const ENEMY_VIEW_ANGLE_DEG = 90;
 /* unused harmony export ENEMY_VIEW_ANGLE_DEG */
 
 const ENEMY_VIEW_ANGLE_RAD = ENEMY_VIEW_ANGLE_DEG / 180 * Math.PI;
@@ -224,29 +226,29 @@ const ENEMY_CHANGE_TARGET_TIME = 1000;
 /* unused harmony export ENEMY_CHANGE_TARGET_TIME */
 
 const ENEMY_TRIGGER_DOOR_ID = 3;
-/* harmony export (immutable) */ exports["f"] = ENEMY_TRIGGER_DOOR_ID;
+/* harmony export (immutable) */ __webpack_exports__["i"] = ENEMY_TRIGGER_DOOR_ID;
 
 
 const PAINTING_TYPE = 'painting';
-/* harmony export (immutable) */ exports["d"] = PAINTING_TYPE;
+/* harmony export (immutable) */ __webpack_exports__["d"] = PAINTING_TYPE;
 
 const FLOOR_TYPE = 'floor';
-/* harmony export (immutable) */ exports["g"] = FLOOR_TYPE;
+/* harmony export (immutable) */ __webpack_exports__["j"] = FLOOR_TYPE;
 
 const CEILING_TYPE = 'ceiling';
-/* harmony export (immutable) */ exports["h"] = CEILING_TYPE;
+/* harmony export (immutable) */ __webpack_exports__["k"] = CEILING_TYPE;
 
 const WALL_TYPE = 'wall';
-/* harmony export (immutable) */ exports["i"] = WALL_TYPE;
+/* harmony export (immutable) */ __webpack_exports__["a"] = WALL_TYPE;
 
 const BOX_TYPE = 'box';
-/* harmony export (immutable) */ exports["j"] = BOX_TYPE;
+/* harmony export (immutable) */ __webpack_exports__["e"] = BOX_TYPE;
 
 const SWITCHER_TYPE = 'switcher';
-/* harmony export (immutable) */ exports["m"] = SWITCHER_TYPE;
+/* harmony export (immutable) */ __webpack_exports__["c"] = SWITCHER_TYPE;
 
 const DOOR_TYPE = 'door';
-/* harmony export (immutable) */ exports["k"] = DOOR_TYPE;
+/* harmony export (immutable) */ __webpack_exports__["b"] = DOOR_TYPE;
 
 
 const PAINTINGS = {
@@ -275,7 +277,7 @@ const PAINTINGS = {
         size: [243, 51, 0]
     }
 };
-/* harmony export (immutable) */ exports["c"] = PAINTINGS;
+/* harmony export (immutable) */ __webpack_exports__["g"] = PAINTINGS;
 
 
 const DOOR_STATE_OPEN = 'open';
@@ -285,7 +287,7 @@ const DOOR_STATE_OPENING = 'opening';
 /* unused harmony export DOOR_STATE_OPENING */
 
 const DOOR_STATE_CLOSE = 'close';
-/* harmony export (immutable) */ exports["l"] = DOOR_STATE_CLOSE;
+/* harmony export (immutable) */ __webpack_exports__["l"] = DOOR_STATE_CLOSE;
 
 const DOOR_STATE_CLOSING = 'closing';
 /* unused harmony export DOOR_STATE_CLOSING */
@@ -315,13 +317,13 @@ const GRAPHICS_QUALITY = {
 /* unused harmony export GRAPHICS_QUALITY */
 
 
-/***/ },
+/***/ }),
 /* 1 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__Collision__ = __webpack_require__(2);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__utils__ = __webpack_require__(3);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__Collision__ = __webpack_require__(3);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__utils__ = __webpack_require__(4);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__constants_constants__ = __webpack_require__(0);
 
 
@@ -537,7 +539,7 @@ class Cell {
 class LevelGenerator {
     constructor() {
         this.player = {
-            size: [__WEBPACK_IMPORTED_MODULE_2__constants_constants__["b" /* PLAYER_SIZE */].WIDTH, __WEBPACK_IMPORTED_MODULE_2__constants_constants__["b" /* PLAYER_SIZE */].HEIGHT, __WEBPACK_IMPORTED_MODULE_2__constants_constants__["b" /* PLAYER_SIZE */].DEPTH]
+            size: [__WEBPACK_IMPORTED_MODULE_2__constants_constants__["f" /* PLAYER_SIZE */].WIDTH, __WEBPACK_IMPORTED_MODULE_2__constants_constants__["f" /* PLAYER_SIZE */].HEIGHT, __WEBPACK_IMPORTED_MODULE_2__constants_constants__["f" /* PLAYER_SIZE */].DEPTH]
         };
         this.cells = [];
         this.walls = [];
@@ -548,7 +550,7 @@ class LevelGenerator {
         this.ceiling = [];
         this.roomsCount = 0;
 
-        this.paintings = [__WEBPACK_IMPORTED_MODULE_2__constants_constants__["c" /* PAINTINGS */].ESCAPE, __WEBPACK_IMPORTED_MODULE_2__constants_constants__["c" /* PAINTINGS */].GIVE_UP, __WEBPACK_IMPORTED_MODULE_2__constants_constants__["c" /* PAINTINGS */].FOREVER, __WEBPACK_IMPORTED_MODULE_2__constants_constants__["c" /* PAINTINGS */].RED_WALL, __WEBPACK_IMPORTED_MODULE_2__constants_constants__["c" /* PAINTINGS */].GAME].map(painting => ({
+        this.paintings = [__WEBPACK_IMPORTED_MODULE_2__constants_constants__["g" /* PAINTINGS */].ESCAPE, __WEBPACK_IMPORTED_MODULE_2__constants_constants__["g" /* PAINTINGS */].GIVE_UP, __WEBPACK_IMPORTED_MODULE_2__constants_constants__["g" /* PAINTINGS */].FOREVER, __WEBPACK_IMPORTED_MODULE_2__constants_constants__["g" /* PAINTINGS */].RED_WALL, __WEBPACK_IMPORTED_MODULE_2__constants_constants__["g" /* PAINTINGS */].GAME].map(painting => ({
             name: 'painting_' + painting.alias,
             type: __WEBPACK_IMPORTED_MODULE_2__constants_constants__["d" /* PAINTING_TYPE */],
             size: painting.size,
@@ -559,11 +561,11 @@ class LevelGenerator {
         }));
 
         this.enemy = {
-            state: __WEBPACK_IMPORTED_MODULE_2__constants_constants__["e" /* ENEMY_STATE */].LIMBO,
+            state: __WEBPACK_IMPORTED_MODULE_2__constants_constants__["h" /* ENEMY_STATE */].LIMBO,
             isVisible: false,
             direction: 0,
             props: {
-                triggerDoorId: __WEBPACK_IMPORTED_MODULE_2__constants_constants__["f" /* ENEMY_TRIGGER_DOOR_ID */]
+                triggerDoorId: __WEBPACK_IMPORTED_MODULE_2__constants_constants__["i" /* ENEMY_TRIGGER_DOOR_ID */]
             }
         };
 
@@ -721,12 +723,12 @@ class LevelGenerator {
                     cells
                 });
                 // place player
-                this.player.pos = [exitCell.column * 500 + 250, __WEBPACK_IMPORTED_MODULE_2__constants_constants__["b" /* PLAYER_SIZE */].HEIGHT, exitCell.row * 500 + 250];
+                this.player.pos = [exitCell.column * 500 + 250, __WEBPACK_IMPORTED_MODULE_2__constants_constants__["f" /* PLAYER_SIZE */].HEIGHT, exitCell.row * 500 + 250];
 
                 // place writing
                 const writingWallPosition = Object.keys(roomCell.walls).filter(wallPosition => roomCell.walls[wallPosition])[getRandomValue(3)];
                 this.addPainting({
-                    painting: this.paintings.find(painting => painting.props.alias === __WEBPACK_IMPORTED_MODULE_2__constants_constants__["c" /* PAINTINGS */].RED_WALL.alias),
+                    painting: this.paintings.find(painting => painting.props.alias === __WEBPACK_IMPORTED_MODULE_2__constants_constants__["g" /* PAINTINGS */].RED_WALL.alias),
                     wall: roomCell.walls[writingWallPosition]
                 });
             } else {
@@ -773,7 +775,7 @@ class LevelGenerator {
         }
         let maxDistance = 0;
         let enemyBox;
-        const triggerSwitcher = this.switchers.find(({ index }) => index === __WEBPACK_IMPORTED_MODULE_2__constants_constants__["f" /* ENEMY_TRIGGER_DOOR_ID */]);
+        const triggerSwitcher = this.switchers.find(({ index }) => index === __WEBPACK_IMPORTED_MODULE_2__constants_constants__["i" /* ENEMY_TRIGGER_DOOR_ID */]);
         this.boxes.forEach(box => {
             const distance = __WEBPACK_IMPORTED_MODULE_0__Collision__["a" /* default */].getSquareDistance(box.position, triggerSwitcher.position);
             if (distance > maxDistance) {
@@ -781,7 +783,7 @@ class LevelGenerator {
                 enemyBox = box;
             }
         });
-        enemyBox.triggerDoorId = __WEBPACK_IMPORTED_MODULE_2__constants_constants__["f" /* ENEMY_TRIGGER_DOOR_ID */];
+        enemyBox.triggerDoorId = __WEBPACK_IMPORTED_MODULE_2__constants_constants__["i" /* ENEMY_TRIGGER_DOOR_ID */];
 
         // add enemy
         this.enemy.position = [enemyBox.position[0], 70, enemyBox.position[2]];
@@ -792,14 +794,14 @@ class LevelGenerator {
             for (let x = 0; x < CELLS; x++) {
                 this.floor.push({
                     name: 'floor_tile_' + z + '_' + x,
-                    type: __WEBPACK_IMPORTED_MODULE_2__constants_constants__["g" /* FLOOR_TYPE */],
+                    type: __WEBPACK_IMPORTED_MODULE_2__constants_constants__["j" /* FLOOR_TYPE */],
                     size: [500, 0, 500],
                     pos: [x * 500 + 250, 0, z * 500 + 250],
                     collides: false
                 });
                 this.ceiling.push({
                     name: 'ceiling_tile_' + z + '_' + x,
-                    type: __WEBPACK_IMPORTED_MODULE_2__constants_constants__["h" /* CEILING_TYPE */],
+                    type: __WEBPACK_IMPORTED_MODULE_2__constants_constants__["k" /* CEILING_TYPE */],
                     size: [500, 0, 500],
                     pos: [x * 500 + 250, 250, z * 500 + 250],
                     collides: false
@@ -814,13 +816,13 @@ class LevelGenerator {
             enemy: this.enemy,
             objects: [...this.floor, ...this.ceiling, ...this.walls.map((wall, index) => ({
                 name: 'wall_' + index,
-                type: __WEBPACK_IMPORTED_MODULE_2__constants_constants__["i" /* WALL_TYPE */],
+                type: __WEBPACK_IMPORTED_MODULE_2__constants_constants__["a" /* WALL_TYPE */],
                 size: wall.size,
                 pos: wall.position,
                 props: { mode: wall.mode }
             })), ...this.paintings.filter(painting => painting.pos), ...this.boxes.map((box, i) => ({
                 name: 'box_' + i,
-                type: __WEBPACK_IMPORTED_MODULE_2__constants_constants__["j" /* BOX_TYPE */],
+                type: __WEBPACK_IMPORTED_MODULE_2__constants_constants__["e" /* BOX_TYPE */],
                 size: box.size,
                 pos: box.position,
                 props: {
@@ -830,7 +832,7 @@ class LevelGenerator {
                 }
             })), ...this.doors.map(door => ({
                 name: 'door_' + door.index,
-                type: __WEBPACK_IMPORTED_MODULE_2__constants_constants__["k" /* DOOR_TYPE */],
+                type: __WEBPACK_IMPORTED_MODULE_2__constants_constants__["b" /* DOOR_TYPE */],
                 size: [door.direction === WALL_DIRECTIONS.VERTICAL ? DOOR_DEPTH : DOOR_WIDTH, DOOR_HEIGHT, door.direction === WALL_DIRECTIONS.VERTICAL ? DOOR_WIDTH : DOOR_DEPTH],
                 pos: door.position,
                 props: {
@@ -839,7 +841,7 @@ class LevelGenerator {
                 }
             })), ...this.switchers.map(({ index, position, angle }) => ({
                 name: 'switcher_' + index,
-                type: __WEBPACK_IMPORTED_MODULE_2__constants_constants__["m" /* SWITCHER_TYPE */],
+                type: __WEBPACK_IMPORTED_MODULE_2__constants_constants__["c" /* SWITCHER_TYPE */],
                 pos: position,
                 size: [SWITCHER_WIDTH, SWITCHER_HEIGHT, SWITCHER_DEPTH],
                 angle,
@@ -1034,12 +1036,12 @@ class LevelGenerator {
 
             // define to which broad cells does an object belong
             obj.broadCells = [];
-            const broadCellsXMax = Math.ceil(level.boundaries[0] / __WEBPACK_IMPORTED_MODULE_2__constants_constants__["a" /* BROAD_CELL_SIZE */]) - 1;
-            const broadCellsYMax = Math.ceil(level.boundaries[2] / __WEBPACK_IMPORTED_MODULE_2__constants_constants__["a" /* BROAD_CELL_SIZE */]) - 1;
-            const topLeftCellX = Math.min(broadCellsXMax, Math.max(0, Math.floor(obj.hitbox[0][0] / __WEBPACK_IMPORTED_MODULE_2__constants_constants__["a" /* BROAD_CELL_SIZE */])));
-            const topLeftCellZ = Math.min(broadCellsYMax, Math.max(0, Math.floor(obj.hitbox[2][0] / __WEBPACK_IMPORTED_MODULE_2__constants_constants__["a" /* BROAD_CELL_SIZE */])));
-            const bottomRightCellX = Math.min(broadCellsXMax, Math.max(0, Math.floor(obj.hitbox[0][1] / __WEBPACK_IMPORTED_MODULE_2__constants_constants__["a" /* BROAD_CELL_SIZE */])));
-            const bottomRightCellZ = Math.min(broadCellsYMax, Math.max(0, Math.floor(obj.hitbox[2][1] / __WEBPACK_IMPORTED_MODULE_2__constants_constants__["a" /* BROAD_CELL_SIZE */])));
+            const broadCellsXMax = Math.ceil(level.boundaries[0] / __WEBPACK_IMPORTED_MODULE_2__constants_constants__["m" /* BROAD_CELL_SIZE */]) - 1;
+            const broadCellsYMax = Math.ceil(level.boundaries[2] / __WEBPACK_IMPORTED_MODULE_2__constants_constants__["m" /* BROAD_CELL_SIZE */]) - 1;
+            const topLeftCellX = Math.min(broadCellsXMax, Math.max(0, Math.floor(obj.hitbox[0][0] / __WEBPACK_IMPORTED_MODULE_2__constants_constants__["m" /* BROAD_CELL_SIZE */])));
+            const topLeftCellZ = Math.min(broadCellsYMax, Math.max(0, Math.floor(obj.hitbox[2][0] / __WEBPACK_IMPORTED_MODULE_2__constants_constants__["m" /* BROAD_CELL_SIZE */])));
+            const bottomRightCellX = Math.min(broadCellsXMax, Math.max(0, Math.floor(obj.hitbox[0][1] / __WEBPACK_IMPORTED_MODULE_2__constants_constants__["m" /* BROAD_CELL_SIZE */])));
+            const bottomRightCellZ = Math.min(broadCellsYMax, Math.max(0, Math.floor(obj.hitbox[2][1] / __WEBPACK_IMPORTED_MODULE_2__constants_constants__["m" /* BROAD_CELL_SIZE */])));
             for (let j = topLeftCellZ; j <= bottomRightCellZ; j++) {
                 for (let i = topLeftCellX; i <= bottomRightCellX; i++) {
                     obj.broadCells.push([i, j]);
@@ -1055,13 +1057,13 @@ class LevelGenerator {
             pos: level.player.pos,
             distance: __WEBPACK_IMPORTED_MODULE_2__constants_constants__["n" /* PLAYER_HAND_LENGTH */],
             angle: level.player.angle
-        })], level.objects, __WEBPACK_IMPORTED_MODULE_2__constants_constants__["a" /* BROAD_CELL_SIZE */]);
+        })], level.objects, __WEBPACK_IMPORTED_MODULE_2__constants_constants__["m" /* BROAD_CELL_SIZE */]);
         if (collisionView) {
             collisionView.obj.isReachable = true;
         }
     }
 }
-/* harmony export (immutable) */ exports["a"] = LevelGenerator;
+/* harmony export (immutable) */ __webpack_exports__["a"] = LevelGenerator;
 
 
 /**
@@ -1132,9 +1134,105 @@ function getAdjacentPosition(position) {
     }
 }
 
-/***/ },
+/***/ }),
 /* 2 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__constants_constants__ = __webpack_require__(0);
+/* harmony export (immutable) */ __webpack_exports__["a"] = getLevelCanvas;
+
+
+const CANVAS_SCALE = 10;
+
+/**
+ * Returns the canvas node with a drawn map of the current level
+ * @param {Cell[]} cells
+ * @param {Object} level
+ * @returns {Element}
+ */
+function getLevelCanvas(cells, level) {
+    const canvasNode = document.createElement('canvas');
+    canvasNode.width = level.boundaries[0] / CANVAS_SCALE;
+    canvasNode.height = level.boundaries[2] / CANVAS_SCALE;
+    const ctx = canvasNode.getContext('2d');
+
+    cells.forEach(cell => {
+        if (cell.state === 2) {
+            ctx.fillStyle = '#dbffdb';
+        } else if (cell.state === 1) {
+            ctx.fillStyle = '#ffdde2';
+        } else {
+            ctx.fillStyle = '#fff';
+        }
+        ctx.fillRect(cell.column * 500 / CANVAS_SCALE, cell.row * 500 / CANVAS_SCALE, 500 / CANVAS_SCALE, 500 / CANVAS_SCALE);
+    });
+    JSON.parse(level.objects).forEach(obj => {
+        ctx.font = '14px sans-serif';
+        switch (obj.type) {
+            case __WEBPACK_IMPORTED_MODULE_0__constants_constants__["a" /* WALL_TYPE */]:
+                if (obj.props.mode === 2) {
+                    ctx.strokeStyle = '#ff655b';
+                } else if (obj.props.mode === 3) {
+                    ctx.strokeStyle = '#804f36';
+                } else {
+                    ctx.strokeStyle = '#000';
+                }
+                ctx.beginPath();
+                ctx.rect((obj.pos[0] - obj.size[0] / 2) / CANVAS_SCALE, (obj.pos[2] - obj.size[2] / 2) / CANVAS_SCALE, obj.size[0] / CANVAS_SCALE, obj.size[2] / CANVAS_SCALE);
+                ctx.stroke();
+                ctx.strokeStyle = '#000';
+                // ctx.fillStyle = '#aacbff';
+                // ctx.fillText(i, obj.pos[0] / CANVAS_SCALE, obj.pos[2] / CANVAS_SCALE);
+                break;
+            case __WEBPACK_IMPORTED_MODULE_0__constants_constants__["b" /* DOOR_TYPE */]:
+                ctx.fillStyle = '#d4d4d4';
+                ctx.fillRect((obj.pos[0] - obj.size[0] / 2) / CANVAS_SCALE, (obj.pos[2] - obj.size[2] / 2) / CANVAS_SCALE, obj.size[0] / CANVAS_SCALE, obj.size[2] / CANVAS_SCALE);
+                ctx.fillStyle = '#000';
+                ctx.fillText(obj.props.id, obj.pos[0] / CANVAS_SCALE, obj.pos[2] / CANVAS_SCALE);
+                break;
+            case __WEBPACK_IMPORTED_MODULE_0__constants_constants__["c" /* SWITCHER_TYPE */]:
+                ctx.fillStyle = '#d6a372';
+                ctx.fillRect((obj.pos[0] - obj.size[0] / 2) / CANVAS_SCALE, (obj.pos[2] - obj.size[0] / 2) / CANVAS_SCALE, obj.size[0] / CANVAS_SCALE, obj.size[0] / CANVAS_SCALE);
+                ctx.fillText(obj.props.id, obj.pos[0] / CANVAS_SCALE, obj.pos[2] / CANVAS_SCALE);
+                break;
+            case __WEBPACK_IMPORTED_MODULE_0__constants_constants__["d" /* PAINTING_TYPE */]:
+                ctx.fillStyle = '#b33fac';
+                ctx.fillRect((obj.pos[0] - 25) / CANVAS_SCALE, (obj.pos[2] - 25) / CANVAS_SCALE, 50 / CANVAS_SCALE, 50 / CANVAS_SCALE);
+                break;
+            case __WEBPACK_IMPORTED_MODULE_0__constants_constants__["e" /* BOX_TYPE */]:
+                if (obj.props.triggerDoorId) {
+                    ctx.fillStyle = '#8a5252';
+                } else {
+                    ctx.fillStyle = '#7b8a7b';
+                }
+                ctx.fillRect((obj.pos[0] - obj.size[0] / 2) / CANVAS_SCALE, (obj.pos[2] - obj.size[2] / 2) / CANVAS_SCALE, obj.size[0] / CANVAS_SCALE, obj.size[2] / CANVAS_SCALE);
+                ctx.fillStyle = '#fff';
+                ctx.font = '6px sans-serif';
+                ctx.fillText(`${obj.props.mode}${obj.props.inhabited}`, obj.pos[0] / CANVAS_SCALE, obj.pos[2] / CANVAS_SCALE);
+                break;
+        }
+    });
+    // player
+    ctx.fillStyle = '#000';
+    ctx.strokeStyle = '#000';
+    ctx.fillRect((level.player.pos[0] - level.player.size[0] / 2) / CANVAS_SCALE, (level.player.pos[2] - level.player.size[2] / 2) / CANVAS_SCALE, level.player.size[0] / CANVAS_SCALE, level.player.size[2] / CANVAS_SCALE);
+    if (level.player.angle[0] === 0) {
+        ctx.fillRect(level.player.pos[0] / CANVAS_SCALE - 1, level.player.pos[2] / CANVAS_SCALE - 20, 2, 20);
+    } else if (level.player.angle[0] === 180) {
+        ctx.fillRect(level.player.pos[0] / CANVAS_SCALE - 1, level.player.pos[2] / CANVAS_SCALE, 2, 20);
+    } else if (level.player.angle[0] === -90) {
+        ctx.fillRect(level.player.pos[0] / CANVAS_SCALE - 20, level.player.pos[2] / CANVAS_SCALE - 1, 20, 2);
+    } else if (level.player.angle[0] === 90) {
+        ctx.fillRect(level.player.pos[0] / CANVAS_SCALE, level.player.pos[2] / CANVAS_SCALE - 1, 20, 2);
+    }
+
+    return canvasNode;
+}
+
+/***/ }),
+/* 3 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
@@ -1358,12 +1456,13 @@ class Collision {
     /**
      * Returns random next free neighbour cell position of given size for given position
      * @param {number[]} pos
+     * @param {number} direction
      * @param {Object[]} objects
      * @param {number} broadCellSize
      * @param {number[]} boundaries
      * @returns {number[]}
      */
-    static getRandomFreeCell({ pos, objects, broadCellSize, boundaries }) {
+    static getRandomFreeCell({ pos, direction, objects, broadCellSize, boundaries }) {
         broadCellSize = broadCellSize * 2;
         const currentCellCenter = [];
         for (let i = 0; i < pos.length; i++) {
@@ -1374,11 +1473,13 @@ class Collision {
         }
         const allVariants = [[currentCellCenter[0] - broadCellSize, 0, currentCellCenter[1]], [currentCellCenter[0] + broadCellSize, 0, currentCellCenter[1]], [currentCellCenter[0], 0, currentCellCenter[1] - broadCellSize], [currentCellCenter[0], 0, currentCellCenter[1] + broadCellSize]];
         const availableVariants = [];
+        const availableVariantsWeights = [];
         for (let i = 0; i < allVariants.length; i++) {
             if (allVariants[i][0] < 0 || allVariants[i][0] > boundaries[0] || allVariants[i][2] < 0 || allVariants[i][2] > boundaries[2] || Collision.getCollisionView([pos, [allVariants[i][0], pos[1], allVariants[i][2]]], objects, broadCellSize / 2)) {
                 continue;
             }
             availableVariants.push(allVariants[i]);
+            availableVariantsWeights.push(Math.abs(1 - Math.abs(direction - Collision.getDirection2d(pos, allVariants[i])) / 2 / Math.PI));
         }
         let variantIndex;
         // locked in a room
@@ -1387,7 +1488,7 @@ class Collision {
         } else if (availableVariants.length === 1) {
             variantIndex = 0;
         } else {
-            variantIndex = Collision.getRandom(availableVariants.length);
+            variantIndex = Collision.getRandomIndexWithWeights(availableVariantsWeights);
         }
         return availableVariants[variantIndex];
     }
@@ -1449,6 +1550,33 @@ class Collision {
     }
 
     /**
+     * Returns direction in radians from p1 towards p2
+     * @param {number[]} p1
+     * @param {number[]} p2
+     * @returns {number}
+     */
+    static getDirection2d(p1, p2) {
+        const xShift = p2[0] - p1[0];
+        let zShift = p2[2] - p1[2];
+        if (!xShift && !zShift) {
+            return 0;
+        }
+        if (zShift) {
+            zShift = -zShift;
+        }
+        let direction;
+        if (zShift >= 0) {
+            direction = Math.atan(xShift / zShift);
+        } else {
+            direction = Math.atan(xShift / zShift) + Math.PI;
+        }
+        if (direction < 0) {
+            direction = direction + Math.PI * 2;
+        }
+        return direction;
+    }
+
+    /**
      * Returns true if point lies inside given object
      * @param {Object} obj
      * @param {Array} point
@@ -1479,28 +1607,39 @@ class Collision {
     }
 
     /**
-     * Returns random integer from 0 to given max (not including max)
-     * @param {number} max
+     * Returns random index considering given weights
+     * @param {number[]} weights
      * @returns {number}
      */
-    static getRandom(max) {
-        return Math.floor(Math.random() * max);
+    static getRandomIndexWithWeights(weights) {
+        const weightsSum = weights.reduce((prev, cur) => prev + cur);
+        weights[0] /= weightsSum;
+        for (let i = 1; i < weights.length; i++) {
+            weights[i] = weights[i] / weightsSum + weights[i - 1];
+        }
+        const randomValue = Math.random();
+        for (let i = 0; i < weights.length; i++) {
+            if (randomValue < weights[i]) {
+                return i;
+            }
+        }
+        return weights.length - 1;
     }
 }
-/* harmony export (immutable) */ exports["a"] = Collision;
+/* harmony export (immutable) */ __webpack_exports__["a"] = Collision;
 
 
-/***/ },
-/* 3 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ }),
+/* 4 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__constants_constants__ = __webpack_require__(0);
 /* unused harmony export getTransformRule */
 /* unused harmony export getVisibleObjects */
-/* harmony export (immutable) */ exports["a"] = getPlayerCell;
-/* harmony export (immutable) */ exports["b"] = isObjectVisible;
-/* harmony export (immutable) */ exports["c"] = getPointPosition;
+/* harmony export (immutable) */ __webpack_exports__["a"] = getPlayerCell;
+/* harmony export (immutable) */ __webpack_exports__["b"] = isObjectVisible;
+/* harmony export (immutable) */ __webpack_exports__["c"] = getPointPosition;
 /* unused harmony export vectorsAdd3D */
 /* unused harmony export convertDegreeToRad */
 /* unused harmony export convertRadToDegree */
@@ -1551,7 +1690,7 @@ function getVisibleObjects(playerPos, objects) {
  * @returns {number[]}
  */
 function getPlayerCell(playerPos) {
-    return [Math.floor(playerPos[0] / __WEBPACK_IMPORTED_MODULE_0__constants_constants__["a" /* BROAD_CELL_SIZE */]), Math.floor(playerPos[2] / __WEBPACK_IMPORTED_MODULE_0__constants_constants__["a" /* BROAD_CELL_SIZE */])];
+    return [Math.floor(playerPos[0] / __WEBPACK_IMPORTED_MODULE_0__constants_constants__["m" /* BROAD_CELL_SIZE */]), Math.floor(playerPos[2] / __WEBPACK_IMPORTED_MODULE_0__constants_constants__["m" /* BROAD_CELL_SIZE */])];
 }
 
 /**
@@ -1615,111 +1754,19 @@ function convertRadToDegree(angle) {
     return angle / Math.PI * 180;
 }
 
-/***/ },
-/* 4 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ }),
+/* 5 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__lib_LevelGenerator__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__lib_levelCanvas__ = __webpack_require__(5);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__lib_levelCanvas__ = __webpack_require__(2);
 
 
 
 const { cells, level } = new __WEBPACK_IMPORTED_MODULE_0__lib_LevelGenerator__["a" /* default */]();
 document.getElementById('app').appendChild(__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__lib_levelCanvas__["a" /* default */])(cells, level));
 
-/***/ },
-/* 5 */
-/***/ function(module, exports, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__constants_constants__ = __webpack_require__(0);
-/* harmony export (immutable) */ exports["a"] = getLevelCanvas;
-
-
-const CANVAS_SCALE = 10;
-
-/**
- * Returns the canvas node with a drawn map of the current level
- * @param {Cell[]} cells
- * @param {Object} level
- * @returns {Element}
- */
-function getLevelCanvas(cells, level) {
-    const canvasNode = document.createElement('canvas');
-    canvasNode.width = level.boundaries[0] / CANVAS_SCALE;
-    canvasNode.height = level.boundaries[2] / CANVAS_SCALE;
-    const ctx = canvasNode.getContext('2d');
-
-    cells.forEach(cell => {
-        if (cell.state === 2) {
-            ctx.fillStyle = '#dbffdb';
-        } else if (cell.state === 1) {
-            ctx.fillStyle = '#ffdde2';
-        } else {
-            ctx.fillStyle = '#fff';
-        }
-        ctx.fillRect(cell.column * 500 / CANVAS_SCALE, cell.row * 500 / CANVAS_SCALE, 500 / CANVAS_SCALE, 500 / CANVAS_SCALE);
-    });
-    JSON.parse(level.objects).forEach(obj => {
-        ctx.font = '14px sans-serif';
-        switch (obj.type) {
-            case __WEBPACK_IMPORTED_MODULE_0__constants_constants__["i" /* WALL_TYPE */]:
-                if (obj.props.mode === 2) {
-                    ctx.fillStyle = '#ff655b';
-                } else if (obj.props.mode === 3) {
-                    ctx.fillStyle = '#804f36';
-                } else {
-                    ctx.fillStyle = '#000';
-                }
-                ctx.rect((obj.pos[0] - obj.size[0] / 2) / CANVAS_SCALE, (obj.pos[2] - obj.size[2] / 2) / CANVAS_SCALE, obj.size[0] / CANVAS_SCALE, obj.size[2] / CANVAS_SCALE);
-                ctx.stroke();
-                // ctx.fillStyle = '#aacbff';
-                // ctx.fillText(i, obj.pos[0] / CANVAS_SCALE, obj.pos[2] / CANVAS_SCALE);
-                break;
-            case __WEBPACK_IMPORTED_MODULE_0__constants_constants__["k" /* DOOR_TYPE */]:
-                ctx.fillStyle = '#d4d4d4';
-                ctx.fillRect((obj.pos[0] - obj.size[0] / 2) / CANVAS_SCALE, (obj.pos[2] - obj.size[2] / 2) / CANVAS_SCALE, obj.size[0] / CANVAS_SCALE, obj.size[2] / CANVAS_SCALE);
-                ctx.fillStyle = '#000';
-                ctx.fillText(obj.props.id, obj.pos[0] / CANVAS_SCALE, obj.pos[2] / CANVAS_SCALE);
-                break;
-            case __WEBPACK_IMPORTED_MODULE_0__constants_constants__["m" /* SWITCHER_TYPE */]:
-                ctx.fillStyle = '#d6a372';
-                ctx.fillRect((obj.pos[0] - obj.size[0] / 2) / CANVAS_SCALE, (obj.pos[2] - obj.size[0] / 2) / CANVAS_SCALE, obj.size[0] / CANVAS_SCALE, obj.size[0] / CANVAS_SCALE);
-                ctx.fillText(obj.props.id, obj.pos[0] / CANVAS_SCALE, obj.pos[2] / CANVAS_SCALE);
-                break;
-            case __WEBPACK_IMPORTED_MODULE_0__constants_constants__["d" /* PAINTING_TYPE */]:
-                ctx.fillStyle = '#b33fac';
-                ctx.fillRect((obj.pos[0] - 25) / CANVAS_SCALE, (obj.pos[2] - 25) / CANVAS_SCALE, 50 / CANVAS_SCALE, 50 / CANVAS_SCALE);
-                break;
-            case __WEBPACK_IMPORTED_MODULE_0__constants_constants__["j" /* BOX_TYPE */]:
-                if (obj.props.triggerDoorId) {
-                    ctx.fillStyle = '#8a5252';
-                } else {
-                    ctx.fillStyle = '#7b8a7b';
-                }
-                ctx.fillRect((obj.pos[0] - obj.size[0] / 2) / CANVAS_SCALE, (obj.pos[2] - obj.size[2] / 2) / CANVAS_SCALE, obj.size[0] / CANVAS_SCALE, obj.size[2] / CANVAS_SCALE);
-                ctx.fillStyle = '#fff';
-                ctx.font = '6px sans-serif';
-                ctx.fillText(`${ obj.props.mode }${ obj.props.inhabited }`, obj.pos[0] / CANVAS_SCALE, obj.pos[2] / CANVAS_SCALE);
-                break;
-        }
-    });
-    // player
-    ctx.fillStyle = '#000';
-    ctx.fillRect((level.player.pos[0] - level.player.size[0] / 2) / CANVAS_SCALE, (level.player.pos[2] - level.player.size[2] / 2) / CANVAS_SCALE, level.player.size[0] / CANVAS_SCALE, level.player.size[2] / CANVAS_SCALE);
-    if (level.player.angle[0] === 0) {
-        ctx.fillRect(level.player.pos[0] / CANVAS_SCALE - 1, level.player.pos[2] / CANVAS_SCALE - 20, 2, 20);
-    } else if (level.player.angle[0] === 180) {
-        ctx.fillRect(level.player.pos[0] / CANVAS_SCALE - 1, level.player.pos[2] / CANVAS_SCALE, 2, 20);
-    } else if (level.player.angle[0] === -90) {
-        ctx.fillRect(level.player.pos[0] / CANVAS_SCALE - 20, level.player.pos[2] / CANVAS_SCALE - 1, 20, 2);
-    } else if (level.player.angle[0] === 90) {
-        ctx.fillRect(level.player.pos[0] / CANVAS_SCALE, level.player.pos[2] / CANVAS_SCALE - 1, 20, 2);
-    }
-
-    return canvasNode;
-}
-
-/***/ }
+/***/ })
 /******/ ]);

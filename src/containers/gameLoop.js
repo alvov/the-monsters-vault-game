@@ -305,7 +305,7 @@ class GameLoop extends React.Component {
         if (currentStore.enemy.state !== ENEMY_STATE.LIMBO) {
             const playerPosition = newState.pos || currentStore.pos;
             const distanceToPlayer = GameLoop.getDistance2d(currentStore.enemy.position, playerPosition);
-            const directionToPlayer = GameLoop.getDirection2d(currentStore.enemy.position, playerPosition);
+            const directionToPlayer = Collision.getDirection2d(currentStore.enemy.position, playerPosition);
             const canSeeEachOther = Collision.getCollisionView(
                 [currentStore.enemy.position, playerPosition],
                 currentStore.objects,
@@ -330,12 +330,14 @@ class GameLoop extends React.Component {
                 actions.push(actionCreators.enemy.setState(ENEMY_STATE.WANDER));
                 const newTarget = Collision.getRandomFreeCell({
                     pos: currentStore.enemy.position,
+                    direction: currentStore.enemy.direction,
                     objects: currentStore.objects,
                     broadCellSize: BROAD_CELL_SIZE,
-                    boundaries: currentStore.level.boundaries
+                    boundaries: currentStore.level.boundaries,
+                    previous: currentStore.enemy.target.from
                 });
                 actions.push(actionCreators.enemy.setTarget(newTarget));
-                actions.push(actionCreators.enemy.setDirection(GameLoop.getDirection2d(
+                actions.push(actionCreators.enemy.setDirection(Collision.getDirection2d(
                     currentStore.enemy.position, newTarget
                 )));
             }
@@ -350,11 +352,12 @@ class GameLoop extends React.Component {
                 ) {
                     const newTarget = Collision.getRandomFreeCell({
                         pos: currentStore.enemy.position,
+                        direction: currentStore.enemy.direction,
                         objects: currentStore.objects,
                         broadCellSize: BROAD_CELL_SIZE,
                         boundaries: currentStore.level.boundaries
                     });
-                    directionToTarget = GameLoop.getDirection2d(
+                    directionToTarget = Collision.getDirection2d(
                         currentStore.enemy.position, newTarget
                     );
                     actions.push(actionCreators.enemy.setTarget(newTarget));
@@ -369,7 +372,7 @@ class GameLoop extends React.Component {
                     }
                 }
                 if (!directionToTarget) {
-                    directionToTarget = GameLoop.getDirection2d(
+                    directionToTarget = Collision.getDirection2d(
                         currentStore.enemy.position, currentStore.enemy.target
                     );
                 }
@@ -382,6 +385,12 @@ class GameLoop extends React.Component {
                 ));
             } else if (currentStore.enemy.state === ENEMY_STATE.ATTACK) {
                 if (distanceToPlayer < ENEMY_KILL_DISTANCE) {
+                    // todo injures
+                    // actions.push(actionCreators.enemy.setState(ENEMY_STATE.LIMBO));
+                    // this.delayedActions.pushAction({
+                    //     action: actionCreators.enemy.setState(ENEMY_STATE.WANDER),
+                    //     delay: 3000
+                    // });
                     this.props.onLoose();
                     return;
                 } else {
@@ -425,27 +434,6 @@ class GameLoop extends React.Component {
 
     static getDistance2d(p1, p2) {
         return Math.hypot(p1[0] - p2[0], p1[2] - p2[2]);
-    }
-
-    static getDirection2d(p1, p2) {
-        const xShift = p2[0] - p1[0];
-        let zShift = p2[2] - p1[2];
-        if (!xShift && !zShift) {
-            return 0;
-        }
-        if (zShift) {
-            zShift = -zShift;
-        }
-        let direction;
-        if (zShift >= 0) {
-            direction = Math.atan(xShift / zShift);
-        } else {
-            direction = Math.atan(xShift / zShift) + Math.PI;
-        }
-        if (direction < 0) {
-            direction = direction + Math.PI * 2;
-        }
-        return direction;
     }
 
     static getShift2d(direction, distance) {

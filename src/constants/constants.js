@@ -55,12 +55,12 @@ export const ENEMY_STATE = {
 };
 export const ENEMY_SPEED = 1.5;
 export const ENEMY_SPEED_RUNNING = 6;
-export const ENEMY_ATTACK_DISTANCE = 400;
+export const ENEMY_ATTACK_DISTANCE = 200;
 // export const ENEMY_ATTACK_DISTANCE = -1;
-export const ENEMY_ATTACK_DISTANCE_VISIBLE = 600;
+export const ENEMY_ATTACK_DISTANCE_VISIBLE = 400;
 // export const ENEMY_ATTACK_DISTANCE_VISIBLE = -1;
-export const ENEMY_KILL_DISTANCE = 100;
-export const ENEMY_VIEW_ANGLE_DEG = 120;
+export const ENEMY_KILL_DISTANCE = 50;
+export const ENEMY_VIEW_ANGLE_DEG = 90;
 export const ENEMY_VIEW_ANGLE_RAD = ENEMY_VIEW_ANGLE_DEG / 180 * Math.PI;
 export const ENEMY_TARGET_REACH_THRESHOLD = 50;
 export const ENEMY_CHANGE_TARGET_TIME = 1000;

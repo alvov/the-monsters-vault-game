@@ -7,7 +7,9 @@ You find yourself locked in some sort of a
  lazy to make up this part of the story). Anyway,
  the only way out is through this metal door
  ahead of you, and you need to find out how
- to open it.
+ to open it.  
+ 
+ And by the way, what's inside those boxes?..
  
 ## How to play
 Push down the levers to open doors.
@@ -56,7 +58,7 @@ interactive game with CSS 3d transforms only
 - [x] No canvases
 - [x] 3d positioned audio (_use your headphones_)
 - [x] Gamepad support
-- [x] Offline support (after first launch)
+- [x] Offline support (_after first launch_)
 
 ## Credits
 * **Inspired by** — the [famous CSS 3d scene](http://keithclark.co.uk/labs/css-fps/)

@@ -1,4 +1,4 @@
-export const GAME_VERSION = '1.3.0-alpha';
+export const GAME_VERSION = '1.4.0-alpha';
 
 export const FPS = 60;
 export const BROAD_CELL_SIZE = 250;
@@ -43,6 +43,7 @@ export const PLAYER_HAND_LENGTH = 150;
 export const PLAYER_STATE_RUN = 'run';
 export const PLAYER_STATE_WALK = 'walk';
 export const PLAYER_STATE_STOP = 'stop';
+export const PLAYER_HEALTH_LOW = 50;
 
 export const HINT_SHOW_TIME = 5000;
 export const DOOR_OPEN_TIME = 3000;
@@ -51,7 +52,8 @@ export const ENEMY_STATE = {
     LIMBO: 'limbo',
     WANDER: 'wander',
     STOP: 'stop',
-    ATTACK: 'attack'
+    ATTACK: 'attack',
+    REST: 'rest'
 };
 export const ENEMY_SPEED = 1.5;
 export const ENEMY_SPEED_RUNNING = 6;
@@ -59,7 +61,8 @@ export const ENEMY_ATTACK_DISTANCE = 200;
 // export const ENEMY_ATTACK_DISTANCE = -1;
 export const ENEMY_ATTACK_DISTANCE_VISIBLE = 400;
 // export const ENEMY_ATTACK_DISTANCE_VISIBLE = -1;
-export const ENEMY_KILL_DISTANCE = 50;
+export const ENEMY_DAMAGE_DISTANCE = 50;
+export const ENEMY_DAMAGE = 80;
 export const ENEMY_VIEW_ANGLE_DEG = 90;
 export const ENEMY_VIEW_ANGLE_RAD = ENEMY_VIEW_ANGLE_DEG / 180 * Math.PI;
 export const ENEMY_TARGET_REACH_THRESHOLD = 50;

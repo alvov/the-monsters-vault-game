@@ -19,7 +19,8 @@ const level = {
     player: {
         pos: [1250, PLAYER_SIZE.HEIGHT, 250],
         size: [PLAYER_SIZE.WIDTH, PLAYER_SIZE.HEIGHT, PLAYER_SIZE.DEPTH],
-        angle: [0, 0, 0]
+        angle: [0, 0, 0],
+        health: 100
     },
     enemy: {
         state: ENEMY_STATE.LIMBO,

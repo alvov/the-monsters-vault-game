@@ -1,6 +1,7 @@
 import styles from './endScreen.css';
 import React, { PropTypes } from 'react';
 import Loop from '../../../lib/Loop';
+import Audio from '../../../lib/Audio';
 import {
     KEY_ENTER,
     XBOX_BUTTON_X,
@@ -16,7 +17,10 @@ class EndScreen extends React.Component {
         gamepadState: PropTypes.number.isRequired
     };
     static contextTypes = {
-        controls: PropTypes.object.isRequired
+        controls: PropTypes.object.isRequired,
+        audioCtx: PropTypes.object.isRequired,
+        masterGain: PropTypes.object.isRequired,
+        assets: PropTypes.object.isRequired
     };
 
     constructor(...args) {
@@ -30,6 +34,14 @@ class EndScreen extends React.Component {
         };
         this.endingTimer = null;
 
+        this.audioSources = {
+            scream: null
+        };
+        this.screamAudioBuffer = this.context.assets['src/containers/player/scream.m4a'];
+        this.screamGainNode = this.context.audioCtx.createGain();
+        this.screamGainNode.gain.value = 0.5;
+        this.screamGainNode.connect(this.context.masterGain);
+
         this.handleClick = this.handleClick.bind(this);
     }
 
@@ -40,13 +52,23 @@ class EndScreen extends React.Component {
             });
         }, ENDING_TIME);
         this.loop.start();
+
+        this.audioSources.scream = Audio.soundStart({
+            audioSource: this.audioSources.scream,
+            audioCtx: this.context.audioCtx,
+            destination: this.screamGainNode,
+            buffer: this.screamAudioBuffer
+        });
     }
 
     componentWillUnmount() {
         clearTimeout(this.endingTimer);
         this.endingTimer = null;
         this.loop.stop();
+
+        Audio.soundStop(this.audioSources.scream);
     }
+
 
     render() {
         const { gameState, gamepadState } = this.props;

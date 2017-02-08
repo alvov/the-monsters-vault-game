@@ -229,7 +229,8 @@ class Cell {
 export default class LevelGenerator {
     constructor() {
         this.player = {
-            size: [PLAYER_SIZE.WIDTH, PLAYER_SIZE.HEIGHT, PLAYER_SIZE.DEPTH]
+            size: [PLAYER_SIZE.WIDTH, PLAYER_SIZE.HEIGHT, PLAYER_SIZE.DEPTH],
+            health: 100
         };
         this.cells = [];
         this.walls = [];

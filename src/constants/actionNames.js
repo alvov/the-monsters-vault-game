@@ -11,6 +11,7 @@ export const PLAYER_UPDATE_POSITION = 'playerUpdatePosition';
 export const PLAYER_SET_STATE_RUN = 'playerSetStateRun';
 export const PLAYER_SET_STATE_WALK = 'playerSetStateWalk';
 export const PLAYER_SET_STATE_STOP = 'playerSetStateStop';
+export const PLAYER_REDUCE_HEALTH = 'playerReduceHealth';
 
 export const OBJECTS_SET_VISIBLE = 'objectsSetVisible';
 export const OBJECTS_SET_REACHABLE = 'objectsSetReachable';

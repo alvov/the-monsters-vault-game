@@ -118,6 +118,9 @@ class Enemy extends React.PureComponent {
                 <div className={styles.eyes}>
                     <i className={styles.eye} />
                     <i className={styles.eye} />
+                    <i className={styles.eye} />
+                    <i className={styles.eye} />
+                    <i className={styles.eye} />
                 </div>
             </div>
         </div>;

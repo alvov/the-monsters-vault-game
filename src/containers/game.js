@@ -15,9 +15,9 @@ import LoadingScreen from '../components/screens/loading/loadingScreen';
 import StartScreen from '../components/screens/start/startScreen';
 import EndScreen from '../components/screens/end/endScreen';
 import Hints from '../components/hints/hints';
+import PlayerHealth from '../components/playerHealth/playerHealth';
 import Patterns from '../components/patterns/patterns';
 import Viewport from './viewport/viewport';
-import Camera from './camera/camera';
 import Player from './player/player';
 import Scene from './scene';
 import GameLoop from './gameLoop';
@@ -44,6 +44,7 @@ class Game extends React.Component {
     static propTypes = {
         gameState: PropTypes.string.isRequired,
         hints: PropTypes.instanceOf(Map).isRequired,
+        playerHealth: PropTypes.number.isRequired,
         setGameState: PropTypes.func.isRequired,
         setGamepadState: PropTypes.func.isRequired
     };
@@ -145,7 +146,7 @@ class Game extends React.Component {
     }
 
     render() {
-        const { gameState, hints, gamepadState, settings } = this.props;
+        const { gameState, hints, playerHealth, gamepadState, settings } = this.props;
         if (gameState === GAME_STATE_LOADING) {
             return <LoadingScreen
                 onLoaded={this.setGameStateStart}
@@ -161,18 +162,17 @@ class Game extends React.Component {
         } else if (gameState === GAME_STATE_PLAY) {
             return <Viewport>
                 <Patterns />
-                <Hints hints={hints} />
                 <GameLoop
                     onWin={this.setGameStateWin}
                     onLoose={this.setGameStateLoose}
                     onExit={this.setGameStateStart}
                 >
-                    <Camera>
-                        <Player>
-                            <Scene />
-                        </Player>
-                    </Camera>
+                    <Player>
+                        <Scene />
+                    </Player>
                 </GameLoop>
+                <PlayerHealth health={playerHealth} />
+                <Hints hints={hints} />
             </Viewport>;
         } else if ([GAME_STATE_WIN, GAME_STATE_LOOSE].includes(gameState)) {
             return <EndScreen
@@ -321,6 +321,7 @@ function mapStateToProps(state) {
     return {
         gameState: state.gameState,
         hints: state.hints,
+        playerHealth: state.playerHealth,
         gamepadState: state.gamepad.state,
         settings: state.settings
     };

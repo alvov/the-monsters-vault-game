@@ -5,6 +5,7 @@ import pointerDelta from './pointerDelta';
 import playerViewAngle from './playerViewAngle';
 import playerPosition from './playerPosition';
 import playerState from './playerState';
+import playerHealth from './playerHealth';
 import objects from './objects';
 import doorsState from './doorsState';
 import hints from './hints';
@@ -19,6 +20,7 @@ export default combineReducers({
     playerViewAngle,
     pos: playerPosition,
     playerState,
+    playerHealth,
     objects,
     doorsState,
     hints,

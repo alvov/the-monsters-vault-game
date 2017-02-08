@@ -3,14 +3,15 @@ import styles from './player.css';
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { PLAYER_STATE_RUN, PLAYER_STATE_WALK } from '../../constants/constants';
-import { convertDegreeToRad } from '../../lib/utils';
+import { getTransformRule, convertDegreeToRad } from '../../lib/utils';
 import Audio from '../../lib/Audio';
 
 class Player extends React.Component {
     static propTypes = {
-        playerPos: PropTypes.arrayOf(PropTypes.number).isRequired,
+        position: PropTypes.arrayOf(PropTypes.number).isRequired,
         viewAngle: PropTypes.arrayOf(PropTypes.number).isRequired,
-        playerState: PropTypes.string.isRequired
+        state: PropTypes.string.isRequired,
+        health: PropTypes.number.isRequired
     };
     static contextTypes = {
         audioCtx: PropTypes.object.isRequired,
@@ -21,43 +22,58 @@ class Player extends React.Component {
     constructor(...args) {
         super(...args);
 
+        this.audioSources = {
+            steps: null,
+            scream: null
+        };
+
         this.walkingAudioBuffer = this.context.assets['src/containers/player/steps-walking.m4a'];
         this.runnningAudioBuffer = this.context.assets['src/containers/player/steps-running.m4a'];
+        this.screamAudioBuffer = this.context.assets['src/containers/player/scream.m4a'];
 
-        this.panner = Audio.createPanner({
+        this.stepsPanner = Audio.createPanner({
             audioCtx: this.context.audioCtx
         });
-        this.panner.connect(this.context.masterGain);
+        this.stepsPanner.connect(this.context.masterGain);
 
-        this.gainNode = this.context.audioCtx.createGain();
-        this.gainNode.gain.value = 1;
-        this.gainNode.connect(this.panner);
+        this.screamGainNode = this.context.audioCtx.createGain();
+        this.screamGainNode.gain.value = 0.5;
+        this.screamGainNode.connect(this.context.masterGain);
 
-        this.updateListenerPosition(this.props.playerPos);
+        this.updateListenerPosition(this.props.position);
         this.updateListenerOrientation(this.props.viewAngle);
     }
 
     componentWillReceiveProps(nextProps) {
-        if (nextProps.playerPos && this.props.playerPos !== nextProps.playerPos) {
-            this.updatePannerPosition(nextProps.playerPos);
-            this.updateListenerPosition(nextProps.playerPos);
+        if (nextProps.position && this.props.position !== nextProps.position) {
+            this.updatePannerPosition(nextProps.position);
+            this.updateListenerPosition(nextProps.position);
         }
 
         if (nextProps.viewAngle && this.props.viewAngle !== nextProps.viewAngle) {
             this.updateListenerOrientation(nextProps.viewAngle);
         }
 
-        if (nextProps.playerState && this.props.playerState !== nextProps.playerState) {
-            switch (nextProps.playerState) {
+        if (nextProps.state && this.props.state !== nextProps.state) {
+            switch (nextProps.state) {
                 case PLAYER_STATE_WALK:
-                    this.soundStart(this.walkingAudioBuffer);
+                    this.soundStartSteps(this.walkingAudioBuffer, 'steps');
                     break;
                 case PLAYER_STATE_RUN:
-                    this.soundStart(this.runnningAudioBuffer);
+                    this.soundStartSteps(this.runnningAudioBuffer, 'steps');
                     break;
                 default:
-                    this.soundStop();
+                    this.soundStopSteps();
             }
+        }
+
+        if (nextProps.health < this.props.health && nextProps.health !== 0) {
+            this.audioSources.scream = Audio.soundStart({
+                audioSource: this.audioSources.scream,
+                audioCtx: this.context.audioCtx,
+                destination: this.screamGainNode,
+                buffer: this.screamAudioBuffer
+            });
         }
     }
 
@@ -66,34 +82,48 @@ class Player extends React.Component {
     }
 
     render() {
-        const { children, playerState } = this.props;
-        const className = [
+        const { children, state, viewAngle } = this.props;
+        const playerClassName = [
             'obj player-animation',
-            playerState === PLAYER_STATE_WALK ? styles.playerAnimationWalking :
-                playerState === PLAYER_STATE_RUN ? styles.playerAnimationRunning : ''
+            state === PLAYER_STATE_WALK ? styles.playerAnimationWalking :
+                state === PLAYER_STATE_RUN ? styles.playerAnimationRunning : ''
         ].join(' ');
+        const cameraTransformRule = getTransformRule({
+            pos: [0, 0, 600],
+            angle: [viewAngle[1], viewAngle[0], viewAngle[2]]
+        });
 
-        return <div className={className}>
-            {children}
+        return <div className={styles.root} style={cameraTransformRule}>
+            <div className={playerClassName}>
+                {children}
+            </div>
         </div>;
     }
 
-    soundStart(decodedAudioBuffer) {
-        this.audioSource = Audio.soundStart({
-            audioSource: this.audioSource,
+    soundStartSteps(decodedAudioBuffer) {
+        this.audioSources.steps = Audio.soundStart({
+            audioSource: this.audioSources.steps,
             audioCtx: this.context.audioCtx,
-            destination: this.gainNode,
+            destination: this.stepsPanner,
             buffer: decodedAudioBuffer,
             loop: true
         });
     }
 
+    soundStopSteps() {
+        Audio.soundStop(this.audioSources.steps);
+    }
+
     soundStop() {
-        Audio.soundStop(this.audioSource);
+        for (let audioSource in this.audioSources) {
+            if (this.audioSources.hasOwnProperty(audioSource)) {
+                Audio.soundStop(this.audioSources[audioSource]);
+            }
+        }
     }
 
     updatePannerPosition(pos) {
-        Audio.setPannerPosition(this.panner, [pos[0], 0, pos[2]]);
+        Audio.setPannerPosition(this.stepsPanner, [pos[0], 0, pos[2]]);
     }
 
     /**
@@ -160,9 +190,10 @@ class Player extends React.Component {
 
 function mapStateToProps(state) {
     return {
-        playerPos: state.pos,
+        position: state.pos,
         viewAngle: state.playerViewAngle,
-        playerState: state.playerState
+        state: state.playerState,
+        health: state.playerHealth
     };
 }
 

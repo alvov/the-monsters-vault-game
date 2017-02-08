@@ -4,6 +4,7 @@ import Logo from '../../logo/logo';
 import Credits from './credits/credits';
 import Loop from '../../../lib/Loop';
 import Settings from '../../../containers/settings/settings';
+import Audio from '../../../lib/Audio';
 
 import {
     CONTROL_STATE,
@@ -42,10 +43,13 @@ class StartScreen extends React.Component {
         // raf loop for capturing player actions
         this.loop = new Loop(this.loopCallback.bind(this));
 
-        this.decodedAudioBuffer = this.context.assets['src/components/screens/start/theme.m4a'];
-        this.gainNode = this.context.audioCtx.createGain();
-        this.gainNode.gain.value = MUSIC_VOLUME;
-        this.gainNode.connect(this.context.masterGain);
+        this.audioSources = {
+            theme: null
+        };
+        this.themeAudioBuffer = this.context.assets['src/components/screens/start/theme.m4a'];
+        this.themeGainNode = this.context.audioCtx.createGain();
+        this.themeGainNode.gain.value = MUSIC_VOLUME;
+        this.themeGainNode.connect(this.context.masterGain);
 
         this.handleStart = this.handleStart.bind(this);
         this.handleStartRandom = this.handleStartRandom.bind(this);
@@ -81,12 +85,18 @@ class StartScreen extends React.Component {
     }
 
     componentDidMount() {
-        this.startMusic();
+        this.audioSources.theme = Audio.soundStart({
+            audioSource: this.audioSources.theme,
+            audioCtx: this.context.audioCtx,
+            destination: this.themeGainNode,
+            buffer: this.themeAudioBuffer,
+            loop: true
+        });
         this.loop.start();
     }
 
     componentWillUnmount() {
-        this.stopMusic();
+        Audio.soundStop(this.audioSources.theme);
         this.loop.stop();
     }
 
@@ -210,22 +220,6 @@ class StartScreen extends React.Component {
 
     setScreen(screen) {
         this.setState({ screen });
-    }
-
-    startMusic() {
-        this.audioSource = this.context.audioCtx.createBufferSource();
-        this.audioSource.connect(this.gainNode);
-        this.audioSource.buffer = this.decodedAudioBuffer;
-        this.audioSource.loop = true;
-        this.audioSource.start(0);
-    }
-
-    stopMusic() {
-        if (this.audioSource) {
-            this.audioSource.stop();
-            this.audioSource.disconnect(this.gainNode);
-            this.audioSource = null;
-        }
     }
 
     isKeyboardButtonPressed(code) {

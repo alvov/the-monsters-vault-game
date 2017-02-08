@@ -4,15 +4,16 @@ import { batchActions } from 'redux-batched-actions';
 import storeShape from 'react-redux/src/utils/storeShape';
 
 import {
-    FPS,
+    FPS, BROAD_CELL_SIZE, HINT_SHOW_TIME,
     KEY_FORWARD, KEY_BACKWARD, KEY_LEFT, KEY_RIGHT, KEY_INTERACT, KEY_RUN, KEY_QUIT_GAME,
     XBOX_BUTTON_X, XBOX_BUTTON_BACK, XBOX_TRIGGER_RIGHT_AXIS,
     XBOX_STICK_LEFT_AXIS_X, XBOX_STICK_LEFT_AXIS_Y, XBOX_STICK_RIGHT_AXIS_X, XBOX_STICK_RIGHT_AXIS_Y,
     CONTROL_STATE,
-    PLAYER_SPEED, PLAYER_RUNNING_COEFF, BROAD_CELL_SIZE,
-    PLAYER_HAND_LENGTH, DOOR_STATE_OPEN, DOOR_STATE_CLOSE, DOOR_STATE_OPENING, DOOR_STATE_CLOSING, DOOR_OPEN_TIME, SWITCHER_TYPE, HINT_SHOW_TIME,
+    PLAYER_SPEED, PLAYER_RUNNING_COEFF, PLAYER_HAND_LENGTH, PLAYER_HEALTH_LOW,
+    DOOR_STATE_OPEN, DOOR_STATE_CLOSE, DOOR_STATE_OPENING, DOOR_STATE_CLOSING, DOOR_OPEN_TIME, SWITCHER_TYPE,
     ENEMY_STATE, ENEMY_SPEED, ENEMY_SPEED_RUNNING, ENEMY_ATTACK_DISTANCE, ENEMY_ATTACK_DISTANCE_VISIBLE,
-    ENEMY_VIEW_ANGLE_RAD, ENEMY_TARGET_REACH_THRESHOLD, ENEMY_CHANGE_TARGET_TIME, ENEMY_KILL_DISTANCE
+    ENEMY_VIEW_ANGLE_RAD, ENEMY_TARGET_REACH_THRESHOLD, ENEMY_CHANGE_TARGET_TIME, ENEMY_DAMAGE_DISTANCE,
+    ENEMY_DAMAGE
 } from '../constants/constants';
 
 import {
@@ -110,6 +111,10 @@ class GameLoop extends React.Component {
             this.props.onExit();
             return;
         }
+        if (currentStore.playerHealth === 0) {
+            this.props.onLoose();
+            return;
+        }
 
         let gamepadSnapshot;
         if (currentStore.gamepad.state !== -1) {
@@ -196,6 +201,11 @@ class GameLoop extends React.Component {
         }
         if (keyPressed[KEY_RUN][0] !== CONTROL_STATE.UNUSED) {
             isRunning = true;
+        }
+
+        // can't run if health level is too low
+        if (currentStore.playerHealth < PLAYER_HEALTH_LOW) {
+            isRunning = false;
         }
 
         // get new player state
@@ -302,7 +312,7 @@ class GameLoop extends React.Component {
         }
 
         // enemy
-        if (currentStore.enemy.state !== ENEMY_STATE.LIMBO) {
+        if (![ENEMY_STATE.LIMBO, ENEMY_STATE.REST].includes(currentStore.enemy.state)) {
             const playerPosition = newState.pos || currentStore.pos;
             const distanceToPlayer = GameLoop.getDistance2d(currentStore.enemy.position, playerPosition);
             const directionToPlayer = Collision.getDirection2d(currentStore.enemy.position, playerPosition);
@@ -384,15 +394,13 @@ class GameLoop extends React.Component {
                     )
                 ));
             } else if (currentStore.enemy.state === ENEMY_STATE.ATTACK) {
-                if (distanceToPlayer < ENEMY_KILL_DISTANCE) {
-                    // todo injures
-                    // actions.push(actionCreators.enemy.setState(ENEMY_STATE.LIMBO));
-                    // this.delayedActions.pushAction({
-                    //     action: actionCreators.enemy.setState(ENEMY_STATE.WANDER),
-                    //     delay: 3000
-                    // });
-                    this.props.onLoose();
-                    return;
+                if (distanceToPlayer < ENEMY_DAMAGE_DISTANCE) {
+                    actions.push(actionCreators.player.reduceHealth(ENEMY_DAMAGE));
+                    actions.push(actionCreators.enemy.setState(ENEMY_STATE.REST));
+                    this.delayedActions.pushAction({
+                        action: actionCreators.enemy.setState(ENEMY_STATE.WANDER),
+                        delay: 3000
+                    });
                 } else {
                     actions.push(actionCreators.enemy.setDirection(directionToPlayer));
                     actions.push(actionCreators.enemy.setPosition(

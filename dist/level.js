@@ -71,7 +71,7 @@
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-const GAME_VERSION = '1.3.0-alpha';
+const GAME_VERSION = '1.4.0-alpha';
 /* unused harmony export GAME_VERSION */
 
 
@@ -180,6 +180,9 @@ const PLAYER_STATE_WALK = 'walk';
 const PLAYER_STATE_STOP = 'stop';
 /* unused harmony export PLAYER_STATE_STOP */
 
+const PLAYER_HEALTH_LOW = 50;
+/* unused harmony export PLAYER_HEALTH_LOW */
+
 
 const HINT_SHOW_TIME = 5000;
 /* unused harmony export HINT_SHOW_TIME */
@@ -192,7 +195,8 @@ const ENEMY_STATE = {
     LIMBO: 'limbo',
     WANDER: 'wander',
     STOP: 'stop',
-    ATTACK: 'attack'
+    ATTACK: 'attack',
+    REST: 'rest'
 };
 /* harmony export (immutable) */ __webpack_exports__["h"] = ENEMY_STATE;
 
@@ -210,8 +214,11 @@ const ENEMY_ATTACK_DISTANCE_VISIBLE = 400;
 /* unused harmony export ENEMY_ATTACK_DISTANCE_VISIBLE */
 
 // export const ENEMY_ATTACK_DISTANCE_VISIBLE = -1;
-const ENEMY_KILL_DISTANCE = 50;
-/* unused harmony export ENEMY_KILL_DISTANCE */
+const ENEMY_DAMAGE_DISTANCE = 50;
+/* unused harmony export ENEMY_DAMAGE_DISTANCE */
+
+const ENEMY_DAMAGE = 80;
+/* unused harmony export ENEMY_DAMAGE */
 
 const ENEMY_VIEW_ANGLE_DEG = 90;
 /* unused harmony export ENEMY_VIEW_ANGLE_DEG */
@@ -539,7 +546,8 @@ class Cell {
 class LevelGenerator {
     constructor() {
         this.player = {
-            size: [__WEBPACK_IMPORTED_MODULE_2__constants_constants__["f" /* PLAYER_SIZE */].WIDTH, __WEBPACK_IMPORTED_MODULE_2__constants_constants__["f" /* PLAYER_SIZE */].HEIGHT, __WEBPACK_IMPORTED_MODULE_2__constants_constants__["f" /* PLAYER_SIZE */].DEPTH]
+            size: [__WEBPACK_IMPORTED_MODULE_2__constants_constants__["f" /* PLAYER_SIZE */].WIDTH, __WEBPACK_IMPORTED_MODULE_2__constants_constants__["f" /* PLAYER_SIZE */].HEIGHT, __WEBPACK_IMPORTED_MODULE_2__constants_constants__["f" /* PLAYER_SIZE */].DEPTH],
+            health: 100
         };
         this.cells = [];
         this.walls = [];

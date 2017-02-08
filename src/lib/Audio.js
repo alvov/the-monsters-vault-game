@@ -57,7 +57,7 @@ class Audio {
             panner.positionY.value = pos[1];
             panner.positionZ.value = pos[2];
         } else {
-            panner.setPosition(pos);
+            panner.setPosition(...pos);
         }
     }
 
@@ -88,10 +88,10 @@ class Audio {
      * @param {Object} audioSource
      */
     static soundStop(audioSource) {
-        if (audioSource) {
+        if (audioSource && audioSource.buffer) {
             audioSource.stop();
             audioSource.disconnect();
-            audioSource = null;
+            audioSource.buffer = null;
         }
     }
 }

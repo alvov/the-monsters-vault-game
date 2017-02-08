@@ -116,7 +116,7 @@ const LEVEL_SET = 'levelSet';
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-const GAME_VERSION = '1.4.0-alpha';
+const GAME_VERSION = '1.4.1-alpha';
 /* harmony export (immutable) */ __webpack_exports__["_10"] = GAME_VERSION;
 
 
@@ -573,7 +573,7 @@ class Audio {
             panner.positionY.value = pos[1];
             panner.positionZ.value = pos[2];
         } else {
-            panner.setPosition(pos);
+            panner.setPosition(...pos);
         }
     }
 
@@ -604,10 +604,10 @@ class Audio {
      * @param {Object} audioSource
      */
     static soundStop(audioSource) {
-        if (audioSource) {
+        if (audioSource && audioSource.buffer) {
             audioSource.stop();
             audioSource.disconnect();
-            audioSource = null;
+            audioSource.buffer = null;
         }
     }
 }

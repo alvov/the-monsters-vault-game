@@ -1,6 +1,6 @@
 {
   "name": "doors-and-levers-game",
-  "version": "1.4.1-alpha",
+  "version": "1.4.2-alpha",
   "description": "3d game made with CSS 3d transforms",
   "author": "alvov",
   "devDependencies": {

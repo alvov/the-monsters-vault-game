@@ -116,7 +116,7 @@ const LEVEL_SET = 'levelSet';
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-const GAME_VERSION = '1.4.1-alpha';
+const GAME_VERSION = '1.4.2-alpha';
 /* harmony export (immutable) */ __webpack_exports__["_10"] = GAME_VERSION;
 
 

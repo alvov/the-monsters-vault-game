@@ -512,6 +512,7 @@ body {
     width: 5px;
     height: 2px;
     animation-delay: 2s;
+    animation-duration: 2.1s;
 }
 .enemy-eye-3_1bw:nth-child(4) {
     top: -1px;
@@ -519,6 +520,7 @@ body {
     width: 7px;
     height: 3px;
     animation-delay: 1.5s;
+    animation-duration: 2.2s;
 }
 .enemy-eye-3_1bw:nth-child(5) {
     top: 16px;
@@ -526,6 +528,7 @@ body {
     width: 5px;
     height: 3px;
     animation-delay: .5s;
+    animation-duration: 1.7s;
 }
 
 .enemy-state-attack-2rWST .enemy-direction-1I8dN {

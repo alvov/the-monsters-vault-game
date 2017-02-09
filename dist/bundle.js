@@ -604,10 +604,9 @@ class Audio {
      * @param {Object} audioSource
      */
     static soundStop(audioSource) {
-        if (audioSource && audioSource.buffer) {
+        if (audioSource) {
             audioSource.stop();
             audioSource.disconnect();
-            audioSource.buffer = null;
         }
     }
 }
@@ -3405,7 +3404,7 @@ class Enemy extends __WEBPACK_IMPORTED_MODULE_1_react___default.a.PureComponent 
             this.roarPanner.orientationY.value = 0;
             this.roarPanner.orientationZ.value = z;
         } else {
-            this.roarPanner.setOrientation([x, 0, z]);
+            this.roarPanner.setOrientation(x, 0, z);
         }
     }
 

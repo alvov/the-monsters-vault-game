@@ -63,6 +63,7 @@
     width: 5px;
     height: 2px;
     animation-delay: 2s;
+    animation-duration: 2.1s;
 }
 .eye:nth-child(4) {
     top: -1px;
@@ -70,6 +71,7 @@
     width: 7px;
     height: 3px;
     animation-delay: 1.5s;
+    animation-duration: 2.2s;
 }
 .eye:nth-child(5) {
     top: 16px;
@@ -77,6 +79,7 @@
     width: 5px;
     height: 3px;
     animation-delay: .5s;
+    animation-duration: 1.7s;
 }
 
 .state-attack .direction {

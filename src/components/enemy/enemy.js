@@ -164,7 +164,7 @@ class Enemy extends React.PureComponent {
             this.roarPanner.orientationY.value = 0;
             this.roarPanner.orientationZ.value = z;
         } else {
-            this.roarPanner.setOrientation([x, 0, z]);
+            this.roarPanner.setOrientation(x, 0, z);
         }
     }
 

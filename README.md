@@ -43,7 +43,7 @@ it makes.
 
 ## Motivation for making this game
 * Go nuts and make a 3d (well, more like 2.5d)
-interactive game with CSS 3d transforms only
+interactive horror game with CSS 3d transforms only
 * Use React/Redux/Webpack/Tape stack, because I can
 * Try out various web APIs and interfaces like:
   * [Pointer Lock events](https://w3c.github.io/pointerlock/)
@@ -59,6 +59,8 @@ interactive game with CSS 3d transforms only
 - [x] 3d positioned audio (_use your headphones_)
 - [x] Gamepad support
 - [x] Offline support (_after first launch_)
+- [x] Level generator  
+![level generator](./assets/screencapture-002-level.gif)
 
 ## Credits
 * **Inspired by** — the [famous CSS 3d scene](http://keithclark.co.uk/labs/css-fps/)

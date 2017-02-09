@@ -88,10 +88,9 @@ class Audio {
      * @param {Object} audioSource
      */
     static soundStop(audioSource) {
-        if (audioSource && audioSource.buffer) {
+        if (audioSource) {
             audioSource.stop();
             audioSource.disconnect();
-            audioSource.buffer = null;
         }
     }
 }

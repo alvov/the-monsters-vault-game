@@ -71,7 +71,7 @@
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-const GAME_VERSION = '1.4.2-alpha';
+const GAME_VERSION = '1.5.0';
 /* unused harmony export GAME_VERSION */
 
 

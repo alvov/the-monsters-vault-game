@@ -53,12 +53,14 @@ class EndScreen extends React.Component {
         }, ENDING_TIME);
         this.loop.start();
 
-        this.audioSources.scream = Audio.soundStart({
-            audioSource: this.audioSources.scream,
-            audioCtx: this.context.audioCtx,
-            destination: this.screamGainNode,
-            buffer: this.screamAudioBuffer
-        });
+        if (this.props.gameState !== GAME_STATE_WIN) {
+            this.audioSources.scream = Audio.soundStart({
+                audioSource: this.audioSources.scream,
+                audioCtx: this.context.audioCtx,
+                destination: this.screamGainNode,
+                buffer: this.screamAudioBuffer
+            });
+        }
     }
 
     componentWillUnmount() {

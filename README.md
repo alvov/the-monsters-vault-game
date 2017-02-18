@@ -15,9 +15,13 @@ You find yourself locked in some sort of a
 Push down the levers to open doors.
 You can guess where the opened door is by the
 sound it makes (use your headphones).  
-Don't get caught by the monster. You can also
+Don't get caught by the monster! You can also
 guess its position and direction by the sound
 it makes.
+
+[**Play the game**](https://alvov.github.io/doors-and-levers-game/)
+_(you need a desktop browser, Chrome would be the best choice
+at the moment of writing this)_
 
 ## Controls
 ### Keyboard
@@ -41,10 +45,10 @@ it makes.
 
 ![gamepad gameplay](./assets/screencapture-001.gif)
 
-## Motivation for making this game
-* Go nuts and make a 3d (well, more like 2.5d)
-interactive horror game with CSS 3d transforms only
-* Use React/Redux/Webpack/Tape stack, because I can
+## Motivation
+* Make a 3d (well, more like 2.5d)
+horror game with CSS 3d transforms only
+* Use React/Redux/Webpack 2/Tape stack
 * Try out various web APIs and interfaces like:
   * [Pointer Lock events](https://w3c.github.io/pointerlock/)
   * [Web Audio API](https://webaudio.github.io/web-audio-api/)
@@ -52,14 +56,14 @@ interactive horror game with CSS 3d transforms only
   * [Service Workers](https://www.w3.org/TR/service-workers/)
   * [KeyboardEvent Interface](https://w3c.github.io/uievents/#interface-keyboardevent)
 * Use SVG lighting filters for textures
-(basically to test my laptop's cooling system)
+(also as a test of my laptop's cooling system)
 
 ## Features
 - [x] No canvases
 - [x] 3d positioned audio (_use your headphones_)
 - [x] Gamepad support
 - [x] Offline support (_after first launch_)
-- [x] Level generator  
+- [x] Level generator:  
 ![level generator](./assets/screencapture-002-level.gif)
 
 ## Credits

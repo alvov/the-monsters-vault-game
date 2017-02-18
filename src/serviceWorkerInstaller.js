@@ -1,3 +1,3 @@
 if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('serviceWorker.js?v1_11', { scope: './' })
+    navigator.serviceWorker.register('serviceWorker.js?v1_12', { scope: './' })
 }

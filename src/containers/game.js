@@ -20,7 +20,7 @@ import Patterns from '../components/patterns/patterns';
 import Viewport from './viewport/viewport';
 import Player from './player/player';
 import Scene from './scene';
-import GameLoop from './gameLoop';
+import GameLoop from './gameLoop/gameLoop';
 import Loop from '../lib/Loop';
 import LevelGenerator from '../lib/LevelGenerator';
 import level from '../level';

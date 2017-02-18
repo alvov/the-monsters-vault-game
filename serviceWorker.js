@@ -1,4 +1,4 @@
-const version = 'v1_11';
+const version = 'v1_12';
 const cacheKey = 'game-cache-' + version;
 
 importScripts('./preloadAssetsList.js?' + version);

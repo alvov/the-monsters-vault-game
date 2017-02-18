@@ -116,7 +116,7 @@ const LEVEL_SET = 'levelSet';
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-const GAME_VERSION = '1.4.2-alpha';
+const GAME_VERSION = '1.5.0';
 /* harmony export (immutable) */ __webpack_exports__["_10"] = GAME_VERSION;
 
 
@@ -507,10 +507,7 @@ function convertRadToDegree(angle) {
 /* 17 */,
 /* 18 */,
 /* 19 */,
-/* 20 */,
-/* 21 */,
-/* 22 */,
-/* 23 */
+/* 20 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -614,6 +611,9 @@ class Audio {
 /* harmony default export */ __webpack_exports__["a"] = Audio;
 
 /***/ }),
+/* 21 */,
+/* 22 */,
+/* 23 */,
 /* 24 */,
 /* 25 */,
 /* 26 */,
@@ -2188,7 +2188,7 @@ module.exports = {"root":"light-root-3ic0q","overlay":"light-overlay-1kisp"};
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__viewport_viewport__ = __webpack_require__(144);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__player_player__ = __webpack_require__(141);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__scene__ = __webpack_require__(142);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_14__gameLoop__ = __webpack_require__(140);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_14__gameLoop_gameLoop__ = __webpack_require__(140);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_15__lib_Loop__ = __webpack_require__(28);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_16__lib_LevelGenerator__ = __webpack_require__(68);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_17__level__ = __webpack_require__(145);
@@ -2339,7 +2339,7 @@ class Game extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
                 null,
                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_10__components_patterns_patterns__["a" /* default */], null),
                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                    __WEBPACK_IMPORTED_MODULE_14__gameLoop__["a" /* default */],
+                    __WEBPACK_IMPORTED_MODULE_14__gameLoop_gameLoop__["a" /* default */],
                     {
                         onWin: this.setGameStateWin,
                         onLoose: this.setGameStateLoose,
@@ -2575,7 +2575,9 @@ function mapDispatchToProps(dispatch) {
 /* 110 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var RESOURCES = [["dist/0e58b004362d2cecaf96358cf5fa9f50.png", "image"], ["dist/12d4067df2155b204defac46c41c89d3.png", "image"], ["dist/151b6411d53b17de82d882485fcbaaf5.jpg", "image"], ["dist/1c1430572300aa82719312e3483d80d9.png", "image"], ["dist/3628ed55158b5a413097584e7fd8a725.jpg", "image"], ["dist/4db9414e7ca808670cbc9b15dc0eaa74.jpg", "image"], ["dist/6d73a1850ac64474712210aa8f34f818.png", "image"], ["dist/83f558afad0f8b176e361b3f574ccb42.jpg", "image"], ["dist/8b3a4e276e0a424265cc0c55fa95360d.svg", "image"], ["dist/a0a62fe89c1eb6ec77f414a77fdb4a92.jpg", "image"], ["dist/abcc39d175e2f5f6ad0df4cc14457193.jpg", "image"], ["dist/bad58d3de10ed478b28908a2380b31f8.png", "image"], ["dist/c161dc30a1bcbfb0ea16c3740f6189c3.jpg", "image"], ["dist/c3e2941f8e7e3eb4fa9f378466ad0a0b.jpg", "image"], ["dist/dc4aaa700984f97ca90dea2ec61957fc.png", "image"], ["dist/e2128edeeefcfd54119c659e1313a548.png", "image"], ["src/components/box/breakBox.m4a", "audio"], ["src/components/box/breathing.m4a", "audio"], ["src/components/box/clawsOnWood.m4a", "audio"], ["src/components/door/mixdown.m4a", "audio"], ["src/components/enemy/attack.m4a", "audio"], ["src/components/enemy/noise.m4a", "audio"], ["src/components/enemy/roar01.m4a", "audio"], ["src/components/enemy/roar02.m4a", "audio"], ["src/components/enemy/roar03.m4a", "audio"], ["src/components/screens/start/theme.m4a", "audio"], ["src/containers/player/scream.m4a", "audio"], ["src/containers/player/steps-running.m4a", "audio"], ["src/containers/player/steps-walking.m4a", "audio"]];
+/* This script is auto-generated with `npm run build-assets-list` */
+
+var RESOURCES = [["dist/0e58b004362d2cecaf96358cf5fa9f50.png", "image"], ["dist/12d4067df2155b204defac46c41c89d3.png", "image"], ["dist/151b6411d53b17de82d882485fcbaaf5.jpg", "image"], ["dist/1c1430572300aa82719312e3483d80d9.png", "image"], ["dist/3628ed55158b5a413097584e7fd8a725.jpg", "image"], ["dist/4db9414e7ca808670cbc9b15dc0eaa74.jpg", "image"], ["dist/6d73a1850ac64474712210aa8f34f818.png", "image"], ["dist/83f558afad0f8b176e361b3f574ccb42.jpg", "image"], ["dist/8b3a4e276e0a424265cc0c55fa95360d.svg", "image"], ["dist/a0a62fe89c1eb6ec77f414a77fdb4a92.jpg", "image"], ["dist/abcc39d175e2f5f6ad0df4cc14457193.jpg", "image"], ["dist/bad58d3de10ed478b28908a2380b31f8.png", "image"], ["dist/c161dc30a1bcbfb0ea16c3740f6189c3.jpg", "image"], ["dist/c3e2941f8e7e3eb4fa9f378466ad0a0b.jpg", "image"], ["dist/dc4aaa700984f97ca90dea2ec61957fc.png", "image"], ["dist/e2128edeeefcfd54119c659e1313a548.png", "image"], ["src/components/box/breakBox.m4a", "audio"], ["src/components/box/breathing.m4a", "audio"], ["src/components/box/clawsOnWood.m4a", "audio"], ["src/components/door/mixdown.m4a", "audio"], ["src/components/enemy/attack.m4a", "audio"], ["src/components/enemy/noise.m4a", "audio"], ["src/components/enemy/roar01.m4a", "audio"], ["src/components/enemy/roar02.m4a", "audio"], ["src/components/enemy/roar03.m4a", "audio"], ["src/components/screens/start/theme.m4a", "audio"], ["src/containers/gameLoop/game-loop.m4a", "audio"], ["src/containers/player/scream.m4a", "audio"], ["src/containers/player/steps-running.m4a", "audio"], ["src/containers/player/steps-walking.m4a", "audio"]];
 if (true) module.exports = RESOURCES;
 
 /***/ }),
@@ -2907,7 +2909,7 @@ function setStickSensitivity(value) {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_react__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__plain_plain__ = __webpack_require__(27);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__lib_utils__ = __webpack_require__(12);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__lib_Audio__ = __webpack_require__(23);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__lib_Audio__ = __webpack_require__(20);
 
 
 
@@ -3124,7 +3126,7 @@ Ceiling.propTypes = {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_react__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__light_simple__ = __webpack_require__(66);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__lib_utils__ = __webpack_require__(12);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__lib_Audio__ = __webpack_require__(23);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__lib_Audio__ = __webpack_require__(20);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__constants_constants__ = __webpack_require__(6);
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
@@ -3257,7 +3259,7 @@ Door.defaultProps = {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react__ = __webpack_require__(3);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_react__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__lib_utils__ = __webpack_require__(12);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__lib_Audio__ = __webpack_require__(23);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__lib_Audio__ = __webpack_require__(20);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__constants_constants__ = __webpack_require__(6);
 
 
@@ -3935,7 +3937,7 @@ PlayerHealth.propTypes = {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react__ = __webpack_require__(3);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_react__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__lib_Loop__ = __webpack_require__(28);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__lib_Audio__ = __webpack_require__(23);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__lib_Audio__ = __webpack_require__(20);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__constants_constants__ = __webpack_require__(6);
 
 
@@ -3977,12 +3979,14 @@ class EndScreen extends __WEBPACK_IMPORTED_MODULE_1_react___default.a.Component 
         }, ENDING_TIME);
         this.loop.start();
 
-        this.audioSources.scream = __WEBPACK_IMPORTED_MODULE_3__lib_Audio__["a" /* default */].soundStart({
-            audioSource: this.audioSources.scream,
-            audioCtx: this.context.audioCtx,
-            destination: this.screamGainNode,
-            buffer: this.screamAudioBuffer
-        });
+        if (this.props.gameState !== __WEBPACK_IMPORTED_MODULE_4__constants_constants__["t" /* GAME_STATE_WIN */]) {
+            this.audioSources.scream = __WEBPACK_IMPORTED_MODULE_3__lib_Audio__["a" /* default */].soundStart({
+                audioSource: this.audioSources.scream,
+                audioCtx: this.context.audioCtx,
+                destination: this.screamGainNode,
+                buffer: this.screamAudioBuffer
+            });
+        }
     }
 
     componentWillUnmount() {
@@ -4255,7 +4259,7 @@ ExternalLink.propTypes = {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__credits_credits__ = __webpack_require__(134);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__lib_Loop__ = __webpack_require__(28);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__containers_settings_settings__ = __webpack_require__(143);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__lib_Audio__ = __webpack_require__(23);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__lib_Audio__ = __webpack_require__(20);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__constants_constants__ = __webpack_require__(6);
 
 
@@ -4769,7 +4773,8 @@ const HINT_INTERACT_GAMEPAD = '[[ Press `X` on your gamepad to interact ]]';
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__lib_utils__ = __webpack_require__(12);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__lib_Loop__ = __webpack_require__(28);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__lib_Collision__ = __webpack_require__(67);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__actionCreators__ = __webpack_require__(35);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__lib_Audio__ = __webpack_require__(20);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__actionCreators__ = __webpack_require__(35);
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
 
@@ -4801,6 +4806,15 @@ class GameLoop extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
         this.loop = new __WEBPACK_IMPORTED_MODULE_8__lib_Loop__["a" /* default */](this.loopCallback.bind(this), __WEBPACK_IMPORTED_MODULE_4__constants_constants__["T" /* FPS */]);
 
         this.shownHints = {};
+
+        this.audioSources = {
+            music: null
+        };
+
+        this.musicAudioBuffer = this.context.assets['src/containers/gameLoop/game-loop.m4a'];
+        this.musicGainNode = this.context.audioCtx.createGain();
+        this.musicGainNode.gain.value = 0.1;
+        this.musicGainNode.connect(this.context.masterGain);
     }
 
     componentDidMount() {
@@ -4829,12 +4843,14 @@ class GameLoop extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
             });
         }
         this.loop.start();
+        this.soundStartMusic();
     }
 
     componentWillUnmount() {
         this.loop.stop();
         this.delayedActions.clear();
         this.shownHints = {};
+        this.soundStopMusic();
     }
 
     render() {
@@ -4870,7 +4886,7 @@ class GameLoop extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
             const y = GameLoop.filterStickValue(gamepadSnapshot.axes[__WEBPACK_IMPORTED_MODULE_4__constants_constants__["V" /* XBOX_STICK_RIGHT_AXIS_Y */]]);
             if (x || y) {
                 const newViewAngle = [(currentViewAngle[0] + x * currentStore.settings.stickSensitivity) % 360, Math.min(Math.max(currentViewAngle[1] - y * currentStore.settings.stickSensitivity, -90), 90), 0];
-                actions.push(__WEBPACK_IMPORTED_MODULE_10__actionCreators__["d" /* player */].updateViewAngle(newViewAngle));
+                actions.push(__WEBPACK_IMPORTED_MODULE_11__actionCreators__["d" /* player */].updateViewAngle(newViewAngle));
                 newState.viewAngle = newViewAngle;
             }
         }
@@ -4880,8 +4896,8 @@ class GameLoop extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
         if (pointerDelta.x || pointerDelta.y) {
             const currentViewAngle = newState.viewAngle || currentStore.playerViewAngle;
             const newViewAngle = [(currentViewAngle[0] - pointerDelta.x * currentStore.settings.mouseSensitivity) % 360, Math.min(Math.max(currentViewAngle[1] + pointerDelta.y * currentStore.settings.mouseSensitivity, -90), 90), 0];
-            actions.push(__WEBPACK_IMPORTED_MODULE_10__actionCreators__["d" /* player */].updateViewAngle(newViewAngle));
-            actions.push(__WEBPACK_IMPORTED_MODULE_10__actionCreators__["a" /* game */].resetPointerDelta());
+            actions.push(__WEBPACK_IMPORTED_MODULE_11__actionCreators__["d" /* player */].updateViewAngle(newViewAngle));
+            actions.push(__WEBPACK_IMPORTED_MODULE_11__actionCreators__["a" /* game */].resetPointerDelta());
             newState.viewAngle = newViewAngle;
         }
 
@@ -4942,12 +4958,12 @@ class GameLoop extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
         // get new player state
         if (angleShift.length) {
             if (isRunning) {
-                actions.push(__WEBPACK_IMPORTED_MODULE_10__actionCreators__["d" /* player */].run());
+                actions.push(__WEBPACK_IMPORTED_MODULE_11__actionCreators__["d" /* player */].run());
             } else {
-                actions.push(__WEBPACK_IMPORTED_MODULE_10__actionCreators__["d" /* player */].walk());
+                actions.push(__WEBPACK_IMPORTED_MODULE_11__actionCreators__["d" /* player */].walk());
             }
         } else {
-            actions.push(__WEBPACK_IMPORTED_MODULE_10__actionCreators__["d" /* player */].stop());
+            actions.push(__WEBPACK_IMPORTED_MODULE_11__actionCreators__["d" /* player */].stop());
         }
 
         // get new player position
@@ -4967,7 +4983,7 @@ class GameLoop extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
             const collisions = __WEBPACK_IMPORTED_MODULE_9__lib_Collision__["a" /* default */].getCollisions([currentStore.pos, newPos], objects, __WEBPACK_IMPORTED_MODULE_4__constants_constants__["J" /* BROAD_CELL_SIZE */]);
             // get last collision result as new player position
             const newPosAfterCollisions = collisions[collisions.length - 1].newPos;
-            actions.push(__WEBPACK_IMPORTED_MODULE_10__actionCreators__["d" /* player */].updatePosition(newPosAfterCollisions));
+            actions.push(__WEBPACK_IMPORTED_MODULE_11__actionCreators__["d" /* player */].updatePosition(newPosAfterCollisions));
             newState.pos = newPosAfterCollisions;
         }
 
@@ -4985,7 +5001,7 @@ class GameLoop extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
             // render only visible objects
             const { addVisibleObjects, removeVisibleObjects } = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_7__lib_utils__["h" /* getVisibleObjects */])(newState.pos, currentStore.objects);
             if (Object.keys(addVisibleObjects).length || Object.keys(removeVisibleObjects).length) {
-                actions.push(__WEBPACK_IMPORTED_MODULE_10__actionCreators__["e" /* objects */].setVisible({ addVisibleObjects, removeVisibleObjects }));
+                actions.push(__WEBPACK_IMPORTED_MODULE_11__actionCreators__["e" /* objects */].setVisible({ addVisibleObjects, removeVisibleObjects }));
             }
         }
 
@@ -4998,12 +5014,12 @@ class GameLoop extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
             if (collisionView && collisionView.obj.isInteractive) {
                 reachableObject = collisionView.obj;
                 if (!reachableObject.isReachable) {
-                    actions.push(__WEBPACK_IMPORTED_MODULE_10__actionCreators__["e" /* objects */].setReachable(_extends({}, reachableObject)));
+                    actions.push(__WEBPACK_IMPORTED_MODULE_11__actionCreators__["e" /* objects */].setReachable(_extends({}, reachableObject)));
                     actions.push(this.showHints([gamepadSnapshot ? __WEBPACK_IMPORTED_MODULE_5__constants_hints__["f" /* HINT_INTERACT_GAMEPAD */] : __WEBPACK_IMPORTED_MODULE_5__constants_hints__["g" /* HINT_INTERACT_KEYBOAD */]], false));
                     actions.push(this.showHints([__WEBPACK_IMPORTED_MODULE_5__constants_hints__["h" /* HINT_FIRST_SWITCHER */]], true));
                 }
             } else {
-                actions.push(__WEBPACK_IMPORTED_MODULE_10__actionCreators__["e" /* objects */].setReachable(null));
+                actions.push(__WEBPACK_IMPORTED_MODULE_11__actionCreators__["e" /* objects */].setReachable(null));
             }
         } else {
             reachableObject = currentStore.objects.find(obj => obj.isReachable);
@@ -5014,9 +5030,9 @@ class GameLoop extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
             if (reachableObject.type === __WEBPACK_IMPORTED_MODULE_4__constants_constants__["I" /* SWITCHER_TYPE */]) {
                 const door = currentStore.doorsState[reachableObject.props.id];
                 if (![__WEBPACK_IMPORTED_MODULE_4__constants_constants__["M" /* DOOR_STATE_OPENING */], __WEBPACK_IMPORTED_MODULE_4__constants_constants__["O" /* DOOR_STATE_CLOSING */]].includes(door)) {
-                    actions.push(__WEBPACK_IMPORTED_MODULE_10__actionCreators__["f" /* doorsState */][door === __WEBPACK_IMPORTED_MODULE_4__constants_constants__["L" /* DOOR_STATE_OPEN */] ? 'setClosing' : 'setOpening'](reachableObject.props.id));
+                    actions.push(__WEBPACK_IMPORTED_MODULE_11__actionCreators__["f" /* doorsState */][door === __WEBPACK_IMPORTED_MODULE_4__constants_constants__["L" /* DOOR_STATE_OPEN */] ? 'setClosing' : 'setOpening'](reachableObject.props.id));
                     this.delayedActions.pushAction({
-                        action: __WEBPACK_IMPORTED_MODULE_10__actionCreators__["f" /* doorsState */][door === __WEBPACK_IMPORTED_MODULE_4__constants_constants__["L" /* DOOR_STATE_OPEN */] ? 'setClose' : 'setOpen'](reachableObject.props.id),
+                        action: __WEBPACK_IMPORTED_MODULE_11__actionCreators__["f" /* doorsState */][door === __WEBPACK_IMPORTED_MODULE_4__constants_constants__["L" /* DOOR_STATE_OPEN */] ? 'setClose' : 'setOpen'](reachableObject.props.id),
                         delay: __WEBPACK_IMPORTED_MODULE_4__constants_constants__["P" /* DOOR_OPEN_TIME */]
                     });
                     if (door === __WEBPACK_IMPORTED_MODULE_4__constants_constants__["H" /* DOOR_STATE_CLOSE */]) {
@@ -5035,7 +5051,7 @@ class GameLoop extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
             const distanceToPlayer = GameLoop.getDistance2d(currentStore.enemy.position, playerPosition);
             const directionToPlayer = __WEBPACK_IMPORTED_MODULE_9__lib_Collision__["a" /* default */].getDirection2d(currentStore.enemy.position, playerPosition);
             const canSeeEachOther = __WEBPACK_IMPORTED_MODULE_9__lib_Collision__["a" /* default */].getCollisionView([currentStore.enemy.position, playerPosition], currentStore.objects, __WEBPACK_IMPORTED_MODULE_4__constants_constants__["J" /* BROAD_CELL_SIZE */]) === null;
-            actions.push(__WEBPACK_IMPORTED_MODULE_10__actionCreators__["g" /* enemy */].setVisibility(canSeeEachOther));
+            actions.push(__WEBPACK_IMPORTED_MODULE_11__actionCreators__["g" /* enemy */].setVisibility(canSeeEachOther));
             if (canSeeEachOther && (
             // if player is too close
             distanceToPlayer < __WEBPACK_IMPORTED_MODULE_4__constants_constants__["_1" /* ENEMY_ATTACK_DISTANCE */] ||
@@ -5043,10 +5059,10 @@ class GameLoop extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
             distanceToPlayer < __WEBPACK_IMPORTED_MODULE_4__constants_constants__["_2" /* ENEMY_ATTACK_DISTANCE_VISIBLE */] && Math.abs(directionToPlayer - currentStore.enemy.direction) < __WEBPACK_IMPORTED_MODULE_4__constants_constants__["_3" /* ENEMY_VIEW_ANGLE_RAD */] / 2)) {
                 // if enemy is not already attacking
                 if ([__WEBPACK_IMPORTED_MODULE_4__constants_constants__["A" /* ENEMY_STATE */].WANDER, __WEBPACK_IMPORTED_MODULE_4__constants_constants__["A" /* ENEMY_STATE */].STOP].includes(currentStore.enemy.state)) {
-                    actions.push(__WEBPACK_IMPORTED_MODULE_10__actionCreators__["g" /* enemy */].setState(__WEBPACK_IMPORTED_MODULE_4__constants_constants__["A" /* ENEMY_STATE */].ATTACK));
+                    actions.push(__WEBPACK_IMPORTED_MODULE_11__actionCreators__["g" /* enemy */].setState(__WEBPACK_IMPORTED_MODULE_4__constants_constants__["A" /* ENEMY_STATE */].ATTACK));
                 }
             } else if (currentStore.enemy.state === __WEBPACK_IMPORTED_MODULE_4__constants_constants__["A" /* ENEMY_STATE */].ATTACK) {
-                actions.push(__WEBPACK_IMPORTED_MODULE_10__actionCreators__["g" /* enemy */].setState(__WEBPACK_IMPORTED_MODULE_4__constants_constants__["A" /* ENEMY_STATE */].WANDER));
+                actions.push(__WEBPACK_IMPORTED_MODULE_11__actionCreators__["g" /* enemy */].setState(__WEBPACK_IMPORTED_MODULE_4__constants_constants__["A" /* ENEMY_STATE */].WANDER));
                 const newTarget = __WEBPACK_IMPORTED_MODULE_9__lib_Collision__["a" /* default */].getRandomFreeCell({
                     pos: currentStore.enemy.position,
                     direction: currentStore.enemy.direction,
@@ -5055,8 +5071,8 @@ class GameLoop extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
                     boundaries: currentStore.level.boundaries,
                     previous: currentStore.enemy.target.from
                 });
-                actions.push(__WEBPACK_IMPORTED_MODULE_10__actionCreators__["g" /* enemy */].setTarget(newTarget));
-                actions.push(__WEBPACK_IMPORTED_MODULE_10__actionCreators__["g" /* enemy */].setDirection(__WEBPACK_IMPORTED_MODULE_9__lib_Collision__["a" /* default */].getDirection2d(currentStore.enemy.position, newTarget)));
+                actions.push(__WEBPACK_IMPORTED_MODULE_11__actionCreators__["g" /* enemy */].setTarget(newTarget));
+                actions.push(__WEBPACK_IMPORTED_MODULE_11__actionCreators__["g" /* enemy */].setDirection(__WEBPACK_IMPORTED_MODULE_9__lib_Collision__["a" /* default */].getDirection2d(currentStore.enemy.position, newTarget)));
             }
             if (currentStore.enemy.state === __WEBPACK_IMPORTED_MODULE_4__constants_constants__["A" /* ENEMY_STATE */].WANDER) {
                 let directionToTarget;
@@ -5070,13 +5086,13 @@ class GameLoop extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
                         boundaries: currentStore.level.boundaries
                     });
                     directionToTarget = __WEBPACK_IMPORTED_MODULE_9__lib_Collision__["a" /* default */].getDirection2d(currentStore.enemy.position, newTarget);
-                    actions.push(__WEBPACK_IMPORTED_MODULE_10__actionCreators__["g" /* enemy */].setTarget(newTarget));
+                    actions.push(__WEBPACK_IMPORTED_MODULE_11__actionCreators__["g" /* enemy */].setTarget(newTarget));
                     // stop for a while if direction has changed
                     if (!GameLoop.floatsEqual(directionToTarget, currentStore.enemy.direction)) {
-                        actions.push(__WEBPACK_IMPORTED_MODULE_10__actionCreators__["g" /* enemy */].setState(__WEBPACK_IMPORTED_MODULE_4__constants_constants__["A" /* ENEMY_STATE */].STOP));
-                        actions.push(__WEBPACK_IMPORTED_MODULE_10__actionCreators__["g" /* enemy */].setDirection(directionToTarget));
+                        actions.push(__WEBPACK_IMPORTED_MODULE_11__actionCreators__["g" /* enemy */].setState(__WEBPACK_IMPORTED_MODULE_4__constants_constants__["A" /* ENEMY_STATE */].STOP));
+                        actions.push(__WEBPACK_IMPORTED_MODULE_11__actionCreators__["g" /* enemy */].setDirection(directionToTarget));
                         this.delayedActions.pushAction({
-                            action: __WEBPACK_IMPORTED_MODULE_10__actionCreators__["g" /* enemy */].setState(__WEBPACK_IMPORTED_MODULE_4__constants_constants__["A" /* ENEMY_STATE */].WANDER),
+                            action: __WEBPACK_IMPORTED_MODULE_11__actionCreators__["g" /* enemy */].setState(__WEBPACK_IMPORTED_MODULE_4__constants_constants__["A" /* ENEMY_STATE */].WANDER),
                             delay: __WEBPACK_IMPORTED_MODULE_4__constants_constants__["_5" /* ENEMY_CHANGE_TARGET_TIME */]
                         });
                     }
@@ -5084,19 +5100,19 @@ class GameLoop extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
                 if (!directionToTarget) {
                     directionToTarget = __WEBPACK_IMPORTED_MODULE_9__lib_Collision__["a" /* default */].getDirection2d(currentStore.enemy.position, currentStore.enemy.target);
                 }
-                actions.push(__WEBPACK_IMPORTED_MODULE_10__actionCreators__["g" /* enemy */].setDirection(directionToTarget));
-                actions.push(__WEBPACK_IMPORTED_MODULE_10__actionCreators__["g" /* enemy */].setPosition(__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_7__lib_utils__["f" /* vectorsAdd3D */])(currentStore.enemy.position, GameLoop.getShift2d(directionToTarget, __WEBPACK_IMPORTED_MODULE_4__constants_constants__["_6" /* ENEMY_SPEED */] * frameRateCoefficient))));
+                actions.push(__WEBPACK_IMPORTED_MODULE_11__actionCreators__["g" /* enemy */].setDirection(directionToTarget));
+                actions.push(__WEBPACK_IMPORTED_MODULE_11__actionCreators__["g" /* enemy */].setPosition(__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_7__lib_utils__["f" /* vectorsAdd3D */])(currentStore.enemy.position, GameLoop.getShift2d(directionToTarget, __WEBPACK_IMPORTED_MODULE_4__constants_constants__["_6" /* ENEMY_SPEED */] * frameRateCoefficient))));
             } else if (currentStore.enemy.state === __WEBPACK_IMPORTED_MODULE_4__constants_constants__["A" /* ENEMY_STATE */].ATTACK) {
                 if (distanceToPlayer < __WEBPACK_IMPORTED_MODULE_4__constants_constants__["_7" /* ENEMY_DAMAGE_DISTANCE */]) {
-                    actions.push(__WEBPACK_IMPORTED_MODULE_10__actionCreators__["d" /* player */].reduceHealth(__WEBPACK_IMPORTED_MODULE_4__constants_constants__["_8" /* ENEMY_DAMAGE */]));
-                    actions.push(__WEBPACK_IMPORTED_MODULE_10__actionCreators__["g" /* enemy */].setState(__WEBPACK_IMPORTED_MODULE_4__constants_constants__["A" /* ENEMY_STATE */].REST));
+                    actions.push(__WEBPACK_IMPORTED_MODULE_11__actionCreators__["d" /* player */].reduceHealth(__WEBPACK_IMPORTED_MODULE_4__constants_constants__["_8" /* ENEMY_DAMAGE */]));
+                    actions.push(__WEBPACK_IMPORTED_MODULE_11__actionCreators__["g" /* enemy */].setState(__WEBPACK_IMPORTED_MODULE_4__constants_constants__["A" /* ENEMY_STATE */].REST));
                     this.delayedActions.pushAction({
-                        action: __WEBPACK_IMPORTED_MODULE_10__actionCreators__["g" /* enemy */].setState(__WEBPACK_IMPORTED_MODULE_4__constants_constants__["A" /* ENEMY_STATE */].WANDER),
+                        action: __WEBPACK_IMPORTED_MODULE_11__actionCreators__["g" /* enemy */].setState(__WEBPACK_IMPORTED_MODULE_4__constants_constants__["A" /* ENEMY_STATE */].WANDER),
                         delay: 3000
                     });
                 } else {
-                    actions.push(__WEBPACK_IMPORTED_MODULE_10__actionCreators__["g" /* enemy */].setDirection(directionToPlayer));
-                    actions.push(__WEBPACK_IMPORTED_MODULE_10__actionCreators__["g" /* enemy */].setPosition(__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_7__lib_utils__["f" /* vectorsAdd3D */])(currentStore.enemy.position, GameLoop.getShift2d(directionToPlayer, __WEBPACK_IMPORTED_MODULE_4__constants_constants__["_9" /* ENEMY_SPEED_RUNNING */] * frameRateCoefficient))));
+                    actions.push(__WEBPACK_IMPORTED_MODULE_11__actionCreators__["g" /* enemy */].setDirection(directionToPlayer));
+                    actions.push(__WEBPACK_IMPORTED_MODULE_11__actionCreators__["g" /* enemy */].setPosition(__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_7__lib_utils__["f" /* vectorsAdd3D */])(currentStore.enemy.position, GameLoop.getShift2d(directionToPlayer, __WEBPACK_IMPORTED_MODULE_4__constants_constants__["_9" /* ENEMY_SPEED_RUNNING */] * frameRateCoefficient))));
                 }
             }
         }
@@ -5116,11 +5132,25 @@ class GameLoop extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
         });
         if (rawHints.length) {
             this.delayedActions.pushAction({
-                action: __WEBPACK_IMPORTED_MODULE_10__actionCreators__["h" /* hints */].removeHints(rawHints),
+                action: __WEBPACK_IMPORTED_MODULE_11__actionCreators__["h" /* hints */].removeHints(rawHints),
                 delay: __WEBPACK_IMPORTED_MODULE_4__constants_constants__["U" /* HINT_SHOW_TIME */] + delay
             });
         }
-        return __WEBPACK_IMPORTED_MODULE_10__actionCreators__["h" /* hints */].addHints(rawHints);
+        return __WEBPACK_IMPORTED_MODULE_11__actionCreators__["h" /* hints */].addHints(rawHints);
+    }
+
+    soundStartMusic() {
+        this.audioSources.music = __WEBPACK_IMPORTED_MODULE_10__lib_Audio__["a" /* default */].soundStart({
+            audioSource: this.audioSources.music,
+            audioCtx: this.context.audioCtx,
+            destination: this.musicGainNode,
+            buffer: this.musicAudioBuffer,
+            loop: true
+        });
+    }
+
+    soundStopMusic() {
+        __WEBPACK_IMPORTED_MODULE_10__lib_Audio__["a" /* default */].soundStop(this.audioSources.music);
     }
 
     static filterStickValue(value) {
@@ -5147,7 +5177,10 @@ GameLoop.propTypes = {
 };
 GameLoop.contextTypes = {
     store: __WEBPACK_IMPORTED_MODULE_3_react_redux_src_utils_storeShape__["a" /* default */].isRequired,
-    controls: __WEBPACK_IMPORTED_MODULE_0_react__["PropTypes"].object.isRequired
+    controls: __WEBPACK_IMPORTED_MODULE_0_react__["PropTypes"].object.isRequired,
+    audioCtx: __WEBPACK_IMPORTED_MODULE_0_react__["PropTypes"].object.isRequired,
+    masterGain: __WEBPACK_IMPORTED_MODULE_0_react__["PropTypes"].object.isRequired,
+    assets: __WEBPACK_IMPORTED_MODULE_0_react__["PropTypes"].object.isRequired
 };
 /* harmony default export */ __webpack_exports__["a"] = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1_react_redux__["connect"])()(GameLoop);
 
@@ -5163,7 +5196,7 @@ GameLoop.contextTypes = {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_react_redux__ = __webpack_require__(16);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__constants_constants__ = __webpack_require__(6);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__lib_utils__ = __webpack_require__(12);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__lib_Audio__ = __webpack_require__(23);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__lib_Audio__ = __webpack_require__(20);
 
 
 

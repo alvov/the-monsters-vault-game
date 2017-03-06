@@ -1,4 +1,4 @@
-export const GAME_VERSION = '1.5.0';
+export const GAME_VERSION = '1.6.0';
 
 export const FPS = 60;
 export const BROAD_CELL_SIZE = 250;

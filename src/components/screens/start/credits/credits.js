@@ -32,7 +32,7 @@ export default function Credits() {
             </ExternalLink>
         </dd>
         <dt>
-            <ExternalLink href='https://github.com/alvov/doors-and-levers-game'>
+            <ExternalLink href='https://github.com/alvov/the-monsters-vault-game'>
                 Github Repo
             </ExternalLink>
         </dt>

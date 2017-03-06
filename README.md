@@ -1,4 +1,4 @@
-# Doors & levers game
+# The monster's vault game
 
 ## Story
 You find yourself locked in some sort of a
@@ -19,7 +19,7 @@ Don't get caught by the monster! You can also
 guess its position and direction by the sound
 it makes.
 
-[**Play the game**](https://alvov.github.io/doors-and-levers-game/)
+[**Play the game**](https://alvov.github.io/the-monsters-vault-game/)
 _(you need a desktop browser, Chrome would be the best choice
 at the moment of writing this)_
 

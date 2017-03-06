@@ -116,7 +116,7 @@ const LEVEL_SET = 'levelSet';
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-const GAME_VERSION = '1.5.0';
+const GAME_VERSION = '1.6.0';
 /* harmony export (immutable) */ __webpack_exports__["_10"] = GAME_VERSION;
 
 
@@ -3745,7 +3745,7 @@ function Logo() {
     return __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
         'h1',
         { className: __WEBPACK_IMPORTED_MODULE_0__logo_css___default.a.root },
-        'Doors & levers'
+        'The monster\'s vault'
     );
 }
 
@@ -4215,7 +4215,7 @@ function Credits() {
             null,
             __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
                 __WEBPACK_IMPORTED_MODULE_2__externalLink_externalLink__["a" /* default */],
-                { href: 'https://github.com/alvov/doors-and-levers-game' },
+                { href: 'https://github.com/alvov/the-monsters-vault-game' },
                 'Github Repo'
             )
         )
